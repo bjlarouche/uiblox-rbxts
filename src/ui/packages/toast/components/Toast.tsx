@@ -2,16 +2,12 @@ import { BoatTween } from "@rbxts/boat-tween";
 import Roact from "@rbxts/roact";
 import { hooked, useEffect, useRef, useState } from "@rbxts/roact-hooked";
 import { DefaultTheme } from "theme";
+import { Directions } from "ui/enums";
 import { Shadow } from "ui/packages/shadow";
 import ToastVariants from "../enums/ToastVariants";
 import useToastStyles, { ACTIVE_POSITION, INACTIVE_POSITION } from "./Toast.styles";
 
-enum Direction {
-	In = "In",
-	Out = "Out",
-}
-
-interface ToastProps {
+export interface ToastProps {
 	text: string;
 	onDismiss: () => void;
 	duration?: number;
@@ -39,7 +35,7 @@ const Toast = hooked<ToastProps>(({ text, onDismiss, duration = 4, variant = Toa
 	const [toastColor, setToastColor] = useState<Color3>(getToastColor(variant));
 	const frameRef = useRef<Frame>();
 
-	const tween = (direction: Direction) => {
+	const tween = (direction: Directions) => {
 		const frame = frameRef.getValue();
 		if (!frame) return;
 
@@ -56,7 +52,7 @@ const Toast = hooked<ToastProps>(({ text, onDismiss, duration = 4, variant = Toa
 			StepType: "Stepped",
 
 			Goal: {
-				Position: direction === Direction.In ? ACTIVE_POSITION : INACTIVE_POSITION,
+				Position: direction === Directions.In ? ACTIVE_POSITION : INACTIVE_POSITION,
 			},
 		});
 
@@ -70,9 +66,9 @@ const Toast = hooked<ToastProps>(({ text, onDismiss, duration = 4, variant = Toa
 	}, [variant]);
 
 	useEffect(() => {
-		tween(Direction.In);
+		tween(Directions.In);
 		wait(duration);
-		tween(Direction.Out);
+		tween(Directions.Out);
 
 		if (onDismiss) {
 			onDismiss();
@@ -90,7 +86,7 @@ const Toast = hooked<ToastProps>(({ text, onDismiss, duration = 4, variant = Toa
 				{...close}
 				Event={{
 					MouseButton1Click: () => {
-						tween(Direction.Out);
+						tween(Directions.Out);
 						if (onDismiss) {
 							onDismiss();
 						}

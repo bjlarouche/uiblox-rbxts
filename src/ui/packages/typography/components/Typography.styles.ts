@@ -35,6 +35,7 @@ const useTypographyStyles = makeStyles<TypographyProps>((theme, { lineClamp, col
 		root: makeRootStyles(theme, { lineClamp, color }),
 		// Typography 2.0 system
 		variantToken: {
+			// eslint-disable-next-line roblox-ts/lua-truthiness
 			TextSize: variant && theme.typography.fontSizes[variant],
 			Font: family && theme.typography.fontFamilies[family],
 		} as WriteableStyle<TextLabel>,

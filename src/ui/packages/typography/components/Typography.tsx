@@ -1,6 +1,5 @@
-import { Tokens } from "@rbx/ui/theme/variants";
 import Roact from "@rbxts/roact";
-import { CustomizedProps } from "theme";
+import { CustomizedProps, Tokens } from "theme";
 import { FontFamilyVariant, FontSizeVariant } from "theme/interfaces/typography";
 import { COLOR_TO_PALETTE } from "../maps/PropMap";
 import { TypographyAlignment } from "../types/TypographyAlignment";
