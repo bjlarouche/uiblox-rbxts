@@ -1,1 +1,2 @@
-export * from "./Theme";
+export * from "./theme";
+export * from "./ui";

@@ -1,4 +1,4 @@
-import { allFontSizes } from "../Typography/FontSizes";
+import { allFontSizes } from "../typography/FontSizes";
 import {
 	Blue,
 	Gray,
@@ -12,8 +12,8 @@ import {
 	Magenta,
 	Orange,
 	Turquoise,
-} from "../Palette/Colors";
-import { Theme } from "../Theme";
+} from "../palette/colors";
+import { Theme } from "../theme";
 import {
 	BORDER_RADIUS,
 	DARK_THEME_COLORS,
@@ -22,8 +22,8 @@ import {
 	CONTENT_WIDTH,
 	ICON_SIZES,
 	DEFAULT_BORDERS,
-} from "../../Constants";
-import { allFontFamilies } from "../Typography/FontFamilies";
+} from "../../constants";
+import { allFontFamilies } from "../typography/FontFamilies";
 
 const DarkTheme: Theme = {
 	type: "Dark",

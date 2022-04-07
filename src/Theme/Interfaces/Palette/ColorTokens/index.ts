@@ -1,1 +1,1 @@
-export * from "./ColorTokens";
+export { ColorTokens } from "./ColorTokens";

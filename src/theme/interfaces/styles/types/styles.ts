@@ -1,6 +1,6 @@
-import { WritableStyle } from "./WriteableStyles";
+import { WriteableStyle } from "./WriteableStyle";
 
 export type ClassNameMap<ClassKey extends string = string, T extends Instance = Instance> = Record<
 	ClassKey,
-	Partial<WritableStyle<T>>
+	Partial<WriteableStyle<T>>
 >;

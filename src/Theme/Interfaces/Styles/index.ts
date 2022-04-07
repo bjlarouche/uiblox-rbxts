@@ -1,9 +1,5 @@
-export { default as createStyles } from "./createStyles";
-export * from "./createStyles";
+export { ClassNameMap } from "./types";
+export { WriteableStyle } from "./types";
 
-export { default as makeStyles } from "./makeStyles";
-export * from "./makeStyles";
-
-export * from "./styles";
-
-export * from "./WriteableStyles";
+export { createStyles } from "./utilities";
+export { makeStyles } from "./utilities";

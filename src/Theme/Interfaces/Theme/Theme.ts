@@ -1,6 +1,6 @@
-import { Palette } from "../Palette";
-import { Padding, Shape, Spacing } from "../Spacing";
-import { Typography } from "../Typography";
+import { Palette } from "../palette";
+import { Padding, Shape, Spacing } from "../spacing";
+import { ThemeTypography } from "../typography";
 import ThemeOptions from "./ThemeOptions";
 
 interface Theme {
@@ -10,7 +10,7 @@ interface Theme {
 	padding: Padding;
 	shape: Shape;
 	spacing: Spacing;
-	typography: Typography;
+	typography: ThemeTypography;
 }
 
 export default Theme;

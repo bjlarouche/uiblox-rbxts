@@ -1,3 +1,3 @@
-import { Tokens } from "../../Tokens/Tokens";
+import { Tokens } from "../../tokens/Tokens";
 
 export type ColorTokens = { [key in Tokens]: Color3 };

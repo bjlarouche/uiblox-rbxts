@@ -28,8 +28,11 @@
     "access": "public"
   },
   "devDependencies": {
+    "@rbxts/boat-tween": "^1.0.1",
     "@rbxts/compiler-types": "^1.2.7-types.1",
     "@rbxts/roact": "^1.4.2-ts.0",
+    "@rbxts/roact-hooked": "^1.2.5",
+    "@rbxts/services": "^1.2.0",
     "@rbxts/types": "^1.0.574",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",

@@ -1,4 +1,4 @@
-import { ThemeConstants } from ".";
+import ThemeConstants from "./ThemeConstants";
 
 export default interface ThemeOptions {
 	constants: ThemeConstants;

@@ -1,7 +1,12 @@
-export { default as Typography } from "./Typography";
+export { default as ThemeTypography } from "./ThemeTypography";
 
 export * from "./FontSizes";
 export * from "./FontFamilies";
-export * from "./FontSizeOptions";
-export * from "./FontFamilyOptions";
+
+export { FontSizeVariant } from "./FontSizeOptions";
+export { FontSizeOptions } from "./FontSizeOptions";
+
+export { FontFamilyVariant } from "./FontFamilyOptions";
+export { FontFamilyOptions } from "./FontFamilyOptions";
+
 export * from "./Variants";

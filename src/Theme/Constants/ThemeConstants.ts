@@ -1,6 +1,5 @@
-import { Colors } from "../Interfaces/Palette/Colors";
-import { Blue, Common, Gray, Green, Purple, Red, Yellow } from "../Interfaces/Palette";
-import { Borders } from "../Interfaces/Spacing";
+import { Borders } from "../interfaces/spacing";
+import { Common, Gray, Green, Red, Purple, Blue, Yellow, Colors } from "../interfaces/palette";
 
 // dark theme
 export const DARK_THEME_COLORS: Colors = {

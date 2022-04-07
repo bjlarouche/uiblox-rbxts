@@ -1,5 +1,6 @@
-import { DefaultTheme, Theme } from "Theme";
-import { ClassNameMap } from "./styles";
+import DefaultTheme from "../../../interfaces/themes";
+import { Theme } from "../../../interfaces/theme";
+import { ClassNameMap } from "../types/styles";
 
 type TMakeStyles<ClassKey extends string = string> = (theme: Theme) => ClassNameMap<ClassKey>;
 type TMakeStylesWithProps<Props, ClassKey extends string = string> = (

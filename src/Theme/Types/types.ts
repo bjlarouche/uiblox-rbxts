@@ -1,8 +1,8 @@
 import Roact, { Element, PropsWithChildren } from "@rbxts/roact";
-import { WritableStyle } from "Theme/Interfaces";
+import { WriteableStyle } from "theme/interfaces";
 
 export interface CommonProps<T extends Instance> extends PropsWithChildren {
-	className?: WritableStyle<T>;
+	className?: WriteableStyle<T>;
 }
 
 export type BaseDefaultProps<T extends Instance, P> = CommonProps<T> & P;
