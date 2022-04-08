@@ -73,11 +73,14 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 											branch.onClick();
 										}
 
-										const isExpanded = expanded.includes(branch);
-										if (isExpanded) {
-											setExpanded((oldExpanded) => oldExpanded.filter((b) => b !== branch));
-										} else {
-											setExpanded((oldExpanded) => [...oldExpanded, branch]);
+										// If there are leaves... Expand/Collapse
+										if (branch.leaves.size() > 0) {
+											const isExpanded = expanded.includes(branch);
+											if (isExpanded) {
+												setExpanded((oldExpanded) => oldExpanded.filter((b) => b !== branch));
+											} else {
+												setExpanded((oldExpanded) => [...oldExpanded, branch]);
+											}
 										}
 									},
 								}}
