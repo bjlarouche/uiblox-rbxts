@@ -1,1 +1,1 @@
-export type TypographyAlignment = "inherit" | "left" | "center" | "right" | "justify";
+export type TypographyAlignment = "left" | "center" | "right";
