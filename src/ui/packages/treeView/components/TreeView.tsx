@@ -97,9 +97,8 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 									/>
 								)}
 								<Typography
-									className={
-										{ Text: `${branch.title}`, ...branchTypography } as WriteableStyle<TextLabel>
-									}
+									text={branch.title}
+									className={{ ...branchTypography } as WriteableStyle<TextLabel>}
 									color={"textPrimary"}
 									variant={"body"}
 									family={selectedBranch === branch ? "bold" : "default"}
@@ -130,9 +129,8 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 												tint={DefaultTheme.palette.secondary.main}
 											/>
 											<Typography
-												className={
-													{ Text: leaf.title, ...leafTypography } as WriteableStyle<TextLabel>
-												}
+												text={leaf.title}
+												className={{ ...leafTypography } as WriteableStyle<TextLabel>}
 												color={"textPrimary"}
 												variant={"body"}
 												family={selectedLeaf === leaf ? "bold" : "default"}
