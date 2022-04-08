@@ -4,4 +4,5 @@ export * from "./iconButton";
 export * from "./progressBar";
 export * from "./shadow";
 export * from "./toast";
+export * from "./treeView";
 export * from "./typography";
