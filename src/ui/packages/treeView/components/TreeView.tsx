@@ -69,6 +69,10 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 								{...row}
 								Event={{
 									MouseButton1Click: () => {
+										if (branch.onClick) {
+											branch.onClick();
+										}
+
 										const isExpanded = expanded.includes(branch);
 										if (isExpanded) {
 											setExpanded((oldExpanded) => oldExpanded.filter((b) => b !== branch));
@@ -78,12 +82,14 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 									},
 								}}
 							>
-								<Icon
-									icon={expanded.includes(branch) ? Icons.Expanded : Icons.Collapsed}
-									size={"xxs"}
-									className={branchIcon}
-									tint={DefaultTheme.options.constants.extendedPalette.Gray[50]}
-								/>
+								{branch.leaves.size() > 0 && (
+									<Icon
+										icon={expanded.includes(branch) ? Icons.Expanded : Icons.Collapsed}
+										size={"xxs"}
+										className={branchIcon}
+										tint={DefaultTheme.options.constants.extendedPalette.Gray[50]}
+									/>
+								)}
 								<Typography
 									className={
 										{ Text: `${branch.title}`, ...branchTypography } as WriteableStyle<TextLabel>

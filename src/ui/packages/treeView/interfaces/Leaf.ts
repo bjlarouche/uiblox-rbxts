@@ -1,4 +1,4 @@
 export default interface Leaf {
-  title: string;
-  onClick?: () => void;
+	title: string;
+	onClick?: () => void;
 }
