@@ -6,6 +6,8 @@ const useIconStyles = makeStyles<IconProps>((theme, props) => {
 		const { size } = props;
 
 		switch (size) {
+			case "xxs":
+				return new UDim2(0, theme.spacing.calc(0.5), 0, theme.spacing.calc(0.5));
 			case "xs":
 				return new UDim2(0, theme.spacing.calc(1), 0, theme.spacing.calc(1));
 			case "sm":

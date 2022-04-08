@@ -6,7 +6,7 @@ import useIconStyles from "./Icon.styles";
 
 export interface IconProps {
 	icon: Icons;
-	size?: "xs" | "sm" | "md" | "lg" | "xl";
+	size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
 	tint?: Color3;
 }
 

@@ -6,7 +6,7 @@ import useIconButtonStyles from "./IconButton.styles";
 
 export interface IconButtonProps {
 	icon: Icons;
-	size?: "xs" | "sm" | "md" | "lg" | "xl";
+	size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
 	tint: Color3;
 	selected?: boolean;
 	onClick?: () => void;
