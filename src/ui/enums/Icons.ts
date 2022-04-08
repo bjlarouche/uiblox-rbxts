@@ -32,6 +32,7 @@ export enum Icons {
 	CloseCircle = "rbxassetid://9070597768",
 	Collapsed = "rbxassetid://9306279342",
 	Expanded = "rbxassetid://9306279848",
-	Book = "rbxassetid://9306610635",
+	Book = "rbxassetid://9311703342",
+	BookStack = "rbxassetid://9311703545",
 	ListPrimary = "rbxassetid://9306610505",
 }
