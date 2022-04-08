@@ -21,6 +21,7 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 	const { root, header, list, gridLayout, row, branchIcon, branchTypography, leafIcon, leafTypography } =
 		useTreeViewStyles();
 
+	const [selectedBranch, setSelectedBranch] = useState<Branch | undefined>();
 	const [selectedLeaf, setSelectedLeaf] = useState<Leaf | undefined>();
 	const [expanded, setExpanded] = useState<Branch[]>([]);
 	const [canvasSize, setCanvasSize] = useState<UDim2>(new UDim2(1, 0, 1, 0));
@@ -81,6 +82,8 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 											} else {
 												setExpanded((oldExpanded) => [...oldExpanded, branch]);
 											}
+										} else {
+											setSelectedBranch(branch);
 										}
 									},
 								}}
@@ -99,7 +102,7 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 									}
 									color={"textPrimary"}
 									variant={"body"}
-									family={expanded.includes(branch) ? "semibold" : "default"}
+									family={selectedBranch === branch ? "bold" : "default"}
 								/>
 							</textbutton>
 
@@ -112,6 +115,7 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 											Event={{
 												MouseButton1Click: () => {
 													setSelectedLeaf(leaf);
+													setSelectedBranch(branch);
 
 													if (leaf.onClick) {
 														leaf.onClick();
