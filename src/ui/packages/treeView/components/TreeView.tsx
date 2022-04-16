@@ -38,7 +38,11 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 			}
 		});
 
-		setCanvasSize(new UDim2(0, rbx.AbsoluteSize.X, 0, height));
+		try {
+			setCanvasSize(new UDim2(0, rbx.AbsoluteSize.X, 0, height));
+		} catch {
+			// Component is unmounting. Do nothing.
+		}
 	};
 
 	return (

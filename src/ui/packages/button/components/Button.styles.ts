@@ -1,5 +1,4 @@
 import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
-import { COLOR_TO_PALETTE } from "../../typography/maps";
 import { ButtonProps } from "./Button";
 
 const makeRootStyles = (theme: Theme, { size, color, fullWidth, variant }: ButtonProps) => {

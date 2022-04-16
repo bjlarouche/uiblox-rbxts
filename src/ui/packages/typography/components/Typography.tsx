@@ -6,6 +6,8 @@ import { TypographyColor } from "../types/TypographyColor";
 import { TypographyDisplay } from "../types/TypographyDisplay";
 import useTypographyStyles from "./Typography.styles";
 
+type DefaultTypographyComponent = TextLabel;
+
 export interface TypographyProps {
 	text?: string;
 	variant?: FontSizeVariant;
@@ -16,8 +18,6 @@ export interface TypographyProps {
 	noWrap?: boolean;
 	lineClamp?: boolean;
 }
-
-type DefaultTypographyComponent = TextLabel;
 
 function Typography<T extends DefaultTypographyComponent>(props: CustomizedProps<T, TypographyProps>) {
 	const { text = "", className, [Roact.Children]: children } = props;

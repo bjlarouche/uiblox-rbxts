@@ -1,11 +1,11 @@
 import { BoatTween } from "@rbxts/boat-tween";
 import Roact from "@rbxts/roact";
-import { hooked, useEffect, useRef, useState } from "@rbxts/roact-hooked";
-import { DefaultTheme } from "theme";
+import { hooked, useEffect, useRef } from "@rbxts/roact-hooked";
+import { DefaultTheme, WriteableStyle } from "theme";
 import { Directions } from "ui/enums";
 import { Shadow } from "ui/packages/shadow";
 import ToastVariants from "../enums/ToastVariants";
-import useToastStyles, { ACTIVE_POSITION, INACTIVE_POSITION } from "./Toast.styles";
+import useToastStyles from "./Toast.styles";
 
 export interface ToastProps {
 	text: string;
@@ -15,24 +15,11 @@ export interface ToastProps {
 	toggledAt?: number;
 }
 
-const getToastColor = (variant: ToastVariants): Color3 => {
-	switch (variant) {
-		case ToastVariants.success:
-			return DefaultTheme.palette.success.main;
-		case ToastVariants.error:
-			return DefaultTheme.palette.error.main;
-		case ToastVariants.warning:
-			return DefaultTheme.palette.warning.main;
-		default:
-			return DefaultTheme.options.constants.colors.backgroundUIContrast;
-	}
-};
-
 const TWEEN_DURATION = 0.5;
 
-const Toast = hooked<ToastProps>(({ text, onDismiss, duration = 4, variant = ToastVariants.default }) => {
-	const { container, label, close } = useToastStyles();
-	const [toastColor, setToastColor] = useState<Color3>(getToastColor(variant));
+const Toast = hooked<ToastProps>((props) => {
+	const { text, onDismiss, duration = 4 } = props;
+	const { container, label, close, activePosition, inActivePosition } = useToastStyles(props);
 	const frameRef = useRef<Frame>();
 
 	const tween = (direction: Directions) => {
@@ -52,18 +39,16 @@ const Toast = hooked<ToastProps>(({ text, onDismiss, duration = 4, variant = Toa
 			StepType: "Stepped",
 
 			Goal: {
-				Position: direction === Directions.In ? ACTIVE_POSITION : INACTIVE_POSITION,
+				Position:
+					direction === Directions.In
+						? (activePosition as WriteableStyle<Frame>).Position
+						: (inActivePosition as WriteableStyle<Frame>).Position,
 			},
 		});
 
 		tween.Play();
 		wait(TWEEN_DURATION);
 	};
-
-	useEffect(() => {
-		const color = getToastColor(variant);
-		setToastColor(color);
-	}, [variant]);
 
 	useEffect(() => {
 		tween(Directions.In);
@@ -76,7 +61,7 @@ const Toast = hooked<ToastProps>(({ text, onDismiss, duration = 4, variant = Toa
 	}, []);
 
 	return (
-		<frame Key="Toast" Ref={frameRef} {...container} BackgroundColor3={toastColor}>
+		<frame Key="Toast" Ref={frameRef} {...container}>
 			<uicorner Key="Corner" CornerRadius={new UDim(0, DefaultTheme.shape.borderRadius)} />
 			<Shadow />
 

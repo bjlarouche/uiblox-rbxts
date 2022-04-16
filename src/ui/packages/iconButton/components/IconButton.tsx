@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { hooked, useState } from "@rbxts/roact-hooked";
 import { Icons } from "ui/enums";
-import { CustomizedProps } from "theme";
+import { CustomizedProps, WriteableStyle } from "theme";
 import useIconButtonStyles from "./IconButton.styles";
 
 export interface IconButtonProps {
@@ -27,7 +27,7 @@ const IconButton = hooked<CustomizedProps<DefaultIconButtonComponent, IconButton
 			{...className}
 			BackgroundTransparency={hovering || selected ? 0.5 : 1}
 			Image={tostring(icon)}
-			ImageColor3={tint}
+			ImageColor3={tint ?? (container as WriteableStyle<ImageLabel>).ImageColor3}
 			Event={{
 				MouseButton1Click: () => {
 					if (onClick) {

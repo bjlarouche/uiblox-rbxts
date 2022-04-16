@@ -1,6 +1,9 @@
-import Roact, { FunctionComponent } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
+import { CustomizedProps } from "theme";
 import { Orientations } from "ui/enums";
 import useDividerStyles from "./Divider.styles";
+
+type DefaultDividerComponent = Frame;
 
 export interface DividerProps {
 	position?: UDim2;
@@ -9,15 +12,14 @@ export interface DividerProps {
 	color?: Color3;
 	transparency?: number;
 	weight?: number;
-	className?: Partial<WritableInstanceProperties<Frame>>;
 }
 
-const Divider: FunctionComponent<DividerProps> = (props) => {
+function Divider<T extends DefaultDividerComponent>(props: CustomizedProps<T, DividerProps>) {
 	const { className } = props;
 
 	const { root } = useDividerStyles(props);
 
-	return <frame Key="Divider" {...root} {...className} BorderSizePixel={0} />;
-};
+	return <frame Key="Divider" {...root} BorderSizePixel={0} {...className} />;
+}
 
 export default Divider;

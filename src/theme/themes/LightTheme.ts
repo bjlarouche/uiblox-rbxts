@@ -1,4 +1,4 @@
-import { allFontSizes } from "../typography/FontSizes";
+import { allFontSizes } from "../interfaces/typography/FontSizes";
 import {
 	Blue,
 	Gray,
@@ -12,21 +12,21 @@ import {
 	Magenta,
 	Orange,
 	Turquoise,
-} from "../palette/colors";
-import { Theme } from "../theme";
+} from "../interfaces/palette/colors";
+import { Theme } from "../interfaces/theme";
 import {
 	BORDER_RADIUS,
-	DARK_THEME_COLORS,
 	PADDING_BASE,
 	SPACING_BASE,
 	CONTENT_WIDTH,
 	ICON_SIZES,
 	DEFAULT_BORDERS,
-} from "../../constants";
-import { allFontFamilies } from "../typography/FontFamilies";
+	LIGHT_THEME_COLORS,
+} from "../constants";
+import { allFontFamilies } from "../interfaces/typography/FontFamilies";
 
-const DarkTheme: Theme = {
-	type: "Dark",
+const LightTheme: Theme = {
+	type: "Light",
 	palette: {
 		error: {
 			main: Red[50],
@@ -41,13 +41,13 @@ const DarkTheme: Theme = {
 			main: Green[50],
 		},
 		text: {
-			primary: Common.White,
-			secondary: Dark[70],
+			primary: Common.Black,
+			secondary: Dark[90],
 		},
 		divider: Gray[70],
 		background: {
-			default: Common.Black,
-			paper: Gray[90],
+			default: Common.White,
+			paper: Gray[10],
 		},
 		warning: {
 			main: Yellow[50],
@@ -72,7 +72,7 @@ const DarkTheme: Theme = {
 		constants: {
 			contentWidth: CONTENT_WIDTH,
 			iconSizes: ICON_SIZES,
-			colors: DARK_THEME_COLORS,
+			colors: LIGHT_THEME_COLORS,
 			borders: DEFAULT_BORDERS,
 			extendedPalette: {
 				Blue,
@@ -92,4 +92,4 @@ const DarkTheme: Theme = {
 	},
 };
 
-export default DarkTheme;
+export default LightTheme;

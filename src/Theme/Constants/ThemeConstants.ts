@@ -45,6 +45,49 @@ export const DARK_THEME_COLORS: Colors = {
 	background: Common.Black,
 };
 
+export const LIGHT_THEME_COLORS: Colors = {
+	backgroundDefault: Common.White,
+	backgroundContrast: Gray[40],
+	backgroundMuted: Gray[30],
+	backgroundUIDefault: Gray[30],
+	backgroundUIMuted: Gray[50],
+	backgroundUIContrast: Gray[50],
+	UIDefault: Gray[70], //TODO
+	UIMuted: Gray[50],
+	UIEmphasis: Gray[80], //TODO
+	textDefault: Common.Black,
+	textMuted: Gray[50], //TODO
+	textEmphasis: Common.Black,
+	iconDefault: Common.Black,
+	iconEmphasis: Common.Black,
+	iconOnHover: Common.Black,
+	systemPrimaryDefault: Common.Black,
+	systemPrimaryOnHover: Gray[40], //TODO
+	systemPrimaryContent: Common.White,
+	contextualPrimaryDefault: Green[60],
+	contextualPrimaryOnHover: Green[40], //TODO
+	contextualPrimaryContent: Common.White,
+	secondaryDefault: Common.Black,
+	secondaryOnHover: Gray[40], //TODO
+	secondaryContent: Common.Black,
+	divider: Gray[70], //TODO
+	overlay: Common.White,
+	dropShadow: Common.White,
+	navigationBar: Gray[40],
+	badge: Common.Black,
+	badgeContent: Common.White,
+	placeholder: Gray[50],
+	online: Green[60],
+	offline: Gray[50], //TODO
+	alert: Red[60], //TODO
+	success: Green[60],
+	accent: Purple[50], //TODO
+	link: Blue[50], //TODO
+	caution: Yellow[50], //TODO
+	text: Common.Black,
+	background: Common.White,
+};
+
 export const DEFAULT_BORDERS: Borders = {
 	default: 1,
 	divider: 2,

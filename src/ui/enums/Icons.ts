@@ -35,4 +35,6 @@ export enum Icons {
 	Book = "rbxassetid://9311703342",
 	BookStack = "rbxassetid://9311703545",
 	ListPrimary = "rbxassetid://9306610505",
+	LightTheme = "rbxassetid://9377269022",
+	DarkTheme = "rbxassetid://9377269322",
 }

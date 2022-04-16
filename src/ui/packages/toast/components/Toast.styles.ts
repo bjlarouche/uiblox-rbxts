@@ -1,18 +1,34 @@
-import { createStyles, Theme, makeStyles, DefaultTheme } from "theme";
+import { createStyles, Theme, makeStyles, DefaultTheme, WriteableStyle } from "theme";
 import { Icons } from "ui/enums";
+import ToastVariants from "../enums/ToastVariants";
+import { ToastProps } from "./Toast";
 
-export const ACTIVE_POSITION = new UDim2(0.5, 0, 1, -DefaultTheme.padding.calc(2));
-export const INACTIVE_POSITION = new UDim2(0.5, 0, 1, DefaultTheme.spacing.calc(20) + DefaultTheme.padding.calc(2));
+const useToastStyles = makeStyles<ToastProps>((theme: Theme, { variant = ToastVariants.default }) => {
+	const getToastColor = (): Color3 => {
+		switch (variant) {
+			case ToastVariants.success:
+				return DefaultTheme.palette.success.main;
+			case ToastVariants.error:
+				return DefaultTheme.palette.error.main;
+			case ToastVariants.warning:
+				return DefaultTheme.palette.warning.main;
+			default:
+				return DefaultTheme.options.constants.colors.backgroundUIContrast;
+		}
+	};
 
-const useToastStyles = makeStyles((theme: Theme) =>
-	createStyles({
+	const ACTIVE_POSITION = new UDim2(0.5, 0, 1, -DefaultTheme.padding.calc(2));
+	const INACTIVE_POSITION = new UDim2(0.5, 0, 1, DefaultTheme.spacing.calc(20) + DefaultTheme.padding.calc(2));
+
+	return createStyles({
 		container: {
 			Size: new UDim2(0, theme.spacing.calc(20), 0, theme.spacing.calc(4)),
 			Position: INACTIVE_POSITION,
+			BackgroundColor3: getToastColor(),
 			AnchorPoint: new Vector2(0.5, 1),
 			BorderSizePixel: 0,
 			ZIndex: 50000,
-		} as Partial<WritableInstanceProperties<Frame>>,
+		} as WriteableStyle<Frame>,
 		label: {
 			Size: new UDim2(1, -theme.padding.calc(4), 1, -theme.padding.calc(4)),
 			Position: new UDim2(0.5, 0, 0.5, 0),
@@ -24,7 +40,7 @@ const useToastStyles = makeStyles((theme: Theme) =>
 			Font: theme.typography.fontFamilies.default,
 			TextScaled: false,
 			ZIndex: 50001,
-		} as Partial<WritableInstanceProperties<TextLabel>>,
+		} as WriteableStyle<TextLabel>,
 		close: {
 			Size: new UDim2(0, theme.spacing.calc(1), 0, theme.spacing.calc(1)),
 			Position: new UDim2(1, -theme.padding.calc(2), 0, theme.padding.calc(2)),
@@ -36,8 +52,14 @@ const useToastStyles = makeStyles((theme: Theme) =>
 			BorderSizePixel: 0,
 			Active: true,
 			ZIndex: 50001,
-		} as Partial<WritableInstanceProperties<ImageButton>>,
-	}),
-);
+		} as WriteableStyle<ImageButton>,
+		activePosition: {
+			Position: ACTIVE_POSITION,
+		} as WriteableStyle<Frame>,
+		inActivePosition: {
+			Position: INACTIVE_POSITION,
+		} as WriteableStyle<Frame>,
+	});
+});
 
 export default useToastStyles;

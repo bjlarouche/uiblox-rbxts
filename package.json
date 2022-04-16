@@ -43,5 +43,9 @@
     "prettier": "^2.6.2",
     "typescript": "^4.6.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@rbxts/roact-rodux-hooked": "^1.0.4",
+    "@rbxts/rodux": "^3.0.0-ts.3",
+    "@rbxts/roselect": "^0.1.1"
+  }
 }

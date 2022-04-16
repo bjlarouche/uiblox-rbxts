@@ -1,8 +1,18 @@
-export { default as DefaultTheme } from "./interfaces/themes/DarkTheme";
 export { default as Theme } from "./interfaces/theme/Theme";
+
+export { ThemeProvider } from "./components";
+export { themeStore } from "./components";
+export { ThemeState } from "./components";
+export * from "./components";
 
 export * from "./constants";
 export * from "./interfaces";
+export * from "./styles";
+
+export * from "./themes";
+export { default as DefaultTheme } from "./themes"; // Default is DarkTheme
+export { default as DarkTheme } from "./themes/DarkTheme";
+export { default as LightTheme } from "./themes/LightTheme";
 
 export { CommonProps } from "./types";
 export { BaseDefaultProps } from "./types";

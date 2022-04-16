@@ -15,7 +15,7 @@ const useProgressBarStyles = makeStyles((theme: Theme) =>
 		} as WriteableStyle<Frame>,
 		stroke: {
 			Thickness: theme.options.constants.borders.divider,
-			Color: theme.options.constants.extendedPalette.Common.White,
+			Color: theme.palette.text.primary,
 		} as WriteableStyle<UIStroke>,
 		inner: {
 			Size: new UDim2(
@@ -34,7 +34,7 @@ const useProgressBarStyles = makeStyles((theme: Theme) =>
 		fill: {
 			Position: new UDim2(0, 0, 0.5, 0),
 			AnchorPoint: new Vector2(0, 0.5),
-			BackgroundColor3: theme.options.constants.extendedPalette.Common.White,
+			BackgroundColor3: theme.palette.text.primary,
 			BorderSizePixel: 0,
 			ZIndex: 110001,
 		} as WriteableStyle<Frame>,

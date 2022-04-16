@@ -1,4 +1,4 @@
-import { createStyles, makeStyles } from "theme";
+import { createStyles, makeStyles, WriteableStyle } from "theme";
 import { IconButtonProps } from "./IconButton";
 
 const useIconButtonStyles = makeStyles<IconButtonProps>((theme, props) => {
@@ -27,11 +27,12 @@ const useIconButtonStyles = makeStyles<IconButtonProps>((theme, props) => {
 		container: {
 			Size: getIconSize(props),
 			BackgroundColor3: theme.palette.secondary.main,
+			ImageColor3: theme.palette.text.primary,
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			ScaleType: Enum.ScaleType.Fit,
 			ZIndex: 12000,
-		} as Partial<WritableInstanceProperties<Frame>>,
+		} as WriteableStyle<Frame>,
 	});
 });
 

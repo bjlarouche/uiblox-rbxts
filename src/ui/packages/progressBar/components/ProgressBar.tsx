@@ -1,10 +1,11 @@
 import Roact from "@rbxts/roact";
 import { hooked } from "@rbxts/roact-hooked";
+import { WriteableStyle } from "theme";
 import useProgressBarStyles from "./ProgressBar.styles";
 
 export interface ProgressBarProps {
 	progress: number;
-	className?: Partial<WritableInstanceProperties<Frame>>;
+	className?: WriteableStyle<Frame>;
 }
 
 const ProgressBar = hooked<ProgressBarProps>(({ progress, className }) => {
@@ -12,7 +13,7 @@ const ProgressBar = hooked<ProgressBarProps>(({ progress, className }) => {
 
 	return (
 		<frame Key="ProgressBar" {...container} {...className}>
-			<frame {...outer}>
+			<frame Key="Bar" {...outer}>
 				<uicorner Key="Corner" {...corner} />
 				<uistroke {...stroke} />
 				<frame {...inner}>
