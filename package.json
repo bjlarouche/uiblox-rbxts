@@ -18,8 +18,8 @@
     "component",
     "system"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Brandon LaRouche",
+  "license": "MIT",
   "types": "out/index.d.ts",
   "files": [
     "out"
@@ -47,5 +47,16 @@
     "@rbxts/roact-rodux-hooked": "^1.0.4",
     "@rbxts/rodux": "^3.0.0-ts.3",
     "@rbxts/roselect": "^0.1.1"
-  }
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjlarouche/uiblox-rbxts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bjlarouche/uiblox-rbxts/issues"
+  },
+  "homepage": "https://github.com/bjlarouche/uiblox-rbxts#readme"
 }
