@@ -114,3 +114,4 @@ out/tsconfig.tsbuildinfo
 **.tsbuildinfo
 
 **build.rbxl
+*.tgz
