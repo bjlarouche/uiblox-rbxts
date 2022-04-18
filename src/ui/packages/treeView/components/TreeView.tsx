@@ -91,13 +91,11 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 			} else {
 				// If any of the leaves are a match, branch should be expanded
 				branch.leaves.forEach((leaf) => {
-					print(`${leaf.title} => ${matchesFilter(leaf.title)}`);
 					if (newExpanded.includes(branch)) return; // Already expanded.
 
 					const matchesLeafFilter = matchesFilter(leaf.title);
 
 					if (matchesLeafFilter) {
-						print(`Expanding ${branch.title} for ${leaf.title}`);
 						newExpanded.push(branch);
 					}
 				});
