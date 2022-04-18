@@ -41,7 +41,7 @@ How does it do this? Well, there are two main exports from this package:
 - @rbxts/uiblox-rbxts -> ui
   - Packaged and reusable typed Roact components
 
-## How to use
+# How to use
 
 ### Installation
 Install the package to get started.
@@ -49,18 +49,18 @@ Install the package to get started.
 `npm install @rbxts/uiblox-rbxts`
 
 
-### Example
+## Example
 
 Below is an example usage of how you could use ThemeProvider,
 makeStyles/createStyles, and a Button component. This is just an example of how
 to mount and configure your UI -- you can set things up however you want (so
 long as it works...).
 
-#### Shared
+### Shared
 
 You can house all of your components within shared.
 
-`src/shared/ui/app/App.tsx`
+#### src/shared/ui/app/App.tsx
 
 The top-level class for our UI. Loads the actual ApplLayout into ScreenGui. This
 is what we later pass to `Roact.mount()`.
@@ -81,7 +81,7 @@ class App extends Component {
 export default App;
 ```
 
-`src/shared/ui/app/AppLayout.tsx`
+#### src/shared/ui/app/AppLayout.tsx
 
 Start actually adding in components to render, but wrap them in a
 `ThemeProvider`. Here I just use DarkTheme, which is also exported as
@@ -115,7 +115,7 @@ class AppLayout extends Component {
 export default AppLayout;
 ```
 
-`src/shared/ui/myComponent/MyComponent.tsx`
+#### src/shared/ui/myComponent/MyComponent.tsx
 
 My actual component. Just loads a dummy button and passes props to be used to
 make styles.
@@ -160,7 +160,7 @@ const MyComponent = hooked<MyComponentProps>((props) => {
 export default MyComponent;
 ```
 
-`src/shared/ui/myComponent/MyComponent.styles.ts`
+#### src/shared/ui/myComponent/MyComponent.styles.ts
 
 Actually compute styles based on theme and props. You can simplify the arrow
 function if you do not care about props and just directly return `createStyles`.
@@ -200,11 +200,11 @@ const useMyComponentStyles = makeStyles<MyComponentProps>((theme: Theme, props: 
 export default useMyComponentStyles;
 ```
 
-#### Client
+### Client
 
 Some sample logic for mounting app when player spawns (on client).
 
-`src/client/Controllers/Apploader.tsx`
+#### src/client/Controllers/Apploader.tsx
 
 Mount the App in the LocalPlayer's `PlayerGui`.
 
@@ -235,7 +235,7 @@ class AppLoader {
 export default AppLoader;
 ```
 
-`src/client/main.client.ts`
+#### src/client/main.client.ts
 
 When the client loads, call our AppLoader() to mount the UI.
 
@@ -246,11 +246,11 @@ import { AppLoader } from "./Controllers";
 new AppLoader().Mount();
 ```
 
-## Future work
+# Future work
 - More UI packages
 - Finish palette for LightTheme
 
-## See Also
+# See Also
 - Coming soon [Storyblox]()
   - <img src=docs/storyblox-preview.png width=40%>
   - A Storybook-like plugin that developers can use to preview their UI
