@@ -173,7 +173,7 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 											icon={expanded.includes(branch) ? Icons.Expanded : Icons.Collapsed}
 											size={"xxs"}
 											className={branchIcon}
-											tint={DefaultTheme.options.constants.extendedPalette.Gray[50]}
+											tint={DefaultTheme.options.constants.extendedPalette.Gray[70]}
 										/>
 									)}
 									<Typography
