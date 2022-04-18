@@ -30,7 +30,7 @@ anyone who installs this npm package plus a theme and styling system that makes
 UI/UX consistent across a developer's experience(s).
 
 How does it do this? Well, there are two main exports from this package:
-- @rbxts/uiblox -> theme
+- @rbxts/uiblox-rbxts -> theme
   - An extensible Theme type + default Dark (default) and Light themes
     - ... Light theme palette is a WIP
   - makeStyles/createStyles utilities to serve up Instance-extended property
@@ -38,7 +38,7 @@ How does it do this? Well, there are two main exports from this package:
   - ThemeProvider which can wrap your application and uses Rodux to tell
     sub-components which theme to style off of (via makeStyles)
     - Uses Rodux
-- @rbxts/uiblox -> ui
+- @rbxts/uiblox-rbxts -> ui
   - Packaged and reusable typed Roact components
 
 ## How to use
@@ -46,7 +46,7 @@ How does it do this? Well, there are two main exports from this package:
 ### Installation
 Install the package to get started.
 
-`npm install @rbxts/uiblox`
+`npm install @rbxts/uiblox-rbxts`
 
 
 ### Example
@@ -86,11 +86,11 @@ DefaultTheme. If no theme is provided, it would use DarkTheme anyways. If the
 theme prop changes, then sub-components will be re-rendered with the new theme.
 
 You can also choose to create your own theme with the `Theme` interface exported
-from `@rbxts/uiblox`.
+from `@rbxts/uiblox-rbxts`.
 ```javascript
 import Roact, { Component } from "@rbxts/roact";
 import { Storyblox } from "shared/ui/storyblox";
-import { DarkTheme, ThemeProvider } from "@rbxts/uiblox";
+import { DarkTheme, ThemeProvider } from "@rbxts/uiblox-rbxts";
 import usePageLayoutStyles from "./PageLayout.styles";
 
 class AppLayout extends Component {
@@ -122,7 +122,7 @@ instead of `makeStyles<MyComponentProps>((theme, props) => {})`).
 import Roact from "@rbxts/roact";
 import { useState } from "@rbxts/roact-hooked";
 import useMyComponentStyles from "./MyComponent.styles";
-import { Button } from "@rbxts/uiblox";
+import { Button } from "@rbxts/uiblox-rbxts";
 
 export interface MyComponentProps {
   title?: string;
@@ -167,7 +167,7 @@ Make sure that the type given to each style matches the component it will be
 applied to (i.e. `frameStyles: { ... } as WriteableStyle<Frame>` =>
 `<frame {...frameStyles} />`)
 ```javascript
-import { createStyles, Icons, makeStyles, ROBLOX_UI_OFFSET, Theme, WriteableStyle } from "@rbxts/uiblox";
+import { createStyles, Icons, makeStyles, ROBLOX_UI_OFFSET, Theme, WriteableStyle } from "@rbxts/uiblox-rbxts";
 import { MyComponentProps } from "./MyComponent";
 
 const useMyComponentStyles = makeStyles<MyComponentProps>((theme: Theme, props: MyComponentProps) => {
