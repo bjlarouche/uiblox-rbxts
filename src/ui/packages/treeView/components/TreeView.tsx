@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { hooked, useState } from "@rbxts/roact-hooked";
+import { hooked, useCallback, useEffect, useState } from "@rbxts/roact-hooked";
 import { CustomizedProps, DefaultTheme, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
 import { Typography } from "ui/packages/typography";
@@ -14,10 +14,11 @@ type DefaultTreeViewComponent = Frame;
 export interface TreeViewProps {
 	tree: Tree;
 	icon?: Icons;
+	filter?: string;
 }
 
 const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>>((props) => {
-	const { tree, icon, className } = props;
+	const { tree, icon, filter, className } = props;
 	const { root, header, list, gridLayout, row, branchIcon, branchTypography, leafIcon, leafTypography } =
 		useTreeViewStyles();
 
@@ -45,6 +46,68 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 		}
 	};
 
+	const matchesFilter = useCallback(
+		(title: string) => {
+			let isMatch = false;
+
+			if (filter === undefined || filter?.size() === 0) {
+				return true;
+			}
+
+			const parts = title.split("/");
+
+			parts.forEach((part) => {
+				if (
+					part.size() >= filter.size() &&
+					string.sub(string.upper(part), 1, filter.size()) === string.upper(filter)
+				) {
+					isMatch = true;
+				}
+			});
+
+			return isMatch;
+		},
+		[filter],
+	);
+
+	// Automatically expand branches that match filter
+	useEffect(() => {
+		if (filter === undefined || filter?.size() === 0) {
+			setExpanded([]);
+			return;
+		}
+
+		const newExpanded: Branch[] = [];
+
+		// Figure out which branches should be expanded
+		tree.branches.forEach((branch) => {
+			const matchesBranchFilter = matchesFilter(branch.title);
+
+			if (matchesBranchFilter) {
+				// If branch is a match, whole branch should be expanded
+				if (!newExpanded.includes(branch)) {
+					newExpanded.push(branch);
+				}
+			} else {
+				// If any of the leaves are a match, branch should be expanded
+				branch.leaves.forEach((leaf) => {
+					print(`${leaf.title} => ${matchesFilter(leaf.title)}`);
+					if (newExpanded.includes(branch)) return; // Already expanded.
+
+					const matchesLeafFilter = matchesFilter(leaf.title);
+
+					if (matchesLeafFilter) {
+						print(`Expanding ${branch.title} for ${leaf.title}`);
+						newExpanded.push(branch);
+					}
+				});
+			}
+		});
+
+		// Set expanded to new array
+		setExpanded(newExpanded);
+	}, [tree, filter]);
+
 	return (
 		<frame Key="TreeView" {...root} {...className}>
 			<Typography
@@ -67,83 +130,106 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 				<uigridlayout {...gridLayout} />
 
 				{tree.branches.map((branch: Branch, branchIndex) => {
-					return (
-						<>
-							<textbutton
-								Key={`${branch.title}-${branchIndex}`}
-								{...row}
-								Event={{
-									MouseButton1Click: () => {
-										if (branch.onClick) {
-											branch.onClick();
-										}
+					const matchesBranchFilter = matchesFilter(branch.title);
+					let hasMatchingLeaf = matchesBranchFilter;
 
-										// If there are leaves... Expand/Collapse
-										if (branch.leaves.size() > 0) {
-											const isExpanded = expanded.includes(branch);
-											if (isExpanded) {
-												setExpanded((oldExpanded) => oldExpanded.filter((b) => b !== branch));
-											} else {
-												setExpanded((oldExpanded) => [...oldExpanded, branch]);
+					if (!hasMatchingLeaf) {
+						for (const leaf of branch.leaves) {
+							if (matchesFilter(leaf.title)) {
+								hasMatchingLeaf = true;
+								break;
+							}
+						}
+					}
+
+					if (matchesBranchFilter || hasMatchingLeaf) {
+						return (
+							<>
+								<textbutton
+									Key={`${branch.title}-${branchIndex}`}
+									{...row}
+									Event={{
+										MouseButton1Click: () => {
+											if (branch.onClick) {
+												branch.onClick();
 											}
-										} else {
-											setSelectedBranch(branch);
-										}
-									},
-								}}
-							>
-								{branch.leaves.size() > 0 && (
-									<Icon
-										icon={expanded.includes(branch) ? Icons.Expanded : Icons.Collapsed}
-										size={"xxs"}
-										className={branchIcon}
-										tint={DefaultTheme.options.constants.extendedPalette.Gray[50]}
+
+											// If there are leaves... Expand/Collapse
+											if (branch.leaves.size() > 0) {
+												const isExpanded = expanded.includes(branch);
+												if (isExpanded) {
+													setExpanded((oldExpanded) =>
+														oldExpanded.filter((b) => b !== branch),
+													);
+												} else {
+													setExpanded((oldExpanded) => [...oldExpanded, branch]);
+												}
+											} else {
+												setSelectedBranch(branch);
+											}
+										},
+									}}
+								>
+									{branch.leaves.size() > 0 && (
+										<Icon
+											icon={expanded.includes(branch) ? Icons.Expanded : Icons.Collapsed}
+											size={"xxs"}
+											className={branchIcon}
+											tint={DefaultTheme.options.constants.extendedPalette.Gray[50]}
+										/>
+									)}
+									<Typography
+										text={branch.title}
+										className={{ ...branchTypography } as WriteableStyle<TextLabel>}
+										color={"textPrimary"}
+										variant={"body"}
+										family={selectedBranch === branch ? "bold" : "default"}
 									/>
-								)}
-								<Typography
-									text={branch.title}
-									className={{ ...branchTypography } as WriteableStyle<TextLabel>}
-									color={"textPrimary"}
-									variant={"body"}
-									family={selectedBranch === branch ? "bold" : "default"}
-								/>
-							</textbutton>
+								</textbutton>
 
-							{expanded.includes(branch) &&
-								branch.leaves.map((leaf: Leaf, leafIndex) => {
-									return (
-										<textbutton
-											Key={`${branch.title}-${branchIndex}-${leaf.title}-${leafIndex}`}
-											{...row}
-											Event={{
-												MouseButton1Click: () => {
-													setSelectedLeaf(leaf);
-													setSelectedBranch(branch);
+								{expanded.includes(branch) &&
+									branch.leaves.map((leaf: Leaf, leafIndex) => {
+										const matchesLeafFilter = matchesFilter(leaf.title);
+										if (matchesBranchFilter || matchesLeafFilter) {
+											return (
+												<textbutton
+													Key={`${branch.title}-${branchIndex}-${leaf.title}-${leafIndex}`}
+													{...row}
+													Event={{
+														MouseButton1Click: () => {
+															setSelectedLeaf(leaf);
+															setSelectedBranch(branch);
 
-													if (leaf.onClick) {
-														leaf.onClick();
-													}
-												},
-											}}
-										>
-											<Icon
-												icon={icon || Icons.ListPrimary}
-												size={"xs"}
-												className={leafIcon}
-												tint={DefaultTheme.palette.secondary.main}
-											/>
-											<Typography
-												text={leaf.title}
-												className={{ ...leafTypography } as WriteableStyle<TextLabel>}
-												color={"textPrimary"}
-												variant={"body"}
-												family={selectedLeaf === leaf ? "bold" : "default"}
-											/>
-										</textbutton>
-									);
-								})}
-						</>
-					);
+															if (leaf.onClick) {
+																leaf.onClick();
+															}
+														},
+													}}
+												>
+													<Icon
+														icon={icon || Icons.ListPrimary}
+														size={"xs"}
+														className={leafIcon}
+														tint={DefaultTheme.palette.secondary.main}
+													/>
+													<Typography
+														text={leaf.title}
+														className={{ ...leafTypography } as WriteableStyle<TextLabel>}
+														color={"textPrimary"}
+														variant={"body"}
+														family={selectedLeaf === leaf ? "bold" : "default"}
+													/>
+												</textbutton>
+											);
+										} else {
+											return <></>;
+										}
+									})}
+							</>
+						);
+					} else {
+						return <></>;
+					}
 				})}
 			</scrollingframe>
 		</frame>
