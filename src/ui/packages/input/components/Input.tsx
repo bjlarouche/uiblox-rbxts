@@ -69,11 +69,14 @@ const Input = hooked<CustomizedProps<DefaultInputComponent, InputProps>>((props)
 							}
 						},
 						Focused: onFocus,
-						FocusLost: onBlur,
-						InputChanged: (rbx) => {
+						FocusLost: (rbx) => {
 							if (onTextChanged) {
 								const text = rbx.Text;
 								onTextChanged(text);
+							}
+
+							if (onBlur) {
+								onBlur();
 							}
 						},
 					}}
