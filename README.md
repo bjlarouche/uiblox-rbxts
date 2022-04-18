@@ -4,6 +4,8 @@
 
 > This package is a work in progress.
 
+UI Library and theming for roblox-ts projects.
+
 ## Background
 Roblox has their own internal design system, coined "uiblox-web", that it uses for its new
 web-facing products. This system offers reusable components, implemented in
