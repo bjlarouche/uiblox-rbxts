@@ -60,9 +60,11 @@ long as it works...).
 
 You can house all of your components within shared.
 
-*src/shared/ui/app/App.tsx*
+`src/shared/ui/app/App.tsx`
+
 The top-level class for our UI. Loads the actual ApplLayout into ScreenGui. This
 is what we later pass to `Roact.mount()`.
+
 ```javascript
 import Roact, { Component } from "@rbxts/roact";
 
@@ -79,7 +81,8 @@ class App extends Component {
 export default App;
 ```
 
-*src/shared/ui/app/AppLayout.tsx*
+`src/shared/ui/app/AppLayout.tsx`
+
 Start actually adding in components to render, but wrap them in a
 `ThemeProvider`. Here I just use DarkTheme, which is also exported as
 DefaultTheme. If no theme is provided, it would use DarkTheme anyways. If the
@@ -87,6 +90,7 @@ theme prop changes, then sub-components will be re-rendered with the new theme.
 
 You can also choose to create your own theme with the `Theme` interface exported
 from `@rbxts/uiblox-rbxts`.
+
 ```javascript
 import Roact, { Component } from "@rbxts/roact";
 import { Storyblox } from "shared/ui/storyblox";
@@ -111,13 +115,15 @@ class AppLayout extends Component {
 export default AppLayout;
 ```
 
-*src/shared/ui/myComponent/MyComponent.tsx*
+`src/shared/ui/myComponent/MyComponent.tsx`
+
 My actual component. Just loads a dummy button and passes props to be used to
 make styles.
 
 If you omit the props type from myStyles usage in the styles file,
 then you can omit props without a type warning (i.e. `makeStyles(theme => {})`
 instead of `makeStyles<MyComponentProps>((theme, props) => {})`).
+
 ```javascript
 import Roact from "@rbxts/roact";
 import { useState } from "@rbxts/roact-hooked";
@@ -133,15 +139,13 @@ export interface MyComponentProps {
 // Hooked components are very handy
 const MyComponent = hooked<MyComponentProps>((props) => {
   const { title, bolded = false } = props;
-
-  // 
   const { root, button } = useMyComponentStyles(props);
 
   return (
     <frame
       Key="MyComponent"
       {...root}>
-      <Button 
+      <Button
         variant="outlined"
         text={title}
         size="small"
@@ -156,7 +160,8 @@ const MyComponent = hooked<MyComponentProps>((props) => {
 export default MyComponent;
 ```
 
-*src/shared/ui/myComponent/MyComponent.styles.ts*
+`src/shared/ui/myComponent/MyComponent.styles.ts`
+
 Actually compute styles based on theme and props. You can simplify the arrow
 function if you do not care about props and just directly return `createStyles`.
 
@@ -165,7 +170,8 @@ arrow function of `makeStyles` (i.e. `makeRootStyles()`).
 
 Make sure that the type given to each style matches the component it will be
 applied to (i.e. `frameStyles: { ... } as WriteableStyle<Frame>` =>
-`<frame {...frameStyles} />`)
+`<frame {...frameStyles} />`).
+
 ```javascript
 import { createStyles, Icons, makeStyles, ROBLOX_UI_OFFSET, Theme, WriteableStyle } from "@rbxts/uiblox-rbxts";
 import { MyComponentProps } from "./MyComponent";
@@ -198,8 +204,10 @@ export default useMyComponentStyles;
 
 Some sample logic for mounting app when player spawns (on client).
 
-*src/client/Controllers/Apploader.tsx*
+`src/client/Controllers/Apploader.tsx`
+
 Mount the App in the LocalPlayer's `PlayerGui`.
+
 ```javascript
 import Roact, { Tree } from "@rbxts/roact";
 import { Players } from "@rbxts/services";
@@ -227,8 +235,10 @@ class AppLoader {
 export default AppLoader;
 ```
 
-*src/client/main.client.ts*
+`src/client/main.client.ts`
+
 When the client loads, call our AppLoader() to mount the UI.
+
 ```javascript
 import { AppLoader } from "./Controllers";
 
