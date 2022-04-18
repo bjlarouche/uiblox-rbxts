@@ -2,7 +2,7 @@
 
 # uiblox-rbxts
 
-## Background 
+## Background
 Roblox has their own internal design system, coined "uiblox-web", that it uses for its new
 web-facing products. This system offers reusable components, implemented in
 React Typescript, that are derived from material UI (MUI). As well, it offers a
@@ -238,6 +238,7 @@ new AppLoader().Mount();
 
 ## See Also
 - Coming soon [Storyblox]()
+  - <img src=docs/storyblox-preview.png width=40%>
   - A Storybook-like plugin that developers can use to preview their UI
     - Test it out here (Storyblox Pre-Release Experience)[https://www.roblox.com/games/9159382473]
   - Similar to (hoarcekat)[https://github.com/Kampfkarren/hoarcekat] by Kampfkarren
