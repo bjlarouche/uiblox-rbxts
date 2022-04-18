@@ -7,6 +7,7 @@
 UI Library and theming for roblox-ts projects.
 
 ## Background
+
 Roblox has their own internal design system, coined "uiblox-web", that it uses for its new
 web-facing products. This system offers reusable components, implemented in
 React Typescript, that are derived from material UI (MUI). As well, it offers a
@@ -30,6 +31,7 @@ anyone who installs this npm package plus a theme and styling system that makes
 UI/UX consistent across a developer's experience(s).
 
 How does it do this? Well, there are two main exports from this package:
+
 - @rbxts/uiblox-rbxts -> theme
   - An extensible Theme type + default Dark (default) and Light themes
     - ... Light theme palette is a WIP
@@ -44,10 +46,10 @@ How does it do this? Well, there are two main exports from this package:
 # How to use
 
 ### Installation
+
 Install the package to get started.
 
 `npm install @rbxts/uiblox-rbxts`
-
 
 ## Example
 
@@ -69,13 +71,13 @@ is what we later pass to `Roact.mount()`.
 import Roact, { Component } from "@rbxts/roact";
 
 class App extends Component {
-	render() {
-		return (
-			<screengui IgnoreGuiInset ZIndexBehavior={Enum.ZIndexBehavior.Global}>
-				<AppLayout />
-			</screengui>
-		);
-	}
+  render() {
+    return (
+      <screengui IgnoreGuiInset ZIndexBehavior={Enum.ZIndexBehavior.Global}>
+        <AppLayout />
+      </screengui>
+    );
+  }
 }
 
 export default App;
@@ -98,18 +100,19 @@ import { DarkTheme, ThemeProvider } from "@rbxts/uiblox-rbxts";
 import usePageLayoutStyles from "./PageLayout.styles";
 
 class AppLayout extends Component {
-	render() {
-		return (
-            <ThemeProvider theme={DarkTheme}>
-                <frame
-                    Key={"AppLayout"}
-                    Size={new UDim2(1, 0, 1, 0)}
-                    BackgroundTransparency={1}>
-                    <MyComponent />
-                </frame>
-            </ThemeProvider>
-		);
-	}
+  render() {
+    return (
+      <ThemeProvider theme={DarkTheme}>
+        <frame
+          Key={"AppLayout"}
+          Size={new UDim2(1, 0, 1, 0)}
+          BackgroundTransparency={1}
+        >
+          <MyComponent />
+        </frame>
+      </ThemeProvider>
+    );
+  }
 }
 
 export default AppLayout;
@@ -137,25 +140,26 @@ export interface MyComponentProps {
 }
 
 // Hooked components are very handy
-const MyComponent = hooked<MyComponentProps>((props) => {
-  const { title, bolded = false } = props;
-  const { root, button } = useMyComponentStyles(props);
+const MyComponent =
+  hooked <
+  MyComponentProps >
+  ((props) => {
+    const { title, bolded = false } = props;
+    const { root, button } = useMyComponentStyles(props);
 
-  return (
-    <frame
-      Key="MyComponent"
-      {...root}>
-      <Button
-        variant="outlined"
-        text={title}
-        size="small"
-        color="secondary"
-        family={bolded ? 'bold' : 'default'}
-        className={button}>
-      </Button>
-    </frame>
-  );
-});
+    return (
+      <frame Key="MyComponent" {...root}>
+        <Button
+          variant="outlined"
+          text={title}
+          size="small"
+          color="secondary"
+          family={bolded ? "bold" : "default"}
+          className={button}
+        ></Button>
+      </frame>
+    );
+  });
 
 export default MyComponent;
 ```
@@ -247,10 +251,12 @@ new AppLoader().Mount();
 ```
 
 # Future work
+
 - More UI packages
 - Finish palette for LightTheme
 
 # See Also
+
 - Coming soon [Storyblox]()
   - <img src=docs/storyblox-preview.png width=40%>
   - A Storybook-like plugin that developers can use to preview their UI
