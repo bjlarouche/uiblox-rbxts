@@ -26,13 +26,13 @@ consitent UX across products.
 So what is uiblox-rbxts? Simply put, its my stab at a design system that mimics
 uiblox-web for games written using roblox-ts.
 
-UIBlox-rbxts aims to provide ground-level components that can be reusable by
-anyone who installs this npm package plus a theme and styling system that makes
-UI/UX consistent across a developer's experience(s).
+UIBlox-rbxts aims to provide extensible components that can be reusable by
+anyone who installs this npm package. It also offers a theme and styling system
+that aids UI/UX consistentency.
 
 How does it do this? Well, there are two main exports from this package:
 
-- @rbxts/uiblox-rbxts -> theme
+- @rbxts/uiblox -> theme
   - An extensible Theme type + default Dark (default) and Light themes
     - ... Light theme palette is a WIP
   - makeStyles/createStyles utilities to serve up Instance-extended property
@@ -40,7 +40,7 @@ How does it do this? Well, there are two main exports from this package:
   - ThemeProvider which can wrap your application and uses Rodux to tell
     sub-components which theme to style off of (via makeStyles)
     - Uses Rodux
-- @rbxts/uiblox-rbxts -> ui
+- @rbxts/uiblox -> ui
   - Packaged and reusable typed Roact components
 
 # How to use
@@ -49,7 +49,7 @@ How does it do this? Well, there are two main exports from this package:
 
 Install the package to get started.
 
-`npm install @rbxts/uiblox-rbxts`
+`npm install @rbxts/uiblox`
 
 ## Example
 
@@ -91,12 +91,12 @@ DefaultTheme. If no theme is provided, it would use DarkTheme anyways. If the
 theme prop changes, then sub-components will be re-rendered with the new theme.
 
 You can also choose to create your own theme with the `Theme` interface exported
-from `@rbxts/uiblox-rbxts`.
+from `@rbxts/uiblox`.
 
 ```javascript
 import Roact, { Component } from "@rbxts/roact";
 import { Storyblox } from "shared/ui/storyblox";
-import { DarkTheme, ThemeProvider } from "@rbxts/uiblox-rbxts";
+import { DarkTheme, ThemeProvider } from "@rbxts/uiblox";
 import usePageLayoutStyles from "./PageLayout.styles";
 
 class AppLayout extends Component {
@@ -131,7 +131,7 @@ instead of `makeStyles<MyComponentProps>((theme, props) => {})`).
 import Roact from "@rbxts/roact";
 import { useState } from "@rbxts/roact-hooked";
 import useMyComponentStyles from "./MyComponent.styles";
-import { Button } from "@rbxts/uiblox-rbxts";
+import { Button } from "@rbxts/uiblox";
 
 export interface MyComponentProps {
   title?: string;
@@ -177,7 +177,7 @@ applied to (i.e. `frameStyles: { ... } as WriteableStyle<Frame>` =>
 `<frame {...frameStyles} />`).
 
 ```javascript
-import { createStyles, Icons, makeStyles, ROBLOX_UI_OFFSET, Theme, WriteableStyle } from "@rbxts/uiblox-rbxts";
+import { createStyles, Icons, makeStyles, ROBLOX_UI_OFFSET, Theme, WriteableStyle } from "@rbxts/uiblox";
 import { MyComponentProps } from "./MyComponent";
 
 const useMyComponentStyles = makeStyles<MyComponentProps>((theme: Theme, props: MyComponentProps) => {
