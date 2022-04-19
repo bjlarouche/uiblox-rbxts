@@ -257,8 +257,7 @@ new AppLoader().Mount();
 
 # See Also
 
-- Coming soon [Storyblox]()
+- [Storyblox](https://github.com/bjlarouche/storyblox) a UI component explorer for roblox-ts developers
   - <img src=docs/storyblox-preview.png width=40%>
-  - A Storybook-like plugin that developers can use to preview their UI
-    - Test it out here [Storyblox Pre-Release Experience](https://www.roblox.com/games/9159382473)
+  - Test it out here [Storyblox Pre-Release Experience](https://www.roblox.com/games/9159382473)
   - Similar to [hoarcekat](https://github.com/Kampfkarren/hoarcekat) by Kampfkarren
