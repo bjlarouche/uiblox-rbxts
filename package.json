@@ -18,7 +18,7 @@
     "component",
     "system"
   ],
-  "author": "Brandon LaRouche",
+  "author": "bjlarouche",
   "license": "MIT",
   "types": "out/index.d.ts",
   "files": [
@@ -28,12 +28,15 @@
     "access": "public"
   },
   "devDependencies": {
+    "@rbxts/roact": "^1.4.2-ts.0",
+    "@rbxts/rodux": "^3.0.0-ts.3",
     "@rbxts/boat-tween": "^1.0.1",
     "@rbxts/compiler-types": "^1.2.7-types.1",
-    "@rbxts/roact": "^1.4.2-ts.0",
     "@rbxts/roact-hooked": "^1.2.5",
     "@rbxts/services": "^1.2.0",
     "@rbxts/types": "^1.0.574",
+    "@rbxts/roact-rodux-hooked": "^1.0.4",
+    "@rbxts/roselect": "^0.1.1",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
     "eslint": "^8.12.0",
@@ -43,10 +46,8 @@
     "prettier": "^2.6.2",
     "typescript": "^4.6.3"
   },
-  "dependencies": {
-    "@rbxts/roact-rodux-hooked": "^1.0.4",
-    "@rbxts/rodux": "^3.0.0-ts.3",
-    "@rbxts/roselect": "^0.1.1"
+  "peerDependencies": {
+    "@rbxts/roact": "^1.4.2-ts.0"
   },
   "directories": {
     "doc": "docs"
