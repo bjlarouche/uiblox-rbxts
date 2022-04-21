@@ -4,7 +4,7 @@
 
 > This package is a work in progress.
 
-UI Library and theming for roblox-ts projects.
+UI library and theming for roblox-ts projects.
 
 ## Background
 
