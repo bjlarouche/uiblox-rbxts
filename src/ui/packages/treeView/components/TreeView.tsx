@@ -25,7 +25,7 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 	const [selectedBranch, setSelectedBranch] = useState<Branch | undefined>();
 	const [selectedLeaf, setSelectedLeaf] = useState<Leaf | undefined>();
 	const [expanded, setExpanded] = useState<Branch[]>([]);
-	const [canvasSize, setCanvasSize] = useState<UDim2>(new UDim2(1, 0, 1, 0));
+	const [canvasSize, setCanvasSize] = useState<UDim2>(new UDim2(0, 0, 0, 0));
 
 	const resizeScrollingFrame = (rbx: ScrollingFrame, child?: Instance) => {
 		if (child && !child.IsA("GuiObject")) {
@@ -40,7 +40,7 @@ const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>
 		});
 
 		try {
-			setCanvasSize(new UDim2(0, rbx.AbsoluteSize.X, 0, height));
+			setCanvasSize(new UDim2(0, 0, 0, height));
 		} catch {
 			// Component is unmounting. Do nothing.
 		}
