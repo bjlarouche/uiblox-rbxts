@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { hooked, useCallback, useEffect, useState } from "@rbxts/roact-hooked";
+import { withHooks, useCallback, useEffect, useState } from "@rbxts/roact-hooked";
 import { CustomizedProps, DefaultTheme, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
 import { Typography } from "ui/packages/typography";
@@ -17,7 +17,7 @@ export interface TreeViewProps {
 	filter?: string;
 }
 
-const TreeView = hooked<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>>((props) => {
+const TreeView = withHooks<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>>((props) => {
 	const { tree, icon, filter, className } = props;
 	const { root, header, list, gridLayout, row, branchIcon, branchTypography, leafIcon, leafTypography } =
 		useTreeViewStyles();

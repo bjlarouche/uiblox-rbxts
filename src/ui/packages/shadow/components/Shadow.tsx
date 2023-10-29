@@ -1,9 +1,9 @@
 import Roact from "@rbxts/roact";
-import { hooked, useEffect, useState } from "@rbxts/roact-hooked";
+import { withHooks, useEffect, useState } from "@rbxts/roact-hooked";
 import { WriteableStyle } from "theme";
 import useShadowStyles from "./Shadow.styles";
 
-const Shadow = hooked(() => {
+const Shadow = withHooks(() => {
 	const { container } = useShadowStyles();
 	const [parent, setParent] = useState<GuiObject | undefined>(undefined);
 	const [cornerRadius, setCornerRadius] = useState<UDim | undefined>();

@@ -1,6 +1,6 @@
 import { BoatTween } from "@rbxts/boat-tween";
 import Roact from "@rbxts/roact";
-import { hooked, useEffect, useRef } from "@rbxts/roact-hooked";
+import { withHooks, useEffect, useRef } from "@rbxts/roact-hooked";
 import { DefaultTheme, WriteableStyle } from "theme";
 import { Directions } from "ui/enums";
 import { Shadow } from "ui/packages/shadow";
@@ -17,7 +17,7 @@ export interface ToastProps {
 
 const TWEEN_DURATION = 0.5;
 
-const Toast = hooked<ToastProps>((props) => {
+const Toast = withHooks<ToastProps>((props) => {
 	const { text, onDismiss, duration = 4 } = props;
 	const { container, label, close, activePosition, inActivePosition } = useToastStyles(props);
 	const frameRef = useRef<Frame>();

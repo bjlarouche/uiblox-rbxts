@@ -1,3 +1,3 @@
-import { Tokens } from "../../tokens/Tokens";
+import { Tokens } from "theme";
 
 export type ColorTokens = { [key in Tokens]: Color3 };

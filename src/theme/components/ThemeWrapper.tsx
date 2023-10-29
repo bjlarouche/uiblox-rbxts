@@ -1,4 +1,4 @@
-import { hooked, useEffect, useRef } from "@rbxts/roact-hooked";
+import { withHooks, useEffect, useRef } from "@rbxts/roact-hooked";
 import { useDispatch, useSelector } from "@rbxts/roact-rodux-hooked";
 import Roact from "@rbxts/roact";
 import { Theme } from "../interfaces/theme";
@@ -9,7 +9,7 @@ export interface ThemeWrapperProps {
 	theme?: Theme;
 }
 
-const ThemeWrapper = hooked<ThemeWrapperProps>((props) => {
+const ThemeWrapper = withHooks<ThemeWrapperProps>((props) => {
 	const { theme, [Roact.Children]: children } = props;
 	const dispatch = useDispatch<TThemeStore>();
 	const ref = useRef<Frame>();

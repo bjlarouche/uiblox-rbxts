@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { hooked, useState } from "@rbxts/roact-hooked";
+import { useState, withHooks } from "@rbxts/roact-hooked";
 import { classNames, CustomizedProps, WriteableStyle } from "theme";
 import { Divider } from "../../divider";
 import { Orientations } from "ui/enums";
@@ -30,7 +30,7 @@ type GenericStyle = {
 	[x: string]: any;
 };
 
-const Input = hooked<CustomizedProps<DefaultInputComponent, InputProps>>((props) => {
+const Input = withHooks<CustomizedProps<DefaultInputComponent, InputProps>>((props) => {
 	const {
 		text,
 		placeholder,

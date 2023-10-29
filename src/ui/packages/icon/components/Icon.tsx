@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { hooked } from "@rbxts/roact-hooked";
+import { withHooks } from "@rbxts/roact-hooked";
 import { Icons } from "ui/enums";
 import { CustomizedProps, WriteableStyle } from "theme";
 import useIconStyles from "./Icon.styles";
@@ -12,7 +12,7 @@ export interface IconProps {
 
 type DefaultIconComponent = ImageLabel;
 
-const Icon = hooked<CustomizedProps<DefaultIconComponent, IconProps>>((props) => {
+const Icon = withHooks<CustomizedProps<DefaultIconComponent, IconProps>>((props) => {
 	const { icon, tint, className } = props;
 	const { container } = useIconStyles(props);
 

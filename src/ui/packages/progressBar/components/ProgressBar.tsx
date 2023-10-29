@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { hooked } from "@rbxts/roact-hooked";
+import { withHooks } from "@rbxts/roact-hooked";
 import { WriteableStyle } from "theme";
 import useProgressBarStyles from "./ProgressBar.styles";
 
@@ -8,7 +8,7 @@ export interface ProgressBarProps {
 	className?: WriteableStyle<Frame>;
 }
 
-const ProgressBar = hooked<ProgressBarProps>(({ progress, className }) => {
+const ProgressBar = withHooks<ProgressBarProps>(({ progress, className }) => {
 	const { container, outer, stroke, inner, fill, corner } = useProgressBarStyles();
 
 	return (
