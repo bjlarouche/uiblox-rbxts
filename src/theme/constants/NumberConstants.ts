@@ -1,4 +1,4 @@
-import IconSizes from "theme/interfaces/IconSizes/IconSizes";
+import IconSizes from "theme/interfaces/iconSizes/IconSizes";
 
 
 export const SPACING_BASE = 12;
