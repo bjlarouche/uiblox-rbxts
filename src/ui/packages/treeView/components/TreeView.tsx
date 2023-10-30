@@ -1,4 +1,4 @@
-import Roact, { FunctionComponent } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
 import { markPureComponent, useCallback, useEffect, useState } from "@rbxts/roact-hooked";
 import { CustomizedProps, DefaultTheme, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
@@ -17,7 +17,7 @@ export interface TreeViewProps {
 	filter?: string;
 }
 
-const TreeView: FunctionComponent<CustomizedProps<DefaultTreeViewComponent, TreeViewProps>> = (props) => {
+function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps>) {
 	const { tree, icon, filter, className } = props;
 	const { root, header, list, gridLayout, row, branchIcon, branchTypography, leafIcon, leafTypography } =
 		useTreeViewStyles();
@@ -232,6 +232,6 @@ const TreeView: FunctionComponent<CustomizedProps<DefaultTreeViewComponent, Tree
 			</scrollingframe>
 		</frame>
 	);
-};
+}
 
 export default markPureComponent(TreeView);

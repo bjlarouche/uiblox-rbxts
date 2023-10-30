@@ -1,9 +1,9 @@
-import Roact, { FunctionComponent } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
 import { markPureComponent, useEffect, useState } from "@rbxts/roact-hooked";
 import { WriteableStyle } from "theme";
 import useShadowStyles from "./Shadow.styles";
 
-const Shadow: FunctionComponent = () => {
+function Shadow() {
 	const { container } = useShadowStyles();
 	const [parent, setParent] = useState<GuiObject | undefined>(undefined);
 	const [cornerRadius, setCornerRadius] = useState<UDim | undefined>();
@@ -38,6 +38,6 @@ const Shadow: FunctionComponent = () => {
 			{cornerRadius !== undefined && <uicorner Key="Corner" CornerRadius={cornerRadius} />}
 		</frame>
 	);
-};
+}
 
 export default markPureComponent(Shadow);

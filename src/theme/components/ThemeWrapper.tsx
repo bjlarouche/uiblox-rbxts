@@ -1,6 +1,6 @@
 import { markPureComponent, useEffect, useRef } from "@rbxts/roact-hooked";
 import { useDispatch, useSelector } from "@rbxts/roact-rodux-hooked";
-import Roact, { FunctionComponent } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
 import { Theme } from "../interfaces/theme";
 import { selectTheme, TThemeStore } from "./ThemeStore";
 import { default as DefaultTheme } from "../themes";
@@ -9,7 +9,7 @@ export interface ThemeWrapperProps {
 	theme?: Theme;
 }
 
-const ThemeWrapper: FunctionComponent<ThemeWrapperProps> = (props) => {
+function ThemeWrapper(props: Roact.PropsWithChildren<ThemeWrapperProps>) {
 	const { theme, [Roact.Children]: children } = props;
 	const dispatch = useDispatch<TThemeStore>();
 	const ref = useRef<Frame>();
@@ -31,6 +31,6 @@ const ThemeWrapper: FunctionComponent<ThemeWrapperProps> = (props) => {
 			{currentTheme && children}
 		</frame>
 	);
-};
+}
 
 export default markPureComponent(ThemeWrapper);

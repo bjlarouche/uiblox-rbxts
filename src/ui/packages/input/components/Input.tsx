@@ -1,4 +1,4 @@
-import Roact, { FunctionComponent } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
 import { useState, markPureComponent } from "@rbxts/roact-hooked";
 import { classNames, CustomizedProps, WriteableStyle } from "theme";
 import { Divider } from "../../divider";
@@ -31,7 +31,7 @@ type GenericStyle = {
 	[x: string]: any;
 };
 
-const Input: FunctionComponent<CustomizedProps<DefaultInputComponent, InputProps>> = (props) => {
+function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const {
 		text,
 		placeholder,
@@ -110,6 +110,6 @@ const Input: FunctionComponent<CustomizedProps<DefaultInputComponent, InputProps
 			</frame>
 		</frame>
 	);
-};
+}
 
 export default markPureComponent(Input);

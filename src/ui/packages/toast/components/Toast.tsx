@@ -1,5 +1,5 @@
 import { BoatTween } from "@rbxts/boat-tween";
-import Roact, { FunctionComponent } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
 import { markPureComponent, useEffect, useRef } from "@rbxts/roact-hooked";
 import { DefaultTheme, WriteableStyle } from "theme";
 import { Directions } from "ui/enums";
@@ -17,7 +17,7 @@ export interface ToastProps {
 
 const TWEEN_DURATION = 0.5;
 
-const Toast: FunctionComponent<ToastProps> = (props) => {
+function Toast(props: ToastProps) {
 	const { text, onDismiss, duration = 4 } = props;
 	const { container, label, close, activePosition, inActivePosition } = useToastStyles(props);
 	const frameRef = useRef<Frame>();
@@ -80,6 +80,6 @@ const Toast: FunctionComponent<ToastProps> = (props) => {
 			/>
 		</frame>
 	);
-};
+}
 
 export default markPureComponent(Toast);

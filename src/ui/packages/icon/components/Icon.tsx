@@ -1,4 +1,4 @@
-import Roact, { FunctionComponent } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
 import { markPureComponent } from "@rbxts/roact-hooked";
 import { Icons } from "ui/enums";
 import { CustomizedProps, WriteableStyle } from "theme";
@@ -12,7 +12,7 @@ export interface IconProps {
 
 type DefaultIconComponent = ImageLabel;
 
-const Icon: FunctionComponent<CustomizedProps<DefaultIconComponent, IconProps>> = (props) => {
+function Icon(props: CustomizedProps<DefaultIconComponent, IconProps>) {
 	const { icon, tint, className } = props;
 	const { container } = useIconStyles(props);
 
@@ -25,6 +25,6 @@ const Icon: FunctionComponent<CustomizedProps<DefaultIconComponent, IconProps>> 
 			ImageColor3={tint ?? (container as WriteableStyle<ImageLabel>).ImageColor3}
 		/>
 	);
-};
+}
 
 export default markPureComponent(Icon);

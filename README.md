@@ -128,8 +128,8 @@ then you can omit props without a type warning (i.e. `makeStyles(theme => {})`
 instead of `makeStyles<MyComponentProps>((theme, props) => {})`).
 
 ```javascript
-import Roact, { FunctionComponent } from "@rbxts/roact";
-import { useState } from "@rbxts/roact-hooked";
+import Roact from "@rbxts/roact";
+import { useState, markPureComponent } from "@rbxts/roact-hooked";
 import useMyComponentStyles from "./MyComponent.styles";
 import { Button } from "@rbxts/uiblox";
 
@@ -140,26 +140,25 @@ export interface MyComponentProps {
 }
 
 // Hooked components are very handy
-const MyComponent: FunctionComponent<MyComponentProps> =
-  (props) => {
-    const { title, bolded = false } = props;
-    const { root, button } = useMyComponentStyles(props);
+function MyComponent(props: MyComponentProps) {
+  const { title, bolded = false } = props;
+  const { root, button } = useMyComponentStyles(props);
 
-    return (
-      <frame Key="MyComponent" {...root}>
-        <Button
-          variant="outlined"
-          text={title}
-          size="small"
-          color="secondary"
-          family={bolded ? "bold" : "default"}
-          className={button}
-        ></Button>
-      </frame>
-    );
-  };
+  return (
+    <frame Key="MyComponent" {...root}>
+      <Button
+        variant="outlined"
+        text={title}
+        size="small"
+        color="secondary"
+        family={bolded ? "bold" : "default"}
+        className={button}
+      ></Button>
+    </frame>
+  );
+};
 
-export default MyComponent;
+export default markPureComponent(MyComponent);
 ```
 
 #### src/shared/ui/myComponent/MyComponent.styles.ts

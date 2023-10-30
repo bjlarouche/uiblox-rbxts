@@ -1,4 +1,4 @@
-import Roact, { FunctionComponent } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
 import { markPureComponent, useState } from "@rbxts/roact-hooked";
 import { CustomizedProps, WriteableStyle } from "theme";
 import { ButtonSize, ButtonColor, ButtonVariant } from "../types";
@@ -30,7 +30,7 @@ export interface ButtonProps {
 	mouseLeave?: () => void;
 }
 
-const Button: FunctionComponent<CustomizedProps<DefaultButtonComponent, ButtonProps>> = (props) => {
+function Button(props: Roact.PropsWithChildren<CustomizedProps<DefaultButtonComponent, ButtonProps>>) {
 	const {
 		text = "",
 		variant = "contained",
@@ -131,6 +131,6 @@ const Button: FunctionComponent<CustomizedProps<DefaultButtonComponent, ButtonPr
 			{children}
 		</textbutton>
 	);
-};
+}
 
 export default markPureComponent(Button);
