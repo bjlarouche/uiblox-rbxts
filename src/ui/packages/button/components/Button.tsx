@@ -1,5 +1,5 @@
-import Roact from "@rbxts/roact";
-import { withHooks, useState } from "@rbxts/roact-hooked";
+import Roact, { FunctionComponent } from "@rbxts/roact";
+import { markPureComponent, useState } from "@rbxts/roact-hooked";
 import { CustomizedProps, WriteableStyle } from "theme";
 import { ButtonSize, ButtonColor, ButtonVariant } from "../types";
 import useButtonStyles from "./Button.styles";
@@ -30,7 +30,7 @@ export interface ButtonProps {
 	mouseLeave?: () => void;
 }
 
-const Button = withHooks<CustomizedProps<DefaultButtonComponent, ButtonProps>>((props) => {
+const Button: FunctionComponent<CustomizedProps<DefaultButtonComponent, ButtonProps>> = (props) => {
 	const {
 		text = "",
 		variant = "contained",
@@ -131,6 +131,6 @@ const Button = withHooks<CustomizedProps<DefaultButtonComponent, ButtonProps>>((
 			{children}
 		</textbutton>
 	);
-});
+};
 
-export default Button;
+export default markPureComponent(Button);

@@ -128,7 +128,7 @@ then you can omit props without a type warning (i.e. `makeStyles(theme => {})`
 instead of `makeStyles<MyComponentProps>((theme, props) => {})`).
 
 ```javascript
-import Roact from "@rbxts/roact";
+import Roact, { FunctionComponent } from "@rbxts/roact";
 import { useState } from "@rbxts/roact-hooked";
 import useMyComponentStyles from "./MyComponent.styles";
 import { Button } from "@rbxts/uiblox";
@@ -140,10 +140,8 @@ export interface MyComponentProps {
 }
 
 // Hooked components are very handy
-const MyComponent =
-  hooked <
-  MyComponentProps >
-  ((props) => {
+const MyComponent: FunctionComponent<MyComponentProps> =
+  (props) => {
     const { title, bolded = false } = props;
     const { root, button } = useMyComponentStyles(props);
 
@@ -159,7 +157,7 @@ const MyComponent =
         ></Button>
       </frame>
     );
-  });
+  };
 
 export default MyComponent;
 ```

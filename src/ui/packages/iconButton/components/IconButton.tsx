@@ -1,5 +1,5 @@
-import Roact from "@rbxts/roact";
-import { withHooks, useState } from "@rbxts/roact-hooked";
+import Roact, { FunctionComponent } from "@rbxts/roact";
+import { markPureComponent, useState } from "@rbxts/roact-hooked";
 import { Icons } from "ui/enums";
 import { CustomizedProps, WriteableStyle } from "theme";
 import useIconButtonStyles from "./IconButton.styles";
@@ -14,7 +14,7 @@ export interface IconButtonProps {
 
 type DefaultIconButtonComponent = ImageButton;
 
-const IconButton = withHooks<CustomizedProps<DefaultIconButtonComponent, IconButtonProps>>((props) => {
+const IconButton: FunctionComponent<CustomizedProps<DefaultIconButtonComponent, IconButtonProps>> = (props) => {
 	const { icon, selected, tint, onClick, className } = props;
 	const { container } = useIconButtonStyles(props);
 
@@ -43,6 +43,6 @@ const IconButton = withHooks<CustomizedProps<DefaultIconButtonComponent, IconBut
 			}}
 		/>
 	);
-});
+};
 
-export default IconButton;
+export default markPureComponent(IconButton);

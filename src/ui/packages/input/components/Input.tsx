@@ -1,5 +1,5 @@
-import Roact from "@rbxts/roact";
-import { useState, withHooks } from "@rbxts/roact-hooked";
+import Roact, { FunctionComponent } from "@rbxts/roact";
+import { useState, markPureComponent } from "@rbxts/roact-hooked";
 import { classNames, CustomizedProps, WriteableStyle } from "theme";
 import { Divider } from "../../divider";
 import { Orientations } from "ui/enums";
@@ -27,10 +27,11 @@ export interface InputProps {
 }
 
 type GenericStyle = {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[x: string]: any;
 };
 
-const Input = withHooks<CustomizedProps<DefaultInputComponent, InputProps>>((props) => {
+const Input: FunctionComponent<CustomizedProps<DefaultInputComponent, InputProps>> = (props) => {
 	const {
 		text,
 		placeholder,
@@ -60,6 +61,7 @@ const Input = withHooks<CustomizedProps<DefaultInputComponent, InputProps>>((pro
 					Active={!disabled}
 					Text={input}
 					PlaceholderText={placeholder}
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					{...classNames(new Map<WriteableStyle<any>, boolean>([[errorColorText, hasError]]))}
 					Event={{
 						ReturnPressedFromOnScreenKeyboard: (rbx) => {
@@ -88,6 +90,7 @@ const Input = withHooks<CustomizedProps<DefaultInputComponent, InputProps>>((pro
 					padding={0}
 					orientation={Orientations.Horizontal}
 					className={classNames(
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
 						new Map<WriteableStyle<any>, boolean>([
 							[errorColorFrame, hasError],
 							[divider, true],
@@ -99,6 +102,7 @@ const Input = withHooks<CustomizedProps<DefaultInputComponent, InputProps>>((pro
 						Key={"HelperText"}
 						{...font}
 						{...helper}
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
 						{...classNames(new Map<WriteableStyle<any>, boolean>([[errorColorText, hasError]]))}
 						Text={helperText}
 					/>
@@ -106,6 +110,6 @@ const Input = withHooks<CustomizedProps<DefaultInputComponent, InputProps>>((pro
 			</frame>
 		</frame>
 	);
-});
+};
 
-export default Input;
+export default markPureComponent(Input);

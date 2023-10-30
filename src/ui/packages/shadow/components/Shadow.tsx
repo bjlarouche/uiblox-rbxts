@@ -1,9 +1,9 @@
-import Roact from "@rbxts/roact";
-import { withHooks, useEffect, useState } from "@rbxts/roact-hooked";
+import Roact, { FunctionComponent } from "@rbxts/roact";
+import { markPureComponent, useEffect, useState } from "@rbxts/roact-hooked";
 import { WriteableStyle } from "theme";
 import useShadowStyles from "./Shadow.styles";
 
-const Shadow = withHooks(() => {
+const Shadow: FunctionComponent = () => {
 	const { container } = useShadowStyles();
 	const [parent, setParent] = useState<GuiObject | undefined>(undefined);
 	const [cornerRadius, setCornerRadius] = useState<UDim | undefined>();
@@ -38,6 +38,6 @@ const Shadow = withHooks(() => {
 			{cornerRadius !== undefined && <uicorner Key="Corner" CornerRadius={cornerRadius} />}
 		</frame>
 	);
-});
+};
 
-export default Shadow;
+export default markPureComponent(Shadow);

@@ -1,5 +1,5 @@
-import Roact from "@rbxts/roact";
-import { withHooks } from "@rbxts/roact-hooked";
+import Roact, { FunctionComponent } from "@rbxts/roact";
+import { markPureComponent } from "@rbxts/roact-hooked";
 import { Icons } from "ui/enums";
 import { CustomizedProps, WriteableStyle } from "theme";
 import useIconStyles from "./Icon.styles";
@@ -12,7 +12,7 @@ export interface IconProps {
 
 type DefaultIconComponent = ImageLabel;
 
-const Icon = withHooks<CustomizedProps<DefaultIconComponent, IconProps>>((props) => {
+const Icon: FunctionComponent<CustomizedProps<DefaultIconComponent, IconProps>> = (props) => {
 	const { icon, tint, className } = props;
 	const { container } = useIconStyles(props);
 
@@ -25,6 +25,6 @@ const Icon = withHooks<CustomizedProps<DefaultIconComponent, IconProps>>((props)
 			ImageColor3={tint ?? (container as WriteableStyle<ImageLabel>).ImageColor3}
 		/>
 	);
-});
+};
 
-export default Icon;
+export default markPureComponent(Icon);
