@@ -1,5 +1,5 @@
 import Gray from "./Gray";
-import { ColorTokens } from "../colorTokens/ColorTokens";
+import { ColorTokens } from "../ColorTokens/ColorTokens";
 
 const Light: ColorTokens = Gray;
 

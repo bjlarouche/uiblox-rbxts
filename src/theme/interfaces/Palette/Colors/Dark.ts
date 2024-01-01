@@ -1,4 +1,4 @@
-import { ColorTokens } from "../colorTokens/ColorTokens";
+import { ColorTokens } from "../ColorTokens/ColorTokens";
 import Gray from "./Gray";
 
 // Designer defines this with gray value but still mark different color name,

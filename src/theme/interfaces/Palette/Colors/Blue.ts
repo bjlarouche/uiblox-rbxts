@@ -1,5 +1,5 @@
 import { Color3FromHex } from "../../../utilites";
-import { ColorTokens } from "../colorTokens/ColorTokens";
+import { ColorTokens } from "../ColorTokens/ColorTokens";
 
 const Blue: ColorTokens = {
 	120: Color3FromHex("#001724"),

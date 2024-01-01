@@ -1,4 +1,4 @@
-import { ColorTokens } from "../colorTokens/ColorTokens";
+import { ColorTokens } from "../ColorTokens/ColorTokens";
 import { Color3FromHex } from "../../../utilites";
 
 const Magenta: ColorTokens = {

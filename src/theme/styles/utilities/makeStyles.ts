@@ -1,5 +1,5 @@
 import DefaultTheme from "../../themes";
-import { Theme } from "../../interfaces/theme";
+import { Theme } from "../../interfaces/Theme";
 import { ClassNameMap } from "../types/styles";
 import { themeStore } from "../../components/ThemeStore";
 
