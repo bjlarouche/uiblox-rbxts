@@ -1,0 +1,7 @@
+-- Compiled with roblox-ts v2.2.0
+local PRELOADER_LOGO_IMAGE = "rbxassetid://8972054582"
+local PAGE_NOT_FOUND_IMAGE = "rbxassetid://9058373693"
+return {
+	PRELOADER_LOGO_IMAGE = PRELOADER_LOGO_IMAGE,
+	PAGE_NOT_FOUND_IMAGE = PAGE_NOT_FOUND_IMAGE,
+}
