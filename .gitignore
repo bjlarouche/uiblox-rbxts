@@ -104,6 +104,7 @@ dist
 .tern-port
 
 # Rbx build output
+out/*
 !out/tsconfig.tsbuildinfo
 build.rbxlx
 

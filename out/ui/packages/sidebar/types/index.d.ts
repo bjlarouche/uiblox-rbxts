@@ -1,1 +1,0 @@
-export { SidebarType } from "./SidebarType";
