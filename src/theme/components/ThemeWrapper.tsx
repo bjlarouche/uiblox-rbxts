@@ -1,7 +1,7 @@
 import { markPureComponent, useEffect, useRef } from "@rbxts/roact-hooked";
 import { useDispatch, useSelector } from "@rbxts/roact-rodux-hooked";
 import Roact from "@rbxts/roact";
-import { Theme } from "../interfaces/theme";
+import { Theme } from "../interfaces/Theme";
 import { selectTheme, TThemeStore } from "./ThemeStore";
 import { default as DefaultTheme } from "../themes";
 

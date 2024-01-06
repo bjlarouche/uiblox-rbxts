@@ -1,4 +1,4 @@
-export { default as Theme } from "./interfaces/theme/Theme";
+export { default as Theme } from "./interfaces/Theme/Theme";
 
 export { ThemeProvider } from "./components";
 export { themeStore } from "./components";

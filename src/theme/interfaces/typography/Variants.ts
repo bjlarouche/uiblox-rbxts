@@ -1,4 +1,4 @@
-import { Tokens } from "../tokens/Tokens";
+import { Tokens } from "../Tokens/Tokens";
 
 export type TypographyTokens = { [key in Tokens]: string };
 

@@ -1,5 +1,5 @@
-import { Palette } from "../palette";
-import { Padding, Shape, Spacing } from "../spacing";
+import { Palette } from "../Palette";
+import { Padding, Shape, Spacing } from "../Spacing";
 import { ThemeTypography } from "../typography";
 import ThemeOptions from "./ThemeOptions";
 

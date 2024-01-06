@@ -12,8 +12,8 @@ import {
 	Magenta,
 	Orange,
 	Turquoise,
-} from "../interfaces/palette/colors";
-import { Theme } from "../interfaces/theme";
+} from "../interfaces/Palette/Colors";
+import { Theme } from "../interfaces/Theme";
 import {
 	BORDER_RADIUS,
 	DARK_THEME_COLORS,

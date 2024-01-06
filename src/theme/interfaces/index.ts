@@ -1,20 +1,20 @@
-export { IconSizes } from "./iconSizes";
+export { IconSizes } from "./IconSizes";
 
-export * from "./palette";
+export * from "./Palette";
 
-export { Borders } from "./spacing";
-export { Padding } from "./spacing";
-export { Shape } from "./spacing";
-export { Spacing } from "./spacing";
+export { Borders } from "./Spacing";
+export { Padding } from "./Spacing";
+export { Shape } from "./Spacing";
+export { Spacing } from "./Spacing";
 
 export * from "../styles";
 
-export { Theme } from "./theme";
-export { ThemeConstants } from "./theme";
-export { ThemeOptions } from "./theme";
+export { Theme } from "./Theme";
+export { ThemeConstants } from "./Theme";
+export { ThemeOptions } from "./Theme";
 
 export * from "../themes";
 
-export { Tokens } from "./tokens";
+export { Tokens } from "./Tokens";
 
 export * from "./typography";

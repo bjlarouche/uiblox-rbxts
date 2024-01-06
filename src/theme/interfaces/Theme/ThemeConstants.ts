@@ -1,8 +1,8 @@
-import { Borders } from "../spacing";
-import { IconSizes } from "../iconSizes";
-import { ColorTokens } from "../palette/colorTokens";
-import { CommonColors } from "../palette/colors/Common";
-import { Colors } from "../palette/colors";
+import { Borders } from "../Spacing";
+import { IconSizes } from "../IconSizes";
+import { ColorTokens } from "../Palette/ColorTokens";
+import { CommonColors } from "../Palette/Colors/Common";
+import { Colors } from "../Palette/Colors";
 
 export default interface ThemeConstants {
 	contentWidth: number;

@@ -1,4 +1,4 @@
-import { Theme } from "../interfaces/theme";
+import { Theme } from "../interfaces/Theme";
 import { createReducer, Store } from "@rbxts/rodux";
 import { createSelector } from "@rbxts/roselect";
 import { default as DefaultTheme } from "../themes";
