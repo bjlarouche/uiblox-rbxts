@@ -4,13 +4,14 @@ import Roact from "@rbxts/roact";
 import { Theme } from "../interfaces/theme";
 import { selectTheme, TThemeStore } from "./ThemeStore";
 import { default as DefaultTheme } from "../themes";
+import { CustomizedProps } from "theme/types";
 
 export interface ThemeWrapperProps {
 	theme?: Theme;
 }
 
-function ThemeWrapper(props: Roact.PropsWithChildren<ThemeWrapperProps>) {
-	const { theme, [Roact.Children]: children } = props;
+function ThemeWrapper(props: CustomizedProps<Instance, ThemeWrapperProps>) {
+	const { theme, children } = props;
 	const dispatch = useDispatch<TThemeStore>();
 	const ref = useRef<Frame>();
 	const currentTheme = useSelector(selectTheme);

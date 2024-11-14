@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Roact, { Element, PropsWithChildren } from "@rbxts/roact";
-import type Rodux from "@rbxts/rodux";
 import { WriteableStyle } from "theme/interfaces";
 
 export interface CommonProps<T extends Instance> extends PropsWithChildren {
 	className?: WriteableStyle<T>;
+	component?: T;
+	children?: Roact.Children;
 }
 
 export type BaseDefaultProps<T extends Instance, P> = CommonProps<T> & P;
 
-export type BaseCustomizedProps<T extends Instance, P> = BaseDefaultProps<T, P> & PropsWithChildren<{ component?: T }>;
+export type BaseCustomizedProps<T extends Instance, P> = BaseDefaultProps<T, P>;
 
 export type DefaultProps<T extends Instance, P = {}> = BaseDefaultProps<T, P>;
 

@@ -30,7 +30,7 @@ export interface ButtonProps {
 	mouseLeave?: () => void;
 }
 
-function Button(props: Roact.PropsWithChildren<CustomizedProps<DefaultButtonComponent, ButtonProps>>) {
+function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 	const {
 		text = "",
 		variant = "contained",
@@ -47,7 +47,7 @@ function Button(props: Roact.PropsWithChildren<CustomizedProps<DefaultButtonComp
 		mouseEnter,
 		mouseLeave,
 		className,
-		[Roact.Children]: children,
+		children,
 	} = props;
 
 	const { root, font, corner, stroke } = useButtonStyles(props);

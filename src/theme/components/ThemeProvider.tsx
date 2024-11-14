@@ -4,13 +4,14 @@ import Roact from "@rbxts/roact";
 import { Theme } from "../interfaces/theme";
 import { themeStore } from "./ThemeStore";
 import ThemeWrapper from "./ThemeWrapper";
+import { CustomizedProps } from "theme/types";
 
 export interface ThemeProviderProps {
 	theme?: Theme;
 }
 
-function ThemeProvider(props: Roact.PropsWithChildren<ThemeProviderProps>) {
-	const { theme, [Roact.Children]: children } = props;
+function ThemeProvider(props: CustomizedProps<Instance, ThemeProviderProps>) {
+	const { theme, children } = props;
 
 	return (
 		<StoreProvider store={themeStore}>

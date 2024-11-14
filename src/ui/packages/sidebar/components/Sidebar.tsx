@@ -10,7 +10,7 @@ export interface SidebarProps {
 }
 
 function Sidebar<T extends DefaultSidebarComponent>(props: CustomizedProps<T, SidebarProps>) {
-	const { className, [Roact.Children]: children } = props;
+	const { className, children } = props;
 	const { root, container } = useSidebarStyles(props);
 
 	return (

@@ -5,18 +5,19 @@ export type GenericStyle = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ConditionalStyles = Map<WriteableStyle<any>, boolean>;
+export type ConditionalStyles<T extends Instance> = Map<WriteableStyle<T>, boolean>;
 
-const classNames = (styles: ConditionalStyles): GenericStyle => {
+const classNames = <T extends Instance>(
+	...styles: Array<WriteableStyle<T>>,
+	conditionalStyles: ConditionalStyles<T>
+): WriteableStyle<T> => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let style = {} as WriteableStyle<any>;
 
 	styles.forEach((value, key) => {
-		if (value) {
-			style = { ...style, ...key };
-		}
+		
 	});
-
+						
 	return { ...style };
 };
 

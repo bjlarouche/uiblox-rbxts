@@ -20,7 +20,7 @@ export interface TypographyProps {
 }
 
 function Typography<T extends DefaultTypographyComponent>(props: CustomizedProps<T, TypographyProps>) {
-	const { text = "", className, [Roact.Children]: children } = props;
+	const { text = "", className, children } = props;
 
 	const { root, variantToken } = useTypographyStyles(props);
 
