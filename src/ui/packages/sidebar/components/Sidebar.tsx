@@ -14,8 +14,8 @@ function Sidebar<T extends DefaultSidebarComponent>(props: CustomizedProps<T, Si
 	const { root, container } = useSidebarStyles(props);
 
 	return (
-		<frame Key="Sidebar" {...root} {...className}>
-			<frame Key="Container" {...container}>
+		<frame {...root} {...className}>
+			<frame {...container}>
 				{children}
 			</frame>
 		</frame>

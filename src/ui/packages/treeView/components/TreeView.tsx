@@ -107,7 +107,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 	}, [tree, filter]);
 
 	return (
-		<frame Key="TreeView" {...root} {...className}>
+		<frame {...root} {...className}>
 			<Typography
 				className={{ Text: tree.title, ...header } as WriteableStyle<TextLabel>}
 				color={"textSecondary"}
@@ -116,7 +116,6 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 			/>
 
 			<scrollingframe
-				Key="List"
 				{...list}
 				CanvasSize={canvasSize}
 				Event={{
@@ -144,7 +143,6 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 						return (
 							<>
 								<textbutton
-									Key={`${branch.title}-${branchIndex}`}
 									{...row}
 									Event={{
 										MouseButton1Click: () => {
@@ -191,7 +189,6 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 										if (matchesBranchFilter || matchesLeafFilter) {
 											return (
 												<textbutton
-													Key={`${branch.title}-${branchIndex}-${leaf.title}-${leafIndex}`}
 													{...row}
 													Event={{
 														MouseButton1Click: () => {

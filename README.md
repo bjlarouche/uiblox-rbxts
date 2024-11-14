@@ -32,16 +32,16 @@ that aids UI/UX consistentency.
 
 How does it do this? Well, there are two main exports from this package:
 
-- @rbxts/uiblox -> theme
-  - An extensible Theme type + default Dark (default) and Light themes
-    - ... Light theme palette is a WIP
-  - makeStyles/createStyles utilities to serve up Instance-extended property
-    tables that can be applied to your Roact Components
-  - ThemeProvider which can wrap your application and uses Rodux to tell
-    sub-components which theme to style off of (via makeStyles)
-    - Uses Rodux
-- @rbxts/uiblox -> ui
-  - Packaged and reusable typed Roact components
+-   @rbxts/uiblox -> theme
+    -   An extensible Theme type + default Dark (default) and Light themes
+        -   ... Light theme palette is a WIP
+    -   makeStyles/createStyles utilities to serve up Instance-extended property
+        tables that can be applied to your Roact Components
+    -   ThemeProvider which can wrap your application and uses Rodux to tell
+        sub-components which theme to style off of (via makeStyles)
+        -   Uses Rodux
+-   @rbxts/uiblox -> ui
+    -   Packaged and reusable typed Roact components
 
 # How to use
 
@@ -71,13 +71,13 @@ is what we later pass to `Roact.mount()`.
 import Roact, { Component } from "@rbxts/roact";
 
 class App extends Component {
-  render() {
-    return (
-      <screengui IgnoreGuiInset ZIndexBehavior={Enum.ZIndexBehavior.Global}>
-        <AppLayout />
-      </screengui>
-    );
-  }
+	render() {
+		return (
+			<screengui IgnoreGuiInset ZIndexBehavior={Enum.ZIndexBehavior.Global}>
+				<AppLayout />
+			</screengui>
+		);
+	}
 }
 
 export default App;
@@ -100,19 +100,15 @@ import { DarkTheme, ThemeProvider } from "@rbxts/uiblox";
 import usePageLayoutStyles from "./PageLayout.styles";
 
 class AppLayout extends Component {
-  render() {
-    return (
-      <ThemeProvider theme={DarkTheme}>
-        <frame
-          Key={"AppLayout"}
-          Size={new UDim2(1, 0, 1, 0)}
-          BackgroundTransparency={1}
-        >
-          <MyComponent />
-        </frame>
-      </ThemeProvider>
-    );
-  }
+	render() {
+		return (
+			<ThemeProvider theme={DarkTheme}>
+				<frame Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1}>
+					<MyComponent />
+				</frame>
+			</ThemeProvider>
+		);
+	}
 }
 
 export default AppLayout;
@@ -145,7 +141,7 @@ function MyComponent(props: MyComponentProps) {
   const { root, button } = useMyComponentStyles(props);
 
   return (
-    <frame Key="MyComponent" {...root}>
+    <frame {...root}>
       <Button
         variant="outlined"
         text={title}
@@ -249,12 +245,12 @@ new AppLoader().Mount();
 
 # Future work
 
-- More UI packages
-- Finish palette for LightTheme
+-   More UI packages
+-   Finish palette for LightTheme
 
 # See Also
 
-- [Storyblox](https://github.com/bjlarouche/storyblox) a UI component explorer for roblox-ts developers
-  - <img src=docs/storyblox-preview.png width=40%>
-  - Test it out here [Storyblox Pre-Release Experience](https://www.roblox.com/games/9159382473)
-  - Similar to [hoarcekat](https://github.com/Kampfkarren/hoarcekat) by Kampfkarren
+-   [Storyblox](https://github.com/bjlarouche/storyblox) a UI component explorer for roblox-ts developers
+    -   <img src=docs/storyblox-preview.png width=40%>
+    -   Test it out here [Storyblox Pre-Release Experience](https://www.roblox.com/games/9159382473)
+    -   Similar to [hoarcekat](https://github.com/Kampfkarren/hoarcekat) by Kampfkarren

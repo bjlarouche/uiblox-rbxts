@@ -19,7 +19,7 @@ function Divider<T extends DefaultDividerComponent>(props: CustomizedProps<T, Di
 
 	const { root } = useDividerStyles(props);
 
-	return <frame Key="Divider" {...root} BorderSizePixel={0} {...className} />;
+	return <frame {...root} BorderSizePixel={0} {...className} />;
 }
 
 export default Divider;

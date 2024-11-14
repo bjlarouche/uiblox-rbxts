@@ -23,7 +23,6 @@ function ThemeWrapper(props: CustomizedProps<Instance, ThemeWrapperProps>) {
 
 	return (
 		<frame
-			Key={`ThemeWrapper-${currentTheme.type}`}
 			BackgroundTransparency={1}
 			Size={new UDim2(1, 0, 1, 0)}
 			ZIndex={500000}

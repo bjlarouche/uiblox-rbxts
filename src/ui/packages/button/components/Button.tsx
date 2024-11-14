@@ -55,7 +55,6 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 
 	return (
 		<textbutton
-			Key={"Button"}
 			{...root}
 			{...font}
 			Active={!disabled && !loading}
