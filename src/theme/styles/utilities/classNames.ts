@@ -8,17 +8,19 @@ export type GenericStyle = {
 export type ConditionalStyles<T extends Instance> = Map<WriteableStyle<T>, boolean>;
 
 const classNames = <T extends Instance>(
-	...styles: Array<WriteableStyle<T>>,
-	conditionalStyles: ConditionalStyles<T>
+	conditionalStyles?: ConditionalStyles<T>,
+	...styles: Array<WriteableStyle<T>>
 ): WriteableStyle<T> => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	let style = {} as WriteableStyle<any>;
+	let style = {} as WriteableStyle<T>;
 
-	styles.forEach((value, key) => {
-		
+	conditionalStyles?.forEach((value, key) => {
+		if (value) {
+			style = { ...style, ...key };
+		}
 	});
 						
-	return { ...style };
+	return { ...style, styles };
 };
 
 export default classNames;

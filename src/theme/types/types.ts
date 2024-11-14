@@ -23,5 +23,5 @@ export type CustomizedRef<T extends Instance> = T extends Instance
 	: never;
 
 export type CustomizedForwardRefComponent<D extends Instance, P = {}> = <T extends Instance = D>(
-	props: PropsWithChildren<CustomizedProps<T, P>> & WritableInstanceProperties<CustomizedRef<T>>,
+	props: CustomizedProps<T, P> & WritableInstanceProperties<CustomizedRef<T>>,
 ) => Element | undefined;
