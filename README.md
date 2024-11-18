@@ -36,12 +36,12 @@ How does it do this? Well, there are two main exports from this package:
     -   An extensible Theme type + default Dark (default) and Light themes
         -   ... Light theme palette is a WIP
     -   makeStyles/createStyles utilities to serve up Instance-extended property
-        tables that can be applied to your Roact Components
-    -   ThemeProvider which can wrap your application and uses Rodux to tell
+        tables that can be applied to your React Components
+    -   ThemeProvider which can wrap your application and uses Reflex to tell
         sub-components which theme to style off of (via makeStyles)
-        -   Uses Rodux
+        -   Uses Reflex
 -   @rbxts/uiblox -> ui
-    -   Packaged and reusable typed Roact components
+    -   Packaged and reusable typed React components
 
 # How to use
 
@@ -65,10 +65,10 @@ You can house all of your components within shared.
 #### src/shared/ui/app/App.tsx
 
 The top-level class for our UI. Loads the actual ApplLayout into ScreenGui. This
-is what we later pass to `Roact.mount()`.
+is what we later pass when mounting the App.
 
 ```javascript
-import Roact, { Component } from "@rbxts/roact";
+import React, { Component } from "@rbxts/react";
 
 class App extends Component {
 	render() {
@@ -94,7 +94,7 @@ You can also choose to create your own theme with the `Theme` interface exported
 from `@rbxts/uiblox`.
 
 ```javascript
-import Roact, { Component } from "@rbxts/roact";
+import React, { Component } from "@rbxts/react";
 import { Storyblox } from "shared/ui/storyblox";
 import { DarkTheme, ThemeProvider } from "@rbxts/uiblox";
 import usePageLayoutStyles from "./PageLayout.styles";
@@ -205,26 +205,28 @@ Some sample logic for mounting app when player spawns (on client).
 Mount the App in the LocalPlayer's `PlayerGui`.
 
 ```javascript
-import Roact, { Tree } from "@rbxts/roact";
+import Log from "@rbxts/log";
+import React, { StrictMode } from "@rbxts/react";
+import { createPortal, createRoot } from "@rbxts/react-roblox";
 import { Players } from "@rbxts/services";
-import { App } from "shared/ui/App";
+import { APP_CONTAINER_NAME } from "shared/constants/AppConstants";
+import App from "shared/packages/ui/app/components/App";
 
 class AppLoader {
-	protected _tree: Tree | undefined;
+	protected root: React.ReactNode | undefined;
 
 	Mount() {
-		const playerGui = Players.LocalPlayer.FindFirstChild("PlayerGui") as PlayerGui;
+		const playerGui = Players.LocalPlayer.FindFirstChildOfClass("PlayerGui");
 
-		const appComponent = <App />;
-		this._tree = Roact.mount(appComponent, playerGui, "App");
-		print("App mounted");
-	}
-
-	Unmount() {
-		if (this._tree) {
-			Roact.unmount(this._tree);
-			print("App unmounted");
+		if (!playerGui) {
+			Log.Error("PlayerGui not found");
+			return;
 		}
+
+		const root = createRoot(new Instance("Folder"));
+
+		root.render(<StrictMode>{createPortal(<App key={APP_CONTAINER_NAME} />, playerGui)}</StrictMode>);
+		Log.Info("App mounted");
 	}
 }
 
