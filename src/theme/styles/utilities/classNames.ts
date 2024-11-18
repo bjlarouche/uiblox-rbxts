@@ -19,8 +19,14 @@ const classNames = <T extends Instance>(
 			style = { ...style, ...key };
 		}
 	});
+
+	styles.forEach((value) => {
+		if (value) {
+			style = { ...style, ...value };
+		}
+	});
 						
-	return { ...style, styles };
+	return { ...style };
 };
 
 export default classNames;
