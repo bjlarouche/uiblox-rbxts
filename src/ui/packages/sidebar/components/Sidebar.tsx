@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import useSidebarStyles from "./Sidebar.styles";
 

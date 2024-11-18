@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { Orientations } from "ui/enums";
 import useDividerStyles from "./Divider.styles";

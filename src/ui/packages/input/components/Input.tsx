@@ -1,5 +1,4 @@
-import Roact from "@rbxts/roact";
-import { useState, markPureComponent } from "@rbxts/roact-hooked";
+import React, { useState } from "@rbxts/react";
 import { classNames, CustomizedProps, WriteableStyle } from "theme";
 import { Divider } from "../../divider";
 import { Orientations } from "ui/enums";
@@ -110,4 +109,4 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	);
 }
 
-export default markPureComponent(Input);
+export default Input;

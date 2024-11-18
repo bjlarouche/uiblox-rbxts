@@ -1,5 +1,4 @@
-import Roact from "@rbxts/roact";
-import { markPureComponent, useEffect, useState } from "@rbxts/roact-hooked";
+import React, { useEffect, useState } from "@rbxts/react";
 import { WriteableStyle } from "theme";
 import useShadowStyles from "./Shadow.styles";
 
@@ -39,4 +38,4 @@ function Shadow() {
 	);
 }
 
-export default markPureComponent(Shadow);
+export default Shadow;

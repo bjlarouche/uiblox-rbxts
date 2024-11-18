@@ -1,5 +1,4 @@
-import Roact from "@rbxts/roact";
-import { markPureComponent, useCallback, useEffect, useState } from "@rbxts/roact-hooked";
+import React, { useCallback, useEffect, useState } from "@rbxts/react";
 import { CustomizedProps, DefaultTheme, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
 import { Typography } from "ui/packages/typography";
@@ -231,4 +230,4 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 	);
 }
 
-export default markPureComponent(TreeView);
+export default TreeView;

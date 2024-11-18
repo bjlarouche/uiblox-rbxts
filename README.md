@@ -124,8 +124,7 @@ then you can omit props without a type warning (i.e. `makeStyles(theme => {})`
 instead of `makeStyles<MyComponentProps>((theme, props) => {})`).
 
 ```javascript
-import Roact from "@rbxts/roact";
-import { useState, markPureComponent } from "@rbxts/roact-hooked";
+import React, { useState } from "@rbxts/react";
 import useMyComponentStyles from "./MyComponent.styles";
 import { Button } from "@rbxts/uiblox";
 

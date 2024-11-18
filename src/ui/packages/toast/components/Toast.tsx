@@ -1,6 +1,5 @@
 import { BoatTween } from "@rbxts/boat-tween";
-import Roact from "@rbxts/roact";
-import { markPureComponent, useEffect, useRef } from "@rbxts/roact-hooked";
+import React, { useEffect, useRef } from "@rbxts/react";
 import { DefaultTheme, WriteableStyle } from "theme";
 import { Directions } from "ui/enums";
 import { Shadow } from "ui/packages/shadow";
@@ -23,7 +22,7 @@ function Toast(props: ToastProps) {
 	const frameRef = useRef<Frame>();
 
 	const tween = (direction: Directions) => {
-		const frame = frameRef.getValue();
+		const frame = frameRef.current;
 		if (!frame) return;
 
 		const tween = BoatTween.Create(frame, {
@@ -61,7 +60,7 @@ function Toast(props: ToastProps) {
 	}, []);
 
 	return (
-		<frame Ref={frameRef} {...container}>
+		<frame ref={frameRef} {...container}>
 			<uicorner CornerRadius={new UDim(0, DefaultTheme.shape.borderRadius)} />
 			<Shadow />
 
@@ -81,4 +80,4 @@ function Toast(props: ToastProps) {
 	);
 }
 
-export default markPureComponent(Toast);
+export default Toast;

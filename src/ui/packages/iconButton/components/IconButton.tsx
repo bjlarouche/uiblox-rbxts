@@ -1,5 +1,4 @@
-import Roact from "@rbxts/roact";
-import { markPureComponent, useState } from "@rbxts/roact-hooked";
+import React, { useState } from "@rbxts/react";
 import { Icons } from "ui/enums";
 import { CustomizedProps, WriteableStyle } from "theme";
 import useIconButtonStyles from "./IconButton.styles";
@@ -44,4 +43,4 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 	);
 }
 
-export default markPureComponent(IconButton);
+export default IconButton;

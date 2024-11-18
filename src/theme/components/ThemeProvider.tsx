@@ -1,10 +1,9 @@
-import { markPureComponent } from "@rbxts/roact-hooked";
-import { StoreProvider } from "@rbxts/roact-rodux-hooked";
-import Roact from "@rbxts/roact";
+import React, { StrictMode } from "@rbxts/react";
 import { Theme } from "../interfaces/theme";
-import { themeStore } from "./ThemeStore";
 import ThemeWrapper from "./ThemeWrapper";
 import { CustomizedProps } from "theme/types";
+import { ReflexProvider } from "@rbxts/react-reflex";
+import { themeProducer } from "./ThemeProducer";
 
 export interface ThemeProviderProps {
 	theme?: Theme;
@@ -14,10 +13,12 @@ function ThemeProvider(props: CustomizedProps<Instance, ThemeProviderProps>) {
 	const { theme, children } = props;
 
 	return (
-		<StoreProvider store={themeStore}>
-			<ThemeWrapper theme={theme}>{children}</ThemeWrapper>
-		</StoreProvider>
+		<StrictMode>
+			<ReflexProvider producer={themeProducer}>
+				<ThemeWrapper theme={theme}>{children}</ThemeWrapper>
+			</ReflexProvider>
+		</StrictMode>
 	);
 }
 
-export default markPureComponent(ThemeProvider);
+export default ThemeProvider;

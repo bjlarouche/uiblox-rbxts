@@ -1,5 +1,4 @@
-import Roact from "@rbxts/roact";
-import { markPureComponent } from "@rbxts/roact-hooked";
+import React from "@rbxts/react";
 import { WriteableStyle } from "theme";
 import useProgressBarStyles from "./ProgressBar.styles";
 
@@ -27,4 +26,4 @@ function ProgressBar({ progress, className }: ProgressBarProps) {
 	);
 }
 
-export default markPureComponent(ProgressBar);
+export default ProgressBar;

@@ -1,5 +1,4 @@
-import Roact from "@rbxts/roact";
-import { markPureComponent, useState } from "@rbxts/roact-hooked";
+import React, { useState } from "@rbxts/react";
 import { CustomizedProps, WriteableStyle } from "theme";
 import { ButtonSize, ButtonColor, ButtonVariant } from "../types";
 import useButtonStyles from "./Button.styles";
@@ -132,4 +131,4 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 	);
 }
 
-export default markPureComponent(Button);
+export default Button;

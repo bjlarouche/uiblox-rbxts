@@ -1,10 +1,9 @@
-import { markPureComponent, useEffect, useRef } from "@rbxts/roact-hooked";
-import { useDispatch, useSelector } from "@rbxts/roact-rodux-hooked";
-import Roact from "@rbxts/roact";
+import React, { useEffect, useRef } from "@rbxts/react";
 import { Theme } from "../interfaces/theme";
-import { selectTheme, TThemeStore } from "./ThemeStore";
 import { default as DefaultTheme } from "../themes";
 import { CustomizedProps } from "theme/types";
+import { useProducer, useSelector } from "@rbxts/react-reflex";
+import { themeProducer, ThemeProducer } from "./ThemeProducer";
 
 export interface ThemeWrapperProps {
 	theme?: Theme;
@@ -12,13 +11,12 @@ export interface ThemeWrapperProps {
 
 function ThemeWrapper(props: CustomizedProps<Instance, ThemeWrapperProps>) {
 	const { theme, children } = props;
-	const dispatch = useDispatch<TThemeStore>();
+	const { setTheme } = useProducer<ThemeProducer>();
 	const ref = useRef<Frame>();
-	const currentTheme = useSelector(selectTheme);
 
-	// When theme changes
+	// When theme prop changes
 	useEffect(() => {
-		dispatch({ type: "set", newTheme: theme ?? DefaultTheme });
+		setTheme(theme ?? DefaultTheme);
 	}, [theme]);
 
 	return (
@@ -26,11 +24,11 @@ function ThemeWrapper(props: CustomizedProps<Instance, ThemeWrapperProps>) {
 			BackgroundTransparency={1}
 			Size={new UDim2(1, 0, 1, 0)}
 			ZIndex={500000}
-			Ref={ref}
+			ref={ref}
 		>
-			{currentTheme && children}
+			{children}
 		</frame>
 	);
 }
 
-export default markPureComponent(ThemeWrapper);
+export default ThemeWrapper;
