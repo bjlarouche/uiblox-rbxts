@@ -1,7 +1,6 @@
 export { default as Theme } from "./interfaces/theme/Theme";
 
 export { ThemeProvider } from "./components";
-export { themeStore } from "./components";
 export { ThemeState } from "./components";
 export * from "./components";
 
