@@ -60,12 +60,13 @@ function Toast(props: ToastProps) {
 	}, []);
 
 	return (
-		<frame ref={frameRef} {...container}>
-			<uicorner CornerRadius={new UDim(0, DefaultTheme.shape.borderRadius)} />
+		<frame key="Toast" ref={frameRef} {...container}>
+			<uicorner  key="Corner"  CornerRadius={new UDim(0, DefaultTheme.shape.borderRadius)} />
 			<Shadow />
 
-			<textlabel {...label} Text={text} />
+			<textlabel key="Label" {...label} Text={text} />
 			<imagebutton
+				key="Close"
 				{...close}
 				Event={{
 					MouseButton1Click: () => {

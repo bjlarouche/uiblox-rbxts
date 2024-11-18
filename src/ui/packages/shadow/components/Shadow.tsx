@@ -23,6 +23,7 @@ function Shadow() {
 
 	return (
 		<frame
+			key="Shadow"
 			{...container}
 			ZIndex={zIndex}
 			Event={{
@@ -33,7 +34,7 @@ function Shadow() {
 				},
 			}}
 		>
-			{cornerRadius !== undefined && <uicorner CornerRadius={cornerRadius} />}
+			{cornerRadius !== undefined && <uicorner key="Corner" CornerRadius={cornerRadius} />}
 		</frame>
 	);
 }

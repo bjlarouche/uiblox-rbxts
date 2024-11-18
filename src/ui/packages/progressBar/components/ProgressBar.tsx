@@ -11,14 +11,14 @@ function ProgressBar({ progress, className }: ProgressBarProps) {
 	const { container, outer, stroke, inner, fill, corner } = useProgressBarStyles();
 
 	return (
-		<frame {...container} {...className}>
-			<frame {...outer}>
-				<uicorner {...corner} />
+		<frame key="ProgressBar" {...container} {...className}>
+			<frame key="Bar" {...outer}>
+				<uicorner key="Corner" {...corner} />
 				<uistroke {...stroke} />
 				<frame {...inner}>
-					<uicorner {...corner} />
+					<uicorner key="Corner" {...corner} />
 					<frame {...fill} Size={new UDim2(progress / 100, 0, 1, 0)}>
-						<uicorner {...corner} />
+						<uicorner key="Corner" {...corner} />
 					</frame>
 				</frame>
 			</frame>

@@ -103,7 +103,7 @@ class AppLayout extends Component {
 	render() {
 		return (
 			<ThemeProvider theme={DarkTheme}>
-				<frame Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1}>
+				<frame key={"AppLayout"} Size={new UDim2(1, 0, 1, 0)} BackgroundTransparency={1}>
 					<MyComponent />
 				</frame>
 			</ThemeProvider>
@@ -140,7 +140,7 @@ function MyComponent(props: MyComponentProps) {
   const { root, button } = useMyComponentStyles(props);
 
   return (
-    <frame {...root}>
+    <frame key="MyComponent" {...root}>
       <Button
         variant="outlined"
         text={title}

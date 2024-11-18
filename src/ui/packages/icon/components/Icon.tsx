@@ -17,6 +17,7 @@ function Icon(props: CustomizedProps<DefaultIconComponent, IconProps>) {
 
 	return (
 		<imagelabel
+			key="Icon"
 			{...container}
 			{...className}
 			Image={tostring(icon)}

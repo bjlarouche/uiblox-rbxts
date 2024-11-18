@@ -21,6 +21,7 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 
 	return (
 		<imagebutton
+			key="IconButton"
 			{...container}
 			{...className}
 			BackgroundTransparency={hovering || selected ? 0.5 : 1}

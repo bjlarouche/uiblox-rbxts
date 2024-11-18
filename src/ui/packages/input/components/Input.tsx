@@ -51,9 +51,10 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const [input, setInput] = useState<string>(text ?? "");
 
 	return (
-		<frame {...root} {...className}>
-			<frame {...margin}>
+		<frame key="Input" {...root} {...className}>
+			<frame key="Margin" {...margin}>
 				<textbox
+					key={"Field"}
 					{...font}
 					{...box}
 					Active={!disabled}
@@ -97,6 +98,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 				/>
 				{helperText !== undefined && (
 					<textlabel
+						key={"HelperText"}
 						{...font}
 						{...helper}
 						// eslint-disable-next-line @typescript-eslint/no-explicit-any

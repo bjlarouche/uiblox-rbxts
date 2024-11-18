@@ -25,7 +25,7 @@ function Typography<T extends DefaultTypographyComponent>(props: CustomizedProps
 	const { root, variantToken } = useTypographyStyles(props);
 
 	return (
-		<textlabel {...root} Text={text} {...className} {...variantToken}>
+		<textlabel key={"Typography"} {...root} Text={text} {...className} {...variantToken}>
 			{children}
 		</textlabel>
 	);
