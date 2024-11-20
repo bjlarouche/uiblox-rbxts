@@ -16,6 +16,10 @@ export { InputColor } from "./packages";
 export { InputMargin } from "./packages";
 export { InputVariant } from "./packages";
 
+export { Preloader } from "./packages";
+export { PreloaderProps } from "./packages";
+export { PreloaderAssets as Assets } from "./packages";
+
 export { ProgressBar } from "./packages";
 export { ProgressBarProps } from "./packages";
 
