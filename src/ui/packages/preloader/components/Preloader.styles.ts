@@ -2,12 +2,6 @@ import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
 import { PreloaderProps } from "./Preloader";
 
 const usePreloaderStyles = makeStyles<PreloaderProps>((theme, props) => {
-	const getLogo = (props: PreloaderProps) => {
-		const { logo } = props;
-
-		return logo;
-	};
-
 	return createStyles({
 		container: {
 			Size: new UDim2(1, 0, 1, 0),
@@ -21,7 +15,7 @@ const usePreloaderStyles = makeStyles<PreloaderProps>((theme, props) => {
 			AnchorPoint: new Vector2(0.5, 0.5),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
-			Image: getLogo(props),
+			Image: props.icon,
 			ScaleType: Enum.ScaleType.Fit,
 			ZIndex: 110000,
 		} as WriteableStyle<ImageLabel>,

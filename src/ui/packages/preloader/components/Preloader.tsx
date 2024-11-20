@@ -10,15 +10,15 @@ export interface PreloaderAssets {
 }
 
 export interface PreloaderProps {
-	assetMap: Map<string, PreloaderAssets>;
-	logo?: string;
+	preloaderAssets: Map<string, PreloaderAssets>;
+	icon?: string;
 	showPercentage?: boolean;
 	loaderPrecision?: number;
 	showAssetName?: boolean;
 }
 
 function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
-	const { assetMap, showPercentage = false, loaderPrecision = 0, showAssetName = false, children } = props;
+	const { preloaderAssets, showPercentage = false, loaderPrecision = 0, showAssetName = false, children } = props;
 	const [percentage, setPercentage] = useState(0);
 	const [loaded, setLoaded] = useState(false);
 
@@ -39,7 +39,7 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 			}
 		};
 
-		assetMap.forEach((assets, category) => {
+		preloaderAssets.forEach((assets, category) => {
 			scan(assets, `${category}`);
 		});
 
@@ -70,7 +70,7 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 	return (
 		<>
 			{loaded ? (
-				{children}
+				{ children }
 			) : (
 				<frame key={"Preloader"} {...container}>
 					<imagelabel {...logo} />
