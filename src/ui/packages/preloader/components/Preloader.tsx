@@ -70,7 +70,7 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 			setCurrentAsset(contentNamesById.get(assetId));
 
 			setPercentage((prev) => {
-				const newPercentage = math.round(math.clamp(prev + unit, 0, 100));
+				const newPercentage = math.clamp(prev + unit, 0, 100);
 
 				if (newPercentage === 100) {
 					setLoaded(true);
