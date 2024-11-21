@@ -72,7 +72,7 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 			setPercentage((prev) => {
 				const newPercentage = math.clamp(prev + unit, 0, 100);
 
-				if (newPercentage === 100) {
+				if (math.round(newPercentage) >= 100) {
 					setLoaded(true);
 				}
 
