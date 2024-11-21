@@ -88,7 +88,7 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 			return undefined;
 		}
 
-		return `${string.format(`%.${loaderPrecision}f`, percentage)}%`;
+		return `${string.format(`%.${loaderPrecision}f`, math.round(percentage))}%`;
 	}, [showPercentage, loaderPrecision, percentage]);
 
 	return (
