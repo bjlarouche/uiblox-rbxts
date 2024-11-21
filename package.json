@@ -1,6 +1,6 @@
 {
 	"name": "@rbxts/uiblox",
-	"version": "0.1.21",
+	"version": "0.1.22",
 	"description": "UI Library and theming for roblox-ts projects",
 	"main": "out/init.lua",
 	"scripts": {
