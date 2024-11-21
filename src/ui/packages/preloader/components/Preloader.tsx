@@ -1,4 +1,4 @@
-import React, { useState, useMemo, ComponentType } from "@rbxts/react";
+import React, { useState, useMemo, ComponentType, useEffect } from "@rbxts/react";
 import { useAsyncEffect, useDeferState } from "@rbxts/pretty-react-hooks";
 import { ContentProvider } from "@rbxts/services";
 import { ProgressBar } from "ui/packages/progressBar";
@@ -70,18 +70,18 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 			setCurrentAsset(contentNamesById.get(assetId));
 
 			setPercentage((prev) => {
-				const newPercentage = math.clamp(prev + unit, 0, 100);
-
-				if (math.round(newPercentage) >= 100) {
-					setLoaded(true);
-				}
-
-				return newPercentage;
+				return math.clamp(prev + unit, 0, 100);
 			});
 		});
 
 		setCurrentAsset(undefined);
 	}, []);
+
+	useEffect(() => {
+		if (math.round(percentage) >= 100) {
+			setLoaded(true);
+		}
+	}, [percentage]);
 
 	const percentageStr = useMemo(() => {
 		if (!showPercentage) {
