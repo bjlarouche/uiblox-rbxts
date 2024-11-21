@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "@rbxts/react";
+import React, { useState, useMemo, ComponentType } from "@rbxts/react";
 import { useAsyncEffect, useDeferState } from "@rbxts/pretty-react-hooks";
 import { ContentProvider } from "@rbxts/services";
 import { ProgressBar } from "ui/packages/progressBar";
@@ -9,16 +9,32 @@ export interface PreloaderAssets {
 	[key: string]: string | PreloaderAssets;
 }
 
+export interface CustomAdornmentProps {
+	progress: number;
+}
+
 export interface PreloaderProps {
 	preloaderAssets: Map<string, PreloaderAssets>;
 	icon?: string;
 	showPercentage?: boolean;
 	loaderPrecision?: number;
+	hideProgressBar?: boolean;
 	showAssetName?: boolean;
+	adornment?: ComponentType<CustomAdornmentProps>;
 }
 
 function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
-	const { preloaderAssets, showPercentage = false, loaderPrecision = 0, showAssetName = false, children } = props;
+	const {
+		preloaderAssets,
+		icon,
+		showPercentage = false,
+		loaderPrecision = 0,
+		hideProgressBar = false,
+		showAssetName = false,
+		adornment: Adornment,
+		className,
+		children,
+	} = props;
 	const [percentage, setPercentage] = useState(0);
 	const [loaded, setLoaded] = useState(false);
 
@@ -67,20 +83,33 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 		setCurrentAsset(undefined);
 	}, []);
 
+	const percentageStr = useMemo(() => {
+		if (!showPercentage) {
+			return undefined;
+		}
+
+		return `${string.format(`%.${loaderPrecision}f`, percentage)}%`;
+	}, [showPercentage, loaderPrecision, percentage]);
+
 	return (
 		<>
 			{loaded ? (
 				{ children }
 			) : (
-				<frame key={"Preloader"} {...container}>
-					<imagelabel {...logo} />
-					<textlabel
-						{...label}
-						Text={`Loading ${currentAsset !== undefined ? currentAsset : "resources"}... ${
-							showPercentage ? string.format(`%.${loaderPrecision}f\%`, percentage) : ""
-						}`}
-					/>
-					<ProgressBar className={progressBar} progress={percentage} />
+				<frame key={"Preloader"} {...container} {...className}>
+					{Adornment !== undefined && <Adornment progress={percentage} />}
+
+					{icon !== undefined && <imagelabel {...logo} />}
+
+					{!hideProgressBar && (
+						<>
+							<textlabel
+								{...label}
+								Text={`Loading ${currentAsset !== undefined ? currentAsset : "resources"}... ${percentageStr}`}
+							/>
+							<ProgressBar className={progressBar} progress={percentage} />
+						</>
+					)}
 				</frame>
 			)}
 		</>

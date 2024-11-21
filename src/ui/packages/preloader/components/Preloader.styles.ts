@@ -1,7 +1,7 @@
 import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
 import { PreloaderProps } from "./Preloader";
 
-const usePreloaderStyles = makeStyles<PreloaderProps>((theme, props) => {
+const usePreloaderStyles = makeStyles<PreloaderProps>((theme: Theme, props: PreloaderProps) => {
 	return createStyles({
 		container: {
 			Size: new UDim2(1, 0, 1, 0),
