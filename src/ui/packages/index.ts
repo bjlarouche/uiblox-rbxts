@@ -1,4 +1,5 @@
 export * from "./divider";
+export * from "./errorBoundary";
 export * from "./icon";
 export * from "./iconButton";
 export * from "./input";

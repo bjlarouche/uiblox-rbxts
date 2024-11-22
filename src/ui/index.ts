@@ -4,6 +4,10 @@ export * from "./enums";
 export { Divider } from "./packages";
 export { DividerProps } from "./packages";
 
+export { ErrorBoundary } from "./packages";
+export { ErrorBoundaryProps } from "./packages";
+export { ErrorBoundaryState } from "./packages";
+
 export { Icon } from "./packages";
 export { IconProps } from "./packages";
 
