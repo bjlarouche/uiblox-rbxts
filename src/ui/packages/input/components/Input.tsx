@@ -25,11 +25,6 @@ export interface InputProps {
 	onEnterPressed?: (text: string) => void;
 }
 
-type GenericStyle = {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	[x: string]: any;
-};
-
 function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const {
 		text,
