@@ -6,15 +6,15 @@ const classNamesInternal = <T extends Instance>(
 ): WriteableStyle<T> => {
 	let style = {} as WriteableStyle<T>;
 
-	conditionalStyles?.forEach((value, key) => {
-		if (value) {
-			style = { ...style, ...key };
-		}
-	});
-
 	styles.forEach((value) => {
 		if (value) {
 			style = { ...style, ...value };
+		}
+	});
+
+	conditionalStyles?.forEach((value, key) => {
+		if (value) {
+			style = { ...style, ...key };
 		}
 	});
 
