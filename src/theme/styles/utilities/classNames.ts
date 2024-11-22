@@ -31,10 +31,15 @@ const classNamesInternal = <T extends Instance>(
 
 // Use variadic tuple types to allow for multiple WriteableStyle<T> arguments with an optional ConditionalStyles<T> argument at the end
 function classNames<T extends Instance>(...args: [...Array<WriteableStyle<T>>, ConditionalStyles<T>] | [...Array<WriteableStyle<T>>]): WriteableStyle<T> {
-    // Check if last argument is ConditionalStyles
-    const hasConditionalStyles = (args: any[]): args is [...Array<WriteableStyle<T>>, ConditionalStyles<T>] => {
-        const lastArg = args.pop();
-        return lastArg !== undefined && lastArg instanceof Map; // If it's an array, it should have sequential numeric indices
+	// Check if last argument is ConditionalStyles
+    const hasConditionalStyles = (args: unknown[]): args is [...Array<WriteableStyle<T>>, ConditionalStyles<T>] => {
+		const lastArg = args[args.size() - 1];
+		
+		if (lastArg === undefined) {
+			return false;
+		}
+
+        return typeIs(lastArg, "table");
     };
 
     if (hasConditionalStyles(args)) {
