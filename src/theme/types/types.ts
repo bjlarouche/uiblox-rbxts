@@ -5,7 +5,7 @@ import { WriteableStyle } from "theme/interfaces";
 export interface CommonProps<T extends Instance> extends PropsWithChildren {
 	className?: WriteableStyle<T>;
 	component?: T;
-	key?: string;
+	key?: React.Key;
 }
 
 export type BaseDefaultProps<T extends Instance, P> = CommonProps<T> & P;
