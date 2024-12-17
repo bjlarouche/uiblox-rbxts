@@ -20,6 +20,11 @@ export { InputColor } from "./packages";
 export { InputMargin } from "./packages";
 export { InputVariant } from "./packages";
 
+export { Grid } from "./packages";
+export { GridProps } from "./packages";
+export { List } from "./packages";
+export { ListProps } from "./packages";
+
 export { Preloader } from "./packages";
 export { PreloaderProps } from "./packages";
 export { PreloaderAssets as Assets } from "./packages";
