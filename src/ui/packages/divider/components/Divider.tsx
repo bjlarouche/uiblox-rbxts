@@ -15,11 +15,11 @@ export interface DividerProps {
 }
 
 function Divider<T extends DefaultDividerComponent>(props: CustomizedProps<T, DividerProps>) {
-	const { className } = props;
+	const { className, key } = props;
 
 	const { root } = useDividerStyles(props);
 
-	return <frame key="Divider" {...root} BorderSizePixel={0} {...className} />;
+	return <frame key={key || "Divider"} {...root} BorderSizePixel={0} {...className} />;
 }
 
 export default Divider;

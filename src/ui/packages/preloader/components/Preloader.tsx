@@ -34,6 +34,7 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 		adornment: Adornment,
 		className,
 		children,
+		key,
 	} = props;
 	const [percentage, setPercentage] = useState(0);
 	const [loaded, setLoaded] = useState(false);
@@ -96,7 +97,7 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 			{loaded ? (
 				{ children }
 			) : (
-				<frame key={"Preloader"} {...container} {...className}>
+				<frame key={key || "Preloader"} {...container} {...className}>
 					{Adornment !== undefined && <Adornment progress={percentage} />}
 
 					{icon !== undefined && <imagelabel {...logo} />}

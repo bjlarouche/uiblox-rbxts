@@ -1,17 +1,18 @@
 import React from "@rbxts/react";
-import { WriteableStyle } from "theme";
+import { CustomizedProps, WriteableStyle } from "theme";
 import useProgressBarStyles from "./ProgressBar.styles";
 
 export interface ProgressBarProps {
 	progress: number;
-	className?: WriteableStyle<Frame>;
 }
 
-function ProgressBar({ progress, className }: ProgressBarProps) {
+function ProgressBar(props: CustomizedProps<Frame, ProgressBarProps>) {
+	const { progress, className, key } = props;
+
 	const { container, outer, stroke, inner, fill, corner } = useProgressBarStyles();
 
 	return (
-		<frame key="ProgressBar" {...container} {...className}>
+		<frame key={key || "ProgressBar"} {...container} {...className}>
 			<frame key="Bar" {...outer}>
 				<uicorner key="Corner" {...corner} />
 				<uistroke {...stroke} />

@@ -14,14 +14,14 @@ export interface IconButtonProps {
 type DefaultIconButtonComponent = ImageButton;
 
 function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButtonProps>) {
-	const { icon, selected, tint, onClick, className } = props;
+	const { icon, selected, tint, onClick, className, key } = props;
 	const { container } = useIconButtonStyles(props);
 
 	const [hovering, setHovering] = useState(false);
 
 	return (
 		<imagebutton
-			key="IconButton"
+			key={key || "IconButton"}
 			{...container}
 			{...className}
 			BackgroundTransparency={hovering || selected ? 0.5 : 1}

@@ -20,12 +20,12 @@ export interface TypographyProps {
 }
 
 function Typography<T extends DefaultTypographyComponent>(props: CustomizedProps<T, TypographyProps>) {
-	const { text = "", className, children } = props;
+	const { text = "", className, children, key } = props;
 
 	const { root, variantToken } = useTypographyStyles(props);
 
 	return (
-		<textlabel key={"Typography"} {...root} Text={text} {...className} {...variantToken}>
+		<textlabel key={key || "Typography"} {...root} Text={text} {...className} {...variantToken}>
 			{children}
 		</textlabel>
 	);

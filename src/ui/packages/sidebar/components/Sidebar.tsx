@@ -10,11 +10,11 @@ export interface SidebarProps {
 }
 
 function Sidebar<T extends DefaultSidebarComponent>(props: CustomizedProps<T, SidebarProps>) {
-	const { className, children } = props;
+	const { className, children, key } = props;
 	const { root, container } = useSidebarStyles(props);
 
 	return (
-		<frame key="Sidebar" {...root} {...className}>
+		<frame key={key || "Sidebar"} {...root} {...className}>
 			<frame key="Container" {...container}>
 				{children}
 			</frame>

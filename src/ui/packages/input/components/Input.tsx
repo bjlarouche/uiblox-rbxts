@@ -39,6 +39,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		onBlur,
 		onEnterPressed,
 		className,
+		key
 	} = props;
 
 	const { root, font, margin, box, helper, errorColorFrame, errorColorText, divider, corner, stroke } =
@@ -46,7 +47,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const [input, setInput] = useState<string>(text ?? "");
 
 	return (
-		<frame key="Input" {...root} {...className}>
+		<frame key={key || "Input"} {...root} {...className}>
 			<frame key="Margin" {...margin}>
 				<textbox
 					key={"Field"}

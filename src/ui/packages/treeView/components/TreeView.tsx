@@ -17,7 +17,7 @@ export interface TreeViewProps {
 }
 
 function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps>) {
-	const { tree, icon, filter, className } = props;
+	const { tree, icon, filter, className, key } = props;
 	const { root, header, list, gridLayout, row, branchIcon, branchTypography, leafIcon, leafTypography } =
 		useTreeViewStyles();
 
@@ -106,7 +106,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 	}, [tree, filter]);
 
 	return (
-		<frame key="TreeView" {...root} {...className}>
+		<frame key={key || "TreeView"} {...root} {...className}>
 			<Typography
 				className={{ Text: tree.title, ...header } as WriteableStyle<TextLabel>}
 				color={"textSecondary"}
