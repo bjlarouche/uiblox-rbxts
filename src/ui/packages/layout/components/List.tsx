@@ -18,7 +18,7 @@ const useListStyles = makeStyles<ListProps>((_: Theme, props: ListProps) =>
 		baseList: {
 			AutomaticSize: Enum.AutomaticSize.XY,
 			Size: UDim2.fromScale(0, 0),
-			BackgroundTransparency: 0,
+			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		baseLayout: {

@@ -18,7 +18,7 @@ const useGridStyles = makeStyles<GridProps>((_: Theme, props: GridProps) =>
 		baseGrid: {
 			AutomaticSize: Enum.AutomaticSize.XY,
 			Size: UDim2.fromScale(0, 0),
-			BackgroundTransparency: 0,
+			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		baseLayout: {
