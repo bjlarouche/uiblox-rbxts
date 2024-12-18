@@ -17,7 +17,7 @@ export interface ToastProps {
 const TWEEN_DURATION = 0.5;
 
 function Toast(props: CustomizedProps<Frame, ToastProps>) {
-	const { text, onDismiss, duration = 4, className, key } = props;
+	const { text, onDismiss, duration = 4, className, id, ref } = props;
 	const { container, label, close, activePosition, inActivePosition } = useToastStyles(props);
 	const frameRef = useRef<Frame>();
 
@@ -60,7 +60,7 @@ function Toast(props: CustomizedProps<Frame, ToastProps>) {
 	}, []);
 
 	return (
-		<frame key={key || "Toast"} ref={frameRef} {...container} {...className}>
+		<frame key={id || "Toast"} ref={frameRef} {...container} {...className}>
 			<uicorner  key="Corner"  CornerRadius={new UDim(0, DefaultTheme.shape.borderRadius)} />
 			<Shadow />
 

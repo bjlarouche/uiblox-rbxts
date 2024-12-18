@@ -46,7 +46,8 @@ function Grid(props: CustomizedProps<Frame, GridProps>) {
 		veritcalAlignment = Enum.VerticalAlignment.Top,
 		className,
 		children,
-		key,
+		id,
+		ref
 	} = props;
 
 	const { baseGrid, baseLayout } = useGridStyles({
@@ -61,7 +62,7 @@ function Grid(props: CustomizedProps<Frame, GridProps>) {
 	});
 
 	return (
-		<frame key={key || 'Grid'} {...baseGrid} {...className}>
+		<frame key={id || 'Grid'} ref={ref} {...baseGrid} {...className}>
 			<uigridlayout key="GridLayout" {...baseLayout} />
 			{children}
 		</frame>

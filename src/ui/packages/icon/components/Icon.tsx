@@ -12,12 +12,13 @@ export interface IconProps {
 type DefaultIconComponent = ImageLabel;
 
 function Icon(props: CustomizedProps<DefaultIconComponent, IconProps>) {
-	const { icon, tint, className, key } = props;
+	const { icon, tint, className, id, ref } = props;
 	const { container } = useIconStyles(props);
 
 	return (
 		<imagelabel
-			key={key || "Icon"}
+			key={id || "Icon"}
+			ref={ref}
 			{...container}
 			{...className}
 			Image={tostring(icon)}

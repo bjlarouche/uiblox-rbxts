@@ -10,11 +10,11 @@ export interface SidebarProps {
 }
 
 function Sidebar<T extends DefaultSidebarComponent>(props: CustomizedProps<T, SidebarProps>) {
-	const { className, children, key } = props;
+	const { className, children, id, ref } = props;
 	const { root, container } = useSidebarStyles(props);
 
 	return (
-		<frame key={key || "Sidebar"} {...root} {...className}>
+		<frame key={id || "Sidebar"} ref={ref as React.Ref<Frame>} {...root} {...className}>
 			<frame key="Container" {...container}>
 				{children}
 			</frame>

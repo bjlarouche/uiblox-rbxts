@@ -7,12 +7,12 @@ export interface ProgressBarProps {
 }
 
 function ProgressBar(props: CustomizedProps<Frame, ProgressBarProps>) {
-	const { progress, className, key } = props;
+	const { progress, className, id, ref } = props;
 
 	const { container, outer, stroke, inner, fill, corner } = useProgressBarStyles();
 
 	return (
-		<frame key={key || "ProgressBar"} {...container} {...className}>
+		<frame key={id || "ProgressBar"} ref={ref} {...container} {...className}>
 			<frame key="Bar" {...outer}>
 				<uicorner key="Corner" {...corner} />
 				<uistroke {...stroke} />

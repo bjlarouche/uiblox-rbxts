@@ -47,7 +47,8 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 		mouseLeave,
 		className,
 		children,
-		key,
+		id,
+		ref
 	} = props;
 
 	const { root, font, corner, stroke } = useButtonStyles(props);
@@ -55,7 +56,8 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 
 	return (
 		<textbutton
-			key={key || "Button"}
+			key={id || "Button"}
+			ref={ref}
 			{...root}
 			{...font}
 			Active={!disabled && !loading}
