@@ -62,7 +62,7 @@ function Grid(props: CustomizedProps<Frame, GridProps>) {
 
 	return (
 		<frame key={key || 'Grid'} {...baseGrid} {...className}>
-			<uigridlayout {...baseLayout} />
+			<uigridlayout key="GridLayout" {...baseLayout} />
 			{children}
 		</frame>
 	);

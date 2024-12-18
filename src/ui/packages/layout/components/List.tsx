@@ -62,7 +62,7 @@ function List(props: CustomizedProps<Frame, ListProps>) {
 
 	return (
 		<frame key={key || 'List'} {...baseList} {...className}>
-			<uilistlayout {...baseLayout} />
+			<uilistlayout key="ListLayout" {...baseLayout} />
 			{children}
 		</frame>
 	);
