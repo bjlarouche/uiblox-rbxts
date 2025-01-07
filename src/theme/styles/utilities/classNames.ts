@@ -6,7 +6,7 @@ const classNamesInternal = <T extends Instance>(
 ): WriteableStyle<T> => {
 	let style = {} as WriteableStyle<T>;
 
-	styles.forEach((value) => {
+	styles.filterUndefined().forEach((value) => {
 		if (value) {
 			style = { ...style, ...value };
 		}
@@ -23,7 +23,7 @@ const classNamesInternal = <T extends Instance>(
 
 // Use variadic tuple types to allow for multiple WriteableStyle<T> arguments with an optional ConditionalStyles<T> argument at the end
 function classNames<T extends Instance>(
-	...args: [...Array<WriteableStyle<T>>, ConditionalStylesMap<T>] | [...Array<WriteableStyle<T>>]
+	...args: [...Array<WriteableStyle<T> | undefined>, ConditionalStylesMap<T>] | [...Array<WriteableStyle<T> | undefined>]
 ): WriteableStyle<T> {
 	// Check if last argument is ConditionalStyles
 	const hasConditionalStyles = (args: unknown[]): args is [...Array<WriteableStyle<T>>, ConditionalStylesMap<T>] => {
@@ -62,18 +62,18 @@ function classNames<T extends Instance>(
 			const styles = args as Array<WriteableStyle<T>>;
 
 			// ConditionalStyles<T> is the last argument
-			return classNamesInternal(conditionalStyles, ...styles);
+			return classNamesInternal(conditionalStyles, ...styles.filterUndefined());
 		}
 	} catch {
 		// If we catch an error, like attempt to iterate over a string value, it means that the last argument is not a ConditionalStyles<T>
 		const styles = args as Array<WriteableStyle<T>>;
-		return classNamesInternal(undefined, ...styles);
+		return classNamesInternal(undefined, ...styles.filterUndefined());
 	}
 
 	// Handle case without ConditionalStyles
 	// All args are WriteableStyle<T>
 	const styles = args as Array<WriteableStyle<T>>;
-	return classNamesInternal(undefined, ...styles);
+	return classNamesInternal(undefined, ...styles.filterUndefined());
 }
 
 export default classNames;
