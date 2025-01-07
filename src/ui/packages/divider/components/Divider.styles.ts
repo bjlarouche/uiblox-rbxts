@@ -10,6 +10,7 @@ const useDividerStyles = makeStyles<DividerProps>((theme, props) => {
 		color = theme.options.constants.colors.divider,
 		transparency = 0,
 		weight = theme.options.constants.borders.default,
+		anchorPoint = new Vector2(0,0)
 	} = props;
 
 	return createStyles({
@@ -23,6 +24,7 @@ const useDividerStyles = makeStyles<DividerProps>((theme, props) => {
 			),
 			BackgroundColor3: color || Color3.fromRGB(255, 255, 255),
 			BackgroundTransparency: transparency,
+			AnchorPoint: anchorPoint,
 		} as WriteableStyle<Frame>,
 	});
 });

@@ -12,6 +12,7 @@ export interface DividerProps {
 	color?: Color3;
 	transparency?: number;
 	weight?: number;
+	anchorPoint: Vector2;
 }
 
 function Divider<T extends DefaultDividerComponent>(props: CustomizedProps<T, DividerProps>) {
