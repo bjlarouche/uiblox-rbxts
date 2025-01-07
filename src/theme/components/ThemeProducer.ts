@@ -1,6 +1,6 @@
 import { Theme } from "../interfaces/theme";
 import { default as DefaultTheme } from "../themes";
-import { InferState, combineProducers, createProducer } from "@rbxts/reflex";
+import { InferState, createProducer } from "@rbxts/reflex";
 
 
 export const themeProducer = createProducer(DefaultTheme, {
