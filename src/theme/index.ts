@@ -6,7 +6,6 @@ export { DEFAULT_THEME } from "./constants";
 
 export * from "./context";
 export { ThemeProvider } from "./context";
-export { ThemeContext } from "./context";
 
 export { useTheme } from "./hooks";
 

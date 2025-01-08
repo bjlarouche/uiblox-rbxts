@@ -1,34 +1,26 @@
-import React, { PropsWithChildren, useEffect, useMemo, useState } from "@rbxts/react";
+import React, {  StrictMode, useEffect } from "@rbxts/react";
+import { ReflexProvider } from "@rbxts/react-reflex";
 import { DEFAULT_THEME } from "theme/constants";
 import { Theme } from "theme/interfaces";
-
-export const ThemeContext = React.createContext<{
-	theme: Theme;
-	setTheme?: React.Dispatch<React.SetStateAction<Theme>>;
-}>({ theme: DEFAULT_THEME });
+import { CustomizedProps } from "theme/types";
+import { themeProducer } from "./ThemeProducer";
 
 export interface ThemeProviderProps {
-	initialTheme?: Theme;
+	theme?: Theme;
 }
 
-export function ThemeProvider(props: PropsWithChildren<ThemeProviderProps>) {
-	const { initialTheme } = props;
+function ThemeProvider(props: CustomizedProps<Instance, ThemeProviderProps>) {
+	const { theme = DEFAULT_THEME, children } = props;
 
-	const [theme, setTheme] = useState<Theme>(initialTheme ?? DEFAULT_THEME);
-
+	// When theme prop changes
 	useEffect(() => {
-		setTheme(initialTheme ?? DEFAULT_THEME);
-	}, [initialTheme]);
-
-	const memoizedValue = useMemo(() => {
-		return {
-			theme,
-			setTheme,
-		};
+		themeProducer.setTheme(theme);
 	}, [theme]);
 
 	return (
-		<ThemeContext.Provider value={memoizedValue}>{props.children}</ThemeContext.Provider>
+		<StrictMode>
+			<ReflexProvider producer={themeProducer}>{children}</ReflexProvider>
+		</StrictMode>
 	);
 }
 
