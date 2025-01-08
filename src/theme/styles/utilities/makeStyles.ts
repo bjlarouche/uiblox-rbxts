@@ -1,7 +1,7 @@
 import DefaultTheme from "../../themes";
 import { Theme } from "../../interfaces/theme";
 import { ClassNameMap } from "../types/styles";
-import { themeProducer } from "theme/components/ThemeProducer";
+import { useTheme } from "theme/hooks";
 
 type TMakeStyles<ClassKey extends string = string> = (theme: Theme) => ClassNameMap<ClassKey>;
 type TMakeStylesWithProps<Props, ClassKey extends string = string> = (
@@ -17,7 +17,9 @@ const makeStyles = <Props = {}, ClassKey extends string = string>(
 ): keyof Props extends never ? () => ClassNameMap<ClassKey> : (props: Props) => ClassNameMap<ClassKey> => {
 	return (props?: TVariantProps<Props>): ClassNameMap<ClassKey> => {
 		try {
-			const theme = themeProducer.getState();
+			const { state } = useTheme();
+			const { theme } = state;
+
 			return f(theme ?? DefaultTheme, (props ?? {}) as Props);
 		} catch (e) {
 			return f(DefaultTheme, (props ?? {}) as Props);

@@ -1,5 +1,7 @@
 import { Blue, Colors, Common, Gray, Green, Purple, Red, Yellow } from "theme/interfaces/palette/colors";
 import { Borders } from "../interfaces/spacing";
+import { ThemeState } from "theme/types";
+import { DefaultTheme } from "theme";
 
 // dark theme
 export const DARK_THEME_COLORS: Colors = {
@@ -92,3 +94,5 @@ export const DEFAULT_BORDERS: Borders = {
 	default: 1,
 	divider: 2,
 };
+
+export const INITIAL_THEME_STATE: ThemeState = { theme: DefaultTheme };

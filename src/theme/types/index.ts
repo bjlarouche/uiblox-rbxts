@@ -1,3 +1,6 @@
+export { ThemeState } from "./context"
+export { ThemeAction } from "./context"
+export { ThemeDispatch } from "./context"
 export { CommonProps } from "./types";
 export { BaseDefaultProps } from "./types";
 export { BaseCustomizedProps } from "./types";
