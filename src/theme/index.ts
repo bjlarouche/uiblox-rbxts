@@ -1,13 +1,12 @@
 export { default as Theme } from "./interfaces/theme/Theme";
 
-export { useThemeCallbacks } from "./callbacks";
 
 export * from "./constants";
 export { DEFAULT_THEME } from "./constants";
 
 export * from "./context";
 export { ThemeProvider } from "./context";
-export { themeReducer } from "./context";
+export { ThemeContext } from "./context";
 
 export * from "./enums";
 

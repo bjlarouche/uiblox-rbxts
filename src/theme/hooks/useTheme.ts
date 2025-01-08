@@ -1,11 +1,6 @@
-import { useContext, useMemo } from "@rbxts/react";
+import { useContext } from "@rbxts/react";
 import { ThemeContext } from "theme/context";
 
-
-const useTheme = () => {
-	const context = useContext(ThemeContext);
-	
-	return useMemo(() => context, [context]);
-};
-
-export default useTheme;
+export default function useTheme() {
+	return useContext(ThemeContext);
+}

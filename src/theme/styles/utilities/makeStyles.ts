@@ -17,8 +17,7 @@ const makeStyles = <Props = {}, ClassKey extends string = string>(
 ): keyof Props extends never ? () => ClassNameMap<ClassKey> : (props: Props) => ClassNameMap<ClassKey> => {
 	return (props?: TVariantProps<Props>): ClassNameMap<ClassKey> => {
 		try {
-			const { state } = useTheme();
-			const { theme } = state;
+			const { theme } = useTheme();
 
 			return f(theme ?? DefaultTheme, (props ?? {}) as Props);
 		} catch (e) {
