@@ -8,8 +8,6 @@ export * from "./context";
 export { ThemeProvider } from "./context";
 export { ThemeContext } from "./context";
 
-export * from "./enums";
-
 export { useTheme } from "./hooks";
 
 export * from "./interfaces";
@@ -20,9 +18,6 @@ export * from "./themes";
 export { default as DarkTheme } from "./themes/DarkTheme";
 export { default as LightTheme } from "./themes/LightTheme";
 
-export { ThemeState } from "./types";
-export { ThemeAction } from "./types";
-export { ThemeDispatch } from "./types";
 export { CommonProps } from "./types";
 export { BaseDefaultProps } from "./types";
 export { BaseCustomizedProps } from "./types";
