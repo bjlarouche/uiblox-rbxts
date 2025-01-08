@@ -15,7 +15,7 @@ import {
 } from "../interfaces/palette/colors";
 import { Theme } from "../interfaces/theme";
 import { BORDER_RADIUS, CONTENT_WIDTH, ICON_SIZES, PADDING_BASE, SPACING_BASE } from "theme/constants/NumberConstants";
-import { DARK_THEME_COLORS, DEFAULT_BORDERS } from "theme/constants/ThemeConstants";
+import { DARK_THEME_COLORS, DEFAULT_BORDERS } from "theme/constants/ColorConstants";
 import { allFontFamilies } from "../interfaces/typography/FontFamilies";
 
 const DarkTheme: Theme = {
