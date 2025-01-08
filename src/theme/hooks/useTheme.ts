@@ -1,10 +1,12 @@
-import { useContext } from "@rbxts/react";
-import { ThemeContext } from "theme/context";
+import { useContext, useMemo } from "@rbxts/react";
+import { themeContext } from "theme/context";
 
-function useTheme() {
-	const context = useContext(ThemeContext);
-	if (!context) throw error("Missing ThemeProvider");
-	return context;
-}
+
+const useTheme = (): {
+} => {
+	const context = useContext(themeContext);
+	
+	return useMemo(() => (context), [context]);
+};
 
 export default useTheme;
