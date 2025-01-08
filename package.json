@@ -50,7 +50,6 @@
 		"@rbxts/react": "^17.2.1",
 		"@rbxts/react-reflex": "^0.3.4",
 		"@rbxts/react-roblox": "^17.2.1",
-		"@rbxts/roselect": "^0.1.2",
 		"@rbxts/services": "^1.5.5"
 	},
 	"directories": {
