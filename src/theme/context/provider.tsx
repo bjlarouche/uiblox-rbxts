@@ -5,7 +5,7 @@ import { INITIAL_THEME_STATE } from "theme/constants";
 import { ThemeActionTypes } from "theme/enums";
 import { Theme } from "theme/interfaces";
 
-export const themeContext = React.createContext<{
+export const ThemeContext = React.createContext<{
 	state: ThemeState;
 	dispatch: ThemeDispatch | undefined;
 }>({ state: INITIAL_THEME_STATE, dispatch: undefined });
@@ -26,7 +26,7 @@ export function ThemeProvider(props: PropsWithChildren<ThemeProviderProps>) {
 		dispatch({ type: ThemeActionTypes.Hydrate });
 	}, [dispatch]);
 
-	return <themeContext.Provider value={{ state, dispatch }}>{props.children}</themeContext.Provider>;
+	return <ThemeContext.Provider value={{ state, dispatch }}>{props.children}</ThemeContext.Provider>;
 }
 
 export default ThemeProvider;
