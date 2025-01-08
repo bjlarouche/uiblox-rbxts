@@ -1,6 +1,6 @@
 import { BoatTween } from "@rbxts/boat-tween";
 import React, { useEffect, useRef } from "@rbxts/react";
-import { CustomizedProps, DefaultTheme, WriteableStyle } from "theme";
+import { CustomizedProps, DEFAULT_THEME, WriteableStyle } from "theme";
 import { Directions } from "ui/enums";
 import { Shadow } from "ui/packages/shadow";
 import ToastVariants from "../enums/ToastVariants";
@@ -61,7 +61,7 @@ function Toast(props: CustomizedProps<Frame, ToastProps>) {
 
 	return (
 		<frame key={id || "Toast"} ref={frameRef} {...container} {...className}>
-			<uicorner  key="Corner"  CornerRadius={new UDim(0, DefaultTheme.shape.borderRadius)} />
+			<uicorner  key="Corner"  CornerRadius={new UDim(0, DEFAULT_THEME.shape.borderRadius)} />
 			<Shadow />
 
 			<textlabel key="Label" {...label} Text={text} />

@@ -1,4 +1,4 @@
-import { createStyles, Theme, makeStyles, DefaultTheme, WriteableStyle } from "theme";
+import { createStyles, Theme, makeStyles, DEFAULT_THEME, WriteableStyle } from "theme";
 import { Icons } from "ui/enums";
 import ToastVariants from "../enums/ToastVariants";
 import { ToastProps } from "./Toast";
@@ -7,18 +7,18 @@ const useToastStyles = makeStyles<ToastProps>((theme: Theme, { variant = ToastVa
 	const getToastColor = (): Color3 => {
 		switch (variant) {
 			case ToastVariants.success:
-				return DefaultTheme.palette.success.main;
+				return DEFAULT_THEME.palette.success.main;
 			case ToastVariants.error:
-				return DefaultTheme.palette.error.main;
+				return DEFAULT_THEME.palette.error.main;
 			case ToastVariants.warning:
-				return DefaultTheme.palette.warning.main;
+				return DEFAULT_THEME.palette.warning.main;
 			default:
-				return DefaultTheme.options.constants.colors.backgroundUIContrast;
+				return DEFAULT_THEME.options.constants.colors.backgroundUIContrast;
 		}
 	};
 
-	const ACTIVE_POSITION = new UDim2(0.5, 0, 1, -DefaultTheme.padding.calc(2));
-	const INACTIVE_POSITION = new UDim2(0.5, 0, 1, DefaultTheme.spacing.calc(20) + DefaultTheme.padding.calc(2));
+	const ACTIVE_POSITION = new UDim2(0.5, 0, 1, -DEFAULT_THEME.padding.calc(2));
+	const INACTIVE_POSITION = new UDim2(0.5, 0, 1, DEFAULT_THEME.spacing.calc(20) + DEFAULT_THEME.padding.calc(2));
 
 	return createStyles({
 		container: {

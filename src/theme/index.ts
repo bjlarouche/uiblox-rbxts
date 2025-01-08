@@ -17,7 +17,6 @@ export * from "./interfaces";
 export * from "./styles";
 
 export * from "./themes";
-export { default as DefaultTheme } from "./themes"; // Default is DarkTheme
 export { default as DarkTheme } from "./themes/DarkTheme";
 export { default as LightTheme } from "./themes/LightTheme";
 

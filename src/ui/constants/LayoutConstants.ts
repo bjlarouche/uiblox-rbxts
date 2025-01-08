@@ -1,3 +1,3 @@
-import { DefaultTheme } from "theme";
+import { DEFAULT_THEME } from "theme";
 
-export const ROBLOX_UI_OFFSET = DefaultTheme.spacing.calc(2) + DefaultTheme.padding.calc(4);
+export const ROBLOX_UI_OFFSET = DEFAULT_THEME.spacing.calc(2) + DEFAULT_THEME.padding.calc(4);

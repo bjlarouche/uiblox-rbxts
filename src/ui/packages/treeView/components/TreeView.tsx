@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "@rbxts/react";
-import { CustomizedProps, DefaultTheme, WriteableStyle } from "theme";
+import { CustomizedProps, DEFAULT_THEME, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
 import { Typography } from "ui/packages/typography";
 import { Icons } from "../../../enums";
@@ -172,7 +172,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 											icon={expanded.includes(branch) ? Icons.Expanded : Icons.Collapsed}
 											size={"xxs"}
 											className={branchIcon}
-											tint={DefaultTheme.options.constants.extendedPalette.Gray[70]}
+											tint={DEFAULT_THEME.options.constants.extendedPalette.Gray[70]}
 										/>
 									)}
 									<Typography
@@ -207,7 +207,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 														icon={icon || Icons.ListPrimary}
 														size={"xs"}
 														className={leafIcon}
-														tint={DefaultTheme.palette.secondary.main}
+														tint={DEFAULT_THEME.palette.secondary.main}
 													/>
 													<Typography
 														text={leaf.title}
