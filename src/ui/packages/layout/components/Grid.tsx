@@ -3,14 +3,14 @@ import React from "react";
 import { makeStyles, Theme, createStyles, WriteableStyle, CustomizedProps } from "theme";
 
 export interface GridProps {
-	cellPadding?: UDim;
+	cellPadding?: UDim2;
 	cellSize?: UDim2;
 	fillDirection?: Enum.FillDirection;
 	fillDirectionMaxCells?: number;
 	sortOrder?: Enum.SortOrder;
 	startCorner: Enum.StartCorner;
 	horizontalAlignment?: Enum.HorizontalAlignment;
-	veritcalAlignment?: Enum.VerticalAlignment;
+	verticalAlignment?: Enum.VerticalAlignment;
 }
 
 const useGridStyles = makeStyles<GridProps>((_: Theme, props: GridProps) =>
@@ -29,21 +29,21 @@ const useGridStyles = makeStyles<GridProps>((_: Theme, props: GridProps) =>
 			SortOrder: props.sortOrder,
 			StartCorner: props.startCorner,
 			HorizontalAlignment: props.horizontalAlignment,
-			VerticalAlignment: props.veritcalAlignment,
+			VerticalAlignment: props.verticalAlignment,
 		} as WriteableStyle<UIGridLayout>,
 	}),
 );
 
 function Grid(props: CustomizedProps<Frame, GridProps>) {
 	const {
-		cellPadding = new UDim(0, 0),
+		cellPadding = UDim2.fromScale(0, 0),
 		cellSize = UDim2.fromOffset(100, 100),
 		fillDirection = Enum.FillDirection.Horizontal,
 		fillDirectionMaxCells = 0,
 		sortOrder = Enum.SortOrder.LayoutOrder,
 		startCorner = Enum.StartCorner.TopLeft,
 		horizontalAlignment = Enum.HorizontalAlignment.Left,
-		veritcalAlignment = Enum.VerticalAlignment.Top,
+		verticalAlignment = Enum.VerticalAlignment.Top,
 		className,
 		children,
 		id,
@@ -58,7 +58,7 @@ function Grid(props: CustomizedProps<Frame, GridProps>) {
 		sortOrder,
 		startCorner,
 		horizontalAlignment,
-		veritcalAlignment,
+		verticalAlignment,
 	});
 
 	return (

@@ -9,7 +9,7 @@ export interface ListProps {
 	wrap?: "wrap" | "no-wrap";
 	horizontalAlignment?: Enum.HorizontalAlignment;
 	horizontalFlex?: Enum.UIFlexAlignment;
-	veritcalAlignment?: Enum.VerticalAlignment;
+	verticalAlignment?: Enum.VerticalAlignment;
 	verticalFlex?: Enum.UIFlexAlignment;
 }
 
@@ -28,7 +28,7 @@ const useListStyles = makeStyles<ListProps>((_: Theme, props: ListProps) =>
 			Wraps: props.wrap === "wrap",
 			HorizontalAlignment: props.horizontalAlignment,
 			HorizontalFlex: props.horizontalFlex,
-			VerticalAlignment: props.veritcalAlignment,
+			VerticalAlignment: props.verticalAlignment,
 			VerticalFlex: props.verticalFlex,
 		} as WriteableStyle<UIListLayout>,
 	}),
@@ -42,7 +42,7 @@ function List(props: CustomizedProps<Frame, ListProps>) {
 		wrap = "wrap",
 		horizontalAlignment = Enum.HorizontalAlignment.Left,
 		horizontalFlex = Enum.UIFlexAlignment.None,
-		veritcalAlignment = Enum.VerticalAlignment.Top,
+		verticalAlignment = Enum.VerticalAlignment.Top,
 		verticalFlex = Enum.UIFlexAlignment.None,
 		className,
 		children,
@@ -57,7 +57,7 @@ function List(props: CustomizedProps<Frame, ListProps>) {
 		wrap,
 		horizontalAlignment,
 		horizontalFlex,
-		veritcalAlignment,
+		verticalAlignment,
 		verticalFlex,
 	});
 
