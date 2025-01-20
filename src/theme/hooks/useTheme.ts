@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "@rbxts/react";
+import { useEffect, useMemo, useState } from "@rbxts/react";
 import { themeProducer } from "../context/ThemeProducer";
 import { Theme } from "theme/interfaces";
 
@@ -8,17 +8,18 @@ const useTheme = (): {
 } => {
 	const [theme, setTheme] = useState<Theme>(themeProducer.getState());
 
-	themeProducer.subscribe((state, _previousState) => {
-		setTheme(state);
+	useEffect(() => {
+		const unsubscribeFn = themeProducer.subscribe((state, _previousState) => {
+			setTheme(state);
+		});
+
+		return () => {
+			unsubscribeFn();
+		};
 	});
 
-	const setProducerTheme = useCallback(
-		(t: Theme) => {
-			themeProducer.setTheme(t);
-		},
-		[setTheme],
-	);
+	const memoizedSetTheme = useMemo(() => themeProducer.setTheme, [themeProducer.setTheme]);
 
-	return useMemo(() => ({ theme, setTheme: setProducerTheme }), [theme, setTheme]);
+	return useMemo(() => ({ theme, setTheme: memoizedSetTheme }), [theme, setTheme]);
 };
 export default useTheme;
