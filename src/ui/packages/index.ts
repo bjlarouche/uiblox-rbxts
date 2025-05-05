@@ -12,3 +12,4 @@ export * from "./toast";
 export * from "./treeView";
 export * from "./typography";
 export * from "./button";
+export * from "./loadingStroke";
