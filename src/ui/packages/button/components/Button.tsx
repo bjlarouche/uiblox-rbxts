@@ -1,7 +1,9 @@
-import React, { useState } from "@rbxts/react";
+import React, { useEffect, useRef, useState } from "@rbxts/react";
+import { TweenService } from "@rbxts/services";
 import { CustomizedProps, WriteableStyle } from "theme";
 import { ButtonSize, ButtonColor, ButtonVariant } from "../types";
 import useButtonStyles from "./Button.styles";
+import { LoadingStroke } from "ui/packages/loadingStroke";
 
 export type DefaultButtonComponent = TextButton;
 
@@ -19,6 +21,7 @@ export interface ButtonProps {
 	loading?: boolean;
 	rounded?: boolean;
 	hoveringDisabled?: boolean;
+	animating?: boolean;
 	onLeftClick?: () => void;
 	onLeftDown?: () => void;
 	onLeftUp?: () => void;
@@ -37,6 +40,7 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 		loading = false,
 		rounded = false,
 		hoveringDisabled = false,
+		animating = false,
 		onLeftClick,
 		onLeftDown,
 		onLeftUp,
@@ -60,10 +64,10 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 			ref={ref}
 			{...root}
 			{...font}
-			Active={!disabled && !loading}
+			Active={!disabled}
 			Text={text}
 			BackgroundTransparency={
-				(!hoveringDisabled && hovering) || disabled || loading
+				(!hoveringDisabled && hovering) || disabled
 					? 0.75
 					: (className as WriteableStyle<DefaultButtonComponent>)?.BackgroundTransparency ??
 					  (variant === "outlined" || variant === "text" ? 1 : 0)
@@ -131,6 +135,8 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 			{variant === "outlined" && <uistroke {...stroke} />}
 			{rounded && <uicorner {...corner} />}
 			{children}
+
+			<LoadingStroke animating={animating} />
 		</textbutton>
 	);
 }
