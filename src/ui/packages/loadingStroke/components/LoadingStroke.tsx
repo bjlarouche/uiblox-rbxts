@@ -34,37 +34,33 @@ function LoadingStroke(props: CustomizedProps<UIStroke, LoadingStrokeProps>) {
 	}, [animating]);
 
 	return (
-		<>
-			{animating && (
-				<uistroke
-					key={id || "LoadingStroke"}
-					ref={ref}
-					Color={Color3.fromRGB(255, 255, 255)}
-					Thickness={2}
-					ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
-					{...className}>
-						<uigradient
-							ref={gradientRef}
-							Transparency={
-								new NumberSequence([
-									new NumberSequenceKeypoint(0, 1),
-									new NumberSequenceKeypoint(0.5, 0),
-									new NumberSequenceKeypoint(1, 1),
-								])
-							}
-							Rotation={0}
-							Color={
-								new ColorSequence([
-									new ColorSequenceKeypoint(0, Color3.fromRGB(255, 255, 255)),
-									new ColorSequenceKeypoint(0.5, Color3.fromRGB(235, 235, 235)),
-									new ColorSequenceKeypoint(1, Color3.fromRGB(255, 255, 255)),
-								])
-							}
-					/>
-					{children}
-				</uistroke>
-			)}
-		</>
+		<uistroke
+			key={id || "LoadingStroke"}
+			ref={ref}
+			Color={Color3.fromRGB(255, 255, 255)}
+			Thickness={2}
+			ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
+			{...className}>
+				<uigradient
+					ref={gradientRef}
+					Transparency={
+						new NumberSequence([
+							new NumberSequenceKeypoint(0, 1),
+							new NumberSequenceKeypoint(0.5, 0),
+							new NumberSequenceKeypoint(1, 1),
+						])
+					}
+					Rotation={0}
+					Color={
+						new ColorSequence([
+							new ColorSequenceKeypoint(0, Color3.fromRGB(255, 255, 255)),
+							new ColorSequenceKeypoint(0.5, Color3.fromRGB(235, 235, 235)),
+							new ColorSequenceKeypoint(1, Color3.fromRGB(255, 255, 255)),
+						])
+					}
+			/>
+			{children}
+		</uistroke>
 	);
 }
 

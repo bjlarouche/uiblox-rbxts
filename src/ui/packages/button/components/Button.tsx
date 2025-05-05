@@ -132,11 +132,11 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 			}}
 			{...className}
 		>
-			{variant === "outlined" && <uistroke {...stroke} />}
+			{variant === "outlined" && !animating && <uistroke {...stroke} />}
+			{animating && <LoadingStroke animating={animating} />}
 			{rounded && <uicorner {...corner} />}
+			
 			{children}
-
-			<LoadingStroke animating={animating} />
 		</textbutton>
 	);
 }
