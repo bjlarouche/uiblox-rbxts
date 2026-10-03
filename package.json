@@ -2,11 +2,13 @@
 	"name": "@rbxts/uiblox",
 	"version": "0.1.53",
 	"description": "UI Library and theming for roblox-ts projects",
-	"main": "out/init.lua",
+	"main": "out/init.luau",
+	"packageManager": "pnpm@11.3.0",
 	"scripts": {
 		"build": "rbxtsc",
 		"watch": "rbxtsc -w",
-		"prepublishOnly": "npm run build"
+		"pack:check": "node scripts/pack-check.mjs",
+		"prepublishOnly": "pnpm build"
 	},
 	"keywords": [
 		"roblox-ts",
@@ -50,6 +52,7 @@
 		"@rbxts/react": "^17.2.1",
 		"@rbxts/react-reflex": "^0.3.4",
 		"@rbxts/react-roblox": "^17.2.1",
+		"@rbxts/reflex": "4.3.1",
 		"@rbxts/services": "^1.5.5"
 	},
 	"directories": {
