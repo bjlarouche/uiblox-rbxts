@@ -37,4 +37,6 @@ export enum Icons {
 	ListPrimary = "rbxassetid://9306610505",
 	LightTheme = "rbxassetid://9377269022",
 	DarkTheme = "rbxassetid://9377269322",
+	Star = "rbxassetid://7072723006",
+	StarFilled = "rbxassetid://14717297422",
 }
