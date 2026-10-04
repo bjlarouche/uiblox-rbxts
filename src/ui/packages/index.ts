@@ -22,3 +22,4 @@ export * from "./slider";
 export * from "./splitPane";
 export * from "./switch";
 export * from "./tabs";
+export * from "./tooltip";

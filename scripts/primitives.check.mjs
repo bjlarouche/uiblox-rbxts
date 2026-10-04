@@ -152,6 +152,7 @@ import { RadioGroupProps } from "ui/packages/radioGroup";
 import { SelectProps } from "ui/packages/select";
 import { TabsProps } from "ui/packages/tabs";
 import { SplitPaneProps } from "ui/packages/splitPane";
+import { TooltipProps } from "ui/packages/tooltip";
 import { Branch } from "ui/packages/treeView";
 import { Icons } from "ui/enums";
 
@@ -198,6 +199,8 @@ const tabs: TabsProps<string> = {
 void tabs;
 const split: SplitPaneProps = { value: 240, min: 200, max: 340, vertical: false, onChange: (size: number) => void size };
 void split;
+const tooltip: TooltipProps = { text: "Reset", delay: 0.2 };
+void tooltip;
 `,
 );
 writeFileSync(
