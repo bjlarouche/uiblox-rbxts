@@ -14,16 +14,17 @@ export interface TreeViewProps {
 	tree: Tree;
 	icon?: Icons;
 	filter?: string;
+	selected?: string;
 }
 
 function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps>) {
-	const { tree, icon, filter, className, id, ref } = props;
+	const { tree, icon, filter, selected, className, id, ref } = props;
 	const { root, header, list, gridLayout, row, branchIcon, branchTypography, leafIcon, leafTypography } =
 		useTreeViewStyles();
 
 	const [selectedBranch, setSelectedBranch] = useState<Branch | undefined>();
 	const [selectedLeaf, setSelectedLeaf] = useState<Leaf | undefined>();
-	const [expanded, setExpanded] = useState<Branch[]>([]);
+	const [expanded, setExpanded] = useState<string[]>([]);
 	const [canvasSize, setCanvasSize] = useState<UDim2>(new UDim2(0, 0, 0, 0));
 
 	const resizeScrollingFrame = (rbx: ScrollingFrame, child?: Instance) => {
@@ -76,7 +77,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 			return;
 		}
 
-		const newExpanded: Branch[] = [];
+		const newExpanded: string[] = [];
 
 		// Figure out which branches should be expanded
 		tree.branches.forEach((branch) => {
@@ -84,18 +85,18 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 
 			if (matchesBranchFilter) {
 				// If branch is a match, whole branch should be expanded
-				if (!newExpanded.includes(branch)) {
-					newExpanded.push(branch);
+				if (!newExpanded.includes(branch.title)) {
+					newExpanded.push(branch.title);
 				}
 			} else {
 				// If any of the leaves are a match, branch should be expanded
 				branch.leaves.forEach((leaf) => {
-					if (newExpanded.includes(branch)) return; // Already expanded.
+					if (newExpanded.includes(branch.title)) return; // Already expanded.
 
 					const matchesLeafFilter = matchesFilter(leaf.title);
 
 					if (matchesLeafFilter) {
-						newExpanded.push(branch);
+						newExpanded.push(branch.title);
 					}
 				});
 			}
@@ -104,6 +105,11 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 		// Set expanded to new array
 		setExpanded(newExpanded);
 	}, [tree, filter]);
+
+	useEffect(() => {
+		const branch = selected?.split("/")[0];
+		if (branch !== undefined) setExpanded((old) => (old.includes(branch) ? old : [...old, branch]));
+	}, [tree, filter, selected]);
 
 	return (
 		<frame key={id || "TreeView"} ref={ref} {...root} {...className}>
@@ -153,13 +159,13 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 
 											// If there are leaves... Expand/Collapse
 											if (branch.leaves.size() > 0) {
-												const isExpanded = expanded.includes(branch);
+												const isExpanded = expanded.includes(branch.title);
 												if (isExpanded) {
 													setExpanded((oldExpanded) =>
-														oldExpanded.filter((b) => b !== branch),
+														oldExpanded.filter((b) => b !== branch.title),
 													);
 												} else {
-													setExpanded((oldExpanded) => [...oldExpanded, branch]);
+													setExpanded((oldExpanded) => [...oldExpanded, branch.title]);
 												}
 											} else {
 												setSelectedBranch(branch);
@@ -169,7 +175,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 								>
 									{branch.leaves.size() > 0 && (
 										<Icon
-											icon={expanded.includes(branch) ? Icons.Expanded : Icons.Collapsed}
+											icon={expanded.includes(branch.title) ? Icons.Expanded : Icons.Collapsed}
 											size={"xxs"}
 											className={branchIcon}
 											tint={DEFAULT_THEME.options.constants.extendedPalette.Gray[70]}
@@ -184,7 +190,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 									/>
 								</textbutton>
 
-								{expanded.includes(branch) &&
+								{expanded.includes(branch.title) &&
 									branch.leaves.map((leaf: Leaf, leafIndex) => {
 										const matchesLeafFilter = matchesFilter(leaf.title);
 										if (matchesBranchFilter || matchesLeafFilter) {
@@ -214,7 +220,15 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 														className={{ ...leafTypography } as WriteableStyle<TextLabel>}
 														color={"textPrimary"}
 														variant={"body"}
-														family={selectedLeaf === leaf ? "bold" : "default"}
+														family={
+															(
+																selected !== undefined
+																	? selected === `${branch.title}/${leaf.title}`
+																	: selectedLeaf === leaf
+															)
+																? "bold"
+																: "default"
+														}
 													/>
 												</textbutton>
 											);
