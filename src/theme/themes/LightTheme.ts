@@ -35,7 +35,7 @@ const LightTheme: Theme = {
 		},
 		text: {
 			primary: Common.Black,
-			secondary: Dark[90],
+			secondary: Light[70],
 		},
 		divider: Gray[70],
 		background: {

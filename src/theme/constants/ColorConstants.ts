@@ -56,7 +56,7 @@ export const LIGHT_THEME_COLORS: Colors = {
 	UIMuted: Gray[50],
 	UIEmphasis: Gray[80], //TODO
 	textDefault: Common.Black,
-	textMuted: Gray[50], //TODO
+	textMuted: Gray[70],
 	textEmphasis: Common.Black,
 	iconDefault: Common.Black,
 	iconEmphasis: Common.Black,
