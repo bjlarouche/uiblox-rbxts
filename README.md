@@ -225,7 +225,10 @@ only when the value actually changes, and never while disabled.
 | Input | `text` | `onInput` while typing, `onTextChanged` on commit |
 
 Select and Tooltip render through `Popup`, which portals into the nearest
-`LayerCollector` so clipping parents do not cut them off.
+`LayerCollector` so clipping parents do not cut them off. The popup follows its
+anchor when that anchor moves or resizes, and Select closes if the anchor leaves
+the layer. Select handles Up, Down, Enter, and Escape while it is open or
+selected, including when the pointer is not over it.
 
 ### Client
 

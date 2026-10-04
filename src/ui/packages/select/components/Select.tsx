@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { GuiService } from "@rbxts/services";
+import { GuiService, UserInputService } from "@rbxts/services";
 import { cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Popup } from "ui/packages/popup";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import useSelectStyles from "./Select.styles";
+import { shouldHandleSelectKey } from "./selectKey";
 import { stepChoice } from "./stepChoice";
 
 export interface SelectProps<T> {
@@ -21,26 +22,22 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const active = canActivate(disabled);
 	const [anchor, setAnchor] = useState<TextButton>();
 	const [open, setOpen] = useState(false);
+	const [focused, setFocused] = useState(false);
 	const [highlight, setHighlight] = useState(-1);
-	const highlighted = useRef<TextButton>();
+	const recent = useRef<{ key: string; at: number }>();
+	const onKeyRef = useRef<(input: InputObject, fromControl: boolean) => void>();
 	const current = options.find((option) => option.value === value);
 	const shown = open && active;
 
-	useEffect(() => {
-		if (shown && anchor && highlighted.current && GuiService.SelectedObject === anchor) {
-			GuiService.SelectedObject = highlighted.current;
-		}
-	}, [shown]);
+	const close = () => {
+		setOpen(false);
+		if (anchor && anchor.Parent) GuiService.SelectedObject = anchor;
+	};
 
 	const openMenu = () => {
 		const index = options.findIndex((option) => option.value === value && !option.disabled);
 		setHighlight(index >= 0 ? index : stepChoice(options, -1, 1));
 		setOpen(true);
-	};
-
-	const close = () => {
-		setOpen(false);
-		if (anchor && GuiService.SelectedObject !== undefined) GuiService.SelectedObject = anchor;
 	};
 
 	const choose = (index: number) => {
@@ -50,7 +47,22 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 		if (choice.value !== value) onChange(choice.value);
 	};
 
-	const onKey = (_: GuiObject, input: InputObject) => {
+	const onKey = (input: InputObject, fromControl: boolean) => {
+		const now = os.clock();
+		if (
+			!shouldHandleSelectKey(
+				shown,
+				focused,
+				fromControl,
+				UserInputService.GetFocusedTextBox() !== undefined,
+				input.KeyCode.Name,
+				now,
+				recent.current,
+			)
+		) {
+			return;
+		}
+		recent.current = { key: input.KeyCode.Name, at: now };
 		const key = input.KeyCode;
 		if (!shown) {
 			if (active && key === Enum.KeyCode.Down) openMenu();
@@ -64,6 +76,21 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 			close();
 		}
 	};
+
+	onKeyRef.current = onKey;
+
+	useEffect(() => {
+		if (!shown && !focused) return;
+		const connection = UserInputService.InputBegan.Connect((input) => onKeyRef.current?.(input, false));
+		return () => connection.Disconnect();
+	}, [shown, focused]);
+
+	useEffect(() => {
+		if (!shown || !anchor) return;
+		return () => {
+			if (anchor.Parent) GuiService.SelectedObject = anchor;
+		};
+	}, [shown, anchor]);
 
 	return (
 		<frame key={id || "Select"} ref={ref} {...styles.root} {...className}>
@@ -83,7 +110,9 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 						if (shown) close();
 						else if (active) openMenu();
 					},
-					InputBegan: onKey,
+					SelectionGained: () => setFocused(true),
+					SelectionLost: () => setFocused(false),
+					InputBegan: (_, input) => onKey(input, true),
 				}}
 			>
 				<uipadding {...styles.padding} />
@@ -91,8 +120,12 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 				<uistroke {...styles.stroke} />
 			</textbutton>
 			{shown && (
-				<Popup anchor={anchor} onDismiss={close}>
-					<scrollingframe key="Options" {...styles.list} Event={{ InputBegan: onKey }}>
+				<Popup anchor={anchor} onDismiss={close} onInput={(input) => onKey(input, true)}>
+					<scrollingframe
+						key="Options"
+						{...styles.list}
+						Event={{ InputBegan: (_, input) => onKey(input, true) }}
+					>
 						<uisizeconstraint {...styles.listSize} />
 						<uilistlayout {...styles.layout} />
 						<uicorner {...styles.corner} />
@@ -100,7 +133,9 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 						{options.map((choice, index) => (
 							<textbutton
 								key={`${choice.label}-${index}`}
-								ref={index === highlight ? highlighted : undefined}
+								ref={(button) => {
+									if (button && index === highlight) GuiService.SelectedObject = button;
+								}}
 								{...cx<TextButton>(
 									styles.option,
 									index === highlight && styles.highlighted,
@@ -116,7 +151,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 										if (!choice.disabled) setHighlight(index);
 									},
 									SelectionGained: () => setHighlight(index),
-									InputBegan: onKey,
+									InputBegan: (_, input) => onKey(input, true),
 								}}
 							>
 								<uipadding {...styles.padding} />

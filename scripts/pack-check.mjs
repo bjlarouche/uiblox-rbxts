@@ -25,6 +25,7 @@ try {
 
 	const consumer = join(dir, "consumer");
 	mkdirSync(join(consumer, "src"), { recursive: true });
+	writeFileSync(join(consumer, ".npmrc"), "registry=https://registry.npmjs.org/\n");
 	writeFileSync(
 		join(consumer, "package.json"),
 		JSON.stringify(

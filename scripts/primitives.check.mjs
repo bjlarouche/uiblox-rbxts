@@ -101,6 +101,27 @@ if (stepChoice(choices, 3, 1) !== 3) throw new Error("down stops at last enabled
 if (stepChoice(choices, 1, -1) !== 1) throw new Error("up stops at first enabled");
 if (stepChoice([{ disabled: true }], -1, 1) !== -1) throw new Error("all disabled has no highlight");
 
+const { shouldHandleSelectKey } = await import(
+	pathToFileURL(join(root, "src/ui/packages/select/components/selectKey.ts")).href
+);
+if (!shouldHandleSelectKey(false, true, false, false, "Down", 1)) throw new Error("focused select hears keys without the pointer");
+if (!shouldHandleSelectKey(true, false, false, false, "Escape", 1)) throw new Error("open select hears keys");
+if (shouldHandleSelectKey(true, true, false, true, "Down", 1)) throw new Error("textbox keeps its keys");
+if (shouldHandleSelectKey(false, false, false, false, "Down", 1)) throw new Error("idle select ignores keys");
+const prior = { key: "Down", at: 1 };
+if (shouldHandleSelectKey(true, false, true, false, "Down", 1.01, prior)) throw new Error("same key twice in one frame");
+if (!shouldHandleSelectKey(true, false, true, false, "Down", 1.02, prior)) throw new Error("key repeat still registers");
+
+const { popupPlacement } = await import(
+	pathToFileURL(join(root, "src/ui/packages/popup/components/placement.ts")).href
+);
+const below = popupPlacement(100, 200, 80, 24, 10, 20, 400);
+if (below.above || below.x !== 90 || below.y !== 204 || below.width !== 80) throw new Error("list opens under the anchor");
+const moved = popupPlacement(140, 200, 120, 24, 10, 20, 400);
+if (moved.x !== 130 || moved.width !== 120) throw new Error("list follows a moved or resized anchor");
+const above = popupPlacement(100, 300, 80, 24, 0, 0, 400);
+if (!above.above || above.y !== 300) throw new Error("list flips above the anchor");
+
 const { clampSplit } = await import(
 	pathToFileURL(join(root, "src/ui/packages/splitPane/components/splitSize.ts")).href
 );
