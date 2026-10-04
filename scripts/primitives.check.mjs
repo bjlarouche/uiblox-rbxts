@@ -20,6 +20,14 @@ if (canActivate(true, false)) throw new Error("disabled must not activate");
 if (canActivate(false, true)) throw new Error("loading must not activate");
 if (!canActivate(false, false)) throw new Error("enabled control must activate");
 
+const { nextChecked } = await import(
+	pathToFileURL(join(root, "src/ui/packages/checkbox/components/nextChecked.ts")).href
+);
+if (nextChecked(false) !== true) throw new Error("unchecked toggles on");
+if (nextChecked(true) !== false) throw new Error("checked toggles off");
+if (nextChecked(true, true) !== true) throw new Error("mixed commits checked");
+if (nextChecked(false, true) !== true) throw new Error("mixed commits checked");
+
 const dir = mkdtempSync(join(tmpdir(), "uiblox-primitives-"));
 const tsconfig = {
 	compilerOptions: {
@@ -51,16 +59,22 @@ writeFileSync(
 	join(dir, "src/ok.ts"),
 	`
 import { ButtonProps } from "ui/packages/button";
+import { CheckboxProps } from "ui/packages/checkbox";
 import { IconButtonProps } from "ui/packages/iconButton";
 import { InputProps } from "ui/packages/input";
+import { SwitchProps } from "ui/packages/switch";
 import { Icons } from "ui/enums";
 
 const button: ButtonProps = { text: "Save", disabled: false, loading: false };
 const icon: IconButtonProps = { icon: Icons.Save, tint: new Color3(1, 1, 1), disabled: true };
 const input: InputProps = { text: "draft", disabled: true, onTextChanged: () => {} };
+const checkbox: CheckboxProps = { value: false, mixed: true, disabled: true, onChange: () => {} };
+const toggle: SwitchProps = { value: true, disabled: false, onChange: () => {} };
 void button;
 void icon;
 void input;
+void checkbox;
+void toggle;
 `,
 );
 writeFileSync(
