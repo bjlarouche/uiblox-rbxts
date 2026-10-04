@@ -1,6 +1,4 @@
-import { ClassNameMap } from "../types/styles";
-
-const createStyles = <ClassKey extends string = string>(styles: ClassNameMap<ClassKey>): ClassNameMap<ClassKey> => {
+const createStyles = <Styles extends Record<string, object>>(styles: Styles): Styles => {
 	return styles;
 };
 

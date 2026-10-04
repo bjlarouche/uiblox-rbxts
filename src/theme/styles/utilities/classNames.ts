@@ -1,12 +1,11 @@
-import { WriteableStyle } from "../types";
+import type { WriteableStyle } from "../types";
 
 const classNames = <T extends Instance>(
 	...args: Array<WriteableStyle<T> | false | undefined>
 ): WriteableStyle<T> => {
 	let style = {} as WriteableStyle<T>;
 
-	for (let i = 0; i < args.size(); i++) {
-		const arg = args[i];
+	for (const arg of args) {
 		if (arg !== false && arg !== undefined) {
 			style = { ...style, ...arg };
 		}
