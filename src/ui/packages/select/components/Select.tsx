@@ -5,6 +5,7 @@ import { canActivate } from "ui/packages/button/components/activation";
 import { Popup } from "ui/packages/popup";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import useSelectStyles from "./Select.styles";
+import { canFocusGui } from "./selectFocus";
 import { shouldHandleSelectKey } from "./selectKey";
 import { stepChoice } from "./stepChoice";
 
@@ -31,7 +32,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 
 	const close = () => {
 		setOpen(false);
-		if (anchor && anchor.Parent) GuiService.SelectedObject = anchor;
+		if (canFocusGui(anchor)) GuiService.SelectedObject = anchor;
 	};
 
 	const openMenu = () => {
@@ -88,7 +89,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	useEffect(() => {
 		if (!shown || !anchor) return;
 		return () => {
-			if (anchor.Parent) GuiService.SelectedObject = anchor;
+			if (canFocusGui(anchor)) GuiService.SelectedObject = anchor;
 		};
 	}, [shown, anchor]);
 
@@ -134,7 +135,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 							<textbutton
 								key={`${choice.label}-${index}`}
 								ref={(button) => {
-									if (button && index === highlight) GuiService.SelectedObject = button;
+									if (button && index === highlight && canFocusGui(button)) GuiService.SelectedObject = button;
 								}}
 								{...cx<TextButton>(
 									styles.option,

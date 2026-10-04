@@ -112,6 +112,13 @@ const prior = { key: "Down", at: 1 };
 if (shouldHandleSelectKey(true, false, true, false, "Down", 1.01, prior)) throw new Error("same key twice in one frame");
 if (!shouldHandleSelectKey(true, false, true, false, "Down", 1.02, prior)) throw new Error("key repeat still registers");
 
+const { canFocusGui } = await import(
+	pathToFileURL(join(root, "src/ui/packages/select/components/selectFocus.ts")).href
+);
+if (canFocusGui(undefined) || canFocusGui({})) throw new Error("unparented cannot steal focus");
+if (canFocusGui({ Parent: {}, FindFirstAncestorWhichIsA: () => undefined })) throw new Error("plugin gui cannot steal focus");
+if (!canFocusGui({ Parent: {}, FindFirstAncestorWhichIsA: () => ({}) })) throw new Error("player gui can steal focus");
+
 const { popupPlacement } = await import(
 	pathToFileURL(join(root, "src/ui/packages/popup/components/placement.ts")).href
 );
