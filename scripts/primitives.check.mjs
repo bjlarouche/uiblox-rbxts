@@ -20,6 +20,23 @@ if (canActivate(true, false)) throw new Error("disabled must not activate");
 if (canActivate(false, true)) throw new Error("loading must not activate");
 if (!canActivate(false, false)) throw new Error("enabled control must activate");
 
+globalThis.math = { floor: Math.floor, huge: Infinity };
+globalThis.tonumber = (text) => (text.trim() === "" || Number.isNaN(Number(text)) ? undefined : Number(text));
+const { commitNumber, parseNumberDraft } = await import(
+	pathToFileURL(join(root, "src/ui/packages/numberInput/components/numberValue.ts")).href
+);
+for (const draft of ["", "-", ".", "-.", "1e", "abc"]) {
+	if (parseNumberDraft(draft) !== undefined) throw new Error(`draft "${draft}" must not commit`);
+}
+if (parseNumberDraft("-2.5") !== -2.5) throw new Error("negative decimal commits");
+if (parseNumberDraft("15", 0, 10) !== 10) throw new Error("clamps to max");
+if (parseNumberDraft("-3", 0, 10) !== 0) throw new Error("clamps to min");
+if (parseNumberDraft("7", 0, 10, 5) !== 5) throw new Error("rounds to step");
+if (parseNumberDraft("8", 0, 10, 5) !== 10) throw new Error("rounds up to step");
+if (parseNumberDraft("6", 1, 11, 5) !== 6) throw new Error("step anchors at min");
+if (commitNumber(Number.NaN) !== undefined) throw new Error("NaN never commits");
+if (commitNumber(Infinity) !== undefined) throw new Error("inf never commits");
+
 const { nextChecked } = await import(
 	pathToFileURL(join(root, "src/ui/packages/checkbox/components/nextChecked.ts")).href
 );
@@ -108,6 +125,8 @@ import { CheckboxProps } from "ui/packages/checkbox";
 import { IconButtonProps } from "ui/packages/iconButton";
 import { InputProps } from "ui/packages/input";
 import { SwitchProps } from "ui/packages/switch";
+import { NumberInputProps } from "ui/packages/numberInput";
+import { SliderProps } from "ui/packages/slider";
 import { Branch } from "ui/packages/treeView";
 import { Icons } from "ui/enums";
 
@@ -128,6 +147,10 @@ void input;
 void checkbox;
 void toggle;
 void nestedBranch;
+const numberInput: NumberInputProps = { value: 1, min: 0, max: 10, step: 1, onChange: () => {} };
+const slider: SliderProps = { value: 0.5, min: 0, max: 1, onChange: () => {}, onCommit: () => {} };
+void numberInput;
+void slider;
 `,
 );
 writeFileSync(

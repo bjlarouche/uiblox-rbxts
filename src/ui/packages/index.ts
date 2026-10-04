@@ -14,4 +14,6 @@ export * from "./typography";
 export * from "./button";
 export * from "./checkbox";
 export * from "./loadingStroke";
+export * from "./numberInput";
+export * from "./slider";
 export * from "./switch";
