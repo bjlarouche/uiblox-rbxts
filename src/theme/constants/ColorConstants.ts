@@ -52,9 +52,9 @@ export const LIGHT_THEME_COLORS: Colors = {
 	backgroundUIDefault: Gray[30],
 	backgroundUIMuted: Gray[50],
 	backgroundUIContrast: Gray[50],
-	UIDefault: Gray[70], //TODO
+	UIDefault: Gray[70],
 	UIMuted: Gray[50],
-	UIEmphasis: Gray[80], //TODO
+	UIEmphasis: Gray[60],
 	textDefault: Common.Black,
 	textMuted: Gray[70],
 	textEmphasis: Common.Black,
@@ -62,15 +62,15 @@ export const LIGHT_THEME_COLORS: Colors = {
 	iconEmphasis: Common.Black,
 	iconOnHover: Common.Black,
 	systemPrimaryDefault: Common.Black,
-	systemPrimaryOnHover: Gray[40], //TODO
+	systemPrimaryOnHover: Gray[90],
 	systemPrimaryContent: Common.White,
 	contextualPrimaryDefault: Green[60],
-	contextualPrimaryOnHover: Green[40], //TODO
+	contextualPrimaryOnHover: Green[70],
 	contextualPrimaryContent: Common.White,
 	secondaryDefault: Common.Black,
-	secondaryOnHover: Gray[40], //TODO
+	secondaryOnHover: Gray[90],
 	secondaryContent: Common.Black,
-	divider: Gray[70], //TODO
+	divider: Gray[50],
 	overlay: Common.White,
 	dropShadow: Common.White,
 	navigationBar: Gray[40],
@@ -78,12 +78,12 @@ export const LIGHT_THEME_COLORS: Colors = {
 	badgeContent: Common.White,
 	placeholder: Gray[50],
 	online: Green[60],
-	offline: Gray[50], //TODO
-	alert: Red[60], //TODO
+	offline: Gray[60],
+	alert: Red[80],
 	success: Green[60],
-	accent: Purple[50], //TODO
-	link: Blue[50], //TODO
-	caution: Yellow[50], //TODO
+	accent: Purple[70],
+	link: Blue[80],
+	caution: Yellow[90],
 	text: Common.Black,
 	background: Common.White,
 };
