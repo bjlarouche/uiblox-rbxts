@@ -1,5 +1,5 @@
 import React, { useState } from "@rbxts/react";
-import { classNames, CustomizedProps, WriteableStyle } from "theme";
+import { cx, CustomizedProps } from "theme";
 import { Divider } from "../../divider";
 import { Orientations } from "ui/enums";
 import { InputColor, InputMargin, InputVariant } from "../types";
@@ -57,8 +57,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 					Active={!disabled}
 					Text={input}
 					PlaceholderText={placeholder}
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					{...classNames(new Map<WriteableStyle<any>, boolean>([[errorColorText, hasError]]))}
+					{...cx(hasError && errorColorText)}
 					Event={{
 						ReturnPressedFromOnScreenKeyboard: (rbx) => {
 							if (onEnterPressed) {
@@ -85,21 +84,14 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 				<Divider
 					padding={0}
 					orientation={Orientations.Horizontal}
-					className={classNames(
-						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						new Map<WriteableStyle<any>, boolean>([
-							[errorColorFrame, hasError],
-							[divider, true],
-						]),
-					)}
+					className={cx(divider, hasError && errorColorFrame)}
 				/>
 				{helperText !== undefined && (
 					<textlabel
 						key={"HelperText"}
 						{...font}
 						{...helper}
-						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						{...classNames(new Map<WriteableStyle<any>, boolean>([[errorColorText, hasError]]))}
+						{...cx(hasError && errorColorText)}
 						Text={helperText}
 					/>
 				)}
