@@ -22,18 +22,17 @@ function count<T>(list: ReadonlyArray<T> | undefined) {
 }
 
 export function branchHoldsSelection(branchPath: string, selected?: string) {
-	if (selected === undefined || selected === "") return false;
-	const parts = selected.split("/");
-	const total = count(parts);
-	if (total <= 1) return selected === branchPath;
-	let parent = "";
+	if (selected === undefined || selected === "" || branchPath === "") return false;
+	if (selected === branchPath) return true;
+	const branchParts = branchPath.split("/");
+	const selectedParts = selected.split("/");
+	if (count(branchParts) >= count(selectedParts)) return false;
 	let index = 0;
-	for (const part of parts) {
+	for (const part of branchParts) {
+		if (selectedParts[index] !== part) return false;
 		index++;
-		if (index === total) break;
-		parent = parent === "" ? part : `${parent}/${part}`;
 	}
-	return parent === branchPath;
+	return true;
 }
 
 function branchHit(branch: Branch, matches: (title: string) => boolean): boolean {

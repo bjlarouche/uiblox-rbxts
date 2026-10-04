@@ -31,9 +31,16 @@ if (nextChecked(false, true) !== true) throw new Error("mixed commits checked");
 const { branchHoldsSelection, visibleRows } = await import(
 	pathToFileURL(join(root, "src/ui/packages/treeView/components/treeRows.ts")).href
 );
-if (!branchHoldsSelection("Fixture", "Fixture/Native")) throw new Error("selected leaf bolds its branch");
-if (branchHoldsSelection("Inputs", "Inputs/Button/Primary")) throw new Error("expanded ancestor stays regular");
+if (!branchHoldsSelection("Fixture", "Fixture/Styled")) throw new Error("selected leaf bolds Fixture on mount");
+if (!branchHoldsSelection("Inputs", "Inputs/Button/Primary")) throw new Error("ancestor of the selection is bold");
 if (!branchHoldsSelection("Inputs/Button", "Inputs/Button/Primary")) throw new Error("direct parent is bold");
+if (branchHoldsSelection("Other", "Fixture/Styled")) throw new Error("unrelated branch is bold");
+const mounted = visibleRows(
+	[{ title: "Fixture", leaves: [{ title: "Native" }, { title: "Styled" }] }],
+	[],
+	"Fixture/Styled",
+);
+if (!mounted[0].emphasized || mounted[0].title !== "Fixture") throw new Error("first mount bolds Fixture before expand");
 const nested = [
 	{
 		title: "Inputs",
@@ -43,7 +50,7 @@ const nested = [
 ];
 const rows = visibleRows(nested, ["Inputs", "Inputs/Button"], "Inputs/Button/Primary");
 if (rows.length !== 3) throw new Error(`expected 3 levels, got ${rows.length}`);
-if (rows[0].depth !== 0 || rows[0].emphasized) throw new Error("root branch depth");
+if (rows[0].depth !== 0 || rows[0].title !== "Inputs" || !rows[0].emphasized) throw new Error("root branch depth");
 if (rows[1].depth !== 1 || rows[1].title !== "Button" || !rows[1].emphasized) throw new Error("middle branch");
 if (rows[2].depth !== 2 || rows[2].path !== "Inputs/Button/Primary" || !rows[2].emphasized) {
 	throw new Error("leaf level");
