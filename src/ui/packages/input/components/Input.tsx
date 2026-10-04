@@ -1,9 +1,10 @@
-import React, { useState } from "@rbxts/react";
+import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { cx, CustomizedProps } from "theme";
 import { Divider } from "../../divider";
 import { Orientations } from "ui/enums";
 import { InputColor, InputMargin, InputVariant } from "../types";
 import useInputStyles from "./Input.styles";
+import { syncInputDraft } from "./inputDraft";
 
 export type DefaultInputComponent = Frame;
 
@@ -45,7 +46,13 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 
 	const { root, font, margin, box, helper, errorColorFrame, errorColorText, divider, corner, stroke } =
 		useInputStyles(props);
-	const [input, setInput] = useState<string>(text ?? "");
+	const focused = useRef(false);
+	const entered = useRef(false);
+	const [draft, setDraft] = useState(text ?? "");
+
+	useEffect(() => {
+		setDraft((current) => syncInputDraft(focused.current, text, current));
+	}, [text]);
 
 	return (
 		<frame key={id || "Input"} ref={ref} {...root} {...className}>
@@ -55,26 +62,31 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 					{...font}
 					{...box}
 					Active={!disabled}
-					Text={input}
+					Text={draft}
 					PlaceholderText={placeholder}
 					{...cx(hasError && errorColorText)}
+					Change={{
+						Text: (rbx) => setDraft(rbx.Text),
+					}}
 					Event={{
-						ReturnPressedFromOnScreenKeyboard: (rbx) => {
-							if (onEnterPressed) {
-								const text = rbx.Text;
-								onEnterPressed(text);
-							}
+						Focused: () => {
+							focused.current = true;
+							entered.current = false;
+							if (onFocus) onFocus();
 						},
-						Focused: onFocus,
-						FocusLost: (rbx) => {
-							if (onTextChanged) {
-								const text = rbx.Text;
-								onTextChanged(text);
-							}
-
-							if (onBlur) {
-								onBlur();
-							}
+						ReturnPressedFromOnScreenKeyboard: (rbx) => {
+							if (entered.current || !onEnterPressed) return;
+							entered.current = true;
+							onEnterPressed(rbx.Text);
+						},
+						FocusLost: (rbx, enterPressed) => {
+							focused.current = false;
+							const committed = rbx.Text;
+							if (onTextChanged) onTextChanged(committed);
+							if (enterPressed && !entered.current && onEnterPressed) onEnterPressed(committed);
+							entered.current = false;
+							if (onBlur) onBlur();
+							setDraft(text ?? "");
 						},
 					}}
 				>
