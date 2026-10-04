@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { TweenService } from "@rbxts/services";
+import React, { useState } from "@rbxts/react";
 import { CustomizedProps, WriteableStyle } from "theme";
 import { ButtonSize, ButtonColor, ButtonVariant } from "../types";
+import { canActivate } from "./activation";
 import useButtonStyles from "./Button.styles";
 import { LoadingStroke } from "ui/packages/loadingStroke";
 
@@ -56,7 +56,10 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 	} = props;
 
 	const { root, font, corner, stroke } = useButtonStyles(props);
-	const [hovering, setHovering] = useState<boolean>(false);
+	const [hovering, setHovering] = useState(false);
+	const [focused, setFocused] = useState(false);
+	const active = canActivate(disabled, loading);
+	const pressed = disabled || (!hoveringDisabled && active && (hovering || focused));
 
 	return (
 		<textbutton
@@ -64,73 +67,47 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 			ref={ref}
 			{...root}
 			{...font}
-			Active={!disabled}
+			{...className}
+			Active={active}
+			Selectable={!disabled}
 			Text={text}
 			BackgroundTransparency={
-				(!hoveringDisabled && hovering) || disabled
+				pressed
 					? 0.75
 					: (className as WriteableStyle<DefaultButtonComponent>)?.BackgroundTransparency ??
 					  (variant === "outlined" || variant === "text" ? 1 : 0)
 			}
 			Event={{
 				MouseEnter: () => {
+					if (!active) return;
 					setHovering(true);
-
-					if (mouseEnter) {
-						mouseEnter();
-					}
+					if (mouseEnter) mouseEnter();
 				},
 				MouseLeave: () => {
 					setHovering(false);
-
-					if (mouseLeave) {
-						mouseLeave();
-					}
+					if (mouseLeave) mouseLeave();
 				},
+				SelectionGained: () => setFocused(true),
+				SelectionLost: () => setFocused(false),
 				MouseButton1Click: () => {
-					if (!disabled && !loading) {
-						if (onLeftClick) {
-							onLeftClick();
-						}
-					}
+					if (active && onLeftClick) onLeftClick();
 				},
 				MouseButton1Down: () => {
-					if (!disabled && !loading) {
-						if (onLeftDown) {
-							onLeftDown();
-						}
-					}
+					if (active && onLeftDown) onLeftDown();
 				},
 				MouseButton1Up: () => {
-					if (!disabled && !loading) {
-						if (onLeftUp) {
-							onLeftUp();
-						}
-					}
+					if (active && onLeftUp) onLeftUp();
 				},
 				MouseButton2Click: () => {
-					if (!disabled && !loading) {
-						if (onRightClick) {
-							onRightClick();
-						}
-					}
+					if (active && onRightClick) onRightClick();
 				},
 				MouseButton2Down: () => {
-					if (!disabled && !loading) {
-						if (onRightDown) {
-							onRightDown();
-						}
-					}
+					if (active && onRightDown) onRightDown();
 				},
 				MouseButton2Up: () => {
-					if (!disabled && !loading) {
-						if (onRightUp) {
-							onRightUp();
-						}
-					}
+					if (active && onRightUp) onRightUp();
 				},
 			}}
-			{...className}
 		>
 			{variant === "outlined" && !animating && <uistroke {...stroke} />}
 			{animating && <LoadingStroke animating={animating} />}
