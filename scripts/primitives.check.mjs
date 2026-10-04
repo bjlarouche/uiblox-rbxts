@@ -20,7 +20,7 @@ if (canActivate(true, false)) throw new Error("disabled must not activate");
 if (canActivate(false, true)) throw new Error("loading must not activate");
 if (!canActivate(false, false)) throw new Error("enabled control must activate");
 
-globalThis.math = { floor: Math.floor, huge: Infinity };
+globalThis.math = { floor: Math.floor, huge: Infinity, min: Math.min, max: Math.max };
 globalThis.tonumber = (text) => (text.trim() === "" || Number.isNaN(Number(text)) ? undefined : Number(text));
 const { commitNumber, parseNumberDraft } = await import(
 	pathToFileURL(join(root, "src/ui/packages/numberInput/components/numberValue.ts")).href
@@ -101,6 +101,16 @@ if (stepChoice(choices, 3, 1) !== 3) throw new Error("down stops at last enabled
 if (stepChoice(choices, 1, -1) !== 1) throw new Error("up stops at first enabled");
 if (stepChoice([{ disabled: true }], -1, 1) !== -1) throw new Error("all disabled has no highlight");
 
+const { clampSplit } = await import(
+	pathToFileURL(join(root, "src/ui/packages/splitPane/components/splitSize.ts")).href
+);
+if (clampSplit(240, 1000, 200, 340) !== 240) throw new Error("in-bounds size is kept");
+if (clampSplit(100, 1000, 200, 340) !== 200) throw new Error("clamps to min");
+if (clampSplit(900, 1000, 200, 340) !== 340) throw new Error("clamps to max");
+if (clampSplit(900, 1000, 200) !== 800) throw new Error("second pane keeps min");
+if (clampSplit(300, 300, 200, 340) !== 200) throw new Error("short dock favors first pane min");
+if (clampSplit(50, 0) !== 0) throw new Error("unmeasured pane collapses");
+
 const dir = mkdtempSync(join(tmpdir(), "uiblox-primitives-"));
 const tsconfig = {
 	compilerOptions: {
@@ -141,6 +151,7 @@ import { SliderProps } from "ui/packages/slider";
 import { RadioGroupProps } from "ui/packages/radioGroup";
 import { SelectProps } from "ui/packages/select";
 import { TabsProps } from "ui/packages/tabs";
+import { SplitPaneProps } from "ui/packages/splitPane";
 import { Branch } from "ui/packages/treeView";
 import { Icons } from "ui/enums";
 
@@ -185,6 +196,8 @@ const tabs: TabsProps<string> = {
 	onChange: (tab: string) => void tab,
 };
 void tabs;
+const split: SplitPaneProps = { value: 240, min: 200, max: 340, vertical: false, onChange: (size: number) => void size };
+void split;
 `,
 );
 writeFileSync(
