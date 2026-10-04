@@ -90,6 +90,17 @@ if (!flat[0].emphasized || flat[1].path !== "Fixture/Native" || flat[1].icon !==
 	throw new Error("two-level selection");
 }
 
+const { stepChoice } = await import(
+	pathToFileURL(join(root, "src/ui/packages/select/components/stepChoice.ts")).href
+);
+const choices = [{ disabled: true }, {}, { disabled: true }, {}, { disabled: true }];
+if (stepChoice(choices, -1, 1) !== 1) throw new Error("opens on first enabled choice");
+if (stepChoice(choices, 1, 1) !== 3) throw new Error("down skips disabled");
+if (stepChoice(choices, 3, -1) !== 1) throw new Error("up skips disabled");
+if (stepChoice(choices, 3, 1) !== 3) throw new Error("down stops at last enabled");
+if (stepChoice(choices, 1, -1) !== 1) throw new Error("up stops at first enabled");
+if (stepChoice([{ disabled: true }], -1, 1) !== -1) throw new Error("all disabled has no highlight");
+
 const dir = mkdtempSync(join(tmpdir(), "uiblox-primitives-"));
 const tsconfig = {
 	compilerOptions: {
@@ -128,6 +139,7 @@ import { SwitchProps } from "ui/packages/switch";
 import { NumberInputProps } from "ui/packages/numberInput";
 import { SliderProps } from "ui/packages/slider";
 import { RadioGroupProps } from "ui/packages/radioGroup";
+import { SelectProps } from "ui/packages/select";
 import { Branch } from "ui/packages/treeView";
 import { Icons } from "ui/enums";
 
@@ -161,6 +173,8 @@ const radio: RadioGroupProps<Enum.Font> = {
 	onChange: (font: Enum.Font) => void font,
 };
 void radio;
+const select: SelectProps<Enum.Font> = { ...radio, placeholder: "Font", disabled: false };
+void select;
 `,
 );
 writeFileSync(
