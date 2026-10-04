@@ -1,5 +1,5 @@
 
-import React from "react";
+import React from "@rbxts/react";
 import { makeStyles, Theme, createStyles, WriteableStyle, CustomizedProps } from "theme";
 
 export interface ListProps {
