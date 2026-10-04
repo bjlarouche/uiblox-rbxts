@@ -20,3 +20,4 @@ export * from "./radioGroup";
 export * from "./select";
 export * from "./slider";
 export * from "./switch";
+export * from "./tabs";

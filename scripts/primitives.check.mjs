@@ -140,6 +140,7 @@ import { NumberInputProps } from "ui/packages/numberInput";
 import { SliderProps } from "ui/packages/slider";
 import { RadioGroupProps } from "ui/packages/radioGroup";
 import { SelectProps } from "ui/packages/select";
+import { TabsProps } from "ui/packages/tabs";
 import { Branch } from "ui/packages/treeView";
 import { Icons } from "ui/enums";
 
@@ -175,6 +176,15 @@ const radio: RadioGroupProps<Enum.Font> = {
 void radio;
 const select: SelectProps<Enum.Font> = { ...radio, placeholder: "Font", disabled: false };
 void select;
+const tabs: TabsProps<string> = {
+	value: "controls",
+	options: [
+		{ label: "Controls", value: "controls" },
+		{ label: "Docs", value: "docs", disabled: true },
+	],
+	onChange: (tab: string) => void tab,
+};
+void tabs;
 `,
 );
 writeFileSync(
