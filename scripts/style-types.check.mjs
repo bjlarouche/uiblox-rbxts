@@ -45,11 +45,9 @@ const tsconfig = {
 		noEmit: true,
 		skipLibCheck: true,
 	},
-	include: [join(dir, "src")],
 };
 
 mkdirSync(join(dir, "src"), { recursive: true });
-writeFileSync(join(dir, "tsconfig.json"), JSON.stringify(tsconfig, null, 2));
 
 writeFileSync(
 	join(dir, "src/ok.ts"),
@@ -111,23 +109,6 @@ function expectFail(configName, fileName) {
 		if (!output.includes(fileName)) {
 			throw new Error(`typecheck did not fail on ${fileName}:\n${output}`);
 		}
-	}
-}
-
-try {
-	execSync(`pnpm exec tsc -p ${JSON.stringify(join(dir, "tsconfig.json"))} --pretty false`, {
-		cwd: root,
-		stdio: "pipe",
-		encoding: "utf8",
-	});
-	throw new Error("expected bad fixtures to fail typecheck");
-} catch (error) {
-	const output = `${error.stdout ?? ""}${error.stderr ?? ""}`;
-	if (!output.includes("bad-property.ts") && !output.includes("bad-slot.ts")) {
-		throw new Error(`typecheck did not fail on bad fixtures:\n${output}`);
-	}
-	if (output.includes("ok.ts")) {
-		throw new Error(`ok.ts failed typecheck:\n${output}`);
 	}
 }
 
