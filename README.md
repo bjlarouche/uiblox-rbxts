@@ -230,6 +230,16 @@ anchor when that anchor moves or resizes, and Select closes if the anchor leaves
 the layer. Select handles Up, Down, Enter, and Escape while it is open or
 selected, including when the pointer is not over it.
 
+### State captures
+
+`stateMatrix` is the gallery list for Storyblox. Each row is one shot: `theme`
+(`Dark` or `Light`), `width`, and `pointer` (`rest`, `hover`, `press`, or
+`focus`). `open` means the Select list is showing. `options` and `disabledOption`
+build RadioGroup, Select, and Tabs. `selected` and `filter` are TreeView.
+`value`, `text`, `disabled`, `loading`, `mixed`, `hasError`, and `placeholder`
+are that control's props. Hover, press, and focus rows are only there when the
+control actually changes.
+
 ### Client
 
 Some sample logic for mounting app when player spawns (on client).

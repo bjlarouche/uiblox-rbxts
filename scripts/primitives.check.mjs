@@ -132,6 +132,54 @@ if (clampSplit(900, 1000, 200) !== 800) throw new Error("second pane keeps min")
 if (clampSplit(300, 300, 200, 340) !== 200) throw new Error("short dock favors first pane min");
 if (clampSplit(50, 0) !== 0) throw new Error("unmeasured pane collapses");
 
+const { stateMatrix } = await import(pathToFileURL(join(root, "src/ui/packages/stateMatrix.ts")).href);
+const components = [
+	"Button",
+	"Input",
+	"Checkbox",
+	"Switch",
+	"RadioGroup",
+	"Select",
+	"Tabs",
+	"SplitPane",
+	"Tooltip",
+	"TreeView",
+];
+const names = new Set();
+for (const row of stateMatrix) {
+	if (names.has(row.name)) throw new Error(`duplicate capture ${row.name}`);
+	names.add(row.name);
+	if (row.theme !== "Dark" && row.theme !== "Light") throw new Error(`${row.name} theme`);
+	if (row.width <= 0) throw new Error(`${row.name} width`);
+}
+for (const component of components) {
+	const rows = stateMatrix.filter((row) => row.component === component);
+	if (!rows.some((row) => row.theme === "Dark" && row.pointer === "rest" && !row.disabled)) {
+		throw new Error(`${component} missing default dark`);
+	}
+	if (!rows.some((row) => row.theme === "Light" && row.pointer === "rest")) {
+		throw new Error(`${component} missing light`);
+	}
+	if (!rows.some((row) => row.width <= 120 && row.text.length > 40)) {
+		throw new Error(`${component} missing long text at narrow width`);
+	}
+}
+for (const component of ["Button", "Checkbox", "Switch", "RadioGroup", "Select", "Tabs", "Tooltip", "TreeView"]) {
+	if (!stateMatrix.some((row) => row.component === component && row.pointer === "hover")) {
+		throw new Error(`${component} missing hover`);
+	}
+}
+for (const component of ["Button", "Checkbox", "Switch", "Select", "SplitPane"]) {
+	if (!stateMatrix.some((row) => row.component === component && row.pointer === "press")) {
+		throw new Error(`${component} missing press`);
+	}
+}
+for (const component of ["Button", "Input", "Checkbox", "Switch", "RadioGroup", "Select", "Tabs", "SplitPane"]) {
+	if (!stateMatrix.some((row) => row.component === component && row.disabled === true)) {
+		throw new Error(`${component} missing disabled`);
+	}
+}
+
 const dir = mkdtempSync(join(tmpdir(), "uiblox-primitives-"));
 const tsconfig = {
 	compilerOptions: {
@@ -174,6 +222,7 @@ import { SelectProps } from "ui/packages/select";
 import { TabsProps } from "ui/packages/tabs";
 import { SplitPaneProps } from "ui/packages/splitPane";
 import { TooltipProps } from "ui/packages/tooltip";
+import { StateCapture } from "ui/packages/stateMatrix";
 import { Branch } from "ui/packages/treeView";
 import { Icons } from "ui/enums";
 
@@ -222,6 +271,16 @@ const split: SplitPaneProps = { value: 240, min: 200, max: 340, vertical: false,
 void split;
 const tooltip: TooltipProps = { text: "Reset", delay: 0.2 };
 void tooltip;
+const capture: StateCapture = {
+	component: "Button",
+	name: "default-dark",
+	theme: "Dark",
+	width: 280,
+	pointer: "rest",
+	text: "Continue",
+	disabled: false,
+};
+void capture;
 `,
 );
 writeFileSync(
