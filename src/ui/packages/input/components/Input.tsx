@@ -21,6 +21,7 @@ export interface InputProps {
 	rounded?: boolean;
 	clearsTextOnFocus?: boolean;
 	onTextChanged?: (text: string) => void;
+	onInput?: (text: string) => void;
 	onFocus?: () => void;
 	onBlur?: () => void;
 	onEnterPressed?: (text: string) => void;
@@ -36,6 +37,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		hasError = false,
 		rounded = false,
 		onTextChanged,
+		onInput,
 		onFocus,
 		onBlur,
 		onEnterPressed,
@@ -66,7 +68,10 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 					PlaceholderText={placeholder}
 					{...cx(hasError && errorColorText)}
 					Change={{
-						Text: (rbx) => setDraft(rbx.Text),
+						Text: (rbx) => {
+							setDraft(rbx.Text);
+							if (focused.current && onInput) onInput(rbx.Text);
+						},
 					}}
 					Event={{
 						Focused: () => {

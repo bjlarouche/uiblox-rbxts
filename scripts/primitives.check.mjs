@@ -55,6 +55,19 @@ if (rows[1].depth !== 1 || rows[1].title !== "Button" || !rows[1].emphasized) th
 if (rows[2].depth !== 2 || rows[2].path !== "Inputs/Button/Primary" || !rows[2].emphasized) {
 	throw new Error("leaf level");
 }
+const filtered = visibleRows(
+	[
+		...nested,
+		{ title: "Other", leaves: [{ title: "Thing" }] },
+	],
+	["Inputs", "Inputs/Button"],
+	undefined,
+	undefined,
+	(title) => title.toLowerCase().startsWith("pri"),
+);
+if (filtered.map((row) => row.path).join(",") !== "Inputs,Inputs/Button,Inputs/Button/Primary") {
+	throw new Error("filter keeps matching ancestors and drops unrelated branches");
+}
 const flat = visibleRows([{ title: "Fixture", leaves: [{ title: "Native" }] }], ["Fixture"], "Fixture/Native");
 if (!flat[0].emphasized || flat[1].path !== "Fixture/Native" || flat[1].icon !== undefined) {
 	throw new Error("two-level selection");
@@ -100,7 +113,7 @@ import { Icons } from "ui/enums";
 
 const button: ButtonProps = { text: "Save", disabled: false, loading: false };
 const icon: IconButtonProps = { icon: Icons.Save, tint: new Color3(1, 1, 1), disabled: true };
-const input: InputProps = { text: "draft", disabled: true, onTextChanged: () => {} };
+const input: InputProps = { text: "draft", disabled: true, onTextChanged: () => {}, onInput: () => {} };
 const checkbox: CheckboxProps = { value: false, mixed: true, disabled: true, onChange: () => {} };
 const toggle: SwitchProps = { value: true, disabled: false, onChange: () => {} };
 const nestedBranch: Branch = {
