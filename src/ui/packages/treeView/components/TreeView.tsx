@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useState } from "@rbxts/react";
-import { CustomizedProps, DEFAULT_THEME, WriteableStyle } from "theme";
+import { cx, CustomizedProps, DEFAULT_THEME, useTheme, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
 import { Typography } from "ui/packages/typography";
 import { Icons } from "../../../enums";
-import Branch from "../interfaces/Branch";
-import Leaf from "../interfaces/Leaf";
 import Tree from "../interfaces/Tree";
 import useTreeViewStyles from "./TreeView.styles";
+import { pathsToExpand, visibleRows } from "./treeRows";
 
 type DefaultTreeViewComponent = Frame;
 
@@ -21,9 +20,11 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 	const { tree, icon, filter, selected, className, id, ref } = props;
 	const { root, header, list, gridLayout, row, branchIcon, branchTypography, leafIcon, leafTypography } =
 		useTreeViewStyles();
+	const { theme } = useTheme();
+	const step = theme.padding.calc(4);
 
-	const [selectedBranch, setSelectedBranch] = useState<Branch | undefined>();
-	const [selectedLeaf, setSelectedLeaf] = useState<Leaf | undefined>();
+	const [clickedPath, setClickedPath] = useState<string | undefined>();
+	const [clickedLeaf, setClickedLeaf] = useState<string | undefined>();
 	const [expanded, setExpanded] = useState<string[]>([]);
 	const [canvasSize, setCanvasSize] = useState<UDim2>(new UDim2(0, 0, 0, 0));
 
@@ -70,46 +71,35 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 		[filter],
 	);
 
-	// Automatically expand branches that match filter
 	useEffect(() => {
 		if (filter === undefined || filter?.size() === 0) {
 			setExpanded([]);
 			return;
 		}
 
-		const newExpanded: string[] = [];
-
-		// Figure out which branches should be expanded
-		tree.branches.forEach((branch) => {
-			const matchesBranchFilter = matchesFilter(branch.title);
-
-			if (matchesBranchFilter) {
-				// If branch is a match, whole branch should be expanded
-				if (!newExpanded.includes(branch.title)) {
-					newExpanded.push(branch.title);
-				}
-			} else {
-				// If any of the leaves are a match, branch should be expanded
-				branch.leaves.forEach((leaf) => {
-					if (newExpanded.includes(branch.title)) return; // Already expanded.
-
-					const matchesLeafFilter = matchesFilter(leaf.title);
-
-					if (matchesLeafFilter) {
-						newExpanded.push(branch.title);
-					}
-				});
-			}
-		});
-
-		// Set expanded to new array
-		setExpanded(newExpanded);
+		setExpanded(pathsToExpand(tree.branches, matchesFilter));
 	}, [tree, filter]);
 
 	useEffect(() => {
-		const branch = selected?.split("/")[0];
-		if (branch !== undefined) setExpanded((old) => (old.includes(branch) ? old : [...old, branch]));
+		if (selected === undefined || selected.size() === 0) return;
+		const parts = selected.split("/");
+		const ancestors: string[] = [];
+		let acc = "";
+		for (let i = 0; i < parts.size() - 1; i++) {
+			acc = i === 0 ? parts[i] : `${acc}/${parts[i]}`;
+			ancestors.push(acc);
+		}
+		if (ancestors.size() === 0) return;
+		setExpanded((old) => {
+			let updated = old;
+			for (const path of ancestors) {
+				if (!updated.includes(path)) updated = [...updated, path];
+			}
+			return updated;
+		});
 	}, [tree, filter, selected]);
+
+	const rows = visibleRows(tree.branches, expanded, selected, clickedPath, matchesFilter);
 
 	return (
 		<frame key={id || "TreeView"} ref={ref} {...root} {...className}>
@@ -132,115 +122,124 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 			>
 				<uigridlayout {...gridLayout} />
 
-				{tree.branches.map((branch: Branch, branchIndex) => {
-					const matchesBranchFilter = matchesFilter(branch.title);
-					let hasMatchingLeaf = matchesBranchFilter;
+				{rows.map((entry, index) => {
+					const inset = (entry.kind === "leaf" ? entry.depth - 1 : entry.depth) * step;
+					const branchLead = entry.icon !== undefined ? theme.spacing.calc(2) : 0;
 
-					if (!hasMatchingLeaf) {
-						for (const leaf of branch.leaves) {
-							if (matchesFilter(leaf.title)) {
-								hasMatchingLeaf = true;
-								break;
-							}
-						}
-					}
-
-					if (matchesBranchFilter || hasMatchingLeaf) {
+					if (entry.kind === "branch" && entry.branch) {
+						const branch = entry.branch;
 						return (
-							<>
-								<textbutton
-									key={`${branch.title}-${branchIndex}`}
-									{...row}
-									Event={{
-										MouseButton1Click: () => {
-											if (branch.onClick) {
-												branch.onClick();
-											}
-
-											// If there are leaves... Expand/Collapse
-											if (branch.leaves.size() > 0) {
-												const isExpanded = expanded.includes(branch.title);
-												if (isExpanded) {
-													setExpanded((oldExpanded) =>
-														oldExpanded.filter((b) => b !== branch.title),
-													);
-												} else {
-													setExpanded((oldExpanded) => [...oldExpanded, branch.title]);
-												}
-											} else {
-												setSelectedBranch(branch);
-											}
-										},
-									}}
-								>
-									{branch.leaves.size() > 0 && (
-										<Icon
-											icon={expanded.includes(branch.title) ? Icons.Expanded : Icons.Collapsed}
-											size={"xxs"}
-											className={branchIcon}
-											tint={DEFAULT_THEME.options.constants.extendedPalette.Gray[70]}
-										/>
-									)}
-									<Typography
-										text={branch.title}
-										className={{ ...branchTypography } as WriteableStyle<TextLabel>}
-										color={"textPrimary"}
-										variant={"body"}
-										family={selectedBranch === branch ? "bold" : "default"}
-									/>
-								</textbutton>
-
-								{expanded.includes(branch.title) &&
-									branch.leaves.map((leaf: Leaf, leafIndex) => {
-										const matchesLeafFilter = matchesFilter(leaf.title);
-										if (matchesBranchFilter || matchesLeafFilter) {
-											return (
-												<textbutton
-													key={`${branch.title}-${branchIndex}-${leaf.title}-${leafIndex}`}
-													{...row}
-													Event={{
-														MouseButton1Click: () => {
-															setSelectedLeaf(leaf);
-															setSelectedBranch(branch);
-
-															if (leaf.onClick) {
-																leaf.onClick();
-															}
-														},
-													}}
-												>
-													<Icon
-														icon={icon || Icons.ListPrimary}
-														size={"xs"}
-														className={leafIcon}
-														tint={DEFAULT_THEME.palette.secondary.main}
-													/>
-													<Typography
-														text={leaf.title}
-														className={{ ...leafTypography } as WriteableStyle<TextLabel>}
-														color={"textPrimary"}
-														variant={"body"}
-														family={
-															(
-																selected !== undefined
-																	? selected === `${branch.title}/${leaf.title}`
-																	: selectedLeaf === leaf
-															)
-																? "bold"
-																: "default"
-														}
-													/>
-												</textbutton>
+							<textbutton
+								key={`${entry.path}-${index}`}
+								{...row}
+								Event={{
+									MouseButton1Click: () => {
+										if (branch.onClick) branch.onClick();
+										if (entry.expandable) {
+											setExpanded((oldExpanded) =>
+												oldExpanded.includes(entry.path)
+													? oldExpanded.filter((item) => item !== entry.path)
+													: [...oldExpanded, entry.path],
 											);
 										} else {
-											return <></>;
+											setClickedPath(entry.path);
 										}
-									})}
-							</>
+									},
+								}}
+							>
+								{entry.expandable && (
+									<Icon
+										icon={expanded.includes(entry.path) ? Icons.Expanded : Icons.Collapsed}
+										size={"xxs"}
+										className={cx<ImageLabel>(
+											branchIcon,
+											inset > 0 && { Position: new UDim2(0, inset, 0.5, 0) },
+										)}
+										tint={DEFAULT_THEME.options.constants.extendedPalette.Gray[70]}
+									/>
+								)}
+								{entry.icon !== undefined && (
+									<Icon
+										icon={entry.icon}
+										size={"xxs"}
+										className={cx<ImageLabel>(branchIcon, {
+											Position: new UDim2(0, inset + (entry.expandable ? branchLead : 0), 0.5, 0),
+										})}
+										tint={DEFAULT_THEME.options.constants.extendedPalette.Gray[70]}
+									/>
+								)}
+								<Typography
+									text={entry.title}
+									className={
+										cx<TextLabel>(
+											branchTypography,
+											(inset > 0 || branchLead > 0) && {
+												Size: new UDim2(
+													1,
+													-(theme.spacing.calc(0.5) + theme.padding.calc(2) + inset + branchLead),
+													1,
+													-theme.padding.calc(4),
+												),
+											},
+										) as WriteableStyle<TextLabel>
+									}
+									color={"textPrimary"}
+									variant={"body"}
+									family={entry.emphasized ? "bold" : "default"}
+								/>
+							</textbutton>
 						);
-					} else {
-						return <></>;
 					}
+
+					const leaf = entry.leaf;
+					return (
+						<textbutton
+							key={`${entry.path}-${index}`}
+							{...row}
+							Event={{
+								MouseButton1Click: () => {
+									setClickedLeaf(entry.path);
+									setClickedPath(string.sub(entry.path, 1, entry.path.size() - entry.title.size() - 1));
+									if (leaf && leaf.onClick) leaf.onClick();
+								},
+							}}
+						>
+							<Icon
+								icon={entry.icon ?? icon ?? Icons.ListPrimary}
+								size={"xs"}
+								className={cx<ImageLabel>(
+									leafIcon,
+									inset > 0 && {
+										Position: new UDim2(0, theme.padding.calc(4) + inset, 0.5, 0),
+									},
+								)}
+								tint={DEFAULT_THEME.palette.secondary.main}
+							/>
+							<Typography
+								text={entry.title}
+								className={
+									cx<TextLabel>(
+										leafTypography,
+										inset > 0 && {
+											Size: new UDim2(
+												1,
+												-(theme.spacing.calc(1) + theme.padding.calc(6) + inset),
+												1,
+												-theme.padding.calc(4),
+											),
+										},
+									) as WriteableStyle<TextLabel>
+								}
+								color={"textPrimary"}
+								variant={"body"}
+								family={
+									(selected !== undefined ? selected === entry.path : clickedLeaf === entry.path)
+										? "bold"
+										: "default"
+								}
+							/>
+						</textbutton>
+					);
 				})}
 			</scrollingframe>
 		</frame>
