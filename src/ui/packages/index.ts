@@ -19,5 +19,6 @@ export * from "./popup";
 export * from "./radioGroup";
 export * from "./select";
 export * from "./slider";
+export * from "./splitPane";
 export * from "./switch";
 export * from "./tabs";
