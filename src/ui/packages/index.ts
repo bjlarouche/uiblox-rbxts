@@ -20,6 +20,7 @@ export * from "./radioGroup";
 export * from "./select";
 export * from "./slider";
 export * from "./splitPane";
+export * from "./stateMatrix";
 export * from "./switch";
 export * from "./tabs";
 export * from "./tooltip";
