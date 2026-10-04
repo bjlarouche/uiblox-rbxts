@@ -127,6 +127,7 @@ import { InputProps } from "ui/packages/input";
 import { SwitchProps } from "ui/packages/switch";
 import { NumberInputProps } from "ui/packages/numberInput";
 import { SliderProps } from "ui/packages/slider";
+import { RadioGroupProps } from "ui/packages/radioGroup";
 import { Branch } from "ui/packages/treeView";
 import { Icons } from "ui/enums";
 
@@ -151,14 +152,26 @@ const numberInput: NumberInputProps = { value: 1, min: 0, max: 10, step: 1, onCh
 const slider: SliderProps = { value: 0.5, min: 0, max: 1, onChange: () => {}, onCommit: () => {} };
 void numberInput;
 void slider;
+const radio: RadioGroupProps<Enum.Font> = {
+	value: Enum.Font.SourceSans,
+	options: [
+		{ label: "Regular", value: Enum.Font.SourceSans },
+		{ label: "Bold", value: Enum.Font.SourceSansBold, disabled: true },
+	],
+	onChange: (font: Enum.Font) => void font,
+};
+void radio;
 `,
 );
 writeFileSync(
 	join(dir, "src/bad.ts"),
 	`
 import { ButtonProps } from "ui/packages/button";
+import { RadioGroupProps } from "ui/packages/radioGroup";
 const bad: ButtonProps = { disabled: "no" };
+const badRadio: RadioGroupProps<number> = { value: 1, options: [{ label: "One", value: "1" }], onChange: () => {} };
 void bad;
+void badRadio;
 `,
 );
 const config = (file) => {
@@ -178,6 +191,7 @@ try {
 	if (error.message === "expected bad.ts to fail typecheck") throw error;
 	const output = `${error.stdout ?? ""}${error.stderr ?? ""}`;
 	if (!output.includes("bad.ts")) throw new Error(`typecheck did not fail on bad.ts:\n${output}`);
+	if (!output.includes("bad.ts(5,")) throw new Error(`radio value type mismatch was accepted:\n${output}`);
 }
 rmSync(dir, { recursive: true, force: true });
 console.log("primitives ok");
