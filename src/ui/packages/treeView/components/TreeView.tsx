@@ -161,11 +161,11 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 								{entry.icon !== undefined && (
 									<Icon
 										icon={entry.icon}
-										size={"xxs"}
+										size={"xs"}
 										className={cx<ImageLabel>(branchIcon, {
 											Position: new UDim2(0, inset + (entry.expandable ? branchLead : 0), 0.5, 0),
 										})}
-										tint={DEFAULT_THEME.options.constants.extendedPalette.Gray[70]}
+										tint={DEFAULT_THEME.palette.secondary.main}
 									/>
 								)}
 								<Typography
