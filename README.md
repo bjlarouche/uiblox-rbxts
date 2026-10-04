@@ -34,7 +34,6 @@ How does it do this? Well, there are two main exports from this package:
 
 -   @rbxts/uiblox -> theme
     -   An extensible Theme type + default Dark (default) and Light themes
-        -   ... Light theme palette is a WIP
     -   makeStyles/createStyles utilities to serve up Instance-extended property
         tables that can be applied to your React Components
     -   ThemeProvider which can wrap your application and uses Reflex to tell
@@ -196,6 +195,38 @@ const useMyComponentStyles = makeStyles<MyComponentProps>((theme: Theme, props: 
 export default useMyComponentStyles;
 ```
 
+### Style precedence
+
+Components spread their own styles first, then `className`, then the props that
+carry state. Later always wins:
+
+1. Component styles from the theme
+2. `className` (merge several with `cx(a, condition && b)`; later args win, falsy
+   args are skipped)
+3. State props the component owns: `Active`, `Selectable`, `Text`, and the
+   value-driven sizes/positions of Slider, SplitPane, and so on
+
+So `className` can restyle anything except a control's state. Pass `disabled`
+instead of overriding `Active`.
+
+### Controls
+
+Inputs are controlled: `{ value, onChange, disabled? }`. They call `onChange`
+only when the value actually changes, and never while disabled.
+
+| Component | Value | Notes |
+| --- | --- | --- |
+| Checkbox | `boolean` | `mixed` shows indeterminate; activating commits `true` |
+| Switch | `boolean` | |
+| RadioGroup / Select / Tabs | `T` from `options: { label, value: T, disabled? }[]` | compared by identity; disabled options are skipped |
+| NumberInput | `number` | commits on focus lost or Enter; clamps to `min`/`max`, snaps to `step` |
+| Slider | `number` | `onChange` while dragging, `onCommit` on release |
+| SplitPane | first pane size (px) | display clamps to `min`/`max`; Escape cancels a drag |
+| Input | `text` | `onInput` while typing, `onTextChanged` on commit |
+
+Select and Tooltip render through `Popup`, which portals into the nearest
+`LayerCollector` so clipping parents do not cut them off.
+
 ### Client
 
 Some sample logic for mounting app when player spawns (on client).
@@ -247,7 +278,6 @@ new AppLoader().Mount();
 # Future work
 
 -   More UI packages
--   Finish palette for LightTheme
 
 # See Also
 
