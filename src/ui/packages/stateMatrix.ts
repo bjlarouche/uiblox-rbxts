@@ -107,6 +107,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("CFrameEditor", "default", { value: "0,0,0" }),
 	...pair("CFrameEditor", "disabled", { value: "0,0,0", disabled: true }),
 
+	...pair("EnumPicker", "default", { value: "Continue", options: ["Continue", "Other"] }),
+	...pair("EnumPicker", "open", { value: "Continue", options: ["Continue", "Other"], open: true }),
+	...pair("EnumPicker", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
+
 	...pair("Switch", "off"),
 	...pair("Switch", "size-small", { size: "small" }),
 	...pair("Switch", "size-medium", { size: "medium" }),

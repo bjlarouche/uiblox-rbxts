@@ -23,6 +23,7 @@ export * from "./numberInput";
 export * from "./udimEditor";
 export * from "./vectorEditor";
 export * from "./cframeEditor";
+export * from "./enumPicker";
 export * from "./popup";
 export * from "./modal";
 export * from "./dialog";
