@@ -51,7 +51,7 @@ const painted = resolveStyle(
 
 `interactionStyle(base, slots, state)` is the same resolver with separate slot tables (`hover` / `pressed` / `focused` / `disabled`). Prefer `_hover` keys on the style object when writing new code.
 
-On the instance, `className` then `sx`. `sx` wins. Put selector keys on either; resolve before spread.
+On the instance, `className` then `sx`. `sx` wins. Kit components do not call `resolveStyle` on `sx` yet — resolve yourself before spreading, or keep selector keys off `className` / `sx`.
 
 `resolveResponsive` reads a plain value or `{ phone, tablet, desktop }` against `breakpointName`. A wider breakpoint falls back to the next smaller one that is set. Phone is under 600, tablet under 960, and the rest is desktop.
 
