@@ -361,6 +361,15 @@ if (portalTarget(layerHost) !== layerHost) throw new Error("layer host is the ta
 if (portalTarget(childHost) !== layerHost) throw new Error("host walks to the layer");
 if (portalTarget(looseHost) !== undefined) throw new Error("unlayered host has no target");
 
+const { isDismissInput } = await import(
+	pathToFileURL(join(root, "src/ui/packages/modal/components/dismissInput.ts")).href
+);
+if (!isDismissInput({ KeyCode: { Name: "Escape" } })) throw new Error("escape dismisses");
+if (!isDismissInput({ KeyCode: { Name: "ButtonB" } })) throw new Error("button b dismisses");
+if (isDismissInput({ KeyCode: { Name: "ButtonA" } }) || isDismissInput({ KeyCode: { Name: "Return" } })) {
+	throw new Error("confirm keys stay open");
+}
+
 const { nextCanvasPosition, shouldBeginDragScroll } = await import(
 	pathToFileURL(join(root, "src/ui/packages/scroll/dragScroll.ts")).href
 );
