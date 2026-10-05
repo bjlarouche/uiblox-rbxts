@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "@rbxts/react";
 import { cx, CustomizedProps, DEFAULT_THEME, useTheme, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
+import { useDragScroll } from "ui/packages/scroll";
 import { Typography } from "ui/packages/typography";
 import { Icons } from "ui/enums";
 import Tree from "../interfaces/Tree";
@@ -27,6 +28,8 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 	const [clickedLeaf, setClickedLeaf] = useState<string | undefined>();
 	const [expanded, setExpanded] = useState<string[]>([]);
 	const [canvasSize, setCanvasSize] = useState<UDim2>(new UDim2(0, 0, 0, 0));
+	const [listFrame, setListFrame] = useState<ScrollingFrame>();
+	const drag = useDragScroll(listFrame);
 
 	const resizeScrollingFrame = (rbx: ScrollingFrame, child?: Instance) => {
 		if (child && !child.IsA("GuiObject")) {
@@ -112,6 +115,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 
 			<scrollingframe
 				key="List"
+				ref={setListFrame}
 				{...list}
 				CanvasSize={canvasSize}
 				Event={{
@@ -135,6 +139,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 								LayoutOrder={index}
 								Event={{
 									MouseButton1Click: () => {
+										if (drag.suppressClick()) return;
 										if (branch.onClick) branch.onClick();
 										if (entry.expandable) {
 											setExpanded((oldExpanded) =>
@@ -200,6 +205,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 							LayoutOrder={index}
 							Event={{
 								MouseButton1Click: () => {
+									if (drag.suppressClick()) return;
 									setClickedLeaf(entry.path);
 									setClickedPath(string.sub(entry.path, 1, entry.path.size() - entry.title.size() - 1));
 									if (leaf && leaf.onClick) leaf.onClick();

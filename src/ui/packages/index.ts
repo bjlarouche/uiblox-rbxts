@@ -6,6 +6,7 @@ export * from "./input";
 export * from "./layout";
 export * from "./preloader";
 export * from "./progressBar";
+export * from "./scroll";
 export * from "./shadow";
 export * from "./sidebar";
 export * from "./toast";
