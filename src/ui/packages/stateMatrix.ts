@@ -280,6 +280,7 @@ function chromeRows(): StateCapture[] {
 		...pair("Drawer", "closed", { open: false }),
 		...pair("Drawer", "left", { open: true, variant: "left" }),
 		...pair("Drawer", "right", { open: true, variant: "right" }),
+		...pair("Drawer", "wide", { open: true, variant: "wide" }),
 		...pair("Breadcrumbs", "single", { text: "Home" }),
 		...pair("Breadcrumbs", "trail", { text: "Home / Library / Item" }),
 		...pair("Breadcrumbs", "collapsed", { text: "Home / … / Item", size: "small" }),

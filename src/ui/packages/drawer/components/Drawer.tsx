@@ -9,13 +9,14 @@ export interface DrawerProps {
 	host?: Instance;
 	open: boolean;
 	edge?: DrawerEdge;
+	width?: number;
 	onClose: () => void;
 	children?: React.ReactNode;
 }
 
 function Drawer(props: DrawerProps) {
-	const { host, open, edge = "left", onClose, children } = props;
-	const styles = useDrawerStyles();
+	const { host, open, edge = "left", width, onClose, children } = props;
+	const styles = useDrawerStyles({ width });
 	const close = useRef(onClose);
 	close.current = onClose;
 
