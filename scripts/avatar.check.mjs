@@ -13,7 +13,7 @@ if (avatarInitials("Brandon Larouche") !== "BL") throw new Error("two words");
 if (avatarInitials("  storyblox  ") !== "S") throw new Error("spacing");
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["initials", "image", "small"]) {
+for (const name of ["initials", "image", "small", "rounded"]) {
 	if (stateMatrix.filter((row) => row.component === "Avatar" && row.name.includes(name)).length !== 2) {
 		throw new Error(`Avatar missing ${name}`);
 	}
