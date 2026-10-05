@@ -181,6 +181,9 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 					InputEnded: (_, input) => {
 						if (pointerInput(input)) dragging.current = undefined;
 					},
+					MouseLeave: () => {
+						dragging.current = undefined;
+					},
 				}}
 			>
 				<uicorner {...styles.corner} />
@@ -218,6 +221,9 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 					},
 					InputEnded: (_, input) => {
 						if (pointerInput(input)) dragging.current = undefined;
+					},
+					MouseLeave: () => {
+						dragging.current = undefined;
 					},
 				}}
 			>
