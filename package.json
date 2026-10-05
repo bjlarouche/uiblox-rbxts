@@ -1,6 +1,6 @@
 {
 	"name": "@rbxts/uiblox",
-	"version": "0.2.0-alpha.4",
+	"version": "0.2.0-alpha.5",
 	"description": "UI Library and theming for roblox-ts projects",
 	"main": "out/init.luau",
 	"packageManager": "pnpm@11.3.0",
