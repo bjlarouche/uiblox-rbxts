@@ -12,14 +12,16 @@ export interface ToastProps {
 	duration?: number;
 	variant?: ToastVariants;
 	toggledAt?: number;
+	action?: string;
+	onAction?: () => void;
 }
 
 const TWEEN_DURATION = 0.5;
 
 function Toast(props: CustomizedProps<Frame, ToastProps>) {
-	const { text, onDismiss, duration = 4, className,
+	const { text, onDismiss, duration = 4, action, onAction, className,
 		sx, id, ref } = props;
-	const { container, label, close, activePosition, inActivePosition } = useToastStyles(props);
+	const { container, label, close, action: actionStyle, activePosition, inActivePosition } = useToastStyles(props);
 	const frameRef = useRef<Frame>();
 
 	const tween = (direction: Directions) => {
@@ -66,6 +68,20 @@ function Toast(props: CustomizedProps<Frame, ToastProps>) {
 			<Shadow />
 
 			<textlabel key="Label" {...label} Text={text} />
+			{action !== undefined && action.size() > 0 && (
+				<textbutton
+					key="Action"
+					{...actionStyle}
+					Text={action}
+					Event={{
+						Activated: () => {
+							if (onAction) onAction();
+							tween(Directions.Out);
+							if (onDismiss) onDismiss();
+						},
+					}}
+				/>
+			)}
 			<imagebutton
 				key="Close"
 				{...close}

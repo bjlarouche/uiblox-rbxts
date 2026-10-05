@@ -306,6 +306,7 @@ function chromeRows(): StateCapture[] {
 		...pair("Accordion", "indicator", { open: true }),
 		...pair("Snackbar", "open", { open: true, text: "Saved" }),
 		...pair("Snackbar", "closed", { open: false, text: "Saved" }),
+		...pair("Snackbar", "action", { open: true, text: "Undo" }),
 		...pair("Table", "empty", { text: "" }),
 		...pair("Table", "default", { text: "Name / Role" }),
 		...pair("Table", "selected", { text: "Name / Role", value: 0 }),
