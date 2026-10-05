@@ -322,6 +322,9 @@ function miscRows(): StateCapture[] {
 		...pair("Stack", "column", { variant: "column" }),
 		...pair("Stack", "row", { variant: "row" }),
 		...pair("Stack", "spaced", { variant: "column", size: "large" }),
+		...pair("SpeedDial", "closed", { open: false }),
+		...pair("SpeedDial", "open", { open: true }),
+		...pair("SpeedDial", "disabled", { open: false, disabled: true }),
 		...pair("Menu", "closed", { open: false }),
 		...pair("Menu", "open", { open: true }),
 	];

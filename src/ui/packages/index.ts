@@ -48,6 +48,7 @@ export * from "./snackbar";
 export * from "./table";
 export * from "./autocomplete";
 export * from "./fab";
+export * from "./speedDial";
 export * from "./appBar";
 export * from "./bottomNavigation";
 export * from "./alert";
