@@ -71,6 +71,14 @@ export const stateMatrix: StateCapture[] = [
 	...pair("ColorPicker", "error", { value: "#336699", hasError: true }),
 	...pair("ColorPicker", "long", { value: "#336699", text: LONG, width: NARROW }),
 
+	...pair("VectorEditor", "default", { value: "1,2" }),
+	...pair("VectorEditor", "disabled", { value: "1,2,3", disabled: true }),
+	...pair("VectorEditor", "long", { value: "1,2", text: LONG, width: NARROW }),
+
+	...pair("UDimEditor", "default", { value: "0.5,8" }),
+	...pair("UDimEditor", "disabled", { value: "0.5,8", disabled: true }),
+	...pair("UDimEditor", "long", { value: "0.5,8", text: LONG, width: NARROW }),
+
 	...pair("Switch", "off"),
 	...pair("Switch", "on", { value: true }),
 	...pair("Switch", "disabled", { disabled: true }),

@@ -70,6 +70,25 @@ globalThis.Vector2 = class Vector2 {
 		this.Y = y;
 	}
 };
+globalThis.Vector3 = class Vector3 {
+	constructor(x = 0, y = 0, z = 0) {
+		this.X = x;
+		this.Y = y;
+		this.Z = z;
+	}
+};
+globalThis.UDim = class UDim {
+	constructor(scale = 0, offset = 0) {
+		this.Scale = scale;
+		this.Offset = offset;
+	}
+};
+globalThis.UDim2 = class UDim2 {
+	constructor(xScale = 0, xOffset = 0, yScale = 0, yOffset = 0) {
+		this.X = new UDim(xScale, xOffset);
+		this.Y = new UDim(yScale, yOffset);
+	}
+};
 const { commitNumber, parseNumberDraft } = await import(
 	pathToFileURL(join(root, "src/ui/packages/numberInput/components/numberValue.ts")).href
 );
@@ -113,6 +132,19 @@ if (parseByte("12") !== 12) throw new Error("byte commits");
 const painted = parseHex("#FF0000");
 if (!sameColor(painted, new Color3(1, 0, 0))) throw new Error("hex red");
 if (colorToHex(new Color3(1, 0, 0)) !== "#FF0000") throw new Error("hex format");
+
+const { readAxis, writeUDim, writeUDim2, writeVector2, writeVector3 } = await import(
+	pathToFileURL(join(root, "src/ui/packages/vectorEditor/components/vectorValue.ts")).href,
+);
+if (readAxis(new Vector2(1, 2), "Y") !== 2) throw new Error("vector2 axis");
+const moved2 = writeVector2(new Vector2(1, 2), "X", 9);
+if (moved2.X !== 9 || moved2.Y !== 2) throw new Error("vector2 write");
+const moved3 = writeVector3(new Vector3(1, 2, 3), "Z", 4);
+if (moved3.Z !== 4 || moved3.X !== 1) throw new Error("vector3 write");
+const gap = writeUDim(new UDim(0.5, 8), "Offset", 12);
+if (gap.Scale !== 0.5 || gap.Offset !== 12) throw new Error("udim write");
+const span = writeUDim2(new UDim2(0.5, 1, 1, -2), "Y", "Offset", 0);
+if (span.Y.Offset !== 0 || span.X.Scale !== 0.5) throw new Error("udim2 write");
 
 const { nextChecked } = await import(
 	pathToFileURL(join(root, "src/ui/packages/checkbox/components/nextChecked.ts")).href
