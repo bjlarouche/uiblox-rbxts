@@ -65,6 +65,12 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Checkbox", "checked-focus", { value: true, pointer: "focus" }),
 	...pair("Checkbox", "long", { text: LONG, width: NARROW }),
 
+	...pair("ColorPicker", "default", { value: "#336699" }),
+	...pair("ColorPicker", "focus", { value: "#336699", pointer: "focus" }),
+	...pair("ColorPicker", "disabled", { value: "#336699", disabled: true }),
+	...pair("ColorPicker", "error", { value: "#336699", hasError: true }),
+	...pair("ColorPicker", "long", { value: "#336699", text: LONG, width: NARROW }),
+
 	...pair("Switch", "off"),
 	...pair("Switch", "on", { value: true }),
 	...pair("Switch", "disabled", { disabled: true }),
