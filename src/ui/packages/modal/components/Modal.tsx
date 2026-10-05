@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "@rbxts/react";
+import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { GuiService, UserInputService } from "@rbxts/services";
-import { Portal } from "ui/packages/popup";
+import { Portal, portalTarget } from "ui/packages/popup";
 import { isDismissInput } from "./dismissInput";
 import { isFocusable, pickFocus } from "./focusTrap";
 import useModalStyles from "./Modal.styles";
@@ -17,7 +17,13 @@ function Modal(props: ModalProps) {
 	const styles = useModalStyles();
 	const close = useRef(onClose);
 	const surface = useRef<Frame>();
+	const anchor = useRef<Frame>();
+	const [layer, setLayer] = useState(() => portalTarget(host));
 	close.current = onClose;
+
+	useEffect(() => {
+		setLayer(portalTarget(host ?? anchor.current));
+	}, [host, open]);
 
 	useEffect(() => {
 		if (!open) return;
@@ -44,27 +50,36 @@ function Modal(props: ModalProps) {
 			connection.Disconnect();
 			if (previous && previous.Parent) GuiService.SelectedObject = previous;
 		};
-	}, [open]);
-
-	if (!open) return undefined;
+	}, [open, layer]);
 
 	return (
-		<Portal host={host}>
-			<frame key="Modal" {...styles.root}>
-				<textbutton
-					key="Backdrop"
-					{...styles.backdrop}
-					Event={{
-						Activated: () => close.current(),
-					}}
-				/>
-				<frame key="Surface" ref={surface} {...styles.surface}>
-					<uipadding {...styles.padding} />
-					<uicorner {...styles.corner} />
-					{children}
-				</frame>
-			</frame>
-		</Portal>
+		<>
+			<frame
+				key="ModalAnchor"
+				ref={anchor}
+				Size={UDim2.fromOffset(0, 0)}
+				BackgroundTransparency={1}
+				BorderSizePixel={0}
+			/>
+			{open && layer !== undefined && (
+				<Portal host={layer}>
+					<frame key="Modal" {...styles.root}>
+						<textbutton
+							key="Backdrop"
+							{...styles.backdrop}
+							Event={{
+								Activated: () => close.current(),
+							}}
+						/>
+						<frame key="Surface" ref={surface} {...styles.surface}>
+							<uipadding {...styles.padding} />
+							<uicorner {...styles.corner} />
+							{children}
+						</frame>
+					</frame>
+				</Portal>
+			)}
+		</>
 	);
 }
 
