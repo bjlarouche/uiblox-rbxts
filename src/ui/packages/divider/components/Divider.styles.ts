@@ -14,6 +14,35 @@ const useDividerStyles = componentStyles<DividerProps>("Divider", (theme, props)
 	} = props;
 
 	return createStyles({
+		shell: {
+			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
+		line: {
+			Size: new UDim2(1, 0, 0, weight),
+			Position: new UDim2(0, 0, 0.5, 0),
+			AnchorPoint: new Vector2(0, 0.5),
+			BackgroundColor3: color,
+			BackgroundTransparency: transparency,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
+		caption: {
+			AutomaticSize: Enum.AutomaticSize.XY,
+			Size: UDim2.fromScale(0, 0),
+			AnchorPoint: new Vector2(0.5, 0.5),
+			Position: new UDim2(0.5, 0, 0.5, 0),
+			BackgroundColor3: theme.palette.surface.canvas,
+			BorderSizePixel: 0,
+			Font: theme.typography.fontFamilies.default,
+			TextSize: theme.typography.fontSizes.caption,
+			TextColor3: theme.palette.text.secondary,
+			ZIndex: 2,
+		} as WriteableStyle<TextLabel>,
+		captionPad: {
+			PaddingLeft: new UDim(0, theme.padding.calc(1)),
+			PaddingRight: new UDim(0, theme.padding.calc(1)),
+		} as WriteableStyle<UIPadding>,
 		root: {
 			Position: position ?? new UDim2(0, 0, 0, 0),
 			Size: new UDim2(
