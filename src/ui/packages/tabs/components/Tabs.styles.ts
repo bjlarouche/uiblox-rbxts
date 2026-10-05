@@ -1,7 +1,7 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 import { TabsOrientation, tabsIsVertical } from "./tabsOrientation";
 
-const useTabsStyles = componentStyles<{ orientation?: TabsOrientation }>("Tabs", (theme: Theme, { orientation }) => {
+const useTabsStyles = componentStyles<{ orientation?: TabsOrientation; centered?: boolean }>("Tabs", (theme: Theme, { orientation, centered }) => {
 	const vertical = tabsIsVertical(orientation);
 	const bar = theme.padding.calc(0.5);
 	return createStyles({
@@ -21,6 +21,7 @@ const useTabsStyles = componentStyles<{ orientation?: TabsOrientation }>("Tabs",
 		} as WriteableStyle<ScrollingFrame>,
 		list: {
 			FillDirection: vertical ? Enum.FillDirection.Vertical : Enum.FillDirection.Horizontal,
+			HorizontalAlignment: centered === true && vertical !== true ? Enum.HorizontalAlignment.Center : Enum.HorizontalAlignment.Left,
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		tab: {

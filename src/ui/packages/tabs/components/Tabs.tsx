@@ -12,11 +12,12 @@ export interface TabsProps<T> {
 	onChange: (value: T) => void;
 	disabled?: boolean;
 	orientation?: TabsOrientation;
+	centered?: boolean;
 }
 
 function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
-	const { value, options, onChange, disabled, orientation, className, sx, id, ref } = props;
-	const styles = useTabsStyles({ orientation });
+	const { value, options, onChange, disabled, orientation, centered, className, sx, id, ref } = props;
+	const styles = useTabsStyles({ orientation, centered });
 	const vertical = tabsIsVertical(orientation);
 
 	const choose = (index: number) => {

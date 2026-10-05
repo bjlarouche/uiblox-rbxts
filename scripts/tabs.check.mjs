@@ -4,7 +4,7 @@ if (tabsIsVertical("vertical") !== true || tabsIsVertical() !== false || tabsIsV
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["default", "vertical", "disabled"]) {
+for (const name of ["default", "vertical", "disabled", "centered"]) {
 	if (!stateMatrix.some((row) => row.component === "Tabs" && row.name.includes(name))) {
 		throw new Error(`Tabs missing ${name}`);
 	}
