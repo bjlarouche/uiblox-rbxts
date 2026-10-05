@@ -763,6 +763,12 @@ if (!stateMatrix.some((row) => row.component === "Button" && row.loading === tru
 if (!stateMatrix.some((row) => row.component === "IconButton" && row.loading === true)) {
 	throw new Error("IconButton missing loading");
 }
+if (!stateMatrix.some((row) => row.component === "Dialog" && row.open === true)) {
+	throw new Error("Dialog missing open");
+}
+if (!stateMatrix.some((row) => row.component === "Dialog" && row.open === false)) {
+	throw new Error("Dialog missing closed");
+}
 const dir = mkdtempSync(join(tmpdir(), "uiblox-primitives-"));
 const tsconfig = {
 	compilerOptions: {
@@ -808,6 +814,7 @@ import { SelectProps } from "ui/packages/select";
 import { TabsProps } from "ui/packages/tabs";
 import { SplitPaneProps } from "ui/packages/splitPane";
 import { TooltipProps } from "ui/packages/tooltip";
+import { DialogProps } from "ui/packages/dialog";
 import { VirtualListProps } from "ui/packages/virtualList";
 import { StateCapture } from "ui/packages/stateMatrix";
 import { Branch } from "ui/packages/treeView";
@@ -879,6 +886,8 @@ const split: SplitPaneProps = { value: 240, min: 200, max: 340, vertical: false,
 void split;
 const tooltip: TooltipProps = { text: "Reset", delay: 0.2 };
 void tooltip;
+const dialog: DialogProps = { open: true, title: "Save changes", onClose: () => {} };
+void dialog;
 const capture: StateCapture = {
 	component: "Button",
 	name: "default-dark",

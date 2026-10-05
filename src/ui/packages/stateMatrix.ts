@@ -181,4 +181,7 @@ export const stateMatrix: StateCapture[] = [
 	...pair("LinearProgress", "indeterminate", { indeterminate: true }),
 	...pair("LinearProgress", "reduced", { indeterminate: true, reducedMotion: true }),
 	...pair("LinearProgress", "disabled", { value: 0.6, disabled: true }),
+
+	...pair("Dialog", "closed", { open: false }),
+	...pair("Dialog", "open", { open: true }),
 ];
