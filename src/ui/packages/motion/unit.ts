@@ -47,3 +47,15 @@ export function arcKeys(value: number) {
 		{ time: 1, transparency: 1 },
 	];
 }
+
+/** Indeterminate ring: long clear trail, bright head — reads as a sweep. */
+export function spinArcKeys() {
+	return [
+		{ time: 0, transparency: 1 },
+		{ time: 0.45, transparency: 1 },
+		{ time: 0.7, transparency: 0.55 },
+		{ time: 0.88, transparency: 0 },
+		{ time: 0.96, transparency: 0.35 },
+		{ time: 1, transparency: 1 },
+	];
+}
