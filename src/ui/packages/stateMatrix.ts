@@ -202,6 +202,7 @@ function compositeRows(): StateCapture[] {
 		...pair("Tabs", "default", { value: "Continue", options: ["Continue", "Docs", "Actions"] }),
 		...pair("Tabs", "vertical", { value: "Continue", options: ["Continue", "Docs", "Actions"], variant: "vertical" }),
 		...pair("Tabs", "disabled", { value: "Continue", options: ["Continue", "Docs", "Actions"], disabled: true }),
+		...pair("Tabs", "centered", { value: "Continue", options: ["Continue", "Docs", "Actions"], variant: "centered" }),
 		...pair("Tabs", "hover", { value: "Continue", options: ["Continue", "Docs", "Actions"], pointer: "hover" }),
 		...pair("Tabs", "long", {
 			value: LONG,
