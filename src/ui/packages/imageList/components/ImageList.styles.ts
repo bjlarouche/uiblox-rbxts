@@ -30,7 +30,6 @@ const useImageListStyles = componentStyles<{ cols?: number; gap?: number; itemSi
 				BorderSizePixel: 0,
 				AutoButtonColor: false,
 				ClipsDescendants: true,
-				Text: "",
 			} as WriteableStyle<ImageButton>,
 			corner: {
 				CornerRadius: new UDim(0, theme.shape.borderRadius),

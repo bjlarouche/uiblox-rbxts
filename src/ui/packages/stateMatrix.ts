@@ -388,6 +388,7 @@ function miscRows(): StateCapture[] {
 		...pair("ImageList", "dense", { size: "small" }),
 		...pair("ImageList", "wide", { size: "large" }),
 		...pair("ImageList", "titled", { text: "Cove" }),
+		...pair("ImageList", "untitled", { text: "" }),
 		...pair("SpeedDial", "closed", { open: false }),
 		...pair("SpeedDial", "open", { open: true }),
 		...pair("SpeedDial", "disabled", { open: false, disabled: true }),
