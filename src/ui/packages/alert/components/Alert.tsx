@@ -9,12 +9,13 @@ export interface AlertProps {
 	title?: string;
 	message: string;
 	onClose?: () => void;
+	filled?: boolean;
 }
 
 function Alert(props: CustomizedProps<Frame, AlertProps>) {
-	const { severity, title, message, onClose, className, sx, id, ref } = props;
+	const { severity, title, message, onClose, filled, className, sx, id, ref } = props;
 	const dismissible = onClose !== undefined;
-	const styles = useAlertStyles({ severity, dismissible });
+	const styles = useAlertStyles({ severity, dismissible, filled });
 	return (
 		<frame key={id || "Alert"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uipadding {...styles.padding} />
