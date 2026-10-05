@@ -5,3 +5,7 @@ export * from "./components/Grid";
 export { default as List } from "./components/List";
 export { ListProps } from "./components/List";
 export * from "./components/List";
+
+export { default as Stack } from "./components/Stack";
+export { StackProps } from "./components/Stack";
+export { StackAlign, StackDirection, StackJustify } from "./components/stackAlign";
