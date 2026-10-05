@@ -1,6 +1,9 @@
 import { ControlSize, componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
-const usePaginationStyles = componentStyles<{ size?: ControlSize }>("Pagination", (theme: Theme, { size = "medium" }) => {
+export type PaginationVariant = "text" | "outlined";
+
+const usePaginationStyles = componentStyles<{ size?: ControlSize; variant?: PaginationVariant }>("Pagination", (theme: Theme, { size = "medium", variant = "text" }) => {
+	const outlined = variant === "outlined";
 	const box = size === "small" ? theme.spacing.calc(2.5) : size === "large" ? theme.spacing.calc(4) : theme.spacing.calc(3);
 	const text =
 		size === "small"
@@ -23,6 +26,7 @@ const usePaginationStyles = componentStyles<{ size?: ControlSize }>("Pagination"
 		page: {
 			Size: UDim2.fromOffset(box, box),
 			BackgroundColor3: theme.palette.surface.input,
+			BackgroundTransparency: outlined ? 1 : 0,
 			BorderSizePixel: 0,
 			AutoButtonColor: false,
 			Font: theme.typography.fontFamilies.default,
@@ -31,7 +35,18 @@ const usePaginationStyles = componentStyles<{ size?: ControlSize }>("Pagination"
 		} as WriteableStyle<TextButton>,
 		selected: {
 			BackgroundColor3: theme.palette.action.selected,
+			BackgroundTransparency: 0,
 		} as WriteableStyle<TextButton>,
+		stroke: {
+			Color: theme.palette.border,
+			Thickness: 1,
+			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+		} as WriteableStyle<UIStroke>,
+		selectedStroke: {
+			Color: theme.palette.primary.main,
+			Thickness: 1,
+			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+		} as WriteableStyle<UIStroke>,
 		ellipsis: {
 			Size: UDim2.fromOffset(box, box),
 			BackgroundTransparency: 1,
