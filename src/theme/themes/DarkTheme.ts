@@ -7,6 +7,7 @@ import { createDarkPalette } from "./createPalette";
 
 const DarkTheme: Theme = {
 	type: "Dark",
+	density: "comfortable",
 	palette: createDarkPalette(),
 	spacing: {
 		default: SPACING_BASE,

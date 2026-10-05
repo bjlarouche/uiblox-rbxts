@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "@rbxts/react";
-import { cx, CustomizedProps } from "theme";
+import { ControlSize, cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { commitNumber } from "ui/packages/numberInput/components/numberValue";
 import useSliderStyles from "./Slider.styles";
@@ -13,11 +13,12 @@ export interface SliderProps {
 	max: number;
 	step?: number;
 	disabled?: boolean;
+	size?: ControlSize;
 }
 
 function Slider(props: CustomizedProps<Frame, SliderProps>) {
-	const { value, onChange, onCommit, min, max, step, disabled, className, id, ref } = props;
-	const { root, track, fill, knob, corner, stroke } = useSliderStyles();
+	const { value, onChange, onCommit, min, max, step, disabled, size, className, id, ref } = props;
+	const { root, track, fill, knob, corner, stroke } = useSliderStyles({ size });
 	const active = canActivate(disabled);
 	const [focused, setFocused] = useState(false);
 	const [hovering, setHovering] = useState(false);

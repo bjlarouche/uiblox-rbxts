@@ -1,1 +1,1 @@
-export type ButtonSize = "small" | "medium" | "large";
+export type { ControlSize as ButtonSize } from "theme";

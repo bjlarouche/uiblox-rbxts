@@ -7,6 +7,7 @@ import { createLightPalette } from "./createPalette";
 
 const LightTheme: Theme = {
 	type: "Light",
+	density: "comfortable",
 	palette: createLightPalette(),
 	spacing: {
 		default: SPACING_BASE,

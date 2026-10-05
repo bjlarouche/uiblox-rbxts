@@ -645,6 +645,25 @@ const deepWindow = visibleWindow(ensureVisibleScroll(0, 400, deepSelected, deepR
 if (deepWindow.end - deepWindow.start + 1 > 40) throw new Error("deep tree only mounts a window of rows");
 if (deepSelected < deepWindow.start || deepSelected > deepWindow.end) throw new Error("selected deep leaf stays in the mounted window");
 
+const { controlMetrics, resolveControlSize } = await import(
+	pathToFileURL(join(root, "src/theme/interfaces/density/controlMetrics.ts")).href
+);
+if (resolveControlSize("comfortable") !== "medium") throw new Error("comfortable density defaults medium");
+if (resolveControlSize("compact") !== "small") throw new Error("compact density defaults small");
+if (resolveControlSize("compact", "large") !== "large") throw new Error("size prop wins over density");
+const compact = controlMetrics("compact");
+if (compact.checkbox !== 16 || compact.switchTrackW !== 32 || compact.switchTrackH !== 18 || compact.height !== 22) {
+	throw new Error("compact metrics miss studio targets");
+}
+const medium = controlMetrics("comfortable");
+if (medium.checkbox !== 20 || medium.switchTrackW !== 48 || medium.switchTrackH !== 24 || medium.height !== 24) {
+	throw new Error("medium metrics miss game defaults");
+}
+const largeMetrics = controlMetrics("comfortable", "large");
+if (largeMetrics.switchTrackW !== 60 || largeMetrics.switchTrackH !== 36 || largeMetrics.sliderHeight !== 36) {
+	throw new Error("large metrics miss prior polish sizes");
+}
+
 const { stateMatrix } = await import(pathToFileURL(join(root, "src/ui/packages/stateMatrix.ts")).href);
 const components = [
 	"Button",
@@ -691,6 +710,14 @@ for (const component of ["Button", "Checkbox", "Switch", "Slider", "Select", "Sp
 for (const component of ["Button", "Input", "Checkbox", "Switch", "Slider", "RadioGroup", "Select", "Tabs", "SplitPane"]) {
 	if (!stateMatrix.some((row) => row.component === component && row.disabled === true)) {
 		throw new Error(`${component} missing disabled`);
+	}
+}
+for (const component of ["Button", "Input", "Checkbox", "Switch", "Slider", "RadioGroup", "Select"]) {
+	if (!stateMatrix.some((row) => row.component === component && row.size === "small")) {
+		throw new Error(`${component} missing size-small`);
+	}
+	if (!stateMatrix.some((row) => row.component === component && row.density === "compact")) {
+		throw new Error(`${component} missing density-compact`);
 	}
 }
 if (!stateMatrix.some((row) => row.component === "Checkbox" && row.disabled === true && row.value !== true)) {

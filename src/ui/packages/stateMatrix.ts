@@ -1,5 +1,7 @@
 export type StateTheme = "Dark" | "Light";
 export type StatePointer = "rest" | "hover" | "press" | "focus";
+export type StateSize = "small" | "medium" | "large";
+export type StateDensity = "compact" | "comfortable";
 
 export interface StateCapture {
 	component: string;
@@ -23,6 +25,8 @@ export interface StateCapture {
 	animation?: "pulse" | "shimmer" | false;
 	reducedMotion?: boolean;
 	indeterminate?: boolean;
+	size?: StateSize;
+	density?: StateDensity;
 }
 
 const LONG = "Save changes to this story before publishing the preview";
@@ -43,6 +47,10 @@ function pair(component: string, name: string, patch: Partial<StateCapture> = {}
 
 export const stateMatrix: StateCapture[] = [
 	...pair("Button", "default"),
+	...pair("Button", "size-small", { size: "small" }),
+	...pair("Button", "size-medium", { size: "medium" }),
+	...pair("Button", "size-large", { size: "large" }),
+	...pair("Button", "density-compact", { density: "compact", size: "small" }),
 	...pair("Button", "hover", { pointer: "hover" }),
 	...pair("Button", "press", { pointer: "press" }),
 	...pair("Button", "focus", { pointer: "focus" }),
@@ -55,6 +63,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Button", "long", { text: LONG, width: NARROW }),
 
 	...pair("Input", "default", { text: "Story" }),
+	...pair("Input", "size-small", { text: "Story", size: "small" }),
+	...pair("Input", "size-medium", { text: "Story", size: "medium" }),
+	...pair("Input", "size-large", { text: "Story", size: "large" }),
+	...pair("Input", "density-compact", { text: "Story", density: "compact", size: "small" }),
 	...pair("Input", "focus", { text: "Story", pointer: "focus" }),
 	...pair("Input", "disabled", { text: "Story", disabled: true }),
 	...pair("Input", "error", { text: "Story", hasError: true }),
@@ -62,6 +74,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Input", "long", { text: LONG, width: NARROW }),
 
 	...pair("Checkbox", "unchecked"),
+	...pair("Checkbox", "size-small", { size: "small" }),
+	...pair("Checkbox", "size-medium", { size: "medium" }),
+	...pair("Checkbox", "size-large", { size: "large" }),
+	...pair("Checkbox", "density-compact", { density: "compact", size: "small" }),
 	...pair("Checkbox", "checked", { value: true }),
 	...pair("Checkbox", "mixed", { mixed: true }),
 	...pair("Checkbox", "disabled", { disabled: true }),
@@ -89,6 +105,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("UDimEditor", "long", { value: "0.5,8", text: LONG, width: NARROW }),
 
 	...pair("Switch", "off"),
+	...pair("Switch", "size-small", { size: "small" }),
+	...pair("Switch", "size-medium", { size: "medium" }),
+	...pair("Switch", "size-large", { size: "large" }),
+	...pair("Switch", "density-compact", { density: "compact", size: "small" }),
 	...pair("Switch", "on", { value: true }),
 	...pair("Switch", "disabled", { disabled: true }),
 	...pair("Switch", "disabled-on", { value: true, disabled: true }),
@@ -102,6 +122,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Switch", "long", { text: LONG, width: NARROW }),
 
 	...pair("Slider", "default", { value: 0.5 }),
+	...pair("Slider", "size-small", { value: 0.5, size: "small" }),
+	...pair("Slider", "size-medium", { value: 0.5, size: "medium" }),
+	...pair("Slider", "size-large", { value: 0.5, size: "large" }),
+	...pair("Slider", "density-compact", { value: 0.5, density: "compact", size: "small" }),
 	...pair("Slider", "disabled", { value: 0.5, disabled: true }),
 	...pair("Slider", "hover", { value: 0.5, pointer: "hover" }),
 	...pair("Slider", "press", { value: 0.5, pointer: "press" }),
@@ -109,6 +133,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Slider", "long", { value: 0.25, text: LONG, width: NARROW }),
 
 	...pair("RadioGroup", "default", { value: "Continue", options: ["Continue", "Other"] }),
+	...pair("RadioGroup", "size-small", { value: "Continue", options: ["Continue", "Other"], size: "small" }),
+	...pair("RadioGroup", "size-large", { value: "Continue", options: ["Continue", "Other"], size: "large" }),
+	...pair("RadioGroup", "density-compact", { value: "Continue", options: ["Continue", "Other"], density: "compact", size: "small" }),
 	...pair("RadioGroup", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
 	...pair("RadioGroup", "disabled-option", {
 		value: "Continue",
@@ -119,6 +146,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("RadioGroup", "long", { value: LONG, options: [LONG, "Other"], text: LONG, width: NARROW }),
 
 	...pair("Select", "default", { value: "Continue", options: ["Continue", "Other"] }),
+	...pair("Select", "size-small", { value: "Continue", options: ["Continue", "Other"], size: "small" }),
+	...pair("Select", "size-large", { value: "Continue", options: ["Continue", "Other"], size: "large" }),
+	...pair("Select", "density-compact", { value: "Continue", options: ["Continue", "Other"], density: "compact", size: "small" }),
 	...pair("Select", "open", { value: "Continue", options: ["Continue", "Other"], open: true }),
 	...pair("Select", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
 	...pair("Select", "hover", { value: "Continue", options: ["Continue", "Other"], open: true, pointer: "hover" }),

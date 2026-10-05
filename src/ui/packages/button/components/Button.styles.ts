@@ -1,29 +1,13 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, createStyles, makeStyles, Theme, WriteableStyle } from "theme";
 import { ButtonProps } from "./Button";
 
-const makeRootStyles = (theme: Theme, { size, color, fullWidth, variant }: ButtonProps) => {
-	/**
-	 * Default style override
-	 */
-	const defaultStyles: WriteableStyle<TextButton> = {};
-
-	switch (size) {
-		case "small":
-			defaultStyles.Size = new UDim2(0, theme.spacing.calc(8), 0, theme.spacing.calc(2));
-			break;
-		case "medium":
-			defaultStyles.Size = new UDim2(0, theme.spacing.calc(12), 0, theme.spacing.calc(3));
-			break;
-		case "large":
-			defaultStyles.Size = new UDim2(0, theme.spacing.calc(16), 0, theme.spacing.calc(4));
-			break;
-		default:
-			defaultStyles.Size = new UDim2(0, theme.spacing.calc(8), 0, theme.spacing.calc(2));
-			break;
-	}
+const makeRootStyles = (theme: Theme, { size = "small", color, fullWidth, variant }: ButtonProps) => {
+	const metrics = controlMetrics(theme.density, size);
+	const defaultStyles: WriteableStyle<TextButton> = {
+		Size: new UDim2(0, metrics.buttonWidth, 0, metrics.buttonHeight),
+	};
 
 	if (fullWidth) {
-		// Make full width minus padding
 		defaultStyles.Size = new UDim2(
 			1,
 			-theme.padding.calc(4),
@@ -31,7 +15,6 @@ const makeRootStyles = (theme: Theme, { size, color, fullWidth, variant }: Butto
 			defaultStyles.Size?.Y.Offset ?? 0,
 		);
 
-		// And center it horizontally
 		defaultStyles.AnchorPoint = new Vector2(0.5, 0);
 		defaultStyles.Position = new UDim2(
 			0.5,
@@ -72,11 +55,12 @@ const makeRootStyles = (theme: Theme, { size, color, fullWidth, variant }: Butto
 };
 
 const useButtonStyles = makeStyles<ButtonProps>(
-	(theme, { size = "small", color = "primary", fullWidth = false, variant = "contained" }) =>
-		createStyles({
+	(theme, { size = "small", color = "primary", fullWidth = false, variant = "contained" }) => {
+		const metrics = controlMetrics(theme.density, size);
+		return createStyles({
 			root: makeRootStyles(theme, { size, color, fullWidth, variant }),
 			font: {
-				TextSize: theme.typography.fontSizes.button,
+				TextSize: metrics.font,
 				Font: theme.typography.fontFamilies.default,
 			} as WriteableStyle<TextLabel>,
 			corner: {
@@ -87,7 +71,8 @@ const useButtonStyles = makeStyles<ButtonProps>(
 				Transparency: 0,
 				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 			} as WriteableStyle<UIStroke>,
-		}),
+		});
+	},
 );
 
 export default useButtonStyles;

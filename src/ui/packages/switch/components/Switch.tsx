@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { cx, CustomizedProps } from "theme";
+import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { playProperty } from "ui/packages/motion";
 import useSwitchStyles from "./Switch.styles";
@@ -16,15 +16,16 @@ export interface SwitchProps {
 	onChange: (value: boolean) => void;
 	disabled?: boolean;
 	label?: string;
+	size?: ControlSize;
 	reducedMotion?: boolean;
 }
 
-const THUMB_INSET = 3;
 const THUMB_SECONDS = 0.14;
 
 function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
-	const { value, onChange, disabled, label, reducedMotion, className, id, ref } = props;
-	const { root, row, track, trackOn, knob, label: labelStyle, corner, stroke } = useSwitchStyles();
+	const { value, onChange, disabled, label, size, reducedMotion, className, id, ref } = props;
+	const { theme } = useTheme();
+	const { root, row, track, trackOn, knob, label: labelStyle, corner, stroke } = useSwitchStyles({ size });
 	const [hovering, setHovering] = useState(false);
 	const [pressed, setPressed] = useState(false);
 	const [focused, setFocused] = useState(false);
@@ -33,7 +34,8 @@ function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
 	const active = canActivate(disabled);
 	const pointer = active ? switchPointer(hovering, pressed, focused) : "rest";
 	const on = value === true;
-	const placement = switchThumbPlacement(on, THUMB_INSET);
+	const inset = controlMetrics(theme.density, size).switchInset;
+	const placement = switchThumbPlacement(on, inset);
 
 	useEffect(() => {
 		const thumb = knobRef.current;
