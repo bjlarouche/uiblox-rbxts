@@ -3,6 +3,7 @@ export * from "./skeleton";
 export * from "./divider";
 export * from "./errorBoundary";
 export * from "./icon";
+export * from "./imageList";
 export * from "./iconButton";
 export * from "./input";
 export * from "./formText";
