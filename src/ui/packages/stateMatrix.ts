@@ -303,6 +303,7 @@ function chromeRows(): StateCapture[] {
 			filter: "zzz",
 		}),
 		...pair("Fab", "default"),
+		...pair("Fab", "extended", { text: "Compose" }),
 		...pair("Fab", "small", { size: "small" }),
 		...pair("Fab", "large", { size: "large" }),
 		...pair("Fab", "disabled", { disabled: true }),
