@@ -250,6 +250,7 @@ function surfacesRows(): StateCapture[] {
 		...pair("Dialog", "open", { open: true }),
 		...pair("Paper", "flat", { variant: "flat" }),
 		...pair("Paper", "raised", { variant: "raised" }),
+		...pair("Paper", "square", { variant: "square" }),
 		...pair("ListItem", "default"),
 		...pair("ListItem", "selected", { value: true }),
 		...pair("ListItem", "disabled", { disabled: true }),

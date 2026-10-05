@@ -5,16 +5,17 @@ export type PaperElevation = "flat" | "raised";
 
 export interface PaperProps {
 	elevation?: PaperElevation;
+	square?: boolean;
 	children?: React.ReactNode;
 }
 
 function Paper(props: PaperProps) {
-	const { elevation = "flat", children } = props;
+	const { elevation = "flat", square, children } = props;
 	const styles = usePaperStyles({ elevation });
 	return (
 		<frame key="Paper" {...styles.root}>
 			<uipadding {...styles.padding} />
-			<uicorner {...styles.corner} />
+			{square !== true && <uicorner {...styles.corner} />}
 			{children}
 		</frame>
 	);
