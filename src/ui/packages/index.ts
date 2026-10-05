@@ -51,6 +51,7 @@ export * from "./fab";
 export * from "./appBar";
 export * from "./bottomNavigation";
 export * from "./alert";
+export * from "./toggleButton";
 export * from "./listItem";
 export * from "./menu";
 
