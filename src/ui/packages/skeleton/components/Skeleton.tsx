@@ -19,7 +19,8 @@ export interface SkeletonProps {
 function SkeletonBlock(
 	props: CustomizedProps<Frame, SkeletonProps> & { width: number; height: number; motion: SkeletonAnimation },
 ) {
-	const { variant = "text", width, height, motion, className, id, ref } = props;
+	const { variant = "text", width, height, motion, className,
+		sx, id, ref } = props;
 	const { block, highlight, rounded, circular } = useSkeletonStyles();
 	const fillRef = useRef<Frame>();
 	const gradientRef = useRef<UIGradient>();
@@ -50,7 +51,7 @@ function SkeletonBlock(
 			ref={ref}
 			BackgroundTransparency={1}
 			BorderSizePixel={0}
-			{...className}
+			{...className} {...sx}
 			Size={new UDim2(0, side ?? width, 0, side ?? height)}
 		>
 			<frame ref={fillRef} {...block} Size={new UDim2(1, 0, 1, 0)}>
@@ -71,6 +72,7 @@ function Skeleton(props: CustomizedProps<Frame, SkeletonProps>) {
 		animation,
 		reducedMotion,
 		className,
+		sx,
 		id,
 		ref,
 	} = props;
@@ -85,6 +87,7 @@ function Skeleton(props: CustomizedProps<Frame, SkeletonProps>) {
 				height={height}
 				motion={motion}
 				className={className}
+				sx={sx}
 				id={id}
 				ref={ref}
 			/>
@@ -99,7 +102,7 @@ function Skeleton(props: CustomizedProps<Frame, SkeletonProps>) {
 		<frame
 			key={id || "Skeleton"}
 			ref={ref}
-			{...className}
+			{...className} {...sx}
 			Size={new UDim2(0, width, 0, blockHeight)}
 			BackgroundTransparency={1}
 			BorderSizePixel={0}

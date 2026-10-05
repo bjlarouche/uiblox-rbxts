@@ -19,7 +19,8 @@ export interface NumberSequenceEditorProps {
 }
 
 function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditorProps>) {
-	const { value, onChange, disabled, className, id, ref } = props;
+	const { value, onChange, disabled, className,
+		sx, id, ref } = props;
 	const styles = useColorPickerStyles();
 	const active = canActivate(disabled);
 	const stops = readNumberStops(value);
@@ -37,7 +38,7 @@ function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditor
 	};
 
 	return (
-		<frame key={id || "NumberSequenceEditor"} ref={ref} {...styles.root} {...className} Selectable={false}>
+		<frame key={id || "NumberSequenceEditor"} ref={ref} {...styles.root} {...className} {...sx} Selectable={false}>
 			<uilistlayout {...styles.column} />
 			<frame
 				key="Bar"

@@ -45,6 +45,7 @@ function Grid(props: CustomizedProps<Frame, GridProps>) {
 		horizontalAlignment = Enum.HorizontalAlignment.Left,
 		verticalAlignment = Enum.VerticalAlignment.Top,
 		className,
+		sx,
 		children,
 		id,
 		ref
@@ -62,7 +63,7 @@ function Grid(props: CustomizedProps<Frame, GridProps>) {
 	});
 
 	return (
-		<frame key={id || 'Grid'} ref={ref} {...baseGrid} {...className}>
+		<frame key={id || 'Grid'} ref={ref} {...baseGrid} {...className} {...sx}>
 			<uigridlayout key="GridLayout" {...baseLayout} />
 			{children}
 		</frame>

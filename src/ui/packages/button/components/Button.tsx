@@ -58,6 +58,7 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 		mouseEnter,
 		mouseLeave,
 		className,
+		sx,
 		children,
 		id,
 		ref
@@ -93,7 +94,7 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 			ref={ref}
 			{...root}
 			{...font}
-			{...className}
+			{...className} {...sx}
 			Active={active}
 			AutoButtonColor={active}
 			Selectable={active}

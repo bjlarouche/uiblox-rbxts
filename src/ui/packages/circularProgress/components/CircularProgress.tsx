@@ -12,7 +12,8 @@ export interface CircularProgressProps {
 }
 
 function CircularProgress(props: CustomizedProps<Frame, CircularProgressProps>) {
-	const { value, size = 24, thickness = 3, color, disabled, reducedMotion, className, id, ref } = props;
+	const { value, size = 24, thickness = 3, color, disabled, reducedMotion, className,
+		sx, id, ref } = props;
 	const { theme } = useTheme();
 	const indeterminate = value === undefined;
 	const motion = progressSpin(indeterminate, reducedMotion, disabled);
@@ -47,7 +48,7 @@ function CircularProgress(props: CustomizedProps<Frame, CircularProgressProps>) 
 			Size={new UDim2(0, size, 0, size)}
 			BackgroundTransparency={1}
 			BorderSizePixel={0}
-			{...className}
+			{...className} {...sx}
 		>
 			<uicorner CornerRadius={new UDim(1, 0)} />
 			<uistroke Color={tint} Thickness={thickness} Transparency={disabled ? 0.75 : 0.7} />

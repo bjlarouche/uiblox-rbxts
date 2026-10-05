@@ -13,7 +13,8 @@ export interface TabsProps<T> {
 }
 
 function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
-	const { value, options, onChange, disabled, className, id, ref } = props;
+	const { value, options, onChange, disabled, className,
+		sx, id, ref } = props;
 	const styles = useTabsStyles();
 
 	const choose = (index: number) => {
@@ -30,7 +31,7 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 	};
 
 	return (
-		<scrollingframe key={id || "Tabs"} ref={ref} {...styles.root} {...className}>
+		<scrollingframe key={id || "Tabs"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
 			{options.map((choice, index) => {
 				const active = canActivate(disabled || choice.disabled);

@@ -27,7 +27,8 @@ function builtInFamilies() {
 }
 
 function FontEditor(props: CustomizedProps<Frame, FontEditorProps>) {
-	const { value, onChange, disabled, className, id, ref } = props;
+	const { value, onChange, disabled, className,
+		sx, id, ref } = props;
 	const styles = useFontEditorStyles();
 	const active = canActivate(disabled);
 	const families = builtInFamilies();
@@ -39,7 +40,7 @@ function FontEditor(props: CustomizedProps<Frame, FontEditorProps>) {
 	const stylesList = enumOptions(Enum.FontStyle.GetEnumItems());
 
 	return (
-		<frame key={id || "FontEditor"} ref={ref} {...styles.root} {...className}>
+		<frame key={id || "FontEditor"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.column} />
 			<frame key="Family" {...styles.row} LayoutOrder={1}>
 				<Select

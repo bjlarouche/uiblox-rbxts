@@ -58,6 +58,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		onBlur,
 		onEnterPressed,
 		className,
+		sx,
 		id,
 		ref,
 	} = props;
@@ -78,7 +79,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const showCorner = rounded;
 
 	return (
-		<frame key={id || "Input"} ref={ref} {...root} {...className}>
+		<frame key={id || "Input"} ref={ref} {...root} {...className} {...sx}>
 			<frame key="Margin" {...margin}>
 				<frame key="Shell" {...shell}>
 					{showStroke && <uistroke {...stroke} />}

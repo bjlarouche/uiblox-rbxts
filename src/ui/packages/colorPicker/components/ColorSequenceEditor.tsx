@@ -19,7 +19,8 @@ export interface ColorSequenceEditorProps {
 }
 
 function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorProps>) {
-	const { value, onChange, disabled, className, id, ref } = props;
+	const { value, onChange, disabled, className,
+		sx, id, ref } = props;
 	const styles = useColorPickerStyles();
 	const active = canActivate(disabled);
 	const stops = readColorStops(value);
@@ -37,7 +38,7 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 	};
 
 	return (
-		<frame key={id || "ColorSequenceEditor"} ref={ref} {...styles.root} {...className} Selectable={false}>
+		<frame key={id || "ColorSequenceEditor"} ref={ref} {...styles.root} {...className} {...sx} Selectable={false}>
 			<uilistlayout {...styles.column} />
 			<frame
 				key="Bar"

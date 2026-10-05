@@ -11,7 +11,8 @@ export interface UDimEditorProps {
 }
 
 function UDimEditor(props: CustomizedProps<Frame, UDimEditorProps>) {
-	const { value, onChange, disabled, className, id, ref } = props;
+	const { value, onChange, disabled, className,
+		sx, id, ref } = props;
 	const styles = useUDimEditorStyles();
 	const isUDim2 = typeOf(value) === "UDim2";
 
@@ -26,7 +27,7 @@ function UDimEditor(props: CustomizedProps<Frame, UDimEditorProps>) {
 	);
 
 	return (
-		<frame key={id || "UDimEditor"} ref={ref} {...styles.root} {...className}>
+		<frame key={id || "UDimEditor"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.column} />
 			{isUDim2 ? (
 				<frame key="Axes" Size={new UDim2(1, 0, 0, 0)} AutomaticSize={Enum.AutomaticSize.Y} BackgroundTransparency={1} LayoutOrder={1}>

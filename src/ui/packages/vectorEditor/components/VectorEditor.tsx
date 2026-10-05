@@ -12,13 +12,14 @@ export interface VectorEditorProps {
 }
 
 function VectorEditor(props: CustomizedProps<Frame, VectorEditorProps>) {
-	const { value, onChange, disabled, className, id, ref } = props;
+	const { value, onChange, disabled, className,
+		sx, id, ref } = props;
 	const styles = useVectorEditorStyles();
 	const isVector3 = typeOf(value) === "Vector3";
 	const axes = props.axes ?? (isVector3 ? (["X", "Y", "Z"] as AxisKey[]) : (["X", "Y"] as AxisKey[]));
 
 	return (
-		<frame key={id || "VectorEditor"} ref={ref} {...styles.root} {...className}>
+		<frame key={id || "VectorEditor"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.row} />
 			{axes.map((axis, index) => (
 				<frame key={axis} {...styles.axis} Size={new UDim2(1 / axes.size(), 0, 0, 32)} LayoutOrder={index + 1}>

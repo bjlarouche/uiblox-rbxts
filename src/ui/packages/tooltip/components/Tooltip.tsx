@@ -10,7 +10,8 @@ export interface TooltipProps {
 }
 
 function Tooltip(props: CustomizedProps<Frame, TooltipProps>) {
-	const { text, delay = 0.4, children, className, id, ref } = props;
+	const { text, delay = 0.4, children, className,
+		sx, id, ref } = props;
 	const styles = useTooltipStyles();
 	const { theme } = useTheme();
 	const padX = theme.padding.calc(2);
@@ -36,7 +37,7 @@ function Tooltip(props: CustomizedProps<Frame, TooltipProps>) {
 			key={id || "Tooltip"}
 			ref={ref}
 			{...styles.root}
-			{...className}
+			{...className} {...sx}
 			Event={{
 				MouseEnter: (rbx) => {
 					setAnchor(rbx);

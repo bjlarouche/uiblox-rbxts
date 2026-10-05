@@ -17,7 +17,8 @@ export interface SliderProps {
 }
 
 function Slider(props: CustomizedProps<Frame, SliderProps>) {
-	const { value, onChange, onCommit, min, max, step, disabled, size, className, id, ref } = props;
+	const { value, onChange, onCommit, min, max, step, disabled, size, className,
+		sx, id, ref } = props;
 	const { root, track, fill, knob, corner, stroke } = useSliderStyles({ size });
 	const active = canActivate(disabled);
 	const [focused, setFocused] = useState(false);
@@ -59,7 +60,7 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 			key={id || "Slider"}
 			ref={ref}
 			{...root}
-			{...className}
+			{...className} {...sx}
 			Active={active}
 			Selectable={active}
 			BackgroundTransparency={showFocus ? 0.85 : 1}

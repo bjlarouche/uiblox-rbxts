@@ -33,7 +33,8 @@ export interface VirtualListProps<T> {
 }
 
 function VirtualList<T>(props: CustomizedProps<ScrollingFrame, VirtualListProps<T>>) {
-	const { items, getKey, renderItem, itemHeight, overscan = 2, listRef, empty, className, id, ref, children } =
+	const { items, getKey, renderItem, itemHeight, overscan = 2, listRef, empty, className,
+		sx, id, ref, children } =
 		props;
 	const styles = useVirtualListStyles();
 	const [frame, setFrame] = useState<ScrollingFrame>();
@@ -136,7 +137,7 @@ function VirtualList<T>(props: CustomizedProps<ScrollingFrame, VirtualListProps<
 				else if (ref) (ref as React.MutableRefObject<ScrollingFrame | undefined>).current = rbx;
 			}}
 			{...styles.root}
-			{...className}
+			{...className} {...sx}
 			CanvasSize={UDim2.fromOffset(0, canvasHeight)}
 		>
 			{count === 0 ? empty : rows}
