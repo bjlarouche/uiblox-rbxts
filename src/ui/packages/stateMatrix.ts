@@ -230,6 +230,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Chip", "selected", { value: true }),
 	...pair("Chip", "disabled", { disabled: true }),
 
+	...pair("Badge", "count", { value: 3 }),
+	...pair("Badge", "max", { value: 100 }),
+	...pair("Badge", "invisible", { value: 0 }),
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];
