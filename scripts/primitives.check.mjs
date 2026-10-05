@@ -20,7 +20,13 @@ if (canActivate(true, false)) throw new Error("disabled must not activate");
 if (canActivate(false, true)) throw new Error("loading must not activate");
 if (!canActivate(false, false)) throw new Error("enabled control must activate");
 
-globalThis.math = { floor: Math.floor, huge: Infinity, min: Math.min, max: Math.max };
+globalThis.math = {
+	floor: Math.floor,
+	huge: Infinity,
+	min: Math.min,
+	max: Math.max,
+	clamp: (value, min, max) => Math.min(max, Math.max(min, value)),
+};
 globalThis.tonumber = (text) => (text.trim() === "" || Number.isNaN(Number(text)) ? undefined : Number(text));
 const { commitNumber, parseNumberDraft } = await import(
 	pathToFileURL(join(root, "src/ui/packages/numberInput/components/numberValue.ts")).href
@@ -171,6 +177,38 @@ if (splitHitTransparency("rest") !== 1) throw new Error("idle hit target stays c
 if (splitHitTransparency("hover") >= 1) throw new Error("hover wash shows interactivity");
 if (splitHitTransparency("press") >= splitHitTransparency("hover")) throw new Error("drag wash is stronger");
 
+const { visibleWindow, ensureVisibleScroll, itemOffset } = await import(
+	pathToFileURL(join(root, "src/ui/packages/virtualList/components/virtualWindow.ts")).href
+);
+const mid = visibleWindow(240, 200, 5000, 24, 2);
+if (mid.start !== 8 || mid.end !== 20) throw new Error("window tracks scroll with overscan");
+const top = visibleWindow(0, 200, 5000, 24, 2);
+if (top.start !== 0 || top.end !== 10) throw new Error("top window includes overscan below");
+const emptyWindow = visibleWindow(0, 200, 0, 24, 2);
+if (emptyWindow.end !== -1) throw new Error("empty list mounts no rows");
+const large = visibleWindow(0, 400, 5000, 24, 3);
+if (large.end - large.start + 1 > 30) throw new Error("5000-row list only mounts a window");
+if (large.end - large.start + 1 < 10) throw new Error("window covers the viewport");
+if (ensureVisibleScroll(0, 200, 20, 5000, 24, "nearest") !== 304) {
+	throw new Error("ensureVisible scrolls down to reveal row");
+}
+if (ensureVisibleScroll(480, 200, 5, 5000, 24, "nearest") !== 120) {
+	throw new Error("ensureVisible scrolls up to reveal row");
+}
+if (ensureVisibleScroll(200, 200, 10, 5000, 24, "nearest") !== 200) {
+	throw new Error("ensureVisible keeps scroll when already visible");
+}
+if (ensureVisibleScroll(0, 200, 10, 5000, 24, "start") !== 240) {
+	throw new Error("ensureVisible start aligns row to top");
+}
+if (ensureVisibleScroll(0, 200, 10, 5000, 24, "center") !== 152) {
+	throw new Error("ensureVisible center centers the row");
+}
+const keys = [];
+for (let index = mid.start; index <= mid.end; index++) keys.push(`row-${index}`);
+if (keys[0] !== "row-8" || keys[keys.length - 1] !== "row-20") throw new Error("stable keys follow item indices");
+if (itemOffset(10, 24) !== 240) throw new Error("item offset is index times height");
+
 const { stateMatrix } = await import(pathToFileURL(join(root, "src/ui/packages/stateMatrix.ts")).href);
 const components = [
 	"Button",
@@ -271,6 +309,7 @@ import { SelectProps } from "ui/packages/select";
 import { TabsProps } from "ui/packages/tabs";
 import { SplitPaneProps } from "ui/packages/splitPane";
 import { TooltipProps } from "ui/packages/tooltip";
+import { VirtualListProps } from "ui/packages/virtualList";
 import { StateCapture } from "ui/packages/stateMatrix";
 import { Branch } from "ui/packages/treeView";
 import { Icons } from "ui/enums";
@@ -286,12 +325,20 @@ const nestedBranch: Branch = {
 	leaves: [{ title: "Primary", icon: Icons.Book }],
 	branches: [{ title: "Button", leaves: [] }],
 };
+const virtualList: VirtualListProps<string> = {
+	items: ["a", "b"],
+	getKey: (item: string) => item,
+	renderItem: (() => undefined) as unknown as VirtualListProps<string>["renderItem"],
+	itemHeight: 24,
+	overscan: 2,
+};
 void button;
 void icon;
 void input;
 void checkbox;
 void toggle;
 void nestedBranch;
+void virtualList;
 const numberInput: NumberInputProps = { value: 1, min: 0, max: 10, step: 1, onChange: () => {} };
 const slider: SliderProps = { value: 0.5, min: 0, max: 1, onChange: () => {}, onCommit: () => {} };
 void numberInput;
