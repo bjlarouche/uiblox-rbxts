@@ -8,7 +8,7 @@ export interface GridProps {
 	fillDirection?: Enum.FillDirection;
 	fillDirectionMaxCells?: number;
 	sortOrder?: Enum.SortOrder;
-	startCorner: Enum.StartCorner;
+	startCorner?: Enum.StartCorner;
 	horizontalAlignment?: Enum.HorizontalAlignment;
 	verticalAlignment?: Enum.VerticalAlignment;
 }
