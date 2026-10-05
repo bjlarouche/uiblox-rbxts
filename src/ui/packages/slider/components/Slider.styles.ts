@@ -11,7 +11,7 @@ const useSliderStyles = makeStyles((theme: Theme) =>
 			Size: new UDim2(1, 0, 0, theme.padding.calc(2)),
 			Position: UDim2.fromScale(0, 0.5),
 			AnchorPoint: new Vector2(0, 0.5),
-			BackgroundColor3: theme.palette.divider,
+			BackgroundColor3: theme.palette.action.disabled,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		fill: {
@@ -29,7 +29,7 @@ const useSliderStyles = makeStyles((theme: Theme) =>
 			CornerRadius: new UDim(1, 0),
 		} as WriteableStyle<UICorner>,
 		stroke: {
-			Color: theme.palette.secondary.main,
+			Color: theme.palette.focus,
 			Thickness: 2,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,

@@ -4,7 +4,7 @@ const useShadowStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		container: {
 			Size: new UDim2(1, theme.spacing.calc(0.25), 1, theme.spacing.calc(0.25)),
-			BackgroundColor3: theme.options.constants.colors.backgroundUIContrast,
+			BackgroundColor3: theme.palette.shadow,
 			BackgroundTransparency: 0.8,
 			BorderSizePixel: 0,
 			ZIndex: -100,

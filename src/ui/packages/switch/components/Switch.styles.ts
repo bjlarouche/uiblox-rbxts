@@ -18,7 +18,7 @@ const useSwitchStyles = makeStyles((theme: Theme) =>
 		} as WriteableStyle<UIListLayout>,
 		track: {
 			Size: UDim2.fromOffset(theme.spacing.calc(5), theme.spacing.calc(3)),
-			BackgroundColor3: theme.palette.divider,
+			BackgroundColor3: theme.palette.action.disabled,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		trackOn: {
@@ -26,7 +26,7 @@ const useSwitchStyles = makeStyles((theme: Theme) =>
 		} as WriteableStyle<Frame>,
 		knob: {
 			Size: UDim2.fromOffset(theme.spacing.calc(2.5), theme.spacing.calc(2.5)),
-			BackgroundColor3: theme.palette.background.default,
+			BackgroundColor3: theme.palette.surface.elevated,
 			BorderSizePixel: 0,
 			ZIndex: 2,
 		} as WriteableStyle<Frame>,
@@ -44,7 +44,7 @@ const useSwitchStyles = makeStyles((theme: Theme) =>
 			CornerRadius: new UDim(1, 0),
 		} as WriteableStyle<UICorner>,
 		stroke: {
-			Color: theme.palette.secondary.main,
+			Color: theme.palette.focus,
 			Thickness: 2,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,

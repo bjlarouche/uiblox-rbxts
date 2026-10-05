@@ -9,7 +9,7 @@ const useSelectStyles = makeStyles((theme: Theme) =>
 		} as WriteableStyle<Frame>,
 		trigger: {
 			Size: UDim2.fromScale(1, 1),
-			BackgroundColor3: theme.palette.background.paper,
+			BackgroundColor3: theme.palette.surface.input,
 			BorderSizePixel: 0,
 			AutoButtonColor: false,
 			TextColor3: theme.palette.text.primary,
@@ -27,7 +27,7 @@ const useSelectStyles = makeStyles((theme: Theme) =>
 		} as WriteableStyle<UIPadding>,
 		list: {
 			Size: UDim2.fromScale(1, 1),
-			BackgroundColor3: theme.palette.background.paper,
+			BackgroundColor3: theme.palette.surface.elevated,
 			BorderSizePixel: 0,
 			ScrollBarThickness: theme.padding.default,
 			ScrollBarImageColor3: theme.palette.text.secondary,
@@ -65,7 +65,7 @@ const useSelectStyles = makeStyles((theme: Theme) =>
 			CornerRadius: new UDim(0, theme.shape.borderRadius),
 		} as WriteableStyle<UICorner>,
 		stroke: {
-			Color: theme.palette.divider,
+			Color: theme.palette.border,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
 	}),

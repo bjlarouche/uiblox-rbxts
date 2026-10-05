@@ -36,7 +36,7 @@ const useSplitPaneStyles = makeStyles((theme: Theme) =>
 			Position: UDim2.fromScale(0.5, 0.5),
 		} as WriteableStyle<Frame>,
 		mark: {
-			BackgroundColor3: theme.options.constants.colors.textMuted,
+			BackgroundColor3: theme.palette.text.secondary,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		overlay: {

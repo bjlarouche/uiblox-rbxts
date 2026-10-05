@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "@rbxts/react";
-import { cx, CustomizedProps, DEFAULT_THEME, useTheme, WriteableStyle } from "theme";
+import { cx, CustomizedProps, useTheme, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
 import { useDragScroll } from "ui/packages/scroll";
 import { Typography } from "ui/packages/typography";
@@ -161,7 +161,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 											branchIcon,
 											inset > 0 && { Position: new UDim2(0, inset, 0.5, 0) },
 										)}
-										tint={DEFAULT_THEME.options.constants.extendedPalette.Gray[70]}
+										tint={theme.palette.text.secondary}
 									/>
 								)}
 								{entry.icon !== undefined && (
@@ -171,7 +171,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 										className={cx<ImageLabel>(branchIcon, {
 											Position: new UDim2(0, inset + (entry.expandable ? branchLead : 0), 0.5, 0),
 										})}
-										tint={DEFAULT_THEME.palette.secondary.main}
+										tint={theme.palette.primary.main}
 									/>
 								)}
 								<Typography
@@ -221,7 +221,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 										Position: new UDim2(0, theme.padding.calc(4) + inset, 0.5, 0),
 									},
 								)}
-								tint={DEFAULT_THEME.palette.secondary.main}
+								tint={theme.palette.primary.main}
 							/>
 							<Typography
 								text={entry.title}
