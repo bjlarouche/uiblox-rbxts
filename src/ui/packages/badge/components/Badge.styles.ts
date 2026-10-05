@@ -1,7 +1,7 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
-const useBadgeStyles = componentStyles("Badge", (theme: Theme) => {
-	const diameter = theme.spacing.calc(2) + theme.padding.calc(1);
+const useBadgeStyles = componentStyles<{ variant?: "standard" | "dot" }>("Badge", (theme: Theme, { variant = "standard" }) => {
+	const diameter = variant === "dot" ? theme.spacing.calc(1) : theme.spacing.calc(2) + theme.padding.calc(1);
 	return createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.XY,
@@ -12,7 +12,7 @@ const useBadgeStyles = componentStyles("Badge", (theme: Theme) => {
 		badge: {
 			AnchorPoint: new Vector2(0.5, 0.5),
 			Position: UDim2.fromScale(1, 0),
-			AutomaticSize: Enum.AutomaticSize.X,
+			AutomaticSize: variant === "dot" ? Enum.AutomaticSize.None : Enum.AutomaticSize.X,
 			Size: UDim2.fromOffset(diameter, diameter),
 			BackgroundColor3: theme.palette.status.error.main,
 			BorderSizePixel: 0,
@@ -24,8 +24,8 @@ const useBadgeStyles = componentStyles("Badge", (theme: Theme) => {
 			ZIndex: 2,
 		} as WriteableStyle<TextLabel>,
 		padding: {
-			PaddingLeft: new UDim(0, theme.padding.calc(0.5)),
-			PaddingRight: new UDim(0, theme.padding.calc(0.5)),
+			PaddingLeft: new UDim(0, variant === "dot" ? 0 : theme.padding.calc(0.5)),
+			PaddingRight: new UDim(0, variant === "dot" ? 0 : theme.padding.calc(0.5)),
 		} as WriteableStyle<UIPadding>,
 		corner: {
 			CornerRadius: new UDim(0.5, 0),

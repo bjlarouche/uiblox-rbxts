@@ -7,19 +7,21 @@ export interface BadgeProps {
 	count?: number;
 	max?: number;
 	invisible?: boolean;
+	variant?: "standard" | "dot";
 	children?: React.ReactNode;
 }
 
 function Badge(props: CustomizedProps<Frame, BadgeProps>) {
-	const { count = 0, max = 99, invisible = false, children, className, sx, id, ref } = props;
-	const styles = useBadgeStyles();
-	const shown = !invisible && count > 0;
+	const { count = 0, max = 99, invisible = false, variant = "standard", children, className, sx, id, ref } = props;
+	const styles = useBadgeStyles({ variant });
+	const isDot = variant === "dot";
+	const shown = !invisible && (isDot || count > 0);
 	return (
 		<frame key={id || "Badge"} ref={ref} {...styles.root} {...className} {...sx}>
 			{children}
 			{shown && (
-				<textlabel key="Count" {...styles.badge} Text={badgeText(count, max)}>
-					<uipadding {...styles.padding} />
+				<textlabel key="Count" {...styles.badge} Text={isDot ? "" : badgeText(count, max)}>
+					{isDot !== true && <uipadding {...styles.padding} />}
 					<uicorner {...styles.corner} />
 				</textlabel>
 			)}
