@@ -347,6 +347,7 @@ function miscRows(): StateCapture[] {
 		...pair("Rating", "default", { value: 0 }),
 		...pair("Rating", "filled", { value: 3 }),
 		...pair("Rating", "disabled", { value: 4, disabled: true }),
+		...pair("Rating", "size-small", { value: 3, size: "small" }),
 		...pair("Stack", "column", { variant: "column" }),
 		...pair("Stack", "row", { variant: "row" }),
 		...pair("Stack", "spaced", { variant: "column", size: "large" }),
