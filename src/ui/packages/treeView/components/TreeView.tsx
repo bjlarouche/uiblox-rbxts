@@ -132,6 +132,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 							<textbutton
 								key={`${entry.path}-${index}`}
 								{...row}
+								LayoutOrder={index}
 								Event={{
 									MouseButton1Click: () => {
 										if (branch.onClick) branch.onClick();
@@ -196,6 +197,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 						<textbutton
 							key={`${entry.path}-${index}`}
 							{...row}
+							LayoutOrder={index}
 							Event={{
 								MouseButton1Click: () => {
 									setClickedLeaf(entry.path);
