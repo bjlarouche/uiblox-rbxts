@@ -35,6 +35,7 @@ export * from "./paper";
 export * from "./card";
 export * from "./chip";
 export * from "./badge";
+export * from "./brickColorPicker";
 export * from "./avatar";
 export * from "./assetField";
 export * from "./gradientEditor";
