@@ -32,7 +32,7 @@ Breaking: `theme.palette` is a semantic token map. `theme.options.constants.colo
 
 `componentStyles("Button", factory)` reads that entry. `defaultProps` fills props the caller left unset, before the factory runs. `styleOverrides` merge onto the slots after that. Replace the theme object to change either one.
 
-`resolveStyle(style, state)` peels selector keys from a style table and merges the active ones. Order: `_hover`, `_pressed`, `_focus`, `_selected`, `_checked`, `_first`, `_last`, then `_disabled`. A later key wins. Call it before spreading onto an Instance. Selector keys are stripped from the result.
+`resolveStyle(style, state)` peels selector keys from a style table and merges the active ones. Order: `_first`, `_last`, `_selected`, `_checked`, `_hover`, `_pressed`, `_focus`, then `_disabled`. A later key wins (so hover beats first/last; disabled covers everything). Call it before spreading onto an Instance. Selector keys are stripped from the result.
 
 ```ts
 const painted = resolveStyle(

@@ -42,6 +42,11 @@ if (last.LayoutOrder !== 99) throw new Error("last");
 const ends = resolveStyle(style, { first: true, last: true });
 if (ends.LayoutOrder !== 99) throw new Error("last wins first");
 
+const hoverOverFirst = resolveStyle(style, { first: true, hover: true });
+if (hoverOverFirst.BackgroundTransparency !== 0.1 || hoverOverFirst.LayoutOrder !== 0) {
+	throw new Error("hover beats first");
+}
+
 const disabled = resolveStyle(style, { hover: true, pressed: true, focused: true, disabled: true });
 if (disabled.Text !== "Off" || disabled.BackgroundTransparency !== 0.5) throw new Error("disabled wins");
 
