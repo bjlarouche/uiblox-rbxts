@@ -36,6 +36,8 @@ npm install @rbxts/uiblox
 4. Use packaged components from `@rbxts/uiblox` (`Button`, `Input`, `Select`, …).
 5. Preview components in [Storyblox](https://github.com/bjlarouche/storyblox) with `*.stories` modules.
 
+Token reference (spacing, density, typography, shape, palette, `resolveStyle`): [docs/STYLING.md](docs/STYLING.md).
+
 ```tsx
 import React from "@rbxts/react";
 import { Button, DarkTheme, ThemeProvider } from "@rbxts/uiblox";

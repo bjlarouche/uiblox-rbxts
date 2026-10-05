@@ -1,8 +1,16 @@
 import { allFontSizes } from "../interfaces/typography/FontSizes";
 import { Theme } from "../interfaces/theme";
-import { BORDER_RADIUS, CONTENT_WIDTH, ICON_SIZES, PADDING_BASE, SPACING_BASE } from "theme/constants/NumberConstants";
+import {
+	BORDER_RADIUS,
+	CONTENT_WIDTH,
+	ICON_SIZES,
+	PADDING_BASE,
+	PILL_SCALE,
+	SPACING_BASE,
+} from "theme/constants/NumberConstants";
 import { DEFAULT_BORDERS } from "theme/constants/ColorConstants";
 import { allFontFamilies } from "../interfaces/typography/FontFamilies";
+import { allTypographyVariants } from "../interfaces/typography/Variants";
 import { createDarkPalette } from "./createPalette";
 
 const DarkTheme: Theme = {
@@ -19,10 +27,12 @@ const DarkTheme: Theme = {
 	},
 	shape: {
 		borderRadius: BORDER_RADIUS,
+		pillScale: PILL_SCALE,
 	},
 	typography: {
 		fontSizes: allFontSizes,
 		fontFamilies: allFontFamilies,
+		variants: allTypographyVariants,
 	},
 	options: {
 		constants: {
