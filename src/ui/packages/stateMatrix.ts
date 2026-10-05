@@ -111,6 +111,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("EnumPicker", "open", { value: "Continue", options: ["Continue", "Other"], open: true }),
 	...pair("EnumPicker", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
 
+	...pair("NumberRangeEditor", "default", { value: "0,1" }),
+	...pair("NumberRangeEditor", "disabled", { value: "0,1", disabled: true }),
+
 	...pair("Switch", "off"),
 	...pair("Switch", "size-small", { size: "small" }),
 	...pair("Switch", "size-medium", { size: "medium" }),

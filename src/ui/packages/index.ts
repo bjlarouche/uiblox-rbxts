@@ -20,6 +20,7 @@ export * from "./colorPicker";
 export * from "./fontEditor";
 export * from "./loadingStroke";
 export * from "./numberInput";
+export * from "./numberRangeEditor";
 export * from "./udimEditor";
 export * from "./vectorEditor";
 export * from "./cframeEditor";
