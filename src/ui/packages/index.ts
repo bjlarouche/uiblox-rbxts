@@ -5,6 +5,7 @@ export * from "./errorBoundary";
 export * from "./icon";
 export * from "./iconButton";
 export * from "./input";
+export * from "./formText";
 export * from "./layout";
 export * from "./preloader";
 export * from "./progressBar";
