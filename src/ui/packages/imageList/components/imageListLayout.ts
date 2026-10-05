@@ -12,3 +12,8 @@ export function imageListItemSize(itemSize?: number) {
 	if (itemSize === undefined || itemSize < 1) return 96;
 	return math.floor(itemSize);
 }
+
+export function imageListTitle(title?: string) {
+	if (title === undefined || title.size() === 0) return undefined;
+	return title;
+}
