@@ -1,5 +1,7 @@
 export { IconSizes } from "./iconSizes";
 
+export * from "./density";
+
 export * from "./palette";
 
 export { Borders } from "./spacing";

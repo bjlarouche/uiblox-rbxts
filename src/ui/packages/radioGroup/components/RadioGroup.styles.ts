@@ -1,7 +1,12 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, makeStyles, Theme, WriteableStyle } from "theme";
 
-const useRadioGroupStyles = makeStyles((theme: Theme) =>
-	createStyles({
+export interface RadioGroupStyleProps {
+	size?: ControlSize;
+}
+
+const useRadioGroupStyles = makeStyles<RadioGroupStyleProps>((theme: Theme, { size }) => {
+	const metrics = controlMetrics(theme.density, size);
+	return createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.XY,
 			Size: UDim2.fromScale(0, 0),
@@ -26,7 +31,7 @@ const useRadioGroupStyles = makeStyles((theme: Theme) =>
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		ring: {
-			Size: UDim2.fromOffset(theme.spacing.calc(1.5), theme.spacing.calc(1.5)),
+			Size: UDim2.fromOffset(metrics.radio, metrics.radio),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -50,9 +55,9 @@ const useRadioGroupStyles = makeStyles((theme: Theme) =>
 			BackgroundTransparency: 1,
 			TextColor3: theme.palette.text.primary,
 			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.body,
+			TextSize: metrics.font,
 		} as WriteableStyle<TextLabel>,
-	}),
-);
+	});
+});
 
 export default useRadioGroupStyles;

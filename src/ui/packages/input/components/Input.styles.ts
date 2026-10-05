@@ -1,4 +1,4 @@
-import { createStyles, makeStyles, WriteableStyle } from "theme";
+import { controlMetrics, createStyles, makeStyles, WriteableStyle } from "theme";
 import { InputProps } from "./Input";
 import { inputInsets } from "./inputInsets";
 
@@ -16,14 +16,16 @@ const useInputStyles = makeStyles<InputProps & { focused?: boolean }>(
 			endAdornment,
 			focused = false,
 			hasError = false,
+			size,
 		},
 	) => {
+		const metrics = controlMetrics(theme.density, size);
 		const hasStart = startAdornment !== undefined;
 		const hasEnd = endAdornment !== undefined;
-		const icon = theme.spacing.calc(1.5);
+		const icon = metrics.icon;
 		const gap = theme.padding.calc(1);
 		const insets = inputInsets(hasStart, hasEnd, icon, gap);
-		const fieldHeight = theme.spacing.calc(2) + (variant === "standard" ? 0 : theme.padding.calc(1));
+		const fieldHeight = metrics.height + (variant === "standard" ? 0 : theme.padding.calc(1));
 		const accent = color === "primary" ? theme.palette.primary.main : theme.palette.text.primary;
 		const focusAccent = hasError ? theme.palette.status.error.main : theme.palette.focus;
 
@@ -36,7 +38,7 @@ const useInputStyles = makeStyles<InputProps & { focused?: boolean }>(
 				width.Scale,
 				width.Offset,
 				0,
-				helperText !== undefined ? theme.spacing.calc(4) + (variant === "standard" ? 0 : theme.padding.calc(1)) : fieldHeight,
+				helperText !== undefined ? fieldHeight + metrics.height : fieldHeight,
 			);
 
 			switch (margin) {
@@ -131,7 +133,7 @@ const useInputStyles = makeStyles<InputProps & { focused?: boolean }>(
 		return createStyles({
 			root: makeRootStyles(),
 			font: {
-				TextSize: theme.typography.fontSizes.button,
+				TextSize: metrics.font,
 				Font: theme.typography.fontFamilies.default,
 			} as WriteableStyle<TextLabel>,
 			margin: makeMarginStyles(),

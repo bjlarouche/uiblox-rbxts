@@ -1,14 +1,19 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, makeStyles, Theme, WriteableStyle } from "theme";
 
-const useSliderStyles = makeStyles((theme: Theme) =>
-	createStyles({
+export interface SliderStyleProps {
+	size?: ControlSize;
+}
+
+const useSliderStyles = makeStyles<SliderStyleProps>((theme: Theme, { size }) => {
+	const metrics = controlMetrics(theme.density, size);
+	return createStyles({
 		root: {
-			Size: new UDim2(1, 0, 0, theme.spacing.calc(3)),
+			Size: new UDim2(1, 0, 0, metrics.sliderHeight),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		track: {
-			Size: new UDim2(1, 0, 0, theme.padding.calc(2)),
+			Size: new UDim2(1, 0, 0, metrics.sliderTrack),
 			Position: UDim2.fromScale(0, 0.5),
 			AnchorPoint: new Vector2(0, 0.5),
 			BackgroundColor3: theme.palette.action.disabled,
@@ -19,7 +24,7 @@ const useSliderStyles = makeStyles((theme: Theme) =>
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		knob: {
-			Size: UDim2.fromOffset(theme.spacing.calc(1.5), theme.spacing.calc(1.5)),
+			Size: UDim2.fromOffset(metrics.sliderKnob, metrics.sliderKnob),
 			AnchorPoint: new Vector2(0.5, 0.5),
 			BackgroundColor3: theme.palette.text.primary,
 			BorderSizePixel: 0,
@@ -33,7 +38,7 @@ const useSliderStyles = makeStyles((theme: Theme) =>
 			Thickness: 2,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
-	}),
-);
+	});
+});
 
 export default useSliderStyles;

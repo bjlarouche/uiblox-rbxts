@@ -1,5 +1,5 @@
 import React, { useState } from "@rbxts/react";
-import { cx, CustomizedProps } from "theme";
+import { ControlSize, cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import useCheckboxStyles from "./Checkbox.styles";
 import {
@@ -16,12 +16,13 @@ export interface CheckboxProps {
 	disabled?: boolean;
 	mixed?: boolean;
 	label?: string;
+	size?: ControlSize;
 }
 
 function Checkbox(props: CustomizedProps<TextButton, CheckboxProps>) {
-	const { value, onChange, disabled, mixed, label, className, id, ref } = props;
+	const { value, onChange, disabled, mixed, label, size, className, id, ref } = props;
 	const { root, row, box, mark, label: labelStyle, stroke, corner, fill, activeStroke, idleStroke } =
-		useCheckboxStyles();
+		useCheckboxStyles({ size });
 	const [hovering, setHovering] = useState(false);
 	const [pressed, setPressed] = useState(false);
 	const [focused, setFocused] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { cx, CustomizedProps } from "theme";
+import { ControlSize, cx, CustomizedProps } from "theme";
 import { Divider } from "ui/packages/divider";
 import { Orientations } from "ui/enums";
 import { InputColor, InputMargin, InputVariant } from "../types";
@@ -20,6 +20,7 @@ export interface InputProps {
 	placeholder?: string;
 	rounded?: boolean;
 	clearsTextOnFocus?: boolean;
+	size?: ControlSize;
 	startAdornment?: React.Element;
 	endAdornment?: React.Element;
 	onTextChanged?: (text: string) => void;

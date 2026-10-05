@@ -1,7 +1,12 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, makeStyles, Theme, WriteableStyle } from "theme";
 
-const useSwitchStyles = makeStyles((theme: Theme) =>
-	createStyles({
+export interface SwitchStyleProps {
+	size?: ControlSize;
+}
+
+const useSwitchStyles = makeStyles<SwitchStyleProps>((theme: Theme, { size }) => {
+	const metrics = controlMetrics(theme.density, size);
+	return createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.XY,
 			BackgroundTransparency: 1,
@@ -17,7 +22,7 @@ const useSwitchStyles = makeStyles((theme: Theme) =>
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		track: {
-			Size: UDim2.fromOffset(theme.spacing.calc(5), theme.spacing.calc(3)),
+			Size: UDim2.fromOffset(metrics.switchTrackW, metrics.switchTrackH),
 			BackgroundColor3: theme.palette.action.disabled,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -25,7 +30,7 @@ const useSwitchStyles = makeStyles((theme: Theme) =>
 			BackgroundColor3: theme.palette.primary.main,
 		} as WriteableStyle<Frame>,
 		knob: {
-			Size: UDim2.fromOffset(theme.spacing.calc(2.5), theme.spacing.calc(2.5)),
+			Size: UDim2.fromOffset(metrics.switchThumb, metrics.switchThumb),
 			BackgroundColor3: theme.palette.surface.elevated,
 			BorderSizePixel: 0,
 			ZIndex: 2,
@@ -36,7 +41,7 @@ const useSwitchStyles = makeStyles((theme: Theme) =>
 			Size: UDim2.fromScale(0, 0),
 			TextColor3: theme.palette.text.primary,
 			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.body,
+			TextSize: metrics.font,
 			TextXAlignment: Enum.TextXAlignment.Left,
 			TextWrapped: true,
 		} as WriteableStyle<TextLabel>,
@@ -48,7 +53,7 @@ const useSwitchStyles = makeStyles((theme: Theme) =>
 			Thickness: 2,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
-	}),
-);
+	});
+});
 
 export default useSwitchStyles;

@@ -1,7 +1,12 @@
-import { createStyles, makeStyles, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, makeStyles, WriteableStyle } from "theme";
 
-const useCheckboxStyles = makeStyles((theme) =>
-	createStyles({
+export interface CheckboxStyleProps {
+	size?: ControlSize;
+}
+
+const useCheckboxStyles = makeStyles<CheckboxStyleProps>((theme, { size }) => {
+	const metrics = controlMetrics(theme.density, size);
+	return createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.XY,
 			BackgroundTransparency: 1,
@@ -16,7 +21,7 @@ const useCheckboxStyles = makeStyles((theme) =>
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		box: {
-			Size: UDim2.fromOffset(theme.spacing.calc(2), theme.spacing.calc(2)),
+			Size: UDim2.fromOffset(metrics.checkbox, metrics.checkbox),
 			BackgroundColor3: theme.palette.surface.input,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -25,7 +30,7 @@ const useCheckboxStyles = makeStyles((theme) =>
 			BackgroundTransparency: 1,
 			TextColor3: theme.palette.primary.on,
 			Font: theme.typography.fontFamilies.semibold,
-			TextSize: theme.typography.fontSizes.caption,
+			TextSize: metrics.markFont,
 			TextXAlignment: Enum.TextXAlignment.Center,
 			TextYAlignment: Enum.TextYAlignment.Center,
 		} as WriteableStyle<TextLabel>,
@@ -35,7 +40,7 @@ const useCheckboxStyles = makeStyles((theme) =>
 			Size: UDim2.fromScale(0, 0),
 			TextColor3: theme.palette.text.primary,
 			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.body,
+			TextSize: metrics.font,
 			TextXAlignment: Enum.TextXAlignment.Left,
 			TextYAlignment: Enum.TextYAlignment.Center,
 		} as WriteableStyle<TextLabel>,
@@ -55,7 +60,7 @@ const useCheckboxStyles = makeStyles((theme) =>
 		idleStroke: {
 			Color: theme.palette.text.secondary,
 		} as WriteableStyle<UIStroke>,
-	}),
-);
+	});
+});
 
 export default useCheckboxStyles;

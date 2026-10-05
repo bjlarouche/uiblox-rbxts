@@ -1,9 +1,14 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, makeStyles, Theme, WriteableStyle } from "theme";
 
-const useSelectStyles = makeStyles((theme: Theme) =>
-	createStyles({
+export interface SelectStyleProps {
+	size?: ControlSize;
+}
+
+const useSelectStyles = makeStyles<SelectStyleProps>((theme: Theme, { size }) => {
+	const metrics = controlMetrics(theme.density, size);
+	return createStyles({
 		root: {
-			Size: UDim2.fromOffset(theme.spacing.calc(8), theme.spacing.calc(2)),
+			Size: UDim2.fromOffset(theme.spacing.calc(8), metrics.height),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -14,7 +19,7 @@ const useSelectStyles = makeStyles((theme: Theme) =>
 			AutoButtonColor: false,
 			TextColor3: theme.palette.text.primary,
 			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.body,
+			TextSize: metrics.font,
 			TextXAlignment: Enum.TextXAlignment.Left,
 			TextTruncate: Enum.TextTruncate.AtEnd,
 		} as WriteableStyle<TextButton>,
@@ -53,7 +58,7 @@ const useSelectStyles = makeStyles((theme: Theme) =>
 			AutoButtonColor: false,
 			TextColor3: theme.palette.text.primary,
 			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.body,
+			TextSize: metrics.font,
 			TextXAlignment: Enum.TextXAlignment.Left,
 			TextTruncate: Enum.TextTruncate.AtEnd,
 			ZIndex: 20002,
@@ -71,7 +76,7 @@ const useSelectStyles = makeStyles((theme: Theme) =>
 			Color: theme.palette.border,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
-	}),
-);
+	});
+});
 
 export default useSelectStyles;

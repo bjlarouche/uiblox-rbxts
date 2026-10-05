@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { GuiService, UserInputService } from "@rbxts/services";
-import { cx, CustomizedProps, useTheme } from "theme";
+import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Input } from "ui/packages/input";
 import { Popup } from "ui/packages/popup";
@@ -19,13 +19,14 @@ export interface SelectProps<T> {
 	disabled?: boolean;
 	placeholder?: string;
 	searchable?: boolean;
+	size?: ControlSize;
 }
 
 function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
-	const { value, options, onChange, disabled, placeholder = "", searchable, className, id, ref } = props;
-	const styles = useSelectStyles();
+	const { value, options, onChange, disabled, placeholder = "", searchable, size, className, id, ref } = props;
+	const styles = useSelectStyles({ size });
 	const { theme } = useTheme();
-	const row = theme.spacing.calc(2);
+	const row = controlMetrics(theme.density, size).height;
 	const active = canActivate(disabled);
 	const [anchor, setAnchor] = useState<TextButton>();
 	const [open, setOpen] = useState(false);

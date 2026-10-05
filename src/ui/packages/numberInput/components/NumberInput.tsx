@@ -1,5 +1,5 @@
 import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { ControlSize, CustomizedProps } from "theme";
 import { Input } from "ui/packages/input";
 import { parseNumberDraft } from "./numberValue";
 
@@ -12,10 +12,11 @@ export interface NumberInputProps {
 	disabled?: boolean;
 	placeholder?: string;
 	width?: UDim;
+	size?: ControlSize;
 }
 
 function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
-	const { value, onChange, min, max, step, disabled, placeholder, width, className, id, ref } = props;
+	const { value, onChange, min, max, step, disabled, placeholder, width, size, className, id, ref } = props;
 
 	return (
 		<Input
@@ -26,6 +27,7 @@ function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
 			placeholder={placeholder}
 			width={width}
 			disabled={disabled}
+			size={size}
 			onTextChanged={(text) => {
 				const committed = parseNumberDraft(text, min, max, step);
 				if (committed !== undefined && committed !== value) onChange(committed);

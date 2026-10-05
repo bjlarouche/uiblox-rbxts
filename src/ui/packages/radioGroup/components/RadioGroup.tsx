@@ -1,5 +1,5 @@
 import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { ControlSize, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import useRadioGroupStyles from "./RadioGroup.styles";
 
@@ -14,11 +14,12 @@ export interface RadioGroupProps<T> {
 	options: ChoiceOption<T>[];
 	onChange: (value: T) => void;
 	disabled?: boolean;
+	size?: ControlSize;
 }
 
 function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
-	const { value, options, onChange, disabled, className, id, ref } = props;
-	const { root, list, option, row, ring, dot, stroke, corner, label } = useRadioGroupStyles();
+	const { value, options, onChange, disabled, size, className, id, ref } = props;
+	const { root, list, option, row, ring, dot, stroke, corner, label } = useRadioGroupStyles({ size });
 
 	return (
 		<frame key={id || "RadioGroup"} ref={ref} {...root} {...className}>
