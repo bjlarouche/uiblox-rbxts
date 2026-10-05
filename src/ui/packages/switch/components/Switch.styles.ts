@@ -1,7 +1,6 @@
 import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
-import { SwitchProps } from "./Switch";
 
-const useSwitchStyles = makeStyles<SwitchProps>((theme: Theme, props: SwitchProps) =>
+const useSwitchStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.XY,
@@ -9,6 +8,7 @@ const useSwitchStyles = makeStyles<SwitchProps>((theme: Theme, props: SwitchProp
 			BorderSizePixel: 0,
 			Size: UDim2.fromScale(0, 0),
 			Text: "",
+			AutoButtonColor: false,
 		} as WriteableStyle<TextButton>,
 		row: {
 			FillDirection: Enum.FillDirection.Horizontal,
@@ -17,16 +17,18 @@ const useSwitchStyles = makeStyles<SwitchProps>((theme: Theme, props: SwitchProp
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		track: {
-			Size: UDim2.fromOffset(theme.spacing.calc(4), theme.spacing.calc(2)),
-			BackgroundColor3: props.value ? theme.palette.primary.main : theme.palette.divider,
+			Size: UDim2.fromOffset(theme.spacing.calc(5), theme.spacing.calc(3)),
+			BackgroundColor3: theme.palette.divider,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
+		trackOn: {
+			BackgroundColor3: theme.palette.primary.main,
+		} as WriteableStyle<Frame>,
 		knob: {
-			Size: UDim2.fromOffset(theme.spacing.calc(1.5), theme.spacing.calc(1.5)),
-			Position: new UDim2(props.value ? 1 : 0, props.value ? -2 : 2, 0.5, 0),
-			AnchorPoint: new Vector2(props.value ? 1 : 0, 0.5),
+			Size: UDim2.fromOffset(theme.spacing.calc(2.5), theme.spacing.calc(2.5)),
 			BackgroundColor3: theme.palette.background.default,
 			BorderSizePixel: 0,
+			ZIndex: 2,
 		} as WriteableStyle<Frame>,
 		label: {
 			AutomaticSize: Enum.AutomaticSize.XY,
@@ -35,10 +37,17 @@ const useSwitchStyles = makeStyles<SwitchProps>((theme: Theme, props: SwitchProp
 			TextColor3: theme.palette.text.primary,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.body,
+			TextXAlignment: Enum.TextXAlignment.Left,
+			TextWrapped: true,
 		} as WriteableStyle<TextLabel>,
 		corner: {
 			CornerRadius: new UDim(1, 0),
 		} as WriteableStyle<UICorner>,
+		stroke: {
+			Color: theme.palette.secondary.main,
+			Thickness: 2,
+			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+		} as WriteableStyle<UIStroke>,
 	}),
 );
 
