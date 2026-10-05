@@ -23,9 +23,9 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 	const { root, header, list, row, rowIcon, label } = useTreeViewStyles();
 	const { theme } = useTheme();
 	const step = theme.padding.calc(4);
-	const chevronWidth = theme.spacing.calc(1);
-	const iconWidth = theme.spacing.calc(1) + theme.padding.calc(2);
-	const itemHeight = theme.spacing.calc(1) + theme.padding.calc(4);
+	const chevronWidth = theme.spacing.calc(1.5);
+	const iconWidth = theme.spacing.calc(2) + theme.padding.calc(1);
+	const itemHeight = theme.spacing.calc(3);
 	const listRef = useRef<VirtualListHandle>();
 
 	const [clickedPath, setClickedPath] = useState<string | undefined>();

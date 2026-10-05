@@ -7,17 +7,17 @@ const useIconStyles = componentStyles<IconProps>("Icon", (theme, props) => {
 
 		switch (size) {
 			case "xxs":
-				return new UDim2(0, theme.spacing.calc(0.5), 0, theme.spacing.calc(0.5));
-			case "xs":
 				return new UDim2(0, theme.spacing.calc(1), 0, theme.spacing.calc(1));
+			case "xs":
+				return new UDim2(0, theme.spacing.calc(1.5), 0, theme.spacing.calc(1.5));
 			case "sm":
 				return new UDim2(0, theme.spacing.calc(2), 0, theme.spacing.calc(2));
 			case "md":
 				return new UDim2(0, theme.spacing.calc(3), 0, theme.spacing.calc(3));
 			case "lg":
-				return new UDim2(0, theme.spacing.calc(6), 0, theme.spacing.calc(6));
+				return new UDim2(0, theme.spacing.calc(4), 0, theme.spacing.calc(4));
 			case "xl":
-				return new UDim2(0, theme.spacing.calc(8), 0, theme.spacing.calc(8));
+				return new UDim2(0, theme.spacing.calc(5), 0, theme.spacing.calc(5));
 			default:
 				return new UDim2(0, theme.spacing.calc(2), 0, theme.spacing.calc(2));
 		}

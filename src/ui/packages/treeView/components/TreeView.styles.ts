@@ -11,7 +11,7 @@ const useTreeViewStyles = componentStyles("TreeView", (theme: Theme) => {
 			ZIndex: 300,
 		} as WriteableStyle<Frame>,
 		header: {
-			Size: new UDim2(1, 0, 0, theme.spacing.calc(1)),
+			Size: new UDim2(1, 0, 0, theme.spacing.calc(3)),
 			Position: new UDim2(0.5, 0, 0, 0),
 			AnchorPoint: new Vector2(0.5, 0),
 			TextXAlignment: Enum.TextXAlignment.Left,
@@ -21,8 +21,8 @@ const useTreeViewStyles = componentStyles("TreeView", (theme: Theme) => {
 			ZIndex: 5300,
 		} as WriteableStyle<TextLabel>,
 		list: {
-			Size: new UDim2(1, 0, 1, -(theme.spacing.calc(1) + theme.padding.calc(2))),
-			Position: new UDim2(0.5, 0, 0, theme.spacing.calc(1) + theme.padding.calc(2)),
+			Size: new UDim2(1, 0, 1, -(theme.spacing.calc(3) + theme.padding.calc(2))),
+			Position: new UDim2(0.5, 0, 0, theme.spacing.calc(3) + theme.padding.calc(2)),
 			AnchorPoint: new Vector2(0.5, 0),
 			BackgroundTransparency: 1,
 			ScrollBarThickness: theme.spacing.calc(0.5),

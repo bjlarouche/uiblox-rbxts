@@ -3,7 +3,7 @@ import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 const useTabsStyles = componentStyles("Tabs", (theme: Theme) =>
 	createStyles({
 		root: {
-			Size: new UDim2(1, 0, 0, theme.spacing.calc(2.5)),
+			Size: new UDim2(1, 0, 0, theme.spacing.calc(4)),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			CanvasSize: UDim2.fromScale(0, 0),

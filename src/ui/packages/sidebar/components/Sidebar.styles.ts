@@ -6,8 +6,8 @@ const useSidebarStyles = componentStyles<SidebarProps>("Sidebar", (theme: Theme,
 	const { size, ignoreInset = false } = props;
 
 	const sidebarWidths = {
-		large: theme.spacing.calc(15),
-		compact: theme.spacing.calc(5),
+		large: 180,
+		compact: 60,
 	};
 
 	return createStyles({

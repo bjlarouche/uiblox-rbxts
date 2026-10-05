@@ -8,7 +8,7 @@ const useSelectStyles = componentStyles<SelectStyleProps>("Select", (theme: Them
 	const metrics = controlMetrics(theme.density, size);
 	return createStyles({
 		root: {
-			Size: UDim2.fromOffset(theme.spacing.calc(8), metrics.height),
+			Size: UDim2.fromOffset(theme.spacing.calc(12), metrics.height),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -37,7 +37,7 @@ const useSelectStyles = componentStyles<SelectStyleProps>("Select", (theme: Them
 			ZIndex: 20001,
 		} as WriteableStyle<Frame>,
 		search: {
-			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
+			Size: new UDim2(1, 0, 0, metrics.height),
 			BackgroundTransparency: 1,
 			ZIndex: 20002,
 		} as WriteableStyle<Frame>,
