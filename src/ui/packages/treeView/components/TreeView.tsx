@@ -171,7 +171,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 										className={cx<ImageLabel>(branchIcon, {
 											Position: new UDim2(0, inset + (entry.expandable ? branchLead : 0), 0.5, 0),
 										})}
-										tint={DEFAULT_THEME.palette.primary.main}
+										tint={theme.palette.primary.main}
 									/>
 								)}
 								<Typography
@@ -221,7 +221,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 										Position: new UDim2(0, theme.padding.calc(4) + inset, 0.5, 0),
 									},
 								)}
-								tint={DEFAULT_THEME.palette.primary.main}
+								tint={theme.palette.primary.main}
 							/>
 							<Typography
 								text={entry.title}
