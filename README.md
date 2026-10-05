@@ -2,35 +2,13 @@
 
 # uiblox-rbxts
 
-> This package is a work in progress.
-
 UI library and theming for roblox-ts projects.
-
-## Background
-
-Roblox has their own internal design system, coined "uiblox-web", that it uses for its new
-web-facing products. This system offers reusable components, implemented in
-React Typescript, that are derived from material UI (MUI). As well, it offers a
-common theme/pallete for consistent UI/UX.
-
-Anyone is able to view their design system as
-[UIBlox-Web](https://uiblox.roblox.com). You can see that they leverage
-[Storybook](https://storybook.js.org), a UI component explorer for frontend
-developers, to render component previews.
-
-Design systems all help engineers cut down on implementation time and ensure
-consitent UX across products.
 
 ## Overview
 
-So what is uiblox-rbxts? Simply put, its my stab at a design system that mimics
-uiblox-web for games written using roblox-ts.
+Uiblox is a roblox-ts UI kit: semantic themes, `makeStyles` / `createStyles`, and typed React components for Studio and games. Public APIs aim for familiar Material UI–style capability (props and behavior), implemented independently for Roblox Instances, input modes, and performance.
 
-UIBlox-rbxts aims to provide extensible components that can be reusable by
-anyone who installs this npm package. It also offers a theme and styling system
-that aids UI/UX consistentency.
-
-How does it do this? Well, there are two main exports from this package:
+Main exports from `@rbxts/uiblox`:
 
 -   @rbxts/uiblox -> theme
     -   An extensible Theme type + default Dark (default) and Light themes
@@ -46,9 +24,44 @@ How does it do this? Well, there are two main exports from this package:
 
 ### Installation
 
-Install the package to get started.
+```
+npm install @rbxts/uiblox
+```
 
-`npm install @rbxts/uiblox`
+## Quickstart
+
+1. Wrap your app (or a subtree) in `ThemeProvider` with `DarkTheme` or `LightTheme`.
+2. Build styles with `makeStyles` / `createStyles` (or `componentStyles`) and spread them onto Instances.
+3. Use packaged components from `@rbxts/uiblox` (`Button`, `Input`, `Select`, …).
+4. Preview components in [Storyblox](https://github.com/bjlarouche/storyblox) with `*.stories` modules.
+
+```tsx
+import React from "@rbxts/react";
+import { Button, DarkTheme, ThemeProvider } from "@rbxts/uiblox";
+
+export function App() {
+	return (
+		<ThemeProvider theme={DarkTheme}>
+			<Button text="Continue" onLeftClick={() => {}} />
+		</ThemeProvider>
+	);
+}
+```
+
+## Parity checklist
+
+Capability parity, not pixel parity. For each public component, expect:
+
+- [ ] Typed controlled props where interaction needs state
+- [ ] Theme tokens (light/dark) via `ThemeProvider`
+- [ ] Style slots / variants through the styling helpers
+- [ ] Disabled / loading / error when the control type warrants it
+- [ ] Mouse, touch, and gamepad-friendly activation where interactive
+- [ ] Cleanup and focused unit checks in-repo
+- [ ] `stateMatrix` rows for visual capture planning
+- [ ] A Storyblox story (dev fixtures OK)
+
+Skipped on purpose: browser-only addons (MDX, iframes, hosted visual-review clouds).
 
 ## Example
 
