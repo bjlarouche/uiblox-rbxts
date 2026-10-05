@@ -16,16 +16,19 @@ const useCheckboxStyles = makeStyles((theme) =>
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		box: {
-			Size: UDim2.fromOffset(theme.spacing.calc(2), theme.spacing.calc(2)),
-			BackgroundColor3: theme.palette.primary.main,
+			Size: UDim2.fromOffset(theme.spacing.calc(1.5), theme.spacing.calc(1.5)),
+			BackgroundColor3: theme.palette.background.paper,
 			BorderSizePixel: 0,
+			ClipsDescendants: true,
 		} as WriteableStyle<Frame>,
 		mark: {
 			Size: UDim2.fromScale(1, 1),
 			BackgroundTransparency: 1,
 			TextColor3: theme.palette.background.default,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.button,
+			Font: theme.typography.fontFamilies.semibold,
+			TextSize: theme.typography.fontSizes.caption,
+			TextXAlignment: Enum.TextXAlignment.Center,
+			TextYAlignment: Enum.TextYAlignment.Center,
 		} as WriteableStyle<TextLabel>,
 		label: {
 			AutomaticSize: Enum.AutomaticSize.XY,
@@ -34,11 +37,25 @@ const useCheckboxStyles = makeStyles((theme) =>
 			TextColor3: theme.palette.text.primary,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.body,
+			TextXAlignment: Enum.TextXAlignment.Left,
+			TextYAlignment: Enum.TextYAlignment.Center,
 		} as WriteableStyle<TextLabel>,
+		corner: {
+			CornerRadius: new UDim(0, theme.shape.borderRadius),
+		} as WriteableStyle<UICorner>,
 		stroke: {
-			Color: theme.palette.text.primary,
+			Color: theme.palette.divider,
 			Thickness: 1,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+		} as WriteableStyle<UIStroke>,
+		fill: {
+			BackgroundColor3: theme.palette.primary.main,
+		} as WriteableStyle<Frame>,
+		activeStroke: {
+			Color: theme.palette.primary.main,
+		} as WriteableStyle<UIStroke>,
+		idleStroke: {
+			Color: theme.palette.text.secondary,
 		} as WriteableStyle<UIStroke>,
 	}),
 );

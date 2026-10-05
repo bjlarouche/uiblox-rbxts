@@ -45,6 +45,29 @@ if (nextChecked(true) !== false) throw new Error("checked toggles off");
 if (nextChecked(true, true) !== true) throw new Error("mixed commits checked");
 if (nextChecked(false, true) !== true) throw new Error("mixed commits checked");
 
+const {
+	checkboxFilled,
+	checkboxMark,
+	checkboxPointer,
+	checkboxBoxTransparency,
+	checkboxStrokeTransparency,
+} = await import(pathToFileURL(join(root, "src/ui/packages/checkbox/components/checkboxLook.ts")).href);
+if (checkboxMark(false) !== "") throw new Error("unchecked mark empty");
+if (checkboxMark(true) !== "✓") throw new Error("checked mark is check");
+if (checkboxMark(false, true) !== "–") throw new Error("mixed mark is dash");
+if (!checkboxFilled(true) || !checkboxFilled(false, true) || checkboxFilled(false)) {
+	throw new Error("filled only when checked or mixed");
+}
+if (checkboxPointer(false, true, true) !== "press") throw new Error("press wins over focus");
+if (checkboxPointer(true, false, true) !== "focus") throw new Error("focus wins over hover");
+if (checkboxPointer(true, false, false) !== "hover") throw new Error("hover when active");
+if (checkboxBoxTransparency(false, false, "rest") !== 1) throw new Error("unchecked rest is hollow");
+if (checkboxBoxTransparency(true, false, "rest") !== 0) throw new Error("checked rest is solid");
+if (checkboxBoxTransparency(true, true, "rest") !== 0.55) throw new Error("disabled checked fades");
+if (checkboxBoxTransparency(false, false, "hover") !== 0.85) throw new Error("unchecked hover tints");
+if (checkboxStrokeTransparency(false, true, "rest") !== 0.55) throw new Error("disabled stroke fades");
+if (checkboxStrokeTransparency(false, false, "focus") !== 0) throw new Error("focus stroke is solid");
+
 const { branchHoldsSelection, visibleRows } = await import(
 	pathToFileURL(join(root, "src/ui/packages/treeView/components/treeRows.ts")).href
 );
@@ -186,7 +209,17 @@ for (const component of ["Button", "Input", "Checkbox", "Switch", "RadioGroup", 
 		throw new Error(`${component} missing disabled`);
 	}
 }
-
+if (!stateMatrix.some((row) => row.component === "Checkbox" && row.disabled === true && row.value !== true)) {
+	throw new Error("Checkbox missing disabled unchecked");
+}
+if (!stateMatrix.some((row) => row.component === "Checkbox" && row.disabled === true && row.value === true)) {
+	throw new Error("Checkbox missing disabled checked");
+}
+for (const pointer of ["hover", "press", "focus"]) {
+	if (!stateMatrix.some((row) => row.component === "Checkbox" && row.value === true && row.pointer === pointer)) {
+		throw new Error(`Checkbox missing checked ${pointer}`);
+	}
+}
 const dir = mkdtempSync(join(tmpdir(), "uiblox-primitives-"));
 const tsconfig = {
 	compilerOptions: {
