@@ -25,6 +25,15 @@ const usePaginationStyles = componentStyles("Pagination", (theme: Theme) =>
 		selected: {
 			BackgroundColor3: theme.palette.action.selected,
 		} as WriteableStyle<TextButton>,
+		ellipsis: {
+			Size: UDim2.fromOffset(theme.spacing.calc(3), theme.spacing.calc(3)),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+			Font: theme.typography.fontFamilies.default,
+			TextSize: theme.typography.fontSizes.body,
+			TextColor3: theme.palette.text.secondary,
+			Text: "…",
+		} as WriteableStyle<TextLabel>,
 		corner: {
 			CornerRadius: new UDim(1, 0),
 		} as WriteableStyle<UICorner>,
