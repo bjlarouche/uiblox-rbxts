@@ -567,7 +567,7 @@ if (scrolled.X !== 0 || scrolled.Y !== 50) throw new Error("drag moves canvas by
 const clampedCanvas = nextCanvasPosition(new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 40), "y", new Vector2(0, 10));
 if (clampedCanvas.Y !== 0) throw new Error("canvas clamps at top");
 
-const { clampSplit } = await import(
+const { clampSplit, splitBoxDims, splitRuleDims } = await import(
 	pathToFileURL(join(root, "src/ui/packages/splitPane/components/splitSize.ts")).href
 );
 if (clampSplit(240, 1000, 200, 340) !== 240) throw new Error("in-bounds size is kept");
@@ -576,6 +576,14 @@ if (clampSplit(900, 1000, 200, 340) !== 340) throw new Error("clamps to max");
 if (clampSplit(900, 1000, 200) !== 800) throw new Error("second pane keeps min");
 if (clampSplit(300, 300, 200, 340) !== 200) throw new Error("short dock favors first pane min");
 if (clampSplit(50, 0) !== 0) throw new Error("unmeasured pane collapses");
+const axisOnly = (vertical, horizontal) =>
+	vertical.xScale === horizontal.yScale &&
+	vertical.xOffset === horizontal.yOffset &&
+	vertical.yScale === horizontal.xScale &&
+	vertical.yOffset === horizontal.xOffset;
+if (!axisOnly(splitRuleDims(true, 1), splitRuleDims(false, 1))) throw new Error("rule dims only swap axis");
+if (!axisOnly(splitBoxDims(true, 28, 2), splitBoxDims(false, 28, 2))) throw new Error("mark dims only swap axis");
+if (!axisOnly(splitBoxDims(true, 28, 10), splitBoxDims(false, 28, 10))) throw new Error("grip dims only swap axis");
 
 const { splitHitTransparency, splitMarkTransparency, splitPointer, splitRuleTransparency } = await import(
 	pathToFileURL(join(root, "src/ui/packages/splitPane/components/splitLook.ts")).href
@@ -592,6 +600,14 @@ if (splitRuleTransparency("hover") >= splitRuleTransparency("rest")) throw new E
 if (splitHitTransparency("rest") !== 1) throw new Error("idle hit target stays clear");
 if (splitHitTransparency("hover") >= 1) throw new Error("hover wash shows interactivity");
 if (splitHitTransparency("press") >= splitHitTransparency("hover")) throw new Error("drag wash is stronger");
+
+const splitStyles = readFileSync(join(root, "src/ui/packages/splitPane/components/SplitPane.styles.ts"), "utf8");
+if (!splitStyles.includes("theme.palette.surface.paper")) throw new Error("split body fills with surface paper");
+if (!splitStyles.includes("theme.palette.divider")) throw new Error("split rule uses divider token");
+if (!splitStyles.includes("theme.palette.text.secondary")) throw new Error("split marks use text.secondary");
+if (!/body:\s*\{[^}]*BackgroundTransparency:\s*0/s.test(splitStyles)) {
+	throw new Error("split body stays opaque under the transparent drag strip");
+}
 
 const { visibleWindow, ensureVisibleScroll, itemOffset } = await import(
 	pathToFileURL(join(root, "src/ui/packages/virtualList/components/virtualWindow.ts")).href

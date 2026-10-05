@@ -9,7 +9,8 @@ const useSplitPaneStyles = makeStyles((theme: Theme) =>
 		} as WriteableStyle<Frame>,
 		body: {
 			Size: UDim2.fromScale(1, 1),
-			BackgroundTransparency: 1,
+			BackgroundColor3: theme.palette.surface.paper,
+			BackgroundTransparency: 0,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		pane: {
