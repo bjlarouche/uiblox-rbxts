@@ -35,6 +35,7 @@ export * from "./chip";
 export * from "./badge";
 export * from "./avatar";
 export * from "./assetField";
+export * from "./gradientEditor";
 export * from "./drawer";
 export * from "./breadcrumbs";
 export * from "./pagination";

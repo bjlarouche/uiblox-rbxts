@@ -121,6 +121,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("AssetField", "default", { text: "123" }),
 	...pair("AssetField", "disabled", { text: "123", disabled: true }),
 
+	...pair("GradientEditor", "default", { value: "gradient" }),
+	...pair("GradientEditor", "disabled", { value: "gradient", disabled: true }),
+
 	...pair("Switch", "off"),
 	...pair("Switch", "size-small", { size: "small" }),
 	...pair("Switch", "size-medium", { size: "medium" }),
