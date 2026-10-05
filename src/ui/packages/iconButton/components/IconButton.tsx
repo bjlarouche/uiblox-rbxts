@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "@rbxts/react";
+import { useReducedMotion } from "hooks";
 import { Icons } from "ui/enums";
 import { CustomizedProps, WriteableStyle } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
@@ -20,9 +21,21 @@ export interface IconButtonProps {
 type DefaultIconButtonComponent = ImageButton;
 
 function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButtonProps>) {
-	const { icon, selected, tint, disabled, loading = false, reducedMotion, onClick, className,
-		sx, id, ref } = props;
-	const { container } = useIconButtonStyles(props);
+	const {
+		icon,
+		selected,
+		tint,
+		disabled,
+		loading = false,
+		reducedMotion: reducedProp,
+		onClick,
+		className,
+		sx,
+		id,
+		ref,
+	} = props;
+	const { container, corner } = useIconButtonStyles(props);
+	const reducedMotion = useReducedMotion(reducedProp);
 	const active = canActivate(disabled, loading);
 	const [hovering, setHovering] = useState(false);
 	const [focused, setFocused] = useState(false);
@@ -38,7 +51,8 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 			key={id || "IconButton"}
 			ref={ref}
 			{...container}
-			{...className} {...sx}
+			{...className}
+			{...sx}
 			Active={active}
 			AutoButtonColor={active}
 			Selectable={active}
@@ -60,6 +74,7 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 				SelectionLost: () => setFocused(false),
 			}}
 		>
+			<uicorner {...corner} />
 			{loading && (
 				<CircularProgress
 					size={iconSpinnerPixels(props.size)}

@@ -2,7 +2,7 @@ export type SkeletonAnimation = "pulse" | "shimmer" | false;
 
 export function skeletonMotion(animation: SkeletonAnimation | undefined, reducedMotion?: boolean): SkeletonAnimation {
 	if (animation === false || reducedMotion === true) return false;
-	return animation ?? "pulse";
+	return animation ?? "shimmer";
 }
 
 export function skeletonLineWidth(width: number, index: number, count: number) {

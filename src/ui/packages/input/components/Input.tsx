@@ -55,7 +55,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		disabled = false,
 		loading = false,
 		hasError = false,
-		rounded = false,
+		rounded = true,
 		size,
 		reducedMotion,
 		startAdornment,

@@ -60,9 +60,10 @@ if (clampUnit(0.25) !== 0.25) throw new Error("unit keeps a fraction");
 const { skeletonMotion, skeletonLineWidth } = await import(
 	pathToFileURL(join(root, "src/ui/packages/skeleton/components/skeletonMotion.ts")).href
 );
-if (skeletonMotion(undefined, false) !== "pulse") throw new Error("skeleton pulses by default");
+if (skeletonMotion(undefined, false) !== "shimmer") throw new Error("skeleton shimmers by default");
 if (skeletonMotion("shimmer", true) !== false) throw new Error("reduced motion holds skeleton still");
 if (skeletonMotion(false, false) !== false) throw new Error("skeleton animation false is static");
+if (skeletonMotion("pulse", false) !== "pulse") throw new Error("skeleton pulse stays available");
 if (skeletonLineWidth(100, 0, 3) !== 100) throw new Error("leading skeleton lines keep width");
 if (skeletonLineWidth(100, 2, 3) !== 62) throw new Error("last skeleton line is shorter");
 
