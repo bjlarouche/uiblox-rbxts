@@ -42,6 +42,12 @@ On the instance, `className` then `sx`. `sx` wins.
 
 `theme.reducedMotion` is the default. A `reducedMotion` prop still wins when it is set. Select, switch, skeleton, and progress read that through `useReducedMotion`.
 
+## Density and spacing
+
+`theme.spacing` uses an 8px base (`SPACING_BASE`). `theme.density` is `comfortable` (default) or `compact`. Unset control `size` follows density via `controlMetrics` (Button included). Icon tokens are 16 / 24 / 32. Body text is 14.
+
+`pnpm test` runs `scripts/density.check.mjs`.
+
 ## Contrast
 
 `pnpm test` runs `scripts/contrast.check.mjs`. Targets: normal text ≥4.5:1, UI/focus/border ≥3:1. Exceptions: decorative `divider`, `text.disabled`, `action.disabled`.

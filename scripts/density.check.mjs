@@ -1,0 +1,53 @@
+import { pathToFileURL } from "node:url";
+import { join } from "node:path";
+import { readFileSync } from "node:fs";
+
+const root = process.cwd();
+
+const numberConstants = readFileSync(join(root, "src/theme/constants/NumberConstants.ts"), "utf8");
+const fontSizes = readFileSync(join(root, "src/theme/interfaces/typography/FontSizes.ts"), "utf8");
+const buttonStyles = readFileSync(join(root, "src/ui/packages/button/components/Button.styles.ts"), "utf8");
+
+const spacing = numberConstants.match(/export const SPACING_BASE = (\d+)/);
+const padding = numberConstants.match(/export const PADDING_BASE = (\d+)/);
+if (!spacing || Number(spacing[1]) !== 8) throw new Error(`SPACING_BASE miss 8`);
+if (!padding || Number(padding[1]) !== 4) throw new Error(`PADDING_BASE miss 4`);
+if (!/small:\s*16/.test(numberConstants) || !/medium:\s*24/.test(numberConstants) || !/large:\s*32/.test(numberConstants)) {
+	throw new Error("ICON_SIZES miss 16/24/32");
+}
+
+const base = fontSizes.match(/export const baseFontSize = (\d+)/);
+if (!base || Number(base[1]) !== 14) throw new Error("baseFontSize miss 14");
+if (!/body:\s*baseFontSize/.test(fontSizes) && !/body:\s*14/.test(fontSizes)) {
+	throw new Error("body miss 14");
+}
+if (!/button:\s*13/.test(fontSizes) || !/caption:\s*12/.test(fontSizes) || !/h1:\s*28/.test(fontSizes)) {
+	throw new Error("typography scale miss button 13 / caption 12 / h1 28");
+}
+
+const { controlMetrics, resolveControlSize } = await import(
+	pathToFileURL(join(root, "src/theme/interfaces/density/controlMetrics.ts")).href
+);
+
+if (resolveControlSize("comfortable") !== "medium") throw new Error("comfortable → medium");
+if (resolveControlSize("compact") !== "small") throw new Error("compact → small");
+
+const compact = controlMetrics("compact");
+if (compact.height !== 22 || compact.buttonHeight !== 24 || compact.font !== 13 || compact.icon !== 14) {
+	throw new Error("compact metrics miss Studio-dense targets");
+}
+const comfortable = controlMetrics("comfortable");
+if (
+	comfortable.height !== 24 ||
+	comfortable.buttonHeight !== 36 ||
+	comfortable.font !== 14 ||
+	comfortable.icon !== 18
+) {
+	throw new Error("comfortable metrics miss web-ish targets");
+}
+
+if (buttonStyles.includes('size = "small"')) {
+	throw new Error("Button must follow theme.density when size is unset");
+}
+
+console.log("density ok");

@@ -9,7 +9,7 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean }>("Inpu
 			color = "primary",
 			margin = "none",
 			variant = "standard",
-			width = new UDim(0, theme.spacing.calc(8)),
+			width = new UDim(0, theme.spacing.calc(12)),
 			helperText,
 			clearsTextOnFocus = false,
 			startAdornment,

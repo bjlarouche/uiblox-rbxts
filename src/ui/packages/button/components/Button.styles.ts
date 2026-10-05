@@ -1,7 +1,7 @@
 import { controlMetrics, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 import { ButtonProps } from "./Button";
 
-const makeRootStyles = (theme: Theme, { size = "small", color, fullWidth, variant }: ButtonProps) => {
+const makeRootStyles = (theme: Theme, { size, color, fullWidth, variant }: ButtonProps) => {
 	const metrics = controlMetrics(theme.density, size);
 	const defaultStyles: WriteableStyle<TextButton> = {
 		Size: new UDim2(0, metrics.buttonWidth, 0, metrics.buttonHeight),
@@ -55,7 +55,7 @@ const makeRootStyles = (theme: Theme, { size = "small", color, fullWidth, varian
 };
 
 const useButtonStyles = componentStyles<ButtonProps>("Button", 
-	(theme, { size = "small", color = "primary", fullWidth = false, variant = "contained" }) => {
+	(theme, { size, color = "primary", fullWidth = false, variant = "contained" }) => {
 		const metrics = controlMetrics(theme.density, size);
 		return createStyles({
 			root: makeRootStyles(theme, { size, color, fullWidth, variant }),
