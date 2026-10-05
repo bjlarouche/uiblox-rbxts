@@ -250,6 +250,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Pagination", "middle", { value: 3 }),
 	...pair("Pagination", "disabled", { value: 2, disabled: true }),
 
+	...pair("Stepper", "first", { value: 0 }),
+	...pair("Stepper", "middle", { value: 1 }),
+	...pair("Stepper", "last", { value: 2 }),
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];
