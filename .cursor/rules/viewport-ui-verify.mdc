@@ -1,0 +1,11 @@
+---
+description: UI visual verify via Storyblox viewport harness + Studio MCP screen_capture
+alwaysApply: true
+---
+
+# Viewport UI verify
+
+MCP `screen_capture` sees the 3D viewport only. Dock widgets and CoreGui do not appear.
+
+- Verify Uiblox UI in Studio via Storyblox's `StarterGui.StorybloxViewport` harness (`storyblox-viewport*` attributes → `screen_capture` → error/stats). Never claim dock screenshot proof.
+- Skill: `storyblox-viewport-test`.
