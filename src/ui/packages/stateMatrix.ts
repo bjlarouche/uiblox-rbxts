@@ -293,6 +293,7 @@ function chromeRows(): StateCapture[] {
 		...pair("Stepper", "first", { value: 0 }),
 		...pair("Stepper", "middle", { value: 1 }),
 		...pair("Stepper", "last", { value: 2 }),
+		...pair("Stepper", "vertical", { value: 1, variant: "vertical" }),
 		...pair("Accordion", "closed", { open: false }),
 		...pair("Accordion", "open", { open: true }),
 		...pair("Accordion", "disabled", { open: false, disabled: true }),
