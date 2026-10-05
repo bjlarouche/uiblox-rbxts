@@ -1,9 +1,9 @@
-import { createStyles, Theme, makeStyles, DEFAULT_THEME, WriteableStyle } from "theme";
+import { createStyles, Theme, componentStyles, DEFAULT_THEME, WriteableStyle } from "theme";
 import { Icons } from "ui/enums";
 import ToastVariants from "../enums/ToastVariants";
 import { ToastProps } from "./Toast";
 
-const useToastStyles = makeStyles<ToastProps>((theme: Theme, { variant = ToastVariants.default }) => {
+const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { variant = ToastVariants.default }) => {
 	const getToastColors = (): { background: Color3; content: Color3 } => {
 		switch (variant) {
 			case ToastVariants.success:

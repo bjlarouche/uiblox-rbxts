@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useSplitPaneStyles = makeStyles((theme: Theme) =>
+const useSplitPaneStyles = componentStyles("SplitPane", (theme: Theme) =>
 	createStyles({
 		root: {
 			Size: UDim2.fromScale(1, 1),

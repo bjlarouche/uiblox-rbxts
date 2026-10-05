@@ -1,10 +1,10 @@
-import { controlMetrics, ControlSize, createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
 export interface SelectStyleProps {
 	size?: ControlSize;
 }
 
-const useSelectStyles = makeStyles<SelectStyleProps>((theme: Theme, { size }) => {
+const useSelectStyles = componentStyles<SelectStyleProps>("Select", (theme: Theme, { size }) => {
 	const metrics = controlMetrics(theme.density, size);
 	return createStyles({
 		root: {

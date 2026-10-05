@@ -1,10 +1,10 @@
-import { controlMetrics, ControlSize, createStyles, makeStyles, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, componentStyles, WriteableStyle } from "theme";
 
 export interface CheckboxStyleProps {
 	size?: ControlSize;
 }
 
-const useCheckboxStyles = makeStyles<CheckboxStyleProps>((theme, { size }) => {
+const useCheckboxStyles = componentStyles<CheckboxStyleProps>("Checkbox", (theme, { size }) => {
 	const metrics = controlMetrics(theme.density, size);
 	return createStyles({
 		root: {

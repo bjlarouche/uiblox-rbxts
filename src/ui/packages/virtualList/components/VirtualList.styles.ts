@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, WriteableStyle } from "theme";
+import { createStyles, componentStyles, WriteableStyle } from "theme";
 
-const useVirtualListStyles = makeStyles(() =>
+const useVirtualListStyles = componentStyles("VirtualList", () =>
 	createStyles({
 		root: {
 			Size: UDim2.fromScale(1, 1),

@@ -1,8 +1,8 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 import { ROBLOX_UI_OFFSET } from "ui/constants";
 import { SidebarProps } from "./Sidebar";
 
-const useSidebarStyles = makeStyles<SidebarProps>((theme: Theme, props: SidebarProps) => {
+const useSidebarStyles = componentStyles<SidebarProps>("Sidebar", (theme: Theme, props: SidebarProps) => {
 	const { size, ignoreInset = false } = props;
 
 	const sidebarWidths = {

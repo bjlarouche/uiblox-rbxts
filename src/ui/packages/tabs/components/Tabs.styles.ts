@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useTabsStyles = makeStyles((theme: Theme) =>
+const useTabsStyles = componentStyles("Tabs", (theme: Theme) =>
 	createStyles({
 		root: {
 			Size: new UDim2(1, 0, 0, theme.spacing.calc(2.5)),

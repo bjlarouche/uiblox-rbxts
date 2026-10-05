@@ -28,6 +28,9 @@ Breaking: `theme.palette` is a semantic token map. `theme.options.constants.colo
 1. Base slots
 2. Variant groups, in source order. Boolean and number values match the string keys `"true"` and `"1"`
 3. Compound variants, in array order
+4. `theme.components.<Name>.styleOverrides`
+
+`componentStyles("Button", factory)` reads that entry. `defaultProps` fills props the caller left unset, before the factory runs. `styleOverrides` merge onto the slots after that. Replace the theme object to change either one.
 
 ## Contrast
 

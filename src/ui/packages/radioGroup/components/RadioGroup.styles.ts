@@ -1,10 +1,10 @@
-import { controlMetrics, ControlSize, createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
 export interface RadioGroupStyleProps {
 	size?: ControlSize;
 }
 
-const useRadioGroupStyles = makeStyles<RadioGroupStyleProps>((theme: Theme, { size }) => {
+const useRadioGroupStyles = componentStyles<RadioGroupStyleProps>("RadioGroup", (theme: Theme, { size }) => {
 	const metrics = controlMetrics(theme.density, size);
 	return createStyles({
 		root: {

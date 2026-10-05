@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useTooltipStyles = makeStyles((theme: Theme) =>
+const useTooltipStyles = componentStyles("Tooltip", (theme: Theme) =>
 	createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.XY,

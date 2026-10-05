@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useShadowStyles = makeStyles((theme: Theme) =>
+const useShadowStyles = componentStyles("Shadow", (theme: Theme) =>
 	createStyles({
 		container: {
 			Size: new UDim2(1, theme.spacing.calc(0.25), 1, theme.spacing.calc(0.25)),

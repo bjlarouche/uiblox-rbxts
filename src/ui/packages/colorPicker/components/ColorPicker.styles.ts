@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useColorPickerStyles = makeStyles((theme: Theme) =>
+const useColorPickerStyles = componentStyles("ColorPicker", (theme: Theme) =>
 	createStyles({
 		root: {
 			Size: new UDim2(1, 0, 0, 0),

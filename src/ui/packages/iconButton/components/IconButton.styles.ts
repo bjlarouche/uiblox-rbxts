@@ -1,7 +1,7 @@
-import { createStyles, makeStyles, WriteableStyle } from "theme";
+import { createStyles, componentStyles, WriteableStyle } from "theme";
 import { IconButtonProps } from "./IconButton";
 
-const useIconButtonStyles = makeStyles<IconButtonProps>((theme, props) => {
+const useIconButtonStyles = componentStyles<IconButtonProps>("IconButton", (theme, props) => {
 	const getIconSize = (props: IconButtonProps) => {
 		const { size } = props;
 

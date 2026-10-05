@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useMenuStyles = makeStyles((theme: Theme) =>
+const useMenuStyles = componentStyles("Menu", (theme: Theme) =>
 	createStyles({
 		surface: {
 			Size: new UDim2(1, 0, 0, 0),

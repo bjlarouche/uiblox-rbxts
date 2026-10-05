@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useSkeletonStyles = makeStyles((theme: Theme) =>
+const useSkeletonStyles = componentStyles("Skeleton", (theme: Theme) =>
 	createStyles({
 		block: {
 			BackgroundColor3: theme.palette.surface.paper,

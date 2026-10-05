@@ -1,10 +1,10 @@
-import { controlMetrics, ControlSize, createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
 export interface SliderStyleProps {
 	size?: ControlSize;
 }
 
-const useSliderStyles = makeStyles<SliderStyleProps>((theme: Theme, { size }) => {
+const useSliderStyles = componentStyles<SliderStyleProps>("Slider", (theme: Theme, { size }) => {
 	const metrics = controlMetrics(theme.density, size);
 	return createStyles({
 		root: {

@@ -1,8 +1,8 @@
-import { controlMetrics, createStyles, makeStyles, WriteableStyle } from "theme";
+import { controlMetrics, createStyles, componentStyles, WriteableStyle } from "theme";
 import { InputProps } from "./Input";
 import { inputInsets } from "./inputInsets";
 
-const useInputStyles = makeStyles<InputProps & { focused?: boolean }>(
+const useInputStyles = componentStyles<InputProps & { focused?: boolean }>("Input", 
 	(
 		theme,
 		{
