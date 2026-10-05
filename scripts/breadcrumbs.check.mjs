@@ -1,3 +1,4 @@
+globalThis.math = Math;
 Array.prototype.size = function size() {
 	return this.length;
 };
