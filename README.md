@@ -230,6 +230,25 @@ anchor when that anchor moves or resizes, and Select closes if the anchor leaves
 the layer. Select handles Up, Down, Enter, and Escape while it is open or
 selected, including when the pointer is not over it.
 
+### Loading
+
+`Skeleton` covers a block that is still loading. `variant` is `text`,
+`rectangular`, `rounded`, or `circular`. `width` and `height` are pixels.
+`lines` and `gap` stack text rows. `SkeletonText` is the text variant.
+`animation` is `pulse`, `shimmer`, or `false`. `reducedMotion` holds the block
+still. A later theme preference can set that prop for you.
+
+`CircularProgress` spins while `value` is omitted. A `value` from 0 to 1 draws
+an arc and stops the spin. `size`, `thickness`, and `color` restyle the ring.
+`LinearProgress` is the existing `ProgressBar`: pass `value` from 0 to 1 or
+`progress` from 0 to 100. `indeterminate` slides the bar. `disabled` and
+`reducedMotion` stop the motion and fade the fill.
+
+`Button` and `IconButton` take `loading`. The control ignores clicks, hover,
+and focus while loading, and its size stays put. `loadingLabel` replaces the
+caption. `loadingPosition` is `start`, `center`, or `end`. `reducedMotion`
+keeps the spinner still.
+
 ### State captures
 
 `stateMatrix` is the gallery list for Storyblox. Each row is one shot: `theme`
@@ -237,7 +256,10 @@ selected, including when the pointer is not over it.
 `focus`). `open` means the Select list is showing. `options` and `disabledOption`
 build RadioGroup, Select, and Tabs. `selected` and `filter` are TreeView.
 `value`, `text`, `disabled`, `loading`, `mixed`, `hasError`, and `placeholder`
-are that control's props. Hover, press, and focus rows are only there when the
+are that control's props. `variant`, `animation` (`pulse`, `shimmer`, or
+`false`), `reducedMotion`, and `indeterminate` cover skeleton and progress
+shots. Those shots stay still when `animation` is `false` or `reducedMotion`
+is set. Hover, press, and focus rows are only there when the
 control actually changes.
 
 ### Client

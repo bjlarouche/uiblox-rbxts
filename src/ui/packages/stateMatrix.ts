@@ -19,6 +19,10 @@ export interface StateCapture {
 	filter?: string;
 	options?: string[];
 	disabledOption?: string;
+	variant?: string;
+	animation?: "pulse" | "shimmer" | false;
+	reducedMotion?: boolean;
+	indeterminate?: boolean;
 }
 
 const LONG = "Save changes to this story before publishing the preview";
@@ -44,6 +48,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Button", "focus", { pointer: "focus" }),
 	...pair("Button", "disabled", { disabled: true }),
 	...pair("Button", "loading", { loading: true }),
+	...pair("Button", "loading-disabled", { loading: true, disabled: true }),
+	...pair("Button", "loading-reduced", { loading: true, reducedMotion: true }),
+	...pair("Button", "outlined-loading", { loading: true, variant: "outlined" }),
+	...pair("Button", "text-loading", { loading: true, variant: "text" }),
 	...pair("Button", "long", { text: LONG, width: NARROW }),
 
 	...pair("Input", "default", { text: "Story" }),
@@ -139,4 +147,30 @@ export const stateMatrix: StateCapture[] = [
 	...pair("TreeView", "hover", { selected: "Fixture/Styled", pointer: "hover" }),
 	...pair("TreeView", "filter", { selected: "Fixture/Styled", filter: "sty" }),
 	...pair("TreeView", "long", { selected: `Fixture/${LONG}`, text: LONG, width: NARROW }),
+
+	...pair("IconButton", "loading", { loading: true }),
+	...pair("IconButton", "loading-disabled", { loading: true, disabled: true }),
+	...pair("IconButton", "loading-reduced", { loading: true, reducedMotion: true }),
+
+	...pair("Skeleton", "text", { variant: "text", animation: "pulse" }),
+	...pair("Skeleton", "text-static", { variant: "text", animation: false }),
+	...pair("Skeleton", "text-reduced", { variant: "text", animation: "shimmer", reducedMotion: true }),
+	...pair("Skeleton", "rectangular", { variant: "rectangular", animation: false }),
+	...pair("Skeleton", "rounded", { variant: "rounded", animation: "pulse" }),
+	...pair("Skeleton", "circular", { variant: "circular", animation: false }),
+	...pair("Skeleton", "shimmer", { variant: "rounded", animation: "shimmer" }),
+
+	...pair("CircularProgress", "empty", { value: 0 }),
+	...pair("CircularProgress", "half", { value: 0.5 }),
+	...pair("CircularProgress", "full", { value: 1 }),
+	...pair("CircularProgress", "indeterminate", { indeterminate: true }),
+	...pair("CircularProgress", "reduced", { indeterminate: true, reducedMotion: true }),
+	...pair("CircularProgress", "disabled", { value: 0.4, disabled: true }),
+
+	...pair("LinearProgress", "empty", { value: 0 }),
+	...pair("LinearProgress", "half", { value: 0.5 }),
+	...pair("LinearProgress", "full", { value: 1 }),
+	...pair("LinearProgress", "indeterminate", { indeterminate: true }),
+	...pair("LinearProgress", "reduced", { indeterminate: true, reducedMotion: true }),
+	...pair("LinearProgress", "disabled", { value: 0.6, disabled: true }),
 ];

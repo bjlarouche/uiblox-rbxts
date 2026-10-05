@@ -37,6 +37,15 @@ export { PreloaderAssets as Assets } from "./packages";
 
 export { ProgressBar } from "./packages";
 export { ProgressBarProps } from "./packages";
+export { LinearProgress } from "./packages";
+export { LinearProgressProps } from "./packages";
+
+export { CircularProgress } from "./packages";
+export { CircularProgressProps } from "./packages";
+
+export { Skeleton } from "./packages";
+export { SkeletonProps } from "./packages";
+export { SkeletonText } from "./packages";
 
 export { Shadow } from "./packages";
 
