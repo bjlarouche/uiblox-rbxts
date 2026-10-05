@@ -4,15 +4,17 @@ import { popupPlacement } from "./placement";
 
 export interface PopupProps {
 	anchor?: GuiObject;
-	/** Desired content height. Used to flip above the anchor and to cap the shell. */
+	/** Content height. Flips above the anchor and caps the shell. */
 	preferredHeight?: number;
+	/** Content width. Falls back to the anchor width. Clamped to the layer. */
+	preferredWidth?: number;
 	onDismiss?: () => void;
 	onInput?: (input: InputObject) => void;
 	children?: React.ReactNode;
 }
 
 function Popup(props: PopupProps) {
-	const { anchor, preferredHeight, onDismiss, onInput, children } = props;
+	const { anchor, preferredHeight, preferredWidth, onDismiss, onInput, children } = props;
 	const dismiss = useRef(onDismiss);
 	dismiss.current = onDismiss;
 	const [, bump] = useState(0);
@@ -56,9 +58,9 @@ function Popup(props: PopupProps) {
 		layer.AbsoluteSize.Y,
 		layer.AbsoluteSize.X,
 		preferredHeight ?? 0,
+		preferredWidth ?? 0,
 	);
-	const capped =
-		preferredHeight !== undefined && preferredHeight > 0 ? math.min(preferredHeight, place.maxHeight) : undefined;
+	const capped = place.height > 0;
 
 	return createPortal(
 		<frame key="Popup" Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} ZIndex={20000}>
@@ -81,9 +83,9 @@ function Popup(props: PopupProps) {
 				key="Content"
 				Position={UDim2.fromOffset(place.x, place.y)}
 				AnchorPoint={new Vector2(0, place.above ? 1 : 0)}
-				Size={capped !== undefined ? UDim2.fromOffset(place.width, capped) : UDim2.fromOffset(place.width, 0)}
-				AutomaticSize={capped !== undefined ? Enum.AutomaticSize.None : Enum.AutomaticSize.Y}
-				ClipsDescendants={capped !== undefined}
+				Size={capped ? UDim2.fromOffset(place.width, place.height) : UDim2.fromOffset(place.width, 0)}
+				AutomaticSize={capped ? Enum.AutomaticSize.None : Enum.AutomaticSize.Y}
+				ClipsDescendants={capped}
 				BackgroundTransparency={1}
 				Active={false}
 				ZIndex={20001}
