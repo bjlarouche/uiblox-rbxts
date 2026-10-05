@@ -10,16 +10,17 @@ export interface AlertProps {
 	message: string;
 	onClose?: () => void;
 	filled?: boolean;
+	square?: boolean;
 }
 
 function Alert(props: CustomizedProps<Frame, AlertProps>) {
-	const { severity, title, message, onClose, filled, className, sx, id, ref } = props;
+	const { severity, title, message, onClose, filled, square, className, sx, id, ref } = props;
 	const dismissible = onClose !== undefined;
 	const styles = useAlertStyles({ severity, dismissible, filled });
 	return (
 		<frame key={id || "Alert"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uipadding {...styles.padding} />
-			<uicorner {...styles.corner} />
+			{square !== true && <uicorner {...styles.corner} />}
 			<uistroke {...styles.stroke} />
 			{dismissible && (
 				<imagebutton
