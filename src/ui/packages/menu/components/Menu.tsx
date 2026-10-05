@@ -5,6 +5,7 @@ import { EmptyListHint } from "ui/packages/virtualList";
 import useMenuStyles from "./Menu.styles";
 
 const ROW = 28;
+const ROW_DENSE = 22;
 
 export interface MenuItem {
 	id: string;
@@ -20,14 +21,16 @@ export interface MenuProps {
 	onClose: () => void;
 	emptyText?: string;
 	empty?: React.Element;
+	dense?: boolean;
 }
 
 function Menu(props: MenuProps) {
-	const { anchor, open, items, onSelect, onClose, emptyText, empty } = props;
+	const { anchor, open, items, onSelect, onClose, emptyText, empty, dense } = props;
 	const styles = useMenuStyles();
 	if (!open) return undefined;
 	const vacant = items.size() === 0;
-	const height = vacant ? ROW : items.size() * ROW;
+	const row = dense === true ? ROW_DENSE : ROW;
+	const height = vacant ? row : items.size() * row;
 	return (
 		<Popup anchor={anchor} preferredHeight={height} onDismiss={onClose}>
 			<frame key="Surface" {...styles.surface}>
@@ -35,12 +38,13 @@ function Menu(props: MenuProps) {
 				<uistroke {...styles.stroke} />
 				<uilistlayout {...styles.list} />
 				{vacant
-					? (empty ?? <EmptyListHint text={emptyText ?? "No options"} height={ROW} />)
+					? (empty ?? <EmptyListHint text={emptyText ?? "No options"} height={row} />)
 					: items.map((item) => (
 							<ListItem
 								key={item.id}
 								text={item.text}
 								disabled={item.disabled}
+								dense={dense}
 								onActivated={() => {
 									if (item.disabled === true) return;
 									onSelect(item.id);

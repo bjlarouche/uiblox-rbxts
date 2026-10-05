@@ -14,6 +14,9 @@ for (const theme of ["Dark", "Light"]) {
 	if (!stateMatrix.some((row) => row.component === "Menu" && row.theme === theme && row.name.includes("empty"))) {
 		throw new Error(`Menu missing empty ${theme}`);
 	}
+	if (!stateMatrix.some((row) => row.component === "Menu" && row.theme === theme && row.name.includes("dense"))) {
+		throw new Error(`Menu missing dense ${theme}`);
+	}
 }
 
 console.log("menu ok");

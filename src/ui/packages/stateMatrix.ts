@@ -372,6 +372,7 @@ function miscRows(): StateCapture[] {
 		...pair("Menu", "closed", { open: false }),
 		...pair("Menu", "open", { open: true }),
 		...pair("Menu", "empty", { open: true, options: [] }),
+		...pair("Menu", "dense", { open: true, variant: "dense" }),
 	];
 }
 
