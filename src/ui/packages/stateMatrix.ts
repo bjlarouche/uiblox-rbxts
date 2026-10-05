@@ -336,6 +336,7 @@ function miscRows(): StateCapture[] {
 		...pair("Alert", "success", { text: "Saved", variant: "success" }),
 		...pair("Alert", "warning", { text: "Check this", variant: "warning" }),
 		...pair("Alert", "error", { text: "Failed", variant: "error" }),
+		...pair("Alert", "filled", { text: "Heads up", variant: "filled" }),
 		...pair("ToggleButton", "default"),
 		...pair("ToggleButton", "selected", { value: true }),
 		...pair("ToggleButton", "disabled", { disabled: true }),

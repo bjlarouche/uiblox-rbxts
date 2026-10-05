@@ -1,16 +1,16 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 import { AlertSeverity, alertSeverity } from "./alertTone";
 
-const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?: boolean }>(
+const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?: boolean; filled?: boolean }>(
 	"Alert",
-	(theme: Theme, { severity, dismissible }) => {
+	(theme: Theme, { severity, dismissible, filled }) => {
 	const tone = theme.palette.status[alertSeverity(severity)];
 	const closeSize = theme.spacing.calc(2);
 	return createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.Y,
 			Size: new UDim2(1, 0, 0, 0),
-			BackgroundColor3: tone.surface,
+			BackgroundColor3: filled === true ? tone.main : tone.surface,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		padding: {
@@ -23,9 +23,9 @@ const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?:
 			CornerRadius: new UDim(0, theme.shape.borderRadius),
 		} as WriteableStyle<UICorner>,
 		stroke: {
-			Color: tone.border,
+			Color: filled === true ? tone.main : tone.border,
 			Thickness: 1,
-			Transparency: 0,
+			Transparency: filled === true ? 1 : 0,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
 		body: {
@@ -48,7 +48,7 @@ const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?:
 			BorderSizePixel: 0,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.body,
-			TextColor3: tone.main,
+			TextColor3: filled === true ? tone.on : tone.main,
 			TextXAlignment: Enum.TextXAlignment.Left,
 			LayoutOrder: 1,
 		} as WriteableStyle<TextLabel>,
@@ -59,7 +59,7 @@ const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?:
 			BorderSizePixel: 0,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.caption ?? theme.typography.fontSizes.body,
-			TextColor3: theme.palette.text.primary,
+			TextColor3: filled === true ? tone.on : theme.palette.text.primary,
 			TextXAlignment: Enum.TextXAlignment.Left,
 			TextWrapped: true,
 			LayoutOrder: 2,
@@ -70,7 +70,7 @@ const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?:
 			AnchorPoint: new Vector2(1, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
-			ImageColor3: theme.palette.text.secondary,
+			ImageColor3: filled === true ? tone.on : theme.palette.text.secondary,
 			ScaleType: Enum.ScaleType.Fit,
 			ZIndex: 2,
 		} as WriteableStyle<ImageButton>,
