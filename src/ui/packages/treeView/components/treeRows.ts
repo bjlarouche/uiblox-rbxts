@@ -1,4 +1,4 @@
-import type { Icons } from "../../../enums";
+import type { Icons } from "ui/enums";
 import type Branch from "../interfaces/Branch";
 import type Leaf from "../interfaces/Leaf";
 

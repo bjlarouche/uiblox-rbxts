@@ -1,4 +1,4 @@
-import type { Icons } from "../../../enums";
+import type { Icons } from "ui/enums";
 import Leaf from "./Leaf";
 
 export default interface Branch {

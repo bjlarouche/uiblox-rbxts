@@ -1,4 +1,4 @@
-import { Color3FromHex } from "../../../utilites";
+import { Color3FromHex } from "theme/utilites";
 import { ColorTokens } from "../colorTokens/ColorTokens";
 
 const Blue: ColorTokens = {
