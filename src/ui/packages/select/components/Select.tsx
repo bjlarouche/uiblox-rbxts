@@ -10,6 +10,7 @@ import useSelectStyles from "./Select.styles";
 import { filterChoices, usesSelectSearch } from "./selectFilter";
 import { canFocusGui } from "./selectFocus";
 import { shouldHandleSelectKey } from "./selectKey";
+import { typeaheadChoice } from "./selectTypeahead";
 import { stepChoice } from "./stepChoice";
 
 export interface SelectProps<T> {
@@ -35,6 +36,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const [highlight, setHighlight] = useState(-1);
 	const [query, setQuery] = useState("");
 	const recent = useRef<{ key: string; at: number }>();
+	const typed = useRef<{ text: string; at: number }>();
 	const onKeyRef = useRef<(input: InputObject, fromControl: boolean) => void>();
 	const listRef = useRef<VirtualListHandle>();
 	const current = options.find((option) => option.value === value);
@@ -93,6 +95,12 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 			setHighlight(stepChoice(filtered, highlight, 1));
 		} else if (key === Enum.KeyCode.Return || key === Enum.KeyCode.KeypadEnter) {
 			choose(highlight);
+		} else if (key.Name.size() === 1) {
+			const letter = key.Name.lower();
+			const previous = typed.current;
+			const text = previous !== undefined && now - previous.at < 0.5 ? `${previous.text}${letter}` : letter;
+			typed.current = { text, at: now };
+			setHighlight(typeaheadChoice(filtered, highlight, text));
 		}
 	};
 
