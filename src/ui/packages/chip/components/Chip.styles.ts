@@ -23,7 +23,7 @@ const useChipStyles = componentStyles<{ selected?: boolean; disabled?: boolean }
 				PaddingRight: new UDim(0, theme.padding.calc(1.5)),
 			} as WriteableStyle<UIPadding>,
 			corner: {
-				CornerRadius: new UDim(1, 0),
+				CornerRadius: new UDim(theme.shape.pillScale, 0),
 			} as WriteableStyle<UICorner>,
 			stroke: {
 				Color: theme.palette.border,

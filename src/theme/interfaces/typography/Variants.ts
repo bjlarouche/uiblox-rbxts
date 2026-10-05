@@ -1,38 +1,34 @@
-import { Tokens } from "../tokens/Tokens";
+import { FontFamilyVariant } from "./FontFamilyOptions";
+import { FontSizeVariant } from "./FontSizeOptions";
 
-export type TypographyTokens = { [key in Tokens]: string };
-
-export interface TypographyWeights {
-	title: number;
-	heading: number;
-	body: number;
-	xl?: number;
-	lg?: number;
-	md?: number;
-	sm?: number;
-	xs?: number;
-	default?: number;
+export interface TypographyVariantSpec {
+	size: number;
+	family: FontFamilyVariant;
+	/** Approx CSS weight; Roblox TextLabel uses `family` / FontFace */
+	weight: number;
 }
 
-export type TypographyVariants = keyof TypographyWeights;
+export type TypographyVariants = FontSizeVariant;
 
-export const TypographyWeights: TypographyWeights = {
-	title: 800,
-	heading: 500,
-	body: 300,
+/** Size + family + weight per typography variant. */
+export const allTypographyVariants: Record<FontSizeVariant, TypographyVariantSpec> = {
+	h1: { size: 28, family: "bold", weight: 700 },
+	h2: { size: 22, family: "bold", weight: 700 },
+	h3: { size: 18, family: "semibold", weight: 600 },
+	h4: { size: 16, family: "semibold", weight: 600 },
+	h5: { size: 14, family: "semibold", weight: 600 },
+	h6: { size: 14, family: "semibold", weight: 600 },
+	subtitle1: { size: 16, family: "default", weight: 400 },
+	subtitle2: { size: 14, family: "semibold", weight: 600 },
+	body: { size: 14, family: "default", weight: 400 },
+	button: { size: 13, family: "semibold", weight: 600 },
+	caption: { size: 12, family: "default", weight: 400 },
+	overline: { size: 10, family: "default", weight: 400 },
 };
 
-export const TypographyTokens: TypographyTokens = {
-	120: "64px",
-	110: "48px",
-	100: "40px",
-	90: "32px",
-	80: "28px",
-	70: "24px",
-	60: "20px",
-	50: "18px",
-	40: "16px",
-	30: "14px",
-	20: "12px",
-	10: "10px",
+/** @deprecated prefer allTypographyVariants[*].weight */
+export const TypographyWeights = {
+	title: 700,
+	heading: 600,
+	body: 400,
 };

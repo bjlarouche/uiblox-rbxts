@@ -63,7 +63,9 @@ On the instance, `className` then `sx`. `sx` wins. Kit components do not call `r
 
 `theme.spacing` uses an 8px base (`SPACING_BASE`). `theme.density` is `comfortable` (default) or `compact`. Unset control `size` follows density via `controlMetrics` (Button included). Icon tokens are 16 / 24 / 32. Body text is 14.
 
-`pnpm test` runs `scripts/density.check.mjs`.
+`theme.shape.pillScale` (default `1`) is the UICorner scale for Switch/Chip capsules. `theme.typography.variants` maps each variant to size + family + weight; `Typography` uses the variant family unless `family` is set.
+
+See [STYLING.md](./STYLING.md). `pnpm test` runs `scripts/density.check.mjs` and `scripts/styles.check.mjs`.
 
 ## Contrast
 

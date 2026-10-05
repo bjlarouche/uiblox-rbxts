@@ -46,7 +46,7 @@ const useSwitchStyles = componentStyles<SwitchStyleProps>("Switch", (theme: Them
 			TextWrapped: true,
 		} as WriteableStyle<TextLabel>,
 		corner: {
-			CornerRadius: new UDim(1, 0),
+			CornerRadius: new UDim(theme.shape.pillScale, 0),
 		} as WriteableStyle<UICorner>,
 		stroke: {
 			Color: theme.palette.focus,

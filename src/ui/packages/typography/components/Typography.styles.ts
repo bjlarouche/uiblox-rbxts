@@ -5,8 +5,10 @@ import { TypographyProps } from "./Typography";
 const useTypographyStyles = componentStyles<TypographyProps>("Typography", 
 	(
 		theme,
-		{ color = "initial", variant = "body", family = "default", align = "left", noWrap = false, lineClamp = false },
+		{ color = "initial", variant = "body", family, align = "left", noWrap = false, lineClamp = false },
 	) => {
+		const spec = theme.typography.variants[variant ?? "body"];
+		const resolvedFamily = family ?? spec.family;
 		const DEFAULT_COLOR = theme.palette.text.primary;
 
 		const COLOR_TO_PALETTE_MAP = new Map<TypographyColor, Color3>([
@@ -71,9 +73,8 @@ const useTypographyStyles = componentStyles<TypographyProps>("Typography",
 		return createStyles({
 			root: makeRootStyles(),
 			variantToken: {
-				// eslint-disable-next-line roblox-ts/lua-truthiness
-				TextSize: variant && theme.typography.fontSizes[variant],
-				Font: family && theme.typography.fontFamilies[family],
+				TextSize: spec.size,
+				Font: theme.typography.fontFamilies[resolvedFamily],
 			} as WriteableStyle<TextLabel>,
 		});
 	},
