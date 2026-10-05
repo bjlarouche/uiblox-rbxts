@@ -96,6 +96,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("ColorPicker", "error", { value: "#336699", hasError: true }),
 	...pair("ColorPicker", "long", { value: "#336699", text: LONG, width: NARROW }),
 
+	...pair("BrickColorPicker", "default", { value: "Bright red" }),
+	...pair("BrickColorPicker", "open", { value: "Bright red", open: true }),
+	...pair("BrickColorPicker", "disabled", { value: "Bright red", disabled: true }),
+
 	...pair("VectorEditor", "default", { value: "1,2" }),
 	...pair("VectorEditor", "disabled", { value: "1,2,3", disabled: true }),
 	...pair("VectorEditor", "long", { value: "1,2", text: LONG, width: NARROW }),
