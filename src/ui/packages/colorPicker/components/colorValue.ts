@@ -108,3 +108,22 @@ export function resolveHsv(color: Color3, previous?: Hsv): Hsv {
 	if (hsv.s === 0 && previous !== undefined) return { h: previous.h, s: hsv.s, v: hsv.v };
 	return hsv;
 }
+
+const RECENT_CAP = 8;
+let recent: Color3[] = [];
+
+export function rememberColor(color: Color3) {
+	const remembered: Color3[] = [color];
+	for (const existing of recent) {
+		if (!sameColor(existing, color) && remembered.size() < RECENT_CAP) remembered.push(existing);
+	}
+	recent = remembered;
+}
+
+export function recentColors() {
+	return recent;
+}
+
+export function colorBytes(color: Color3) {
+	return `${channelToByte(color.R)}, ${channelToByte(color.G)}, ${channelToByte(color.B)}`;
+}

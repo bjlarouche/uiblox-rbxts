@@ -25,6 +25,17 @@ const useSelectStyles = makeStyles((theme: Theme) =>
 			PaddingLeft: new UDim(0, theme.padding.default),
 			PaddingRight: new UDim(0, theme.padding.default),
 		} as WriteableStyle<UIPadding>,
+		menu: {
+			Size: UDim2.fromScale(1, 1),
+			BackgroundColor3: theme.palette.surface.elevated,
+			BorderSizePixel: 0,
+			ZIndex: 20001,
+		} as WriteableStyle<Frame>,
+		search: {
+			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
+			BackgroundTransparency: 1,
+			ZIndex: 20002,
+		} as WriteableStyle<Frame>,
 		list: {
 			Size: UDim2.fromScale(1, 1),
 			BackgroundColor3: theme.palette.surface.elevated,

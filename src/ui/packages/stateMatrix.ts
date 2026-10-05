@@ -74,6 +74,7 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Checkbox", "long", { text: LONG, width: NARROW }),
 
 	...pair("ColorPicker", "default", { value: "#336699" }),
+	...pair("ColorPicker", "open", { value: "#336699", open: true }),
 	...pair("ColorPicker", "focus", { value: "#336699", pointer: "focus" }),
 	...pair("ColorPicker", "disabled", { value: "#336699", disabled: true }),
 	...pair("ColorPicker", "error", { value: "#336699", hasError: true }),
@@ -123,6 +124,12 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Select", "hover", { value: "Continue", options: ["Continue", "Other"], open: true, pointer: "hover" }),
 	...pair("Select", "press", { value: "Continue", options: ["Continue", "Other"], pointer: "press" }),
 	...pair("Select", "long", { value: LONG, options: [LONG, "Other"], text: LONG, width: NARROW, open: true }),
+	...pair("Select", "search", {
+		value: "Continue",
+		options: ["Continue", "Other", "Docs", "Actions", "Source", "Settings", "Theme", "Inspector", "Controls"],
+		open: true,
+		filter: "con",
+	}),
 
 	...pair("Tabs", "default", { value: "Continue", options: ["Continue", "Docs", "Actions"] }),
 	...pair("Tabs", "disabled", { value: "Continue", options: ["Continue", "Docs", "Actions"], disabled: true }),
