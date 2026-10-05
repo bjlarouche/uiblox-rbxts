@@ -275,6 +275,21 @@ if (!tip.above || tip.width !== 180 || tip.height !== 48 || tip.y !== 360) throw
 const tipClamp = popupPlacement(20, 10, 40, 20, 0, 0, 400, 100, 30, 180);
 if (tipClamp.width !== 100 || tipClamp.x !== 0 || tipClamp.above) throw new Error("tip width clamps to the layer");
 
+const { portalTarget } = await import(pathToFileURL(join(root, "src/ui/packages/popup/components/portalTarget.ts")).href);
+const layerHost = {
+	IsA: (name) => name === "LayerCollector",
+	FindFirstAncestorWhichIsA: () => undefined,
+};
+const childHost = {
+	IsA: () => false,
+	FindFirstAncestorWhichIsA: (name) => (name === "LayerCollector" ? layerHost : undefined),
+};
+const looseHost = { IsA: () => false, FindFirstAncestorWhichIsA: () => undefined };
+if (portalTarget(undefined) !== undefined) throw new Error("missing host has no target");
+if (portalTarget(layerHost) !== layerHost) throw new Error("layer host is the target");
+if (portalTarget(childHost) !== layerHost) throw new Error("host walks to the layer");
+if (portalTarget(looseHost) !== undefined) throw new Error("unlayered host has no target");
+
 const { nextCanvasPosition, shouldBeginDragScroll } = await import(
 	pathToFileURL(join(root, "src/ui/packages/scroll/dragScroll.ts")).href
 );

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { createPortal } from "@rbxts/react-roblox";
 import { popupPlacement } from "./placement";
+import Portal from "./Portal";
+import { portalTarget } from "./portalTarget";
 
 export interface PopupProps {
 	anchor?: GuiObject;
@@ -18,13 +19,13 @@ function Popup(props: PopupProps) {
 	const dismiss = useRef(onDismiss);
 	dismiss.current = onDismiss;
 	const [, bump] = useState(0);
-	const layer = anchor?.FindFirstAncestorWhichIsA("LayerCollector");
+	const layer = anchor ? portalTarget(anchor) : undefined;
 
 	useEffect(() => {
 		if (!anchor) return;
 		const last = { stamp: "" };
 		const update = () => {
-			const current = anchor.FindFirstAncestorWhichIsA("LayerCollector");
+			const current = portalTarget(anchor);
 			if (!anchor.Parent || !current) {
 				if (dismiss.current) dismiss.current();
 				else bump((n) => n + 1);
@@ -62,38 +63,39 @@ function Popup(props: PopupProps) {
 	);
 	const capped = place.height > 0;
 
-	return createPortal(
-		<frame key="Popup" Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} ZIndex={20000}>
-			{onDismiss && (
-				<textbutton
-					key="Backdrop"
-					Size={UDim2.fromScale(1, 1)}
+	return (
+		<Portal host={layer}>
+			<frame key="Popup" Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} ZIndex={20000}>
+				{onDismiss && (
+					<textbutton
+						key="Backdrop"
+						Size={UDim2.fromScale(1, 1)}
+						BackgroundTransparency={1}
+						Text=""
+						AutoButtonColor={false}
+						Selectable={false}
+						ZIndex={20000}
+						Event={{
+							Activated: onDismiss,
+							InputBegan: (_, input) => onInput?.(input),
+						}}
+					/>
+				)}
+				<frame
+					key="Content"
+					Position={UDim2.fromOffset(place.x, place.y)}
+					AnchorPoint={new Vector2(0, place.above ? 1 : 0)}
+					Size={capped ? UDim2.fromOffset(place.width, place.height) : UDim2.fromOffset(place.width, 0)}
+					AutomaticSize={capped ? Enum.AutomaticSize.None : Enum.AutomaticSize.Y}
+					ClipsDescendants={capped}
 					BackgroundTransparency={1}
-					Text=""
-					AutoButtonColor={false}
-					Selectable={false}
-					ZIndex={20000}
-					Event={{
-						Activated: onDismiss,
-						InputBegan: (_, input) => onInput?.(input),
-					}}
-				/>
-			)}
-			<frame
-				key="Content"
-				Position={UDim2.fromOffset(place.x, place.y)}
-				AnchorPoint={new Vector2(0, place.above ? 1 : 0)}
-				Size={capped ? UDim2.fromOffset(place.width, place.height) : UDim2.fromOffset(place.width, 0)}
-				AutomaticSize={capped ? Enum.AutomaticSize.None : Enum.AutomaticSize.Y}
-				ClipsDescendants={capped}
-				BackgroundTransparency={1}
-				Active={false}
-				ZIndex={20001}
-			>
-				{children}
+					Active={false}
+					ZIndex={20001}
+				>
+					{children}
+				</frame>
 			</frame>
-		</frame>,
-		layer,
+		</Portal>
 	);
 }
 
