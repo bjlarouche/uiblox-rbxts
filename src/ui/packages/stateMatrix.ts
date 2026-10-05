@@ -368,6 +368,7 @@ function miscRows(): StateCapture[] {
 		...pair("SpeedDial", "closed", { open: false }),
 		...pair("SpeedDial", "open", { open: true }),
 		...pair("SpeedDial", "disabled", { open: false, disabled: true }),
+		...pair("SpeedDial", "down", { open: true, variant: "down" }),
 		...pair("FormLabel", "default", { text: "Email" }),
 		...pair("FormLabel", "required", { text: "Email", value: true }),
 		...pair("FormLabel", "error", { text: "Email", hasError: true }),

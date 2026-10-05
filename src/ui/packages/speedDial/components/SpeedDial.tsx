@@ -2,7 +2,7 @@ import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
 import { Fab } from "ui/packages/fab";
-import useSpeedDialStyles from "./SpeedDial.styles";
+import useSpeedDialStyles, { SpeedDialDirection } from "./SpeedDial.styles";
 
 export interface SpeedDialAction {
 	icon: Icons;
@@ -17,6 +17,7 @@ export interface SpeedDialProps {
 	icon?: Icons;
 	openIcon?: Icons;
 	disabled?: boolean;
+	direction?: SpeedDialDirection;
 }
 
 function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
@@ -27,12 +28,16 @@ function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
 		icon = Icons.OpenBox,
 		openIcon = Icons.Close,
 		disabled,
+		direction = "up",
 		className,
 		sx,
 		id,
 		ref,
 	} = props;
-	const styles = useSpeedDialStyles();
+	const styles = useSpeedDialStyles({ direction });
+	const mainFirst = direction === "down" || direction === "right";
+	const mainOrder = mainFirst ? 0 : 1000;
+	const actionBase = mainFirst ? 1 : 0;
 	return (
 		<frame key={id || "SpeedDial"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
@@ -47,7 +52,7 @@ function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
 							action.onClick?.();
 							onOpenChange(false);
 						}}
-						className={{ LayoutOrder: index }}
+						className={{ LayoutOrder: actionBase + index }}
 					/>
 				))}
 			<Fab
@@ -55,7 +60,7 @@ function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
 				icon={open ? openIcon : icon}
 				disabled={disabled}
 				onClick={() => onOpenChange(!open)}
-				className={{ LayoutOrder: 1000 }}
+				className={{ LayoutOrder: mainOrder }}
 			/>
 		</frame>
 	);
