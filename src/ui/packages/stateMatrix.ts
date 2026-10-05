@@ -214,4 +214,7 @@ export const stateMatrix: StateCapture[] = [
 
 	...pair("Dialog", "closed", { open: false }),
 	...pair("Dialog", "open", { open: true }),
+
+	...pair("Paper", "flat", { variant: "flat" }),
+	...pair("Paper", "raised", { variant: "raised" }),
 ];

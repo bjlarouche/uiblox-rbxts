@@ -25,6 +25,7 @@ export * from "./vectorEditor";
 export * from "./popup";
 export * from "./modal";
 export * from "./dialog";
+export * from "./paper";
 export * from "./motion";
 export * from "./radioGroup";
 export * from "./select";
