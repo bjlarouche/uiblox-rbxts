@@ -324,6 +324,7 @@ function chromeRows(): StateCapture[] {
 		...pair("Fab", "large", { size: "large" }),
 		...pair("Fab", "disabled", { disabled: true }),
 		...pair("Fab", "loading", { loading: true }),
+		...pair("Fab", "accent", { variant: "accent" }),
 		...pair("AppBar", "default", { text: "Storyblox" }),
 		...pair("AppBar", "flat", { text: "Storyblox", variant: "flat" }),
 		...pair("AppBar", "raised", { text: "Storyblox", variant: "raised" }),

@@ -5,12 +5,13 @@ import { canActivate } from "ui/packages/button/components/activation";
 import { CircularProgress } from "ui/packages/circularProgress";
 import { Shadow } from "ui/packages/shadow";
 import { FabSize, fabExtended, fabIconPixels } from "./fabSize";
-import useFabStyles from "./Fab.styles";
+import useFabStyles, { FabColor } from "./Fab.styles";
 
 export interface FabProps {
 	icon: Icons;
 	label?: string;
 	size?: FabSize;
+	color?: FabColor;
 	disabled?: boolean;
 	loading?: boolean;
 	reducedMotion?: boolean;
@@ -22,6 +23,7 @@ function Fab(props: CustomizedProps<TextButton, FabProps>) {
 		icon,
 		label,
 		size = "medium",
+		color = "primary",
 		disabled,
 		loading = false,
 		reducedMotion,
@@ -33,7 +35,7 @@ function Fab(props: CustomizedProps<TextButton, FabProps>) {
 	} = props;
 	const active = canActivate(disabled, loading);
 	const extended = fabExtended(label);
-	const styles = useFabStyles({ size, disabled: !active, extended });
+	const styles = useFabStyles({ size, color, disabled: !active, extended });
 	const { theme } = useTheme();
 	const [hovering, setHovering] = useState(false);
 	const [focused, setFocused] = useState(false);

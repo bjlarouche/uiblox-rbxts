@@ -1,21 +1,25 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 import { FabSize, fabPixels } from "./fabSize";
 
+export type FabColor = "primary" | "accent";
+
 export interface FabStyleProps {
 	size?: FabSize;
+	color?: FabColor;
 	disabled?: boolean;
 	extended?: boolean;
 }
 
 const useFabStyles = componentStyles<FabStyleProps>(
 	"Fab",
-	(theme: Theme, { size = "medium", disabled, extended }) => {
+	(theme: Theme, { size = "medium", color = "primary", disabled, extended }) => {
 		const diameter = fabPixels(size);
+		const tone = color === "accent" ? theme.palette.accent : theme.palette.primary;
 		return createStyles({
 			root: {
 				Size: extended === true ? new UDim2(0, 0, 0, diameter) : UDim2.fromOffset(diameter, diameter),
 				AutomaticSize: extended === true ? Enum.AutomaticSize.X : Enum.AutomaticSize.None,
-				BackgroundColor3: theme.palette.primary.main,
+				BackgroundColor3: tone.main,
 				BackgroundTransparency: disabled ? 0.5 : 0,
 				BorderSizePixel: 0,
 				AutoButtonColor: false,
@@ -41,7 +45,7 @@ const useFabStyles = componentStyles<FabStyleProps>(
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				ScaleType: Enum.ScaleType.Fit,
-				ImageColor3: theme.palette.primary.on,
+				ImageColor3: tone.on,
 				ImageTransparency: disabled ? 0.5 : 0,
 				LayoutOrder: 1,
 			} as WriteableStyle<ImageLabel>,
@@ -52,7 +56,7 @@ const useFabStyles = componentStyles<FabStyleProps>(
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
 				TextSize: theme.typography.fontSizes.body,
-				TextColor3: theme.palette.primary.on,
+				TextColor3: tone.on,
 				TextTransparency: disabled ? 0.5 : 0,
 				LayoutOrder: 2,
 			} as WriteableStyle<TextLabel>,
