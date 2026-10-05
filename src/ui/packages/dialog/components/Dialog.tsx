@@ -5,7 +5,7 @@ import useDialogStyles from "./Dialog.styles";
 export interface DialogProps {
 	host?: Instance;
 	open: boolean;
-	title: string;
+	title?: string;
 	onClose: () => void;
 	children?: React.ReactNode;
 	actions?: React.ReactNode;
@@ -14,18 +14,22 @@ export interface DialogProps {
 function Dialog(props: DialogProps) {
 	const { host, open, title, onClose, children, actions } = props;
 	const styles = useDialogStyles();
+	const hasTitle = title !== undefined && title !== "";
+	const hasActions = actions !== undefined;
 	return (
 		<Modal host={host} open={open} onClose={onClose}>
 			<frame key="Column" {...styles.column}>
 				<uilistlayout {...styles.columnList} />
-				<textlabel key="Title" {...styles.title} Text={title} />
+				{hasTitle && <textlabel key="Title" {...styles.title} Text={title} />}
 				<frame key="Body" {...styles.body}>
 					{children}
 				</frame>
-				<frame key="Actions" {...styles.actions}>
-					<uilistlayout {...styles.actionList} />
-					{actions}
-				</frame>
+				{hasActions && (
+					<frame key="Actions" {...styles.actions}>
+						<uilistlayout {...styles.actionList} />
+						{actions}
+					</frame>
+				)}
 			</frame>
 		</Modal>
 	);
