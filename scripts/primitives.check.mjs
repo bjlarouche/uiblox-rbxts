@@ -139,6 +139,20 @@ if (clampSplit(900, 1000, 200) !== 800) throw new Error("second pane keeps min")
 if (clampSplit(300, 300, 200, 340) !== 200) throw new Error("short dock favors first pane min");
 if (clampSplit(50, 0) !== 0) throw new Error("unmeasured pane collapses");
 
+const { splitHitTransparency, splitMarkTransparency, splitPointer } = await import(
+	pathToFileURL(join(root, "src/ui/packages/splitPane/components/splitLook.ts")).href
+);
+if (splitPointer(false, false, false) !== "rest") throw new Error("idle divider is rest");
+if (splitPointer(true, false, false) !== "hover") throw new Error("hover wins over rest");
+if (splitPointer(true, true, false) !== "press") throw new Error("drag wins over hover");
+if (splitPointer(false, false, true) !== "focus") throw new Error("focus when selected");
+if (splitMarkTransparency("rest") <= splitMarkTransparency("hover")) throw new Error("hover marks are clearer");
+if (splitMarkTransparency("press") !== 0) throw new Error("drag marks are solid");
+if (splitMarkTransparency("rest", true) < splitMarkTransparency("rest")) throw new Error("disabled marks fade");
+if (splitHitTransparency("rest") !== 1) throw new Error("idle hit target stays clear");
+if (splitHitTransparency("hover") >= 1) throw new Error("hover wash shows interactivity");
+if (splitHitTransparency("press") >= splitHitTransparency("hover")) throw new Error("drag wash is stronger");
+
 const { stateMatrix } = await import(pathToFileURL(join(root, "src/ui/packages/stateMatrix.ts")).href);
 const components = [
 	"Button",
@@ -171,7 +185,7 @@ for (const component of components) {
 		throw new Error(`${component} missing long text at narrow width`);
 	}
 }
-for (const component of ["Button", "Checkbox", "Switch", "RadioGroup", "Select", "Tabs", "Tooltip", "TreeView"]) {
+for (const component of ["Button", "Checkbox", "Switch", "RadioGroup", "Select", "Tabs", "SplitPane", "Tooltip", "TreeView"]) {
 	if (!stateMatrix.some((row) => row.component === component && row.pointer === "hover")) {
 		throw new Error(`${component} missing hover`);
 	}

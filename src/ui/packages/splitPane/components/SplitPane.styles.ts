@@ -18,12 +18,26 @@ const useSplitPaneStyles = makeStyles((theme: Theme) =>
 			ClipsDescendants: true,
 		} as WriteableStyle<Frame>,
 		divider: {
-			BackgroundColor3: theme.palette.divider,
+			BackgroundColor3: theme.palette.text.primary,
+			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			Active: true,
 		} as WriteableStyle<Frame>,
-		dragging: {
-			BackgroundColor3: theme.palette.primary.main,
+		rule: {
+			BackgroundColor3: theme.palette.divider,
+			BorderSizePixel: 0,
+			AnchorPoint: new Vector2(0.5, 0.5),
+			Position: UDim2.fromScale(0.5, 0.5),
+		} as WriteableStyle<Frame>,
+		grip: {
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+			AnchorPoint: new Vector2(0.5, 0.5),
+			Position: UDim2.fromScale(0.5, 0.5),
+		} as WriteableStyle<Frame>,
+		mark: {
+			BackgroundColor3: theme.options.constants.colors.textMuted,
+			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		overlay: {
 			Size: UDim2.fromScale(1, 1),
