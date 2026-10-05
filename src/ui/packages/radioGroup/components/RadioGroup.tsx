@@ -26,6 +26,7 @@ function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 	return (
 		<frame key={id || "RadioGroup"} ref={ref} {...root} {...className} {...sx}>
 			<uilistlayout {...list} />
+			<>
 			{options.map((choice, index) => {
 				const active = canActivate(disabled || choice.disabled);
 				const fade = active ? 0 : 0.5;
@@ -56,6 +57,7 @@ function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 					</textbutton>
 				);
 			})}
+			</>
 		</frame>
 	);
 }

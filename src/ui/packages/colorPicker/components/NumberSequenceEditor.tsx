@@ -79,6 +79,7 @@ function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditor
 			>
 				<uicorner {...styles.corner} />
 				<uigradient Transparency={value} />
+				<>
 				{stops.map((stop, stopIndex) => (
 					<frame
 						key={`Stop-${stopIndex}`}
@@ -89,6 +90,7 @@ function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditor
 						<uicorner {...styles.corner} />
 					</frame>
 				))}
+				</>
 			</frame>
 			<frame key="Fields" {...styles.row} LayoutOrder={2} Size={new UDim2(1, 0, 0, 0)} AutomaticSize={Enum.AutomaticSize.Y}>
 				<uilistlayout {...styles.rowLayout} />

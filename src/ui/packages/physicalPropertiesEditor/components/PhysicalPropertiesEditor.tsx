@@ -31,6 +31,7 @@ function PhysicalPropertiesEditor(props: CustomizedProps<Frame, PhysicalProperti
 	return (
 		<frame key={id || "PhysicalPropertiesEditor"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.wrap} />
+			<>
 			{physicalFields().map((field, index) => (
 				<frame key={field} {...styles.axis} LayoutOrder={index + 1}>
 					<uilistlayout {...styles.row} />
@@ -45,6 +46,7 @@ function PhysicalPropertiesEditor(props: CustomizedProps<Frame, PhysicalProperti
 					</frame>
 				</frame>
 			))}
+			</>
 		</frame>
 	);
 }

@@ -20,6 +20,7 @@ function BottomNavigation<T>(props: CustomizedProps<Frame, BottomNavigationProps
 	return (
 		<frame key={id || "BottomNavigation"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
+			<>
 			{options.map((choice, index) => {
 				const active = canActivate(disabled || choice.disabled);
 				const selected = choice.value === value;
@@ -42,6 +43,7 @@ function BottomNavigation<T>(props: CustomizedProps<Frame, BottomNavigationProps
 					</textbutton>
 				);
 			})}
+			</>
 		</frame>
 	);
 }

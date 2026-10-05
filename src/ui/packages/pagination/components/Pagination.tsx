@@ -20,6 +20,7 @@ function Pagination(props: CustomizedProps<Frame, PaginationProps>) {
 	return (
 		<frame key={id || "Pagination"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
+			<>
 			{tokens.map((item, index) =>
 				item === "ellipsis" ? (
 					<textlabel key={`e-${index}`} {...styles.ellipsis} LayoutOrder={index} />
@@ -37,6 +38,7 @@ function Pagination(props: CustomizedProps<Frame, PaginationProps>) {
 					</textbutton>
 				),
 			)}
+			</>
 		</frame>
 	);
 }

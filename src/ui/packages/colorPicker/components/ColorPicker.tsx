@@ -236,6 +236,7 @@ function ColorPanel(props: { value: Color3; onChange: (value: Color3) => void; d
 			{recents.size() > 0 && (
 				<frame key="Recent" {...styles.recent} LayoutOrder={5}>
 					<uilistlayout {...styles.rowLayout} />
+					<>
 					{recents.map((color, index) => (
 						<textbutton
 							key={`Recent-${index}`}
@@ -252,6 +253,7 @@ function ColorPanel(props: { value: Color3; onChange: (value: Color3) => void; d
 							<uistroke {...styles.swatchStroke} />
 						</textbutton>
 					))}
+					</>
 				</frame>
 			)}
 		</frame>

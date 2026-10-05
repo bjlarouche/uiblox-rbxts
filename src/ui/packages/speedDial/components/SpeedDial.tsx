@@ -41,8 +41,9 @@ function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
 	return (
 		<frame key={id || "SpeedDial"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
-			{open &&
-				actions.map((action, index) => (
+			{open && (
+				<>
+				{actions.map((action, index) => (
 					<Fab
 						key={`Action-${index}`}
 						icon={action.icon}
@@ -55,6 +56,8 @@ function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
 						className={{ LayoutOrder: actionBase + index }}
 					/>
 				))}
+				</>
+			)}
 			<Fab
 				key="Main"
 				icon={open ? openIcon : icon}

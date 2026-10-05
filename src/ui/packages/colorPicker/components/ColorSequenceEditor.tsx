@@ -78,6 +78,7 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 			>
 				<uicorner {...styles.corner} />
 				<uigradient Color={value} />
+				<>
 				{stops.map((stop, stopIndex) => (
 					<frame
 						key={`Stop-${stopIndex}`}
@@ -90,6 +91,7 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 						<uistroke Thickness={stopIndex === index ? 2 : 1} Color={new Color3(1, 1, 1)} />
 					</frame>
 				))}
+				</>
 			</frame>
 			<ColorPicker
 				key="StopColor"

@@ -21,6 +21,7 @@ function Breadcrumbs(props: CustomizedProps<Frame, BreadcrumbsProps>) {
 	return (
 		<frame key={id || "Breadcrumbs"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
+			<>
 			{visible.map((entry, order) => {
 				const current = !entry.ellipsis && breadcrumbCurrent(entry.index, items.size());
 				const item = entry.ellipsis ? undefined : items[entry.index];
@@ -42,6 +43,7 @@ function Breadcrumbs(props: CustomizedProps<Frame, BreadcrumbsProps>) {
 					</React.Fragment>
 				);
 			})}
+			</>
 		</frame>
 	);
 }
