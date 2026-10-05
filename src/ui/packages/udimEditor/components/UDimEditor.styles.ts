@@ -32,7 +32,7 @@ const useUDimEditorStyles = makeStyles((theme: Theme) =>
 			BackgroundTransparency: 1,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.caption,
-			TextColor3: theme.options.constants.colors.textMuted,
+			TextColor3: theme.palette.text.secondary,
 			TextXAlignment: Enum.TextXAlignment.Left,
 		} as WriteableStyle<TextLabel>,
 		input: {
