@@ -127,6 +127,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("RayEditor", "default", { value: "0,0,0,0,1,0" }),
 	...pair("RayEditor", "disabled", { value: "0,0,0,0,1,0", disabled: true }),
 
+	...pair("PhysicalPropertiesEditor", "default", { value: "0.7,0.3,0.5" }),
+	...pair("PhysicalPropertiesEditor", "disabled", { value: "0.7,0.3,0.5", disabled: true }),
+
 	...pair("Switch", "off"),
 	...pair("Switch", "size-small", { size: "small" }),
 	...pair("Switch", "size-medium", { size: "medium" }),
