@@ -71,6 +71,7 @@ function controlsRows(): StateCapture[] {
 		...pair("Input", "density-compact", { text: "Story", density: "compact", size: "small" }),
 		...pair("Input", "focus", { text: "Story", pointer: "focus" }),
 		...pair("Input", "disabled", { text: "Story", disabled: true }),
+		...pair("Input", "readonly", { text: "Story" }),
 		...pair("Input", "loading", { text: "Story", loading: true }),
 		...pair("Input", "loading-reduced", { text: "Story", loading: true, reducedMotion: true }),
 		...pair("Input", "error", { text: "Story", hasError: true }),
