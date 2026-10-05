@@ -264,12 +264,16 @@ const moved = popupPlacement(140, 200, 120, 24, 10, 20, 400, 1000, 40);
 if (moved.above || moved.x !== 130 || moved.width !== 120) throw new Error("list follows a moved or resized anchor");
 const above = popupPlacement(100, 300, 80, 24, 0, 0, 400, 800, 120);
 if (!above.above || above.y !== 300 || above.maxHeight !== 300) throw new Error("list flips above the anchor");
-const clamped = popupPlacement(950, 40, 200, 24, 0, 0, 500, 1000, 40);
-if (clamped.x !== 800 || clamped.width !== 200) throw new Error("list clamps to the right edge");
+const rightEdge = popupPlacement(950, 40, 200, 24, 0, 0, 500, 1000, 40);
+if (rightEdge.x !== 800 || rightEdge.width !== 200) throw new Error("list clamps to the right edge");
 const left = popupPlacement(-30, 40, 80, 24, 10, 0, 500, 400, 40);
 if (left.x !== 0) throw new Error("list clamps to the left edge");
 const wide = popupPlacement(10, 10, 500, 20, 0, 0, 400, 320, 40);
-if (wide.width !== 320 || wide.x !== 0) throw new Error("list width stays inside the layer");
+if (wide.width !== 320 || wide.x !== 0 || wide.height !== 40) throw new Error("list width stays inside the layer");
+const tip = popupPlacement(100, 360, 40, 20, 0, 0, 400, 300, 48, 180);
+if (!tip.above || tip.width !== 180 || tip.height !== 48 || tip.y !== 360) throw new Error("tip flips and uses its own size");
+const tipClamp = popupPlacement(20, 10, 40, 20, 0, 0, 400, 100, 30, 180);
+if (tipClamp.width !== 100 || tipClamp.x !== 0 || tipClamp.above) throw new Error("tip width clamps to the layer");
 
 const { nextCanvasPosition, shouldBeginDragScroll } = await import(
 	pathToFileURL(join(root, "src/ui/packages/scroll/dragScroll.ts")).href
