@@ -104,6 +104,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("UDimEditor", "disabled", { value: "0.5,8", disabled: true }),
 	...pair("UDimEditor", "long", { value: "0.5,8", text: LONG, width: NARROW }),
 
+	...pair("CFrameEditor", "default", { value: "0,0,0" }),
+	...pair("CFrameEditor", "disabled", { value: "0,0,0", disabled: true }),
+
 	...pair("Switch", "off"),
 	...pair("Switch", "size-small", { size: "small" }),
 	...pair("Switch", "size-medium", { size: "medium" }),
