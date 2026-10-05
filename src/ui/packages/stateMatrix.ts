@@ -140,6 +140,7 @@ function togglesRows(): StateCapture[] {
 		...pair("Switch", "size-large", { size: "large" }),
 		...pair("Switch", "density-compact", { density: "compact", size: "small" }),
 		...pair("Switch", "on", { value: true }),
+		...pair("Switch", "accent", { value: true, variant: "accent" }),
 		...pair("Switch", "disabled", { disabled: true }),
 		...pair("Switch", "disabled-on", { value: true, disabled: true }),
 		...pair("Switch", "hover", { pointer: "hover" }),

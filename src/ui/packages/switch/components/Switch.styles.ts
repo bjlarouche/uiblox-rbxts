@@ -1,11 +1,15 @@
 import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
+export type SwitchColor = "primary" | "accent";
+
 export interface SwitchStyleProps {
 	size?: ControlSize;
+	color?: SwitchColor;
 }
 
-const useSwitchStyles = componentStyles<SwitchStyleProps>("Switch", (theme: Theme, { size }) => {
+const useSwitchStyles = componentStyles<SwitchStyleProps>("Switch", (theme: Theme, { size, color = "primary" }) => {
 	const metrics = controlMetrics(theme.density, size);
+	const onTone = color === "accent" ? theme.palette.accent.main : theme.palette.primary.main;
 	return createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.XY,
@@ -27,7 +31,7 @@ const useSwitchStyles = componentStyles<SwitchStyleProps>("Switch", (theme: Them
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		trackOn: {
-			BackgroundColor3: theme.palette.primary.main,
+			BackgroundColor3: onTone,
 		} as WriteableStyle<Frame>,
 		knob: {
 			Size: UDim2.fromOffset(metrics.switchThumb, metrics.switchThumb),
