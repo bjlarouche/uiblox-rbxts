@@ -13,7 +13,8 @@ export interface ProgressBarProps {
 }
 
 function ProgressBar(props: CustomizedProps<Frame, ProgressBarProps>) {
-	const { progress, value, indeterminate = false, disabled, reducedMotion, color, className, id, ref } = props;
+	const { progress, value, indeterminate = false, disabled, reducedMotion, color, className,
+		sx, id, ref } = props;
 	const { theme } = useTheme();
 	const { container, outer, stroke, inner, fill, corner } = useProgressBarStyles();
 	const barRef = useRef<Frame>();
@@ -32,7 +33,7 @@ function ProgressBar(props: CustomizedProps<Frame, ProgressBarProps>) {
 	}, [motion, unit]);
 
 	return (
-		<frame key={id || "ProgressBar"} ref={ref} {...container} {...className}>
+		<frame key={id || "ProgressBar"} ref={ref} {...container} {...className} {...sx}>
 			<frame key="Bar" {...outer}>
 				<uicorner key="Corner" {...corner} />
 				<uistroke {...stroke} />

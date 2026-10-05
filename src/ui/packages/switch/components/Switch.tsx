@@ -23,7 +23,8 @@ export interface SwitchProps {
 const THUMB_SECONDS = 0.14;
 
 function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
-	const { value, onChange, disabled, label, size, reducedMotion, className, id, ref } = props;
+	const { value, onChange, disabled, label, size, reducedMotion, className,
+		sx, id, ref } = props;
 	const { theme } = useTheme();
 	const { root, row, track, trackOn, knob, label: labelStyle, corner, stroke } = useSwitchStyles({ size });
 	const [hovering, setHovering] = useState(false);
@@ -58,7 +59,7 @@ function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
 			key={id || "Switch"}
 			ref={ref}
 			{...root}
-			{...className}
+			{...className} {...sx}
 			Active={active}
 			Selectable={!disabled}
 			BackgroundTransparency={focused && active ? 0.85 : 1}

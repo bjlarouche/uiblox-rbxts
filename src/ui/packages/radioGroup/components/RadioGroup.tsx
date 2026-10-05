@@ -18,11 +18,12 @@ export interface RadioGroupProps<T> {
 }
 
 function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
-	const { value, options, onChange, disabled, size, className, id, ref } = props;
+	const { value, options, onChange, disabled, size, className,
+		sx, id, ref } = props;
 	const { root, list, option, row, ring, dot, stroke, corner, label } = useRadioGroupStyles({ size });
 
 	return (
-		<frame key={id || "RadioGroup"} ref={ref} {...root} {...className}>
+		<frame key={id || "RadioGroup"} ref={ref} {...root} {...className} {...sx}>
 			<uilistlayout {...list} />
 			{options.map((choice, index) => {
 				const active = canActivate(disabled || choice.disabled);

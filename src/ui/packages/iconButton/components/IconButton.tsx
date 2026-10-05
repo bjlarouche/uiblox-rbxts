@@ -20,7 +20,8 @@ export interface IconButtonProps {
 type DefaultIconButtonComponent = ImageButton;
 
 function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButtonProps>) {
-	const { icon, selected, tint, disabled, loading = false, reducedMotion, onClick, className, id, ref } = props;
+	const { icon, selected, tint, disabled, loading = false, reducedMotion, onClick, className,
+		sx, id, ref } = props;
 	const { container } = useIconButtonStyles(props);
 	const active = canActivate(disabled, loading);
 	const [hovering, setHovering] = useState(false);
@@ -37,7 +38,7 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 			key={id || "IconButton"}
 			ref={ref}
 			{...container}
-			{...className}
+			{...className} {...sx}
 			Active={active}
 			AutoButtonColor={active}
 			Selectable={active}

@@ -20,7 +20,8 @@ export interface CheckboxProps {
 }
 
 function Checkbox(props: CustomizedProps<TextButton, CheckboxProps>) {
-	const { value, onChange, disabled, mixed, label, size, className, id, ref } = props;
+	const { value, onChange, disabled, mixed, label, size, className,
+		sx, id, ref } = props;
 	const { root, row, box, mark, label: labelStyle, stroke, corner, fill, activeStroke, idleStroke } =
 		useCheckboxStyles({ size });
 	const [hovering, setHovering] = useState(false);
@@ -37,7 +38,7 @@ function Checkbox(props: CustomizedProps<TextButton, CheckboxProps>) {
 			key={id || "Checkbox"}
 			ref={ref}
 			{...root}
-			{...className}
+			{...className} {...sx}
 			Active={active}
 			Selectable={!disabled}
 			BackgroundTransparency={focused && active ? 0.85 : 1}

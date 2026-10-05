@@ -12,7 +12,8 @@ export interface IconProps {
 type DefaultIconComponent = ImageLabel;
 
 function Icon(props: CustomizedProps<DefaultIconComponent, IconProps>) {
-	const { icon, tint, className, id, ref } = props;
+	const { icon, tint, className,
+		sx, id, ref } = props;
 	const { container } = useIconStyles(props);
 
 	return (
@@ -20,7 +21,7 @@ function Icon(props: CustomizedProps<DefaultIconComponent, IconProps>) {
 			key={id || "Icon"}
 			ref={ref}
 			{...container}
-			{...className}
+			{...className} {...sx}
 			Image={tostring(icon)}
 			ImageColor3={tint ?? (container as WriteableStyle<ImageLabel>).ImageColor3}
 		/>

@@ -7,7 +7,8 @@ export interface LoadingStrokeProps {
 }
 
 function LoadingStroke(props: CustomizedProps<UIStroke, LoadingStrokeProps>) {
-	const { animating = false, className, children, id, ref } = props;
+	const { animating = false, className,
+		sx, children, id, ref } = props;
 
 	const gradientRef = useRef<UIGradient>();
 
@@ -38,7 +39,7 @@ function LoadingStroke(props: CustomizedProps<UIStroke, LoadingStrokeProps>) {
 			Color={stroke}
 			Thickness={2}
 			ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
-			{...className}
+			{...className} {...sx}
 		>
 			<uigradient
 				ref={gradientRef}

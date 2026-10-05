@@ -45,6 +45,7 @@ function List(props: CustomizedProps<Frame, ListProps>) {
 		verticalAlignment = Enum.VerticalAlignment.Top,
 		verticalFlex = Enum.UIFlexAlignment.None,
 		className,
+		sx,
 		children,
 		id,
 		ref
@@ -62,7 +63,7 @@ function List(props: CustomizedProps<Frame, ListProps>) {
 	});
 
 	return (
-		<frame key={id || 'List'} ref={ref} {...baseList} {...className}>
+		<frame key={id || 'List'} ref={ref} {...baseList} {...className} {...sx}>
 			<uilistlayout key="ListLayout" {...baseLayout} />
 			{children}
 		</frame>

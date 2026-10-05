@@ -23,7 +23,8 @@ export interface SelectProps<T> {
 }
 
 function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
-	const { value, options, onChange, disabled, placeholder = "", searchable, size, className, id, ref } = props;
+	const { value, options, onChange, disabled, placeholder = "", searchable, size, className,
+		sx, id, ref } = props;
 	const styles = useSelectStyles({ size });
 	const { theme } = useTheme();
 	const row = controlMetrics(theme.density, size).height;
@@ -116,7 +117,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	}, [shown, highlight]);
 
 	return (
-		<frame key={id || "Select"} ref={ref} {...styles.root} {...className}>
+		<frame key={id || "Select"} ref={ref} {...styles.root} {...className} {...sx}>
 			<textbutton
 				key="Trigger"
 				ref={setAnchor}

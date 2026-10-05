@@ -18,7 +18,8 @@ export interface TreeViewProps {
 }
 
 function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps>) {
-	const { tree, icon, filter, selected, className, id, ref } = props;
+	const { tree, icon, filter, selected, className,
+		sx, id, ref } = props;
 	const { root, header, list, row, rowIcon, label } = useTreeViewStyles();
 	const { theme } = useTheme();
 	const step = theme.padding.calc(4);
@@ -164,7 +165,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 	};
 
 	return (
-		<frame key={id || "TreeView"} ref={ref} {...root} {...className}>
+		<frame key={id || "TreeView"} ref={ref} {...root} {...className} {...sx}>
 			<Typography
 				className={{ Text: tree.title, ...header } as WriteableStyle<TextLabel>}
 				color={"textSecondary"}

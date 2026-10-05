@@ -17,7 +17,8 @@ export interface SplitPaneProps {
 }
 
 function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
-	const { value, onChange, min, max, vertical = false, disabled, first, second, className, id, ref } = props;
+	const { value, onChange, min, max, vertical = false, disabled, first, second, className,
+		sx, id, ref } = props;
 	const styles = useSplitPaneStyles();
 	const { theme } = useTheme();
 	const thickness = theme.padding.calc(3);
@@ -50,7 +51,7 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 	}, [body, vertical]);
 
 	return (
-		<frame key={id || "SplitPane"} ref={ref} {...styles.root} {...className}>
+		<frame key={id || "SplitPane"} ref={ref} {...styles.root} {...className} {...sx}>
 			<frame key="Body" ref={setBody} {...styles.body}>
 				<frame key="First" {...styles.pane} Size={along(size)}>
 					{first}

@@ -259,7 +259,8 @@ function ColorPanel(props: { value: Color3; onChange: (value: Color3) => void; d
 }
 
 function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
-	const { value, onChange, disabled, className, id, ref } = props;
+	const { value, onChange, disabled, className,
+		sx, id, ref } = props;
 	const styles = useColorPickerStyles();
 	const { theme } = useTheme();
 	const active = canActivate(disabled);
@@ -288,7 +289,7 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 	}, [shown, value]);
 
 	return (
-		<frame key={id || "ColorPicker"} ref={ref} {...styles.field} {...className}>
+		<frame key={id || "ColorPicker"} ref={ref} {...styles.field} {...className} {...sx}>
 			<uilistlayout {...styles.rowLayout} />
 			<textbutton
 				key="Swatch"
