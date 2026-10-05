@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { Icons } from "ui/enums";
 import useChipStyles from "./Chip.styles";
 
 export interface ChipProps {
@@ -7,11 +8,13 @@ export interface ChipProps {
 	selected?: boolean;
 	disabled?: boolean;
 	onActivated?: () => void;
+	onDelete?: () => void;
 }
 
 function Chip(props: CustomizedProps<TextButton, ChipProps>) {
-	const { label, selected, disabled, onActivated, className, sx, id, ref } = props;
-	const styles = useChipStyles({ selected, disabled });
+	const { label, selected, disabled, onActivated, onDelete, className, sx, id, ref } = props;
+	const deletable = onDelete !== undefined;
+	const styles = useChipStyles({ selected, disabled, deletable });
 	return (
 		<textbutton
 			key={id || "Chip"}
@@ -19,7 +22,7 @@ function Chip(props: CustomizedProps<TextButton, ChipProps>) {
 			{...styles.root}
 			{...className}
 			{...sx}
-			Text={label}
+			Text={deletable ? "" : label}
 			Event={{
 				Activated: () => {
 					if (disabled !== true) onActivated?.();
@@ -29,6 +32,23 @@ function Chip(props: CustomizedProps<TextButton, ChipProps>) {
 			<uipadding {...styles.padding} />
 			<uicorner {...styles.corner} />
 			<uistroke {...styles.stroke} />
+			{deletable && (
+				<>
+					<uilistlayout {...styles.row} />
+					<textlabel key="Label" {...styles.label} Text={label} />
+					<imagebutton
+						key="Delete"
+						{...styles.delete}
+						Image={tostring(Icons.Close)}
+						Active={disabled !== true}
+						Event={{
+							Activated: () => {
+								if (disabled !== true) onDelete();
+							},
+						}}
+					/>
+				</>
+			)}
 		</textbutton>
 	);
 }

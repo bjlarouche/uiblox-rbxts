@@ -254,6 +254,7 @@ function surfacesRows(): StateCapture[] {
 		...pair("Chip", "default"),
 		...pair("Chip", "selected", { value: true }),
 		...pair("Chip", "disabled", { disabled: true }),
+		...pair("Chip", "deletable", { text: "Tag" }),
 		...pair("Badge", "count", { value: 3 }),
 		...pair("Badge", "max", { value: 100 }),
 	];
