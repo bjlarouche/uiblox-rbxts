@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "@rbxts/react";
+import { useReducedMotion } from "hooks";
 import { CustomizedProps, useTheme } from "theme";
 import { loopProperty, progressSpin, progressUnit } from "ui/packages/motion";
 import useProgressBarStyles from "./ProgressBar.styles";
@@ -13,8 +14,9 @@ export interface ProgressBarProps {
 }
 
 function ProgressBar(props: CustomizedProps<Frame, ProgressBarProps>) {
-	const { progress, value, indeterminate = false, disabled, reducedMotion, color, className,
+	const { progress, value, indeterminate = false, disabled, reducedMotion: reducedProp, color, className,
 		sx, id, ref } = props;
+	const reducedMotion = useReducedMotion(reducedProp);
 	const { theme } = useTheme();
 	const { container, outer, stroke, inner, fill, corner } = useProgressBarStyles();
 	const barRef = useRef<Frame>();

@@ -38,6 +38,10 @@ On the instance, `className` then `sx`. `sx` wins.
 
 `resolveResponsive` reads a plain value or `{ phone, tablet, desktop }` against `breakpointName`. A wider breakpoint falls back to the next smaller one that is set. Phone is under 600, tablet under 960, and the rest is desktop.
 
+## Motion
+
+`theme.reducedMotion` is the default. A `reducedMotion` prop still wins when it is set. Select, switch, skeleton, and progress read that through `useReducedMotion`.
+
 ## Contrast
 
 `pnpm test` runs `scripts/contrast.check.mjs`. Targets: normal text ≥4.5:1, UI/focus/border ≥3:1. Exceptions: decorative `divider`, `text.disabled`, `action.disabled`.
