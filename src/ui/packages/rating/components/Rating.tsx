@@ -1,5 +1,5 @@
 import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { ControlSize, CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
 import { canActivate } from "ui/packages/button/components/activation";
 import useRatingStyles from "./Rating.styles";
@@ -7,13 +7,14 @@ import useRatingStyles from "./Rating.styles";
 export interface RatingProps {
 	value: number;
 	max?: number;
+	size?: ControlSize;
 	disabled?: boolean;
 	onChange: (value: number) => void;
 }
 
 function Rating(props: CustomizedProps<Frame, RatingProps>) {
-	const { value, max = 5, disabled, onChange, className, sx, id, ref } = props;
-	const styles = useRatingStyles({ disabled });
+	const { value, max = 5, size = "medium", disabled, onChange, className, sx, id, ref } = props;
+	const styles = useRatingStyles({ disabled, size });
 	const active = canActivate(disabled);
 	const stars: number[] = [];
 	for (let i = 1; i <= max; i++) stars.push(i);
