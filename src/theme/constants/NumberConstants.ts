@@ -1,4 +1,4 @@
-import { IconSizes } from "theme/interfaces";
+import { IconSizes } from "theme/interfaces/iconSizes";
 
 export const SPACING_BASE = 8;
 

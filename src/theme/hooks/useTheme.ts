@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "@rbxts/react";
 import { ThemeContext } from "../context/ThemeProvider";
 import { themeProducer } from "../context/ThemeProducer";
 import { readScopedTheme } from "../context/themeScope";
-import { Theme } from "theme/interfaces";
+import { Theme } from "theme/interfaces/theme";
 
 const useTheme = (): {
 	theme: Theme;

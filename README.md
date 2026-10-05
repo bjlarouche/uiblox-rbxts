@@ -267,14 +267,15 @@ keeps the spinner still.
 
 `stateMatrix` is the gallery list for Storyblox. Each row is one shot: `theme`
 (`Dark` or `Light`), `width`, and `pointer` (`rest`, `hover`, `press`, or
-`focus`). `open` means the Select list is showing. `options` and `disabledOption`
-build RadioGroup, Select, and Tabs. `selected` and `filter` are TreeView.
-`value`, `text`, `disabled`, `loading`, `mixed`, `hasError`, and `placeholder`
-are that control's props. `variant`, `animation` (`pulse`, `shimmer`, or
-`false`), `reducedMotion`, and `indeterminate` cover skeleton and progress
-shots. Those shots stay still when `animation` is `false` or `reducedMotion`
-is set. Hover, press, and focus rows are only there when the
-control actually changes.
+`focus`). Rows are built in small helper functions and concatenated so the
+compiled Luau chunk stays under the 200-local register limit. `open` means the
+Select list is showing. `options` and `disabledOption` build RadioGroup, Select,
+and Tabs. `selected` and `filter` are TreeView. `value`, `text`, `disabled`,
+`loading`, `mixed`, `hasError`, and `placeholder` are that control's props.
+`variant`, `animation` (`pulse`, `shimmer`, or `false`), `reducedMotion`, and
+`indeterminate` cover skeleton and progress shots. Those shots stay still when
+`animation` is `false` or `reducedMotion` is set. Hover, press, and focus rows
+are only there when the control actually changes.
 
 ### Client
 
