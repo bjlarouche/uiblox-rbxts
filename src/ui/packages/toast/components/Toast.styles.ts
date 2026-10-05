@@ -55,7 +55,7 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 			ZIndex: 50001,
 		} as WriteableStyle<TextLabel>,
 		close: {
-			Size: new UDim2(0, theme.spacing.calc(1), 0, theme.spacing.calc(1)),
+			Size: new UDim2(0, theme.options.constants.iconSizes.small, 0, theme.options.constants.iconSizes.small),
 			Position: new UDim2(1, -theme.padding.calc(2), 0, theme.padding.calc(2)),
 			AnchorPoint: new Vector2(1, 0),
 			ImageColor3: toastColors.content,
