@@ -19,6 +19,7 @@ export interface VirtualListItemState {
 export interface VirtualListHandle {
 	scrollToIndex: (index: number, align?: VirtualListAlign) => void;
 	ensureVisible: (index: number, align?: VirtualListAlign) => void;
+	suppressClick: () => boolean;
 }
 
 export interface VirtualListProps<T> {
@@ -32,7 +33,8 @@ export interface VirtualListProps<T> {
 }
 
 function VirtualList<T>(props: CustomizedProps<ScrollingFrame, VirtualListProps<T>>) {
-	const { items, getKey, renderItem, itemHeight, overscan = 2, listRef, empty, className, id, ref } = props;
+	const { items, getKey, renderItem, itemHeight, overscan = 2, listRef, empty, className, id, ref, children } =
+		props;
 	const styles = useVirtualListStyles();
 	const [frame, setFrame] = useState<ScrollingFrame>();
 	const [scrollTop, setScrollTop] = useState(0);
@@ -40,7 +42,7 @@ function VirtualList<T>(props: CustomizedProps<ScrollingFrame, VirtualListProps<
 	const frameRef = useRef<ScrollingFrame>();
 	const scrollTopRef = useRef(0);
 	const viewportRef = useRef(0);
-	useDragScroll(frame);
+	const drag = useDragScroll(frame);
 	const count = items.size();
 	const canvasHeight = math.max(0, count * itemHeight);
 
@@ -63,6 +65,7 @@ function VirtualList<T>(props: CustomizedProps<ScrollingFrame, VirtualListProps<
 					ensureVisibleScroll(scrollTopRef.current, viewportRef.current, index, count, itemHeight, align),
 				);
 			},
+			suppressClick: drag.suppressClick,
 		};
 	});
 
@@ -137,6 +140,7 @@ function VirtualList<T>(props: CustomizedProps<ScrollingFrame, VirtualListProps<
 			CanvasSize={UDim2.fromOffset(0, canvasHeight)}
 		>
 			{count === 0 ? empty : rows}
+			{children}
 		</scrollingframe>
 	);
 }

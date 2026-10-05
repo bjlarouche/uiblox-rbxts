@@ -4,7 +4,7 @@ import { cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Popup } from "ui/packages/popup";
 import { ChoiceOption } from "ui/packages/radioGroup";
-import { useDragScroll } from "ui/packages/scroll";
+import { VirtualList, VirtualListHandle } from "ui/packages/virtualList";
 import useSelectStyles from "./Select.styles";
 import { canFocusGui } from "./selectFocus";
 import { shouldHandleSelectKey } from "./selectKey";
@@ -31,8 +31,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const [highlight, setHighlight] = useState(-1);
 	const recent = useRef<{ key: string; at: number }>();
 	const onKeyRef = useRef<(input: InputObject, fromControl: boolean) => void>();
-	const [listFrame, setListFrame] = useState<ScrollingFrame>();
-	const drag = useDragScroll(listFrame);
+	const listRef = useRef<VirtualListHandle>();
 	const current = options.find((option) => option.value === value);
 	const shown = open && active;
 
@@ -48,7 +47,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	};
 
 	const choose = (index: number, fromPointer = false) => {
-		if (fromPointer && drag.suppressClick()) return;
+		if (fromPointer && listRef.current?.suppressClick()) return;
 		const choice = options[index];
 		if (choice === undefined || choice.disabled) return;
 		close();
@@ -100,6 +99,11 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 		};
 	}, [shown, anchor]);
 
+	useEffect(() => {
+		if (!shown || highlight < 0) return;
+		listRef.current?.ensureVisible(highlight);
+	}, [shown, highlight]);
+
 	return (
 		<frame key={id || "Select"} ref={ref} {...styles.root} {...className}>
 			<textbutton
@@ -129,19 +133,15 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 			</textbutton>
 			{shown && (
 				<Popup anchor={anchor} preferredHeight={menuHeight} onDismiss={close} onInput={(input) => onKey(input, true)}>
-					<scrollingframe
+					<VirtualList
 						key="Options"
-						ref={setListFrame}
-						{...styles.list}
-						Event={{ InputBegan: (_, input) => onKey(input, true) }}
-					>
-						<uisizeconstraint {...styles.listSize} />
-						<uilistlayout {...styles.layout} />
-						<uicorner {...styles.corner} />
-						<uistroke {...styles.stroke} />
-						{options.map((choice, index) => (
+						items={options}
+						getKey={(choice, index) => `${choice.label}-${index}`}
+						itemHeight={row}
+						listRef={listRef}
+						className={styles.list}
+						renderItem={(choice, index) => (
 							<textbutton
-								key={`${choice.label}-${index}`}
 								ref={(button) => {
 									if (button && index === highlight && canFocusGui(button)) GuiService.SelectedObject = button;
 								}}
@@ -151,7 +151,6 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 									choice.disabled === true && styles.disabledOption,
 								)}
 								Text={choice.label}
-								LayoutOrder={index}
 								Active={!choice.disabled}
 								Selectable={!choice.disabled}
 								Event={{
@@ -165,8 +164,11 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 							>
 								<uipadding {...styles.padding} />
 							</textbutton>
-						))}
-					</scrollingframe>
+						)}
+					>
+						<uicorner {...styles.corner} />
+						<uistroke {...styles.stroke} />
+					</VirtualList>
 				</Popup>
 			)}
 		</frame>
