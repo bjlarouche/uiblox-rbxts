@@ -5,7 +5,8 @@ const useChipStyles = componentStyles<{
 	disabled?: boolean;
 	deletable?: boolean;
 	size?: ControlSize;
-}>("Chip", (theme: Theme, { selected = false, disabled = false, deletable = false, size }) => {
+	variant?: "filled" | "outlined";
+}>("Chip", (theme: Theme, { selected = false, disabled = false, deletable = false, size, variant = "filled" }) => {
 	const metrics = controlMetrics(theme.density, size);
 	const padY = size === "small" ? 0.25 : size === "large" ? 0.75 : 0.5;
 	const padX = size === "small" ? 1 : size === "large" ? 2 : 1.5;
@@ -15,6 +16,7 @@ const useChipStyles = componentStyles<{
 			AutomaticSize: Enum.AutomaticSize.XY,
 			Size: UDim2.fromScale(0, 0),
 			BackgroundColor3: selected ? theme.palette.action.selected : theme.palette.surface.input,
+			BackgroundTransparency: variant === "outlined" && selected !== true ? 1 : 0,
 			BorderSizePixel: 0,
 			AutoButtonColor: false,
 			Active: !disabled,
@@ -35,7 +37,7 @@ const useChipStyles = componentStyles<{
 		stroke: {
 			Color: theme.palette.border,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
-			Transparency: selected ? 1 : 0,
+			Transparency: variant === "outlined" ? (disabled ? 0.5 : 0) : selected ? 1 : 0,
 		} as WriteableStyle<UIStroke>,
 		row: {
 			FillDirection: Enum.FillDirection.Horizontal,
