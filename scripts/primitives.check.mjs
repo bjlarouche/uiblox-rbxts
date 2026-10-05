@@ -32,7 +32,7 @@ if (canActivate(true, false)) throw new Error("disabled must not activate");
 if (canActivate(false, true)) throw new Error("loading must not activate");
 if (!canActivate(false, false)) throw new Error("enabled control must activate");
 
-const { stopOnce, clampUnit, progressUnit, progressSpin, arcKeys } = await import(
+const { stopOnce, clampUnit, progressUnit, progressSpin, arcKeys, spinArcKeys } = await import(
 	pathToFileURL(join(root, "src/ui/packages/motion/unit.ts")).href
 );
 let destroyed = 0;
@@ -77,6 +77,11 @@ if (progressSpin(true, false, true) !== false) throw new Error("disabled progres
 if (progressSpin(false, false, false) !== false) throw new Error("determinate progress does not spin");
 if (arcKeys(0)[0].transparency !== 1) throw new Error("empty arc is clear");
 if (arcKeys(1)[1].transparency !== 0) throw new Error("full arc is solid");
+const spin = spinArcKeys();
+if (spin[0].transparency !== 1 || spin[spin.length - 1].transparency !== 1) {
+	throw new Error("spin arc clears at the seam");
+}
+if (!spin.some((key) => key.transparency === 0)) throw new Error("spin arc has an opaque head");
 
 const { buttonFace, spinnerPlace, spinnerPixels, iconSpinnerPixels } = await import(
 	pathToFileURL(join(root, "src/ui/packages/button/components/buttonLook.ts")).href

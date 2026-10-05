@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "@rbxts/react";
 import { useReducedMotion } from "hooks";
 import { CustomizedProps, useTheme } from "theme";
-import { arcKeys, loopProperty, progressSpin } from "ui/packages/motion";
+import { arcKeys, loopProperty, progressSpin, spinArcKeys } from "ui/packages/motion";
 
 export interface CircularProgressProps {
 	value?: number;
@@ -13,8 +13,8 @@ export interface CircularProgressProps {
 }
 
 function CircularProgress(props: CustomizedProps<Frame, CircularProgressProps>) {
-	const { value, size = 24, thickness = 3, color, disabled, reducedMotion: reducedProp, className,
-		sx, id, ref } = props;
+	const { value, size = 24, thickness = 3, color, disabled, reducedMotion: reducedProp, className, sx, id, ref } =
+		props;
 	const reducedMotion = useReducedMotion(reducedProp);
 	const { theme } = useTheme();
 	const indeterminate = value === undefined;
@@ -24,13 +24,7 @@ function CircularProgress(props: CustomizedProps<Frame, CircularProgressProps>) 
 	const shown = indeterminate ? (motion === "spin" ? undefined : 0.25) : value;
 	const transparency =
 		shown === undefined
-			? new NumberSequence([
-					new NumberSequenceKeypoint(0, 1),
-					new NumberSequenceKeypoint(0.35, 1),
-					new NumberSequenceKeypoint(0.5, 0),
-					new NumberSequenceKeypoint(0.65, 1),
-					new NumberSequenceKeypoint(1, 1),
-				])
+			? new NumberSequence(spinArcKeys().map((key) => new NumberSequenceKeypoint(key.time, key.transparency)))
 			: new NumberSequence(arcKeys(shown).map((key) => new NumberSequenceKeypoint(key.time, key.transparency)));
 
 	useEffect(() => {
@@ -50,17 +44,13 @@ function CircularProgress(props: CustomizedProps<Frame, CircularProgressProps>) 
 			Size={new UDim2(0, size, 0, size)}
 			BackgroundTransparency={1}
 			BorderSizePixel={0}
-			{...className} {...sx}
+			{...className}
+			{...sx}
 		>
 			<uicorner CornerRadius={new UDim(1, 0)} />
-			<uistroke Color={tint} Thickness={thickness} Transparency={disabled ? 0.75 : 0.7} />
+			<uistroke Color={tint} Thickness={thickness} Transparency={disabled ? 0.85 : 0.82} />
 			<uistroke Color={tint} Thickness={thickness} Transparency={disabled ? 0.55 : 0}>
-				<uigradient
-					ref={gradientRef}
-					Rotation={-90}
-					Transparency={transparency}
-					Color={new ColorSequence(tint)}
-				/>
+				<uigradient ref={gradientRef} Rotation={-90} Transparency={transparency} Color={new ColorSequence(tint)} />
 			</uistroke>
 		</frame>
 	);
