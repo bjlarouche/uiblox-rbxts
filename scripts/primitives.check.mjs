@@ -23,9 +23,9 @@ const { inputInsets } = await import(
 if (inputInsets(false, false, 12, 4).left !== 4 || inputInsets(false, false, 12, 4).right !== 4) {
 	throw new Error("empty adornments keep gap only");
 }
-if (inputInsets(true, false, 12, 4).left !== 16) throw new Error("start adornment adds icon width");
-if (inputInsets(false, true, 12, 4).right !== 16) throw new Error("end adornment adds icon width");
-if (inputInsets(true, true, 12, 4).left !== 16 || inputInsets(true, true, 12, 4).right !== 16) {
+if (inputInsets(true, false, 12, 4).left !== 20) throw new Error("start adornment pads both sides of icon");
+if (inputInsets(false, true, 12, 4).right !== 20) throw new Error("end adornment pads both sides of icon");
+if (inputInsets(true, true, 12, 4).left !== 20 || inputInsets(true, true, 12, 4).right !== 20) {
 	throw new Error("both adornments inset both sides");
 }
 if (canActivate(true, false)) throw new Error("disabled must not activate");
