@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "@rbxts/react";
-import { cx, CustomizedProps, DEFAULT_THEME, useTheme, WriteableStyle } from "theme";
+import { cx, CustomizedProps, useTheme, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
 import { useDragScroll } from "ui/packages/scroll";
 import { Typography } from "ui/packages/typography";
@@ -161,7 +161,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 											branchIcon,
 											inset > 0 && { Position: new UDim2(0, inset, 0.5, 0) },
 										)}
-										tint={DEFAULT_THEME.palette.text.secondary}
+										tint={theme.palette.text.secondary}
 									/>
 								)}
 								{entry.icon !== undefined && (
