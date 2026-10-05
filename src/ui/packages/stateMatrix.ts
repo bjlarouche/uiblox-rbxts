@@ -260,6 +260,11 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Snackbar", "open", { open: true, text: "Saved" }),
 	...pair("Snackbar", "closed", { open: false, text: "Saved" }),
 
+	...pair("Table", "empty", { text: "" }),
+	...pair("Table", "default", { text: "Name / Role" }),
+	...pair("Table", "selected", { text: "Name / Role", value: 0 }),
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];
+
