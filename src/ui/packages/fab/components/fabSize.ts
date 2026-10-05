@@ -11,3 +11,7 @@ export function fabIconPixels(size: FabSize = "medium") {
 	if (size === "large") return 28;
 	return 24;
 }
+
+export function fabExtended(label?: string) {
+	return label !== undefined && label !== "";
+}
