@@ -4,6 +4,7 @@ import { cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Popup } from "ui/packages/popup";
 import { ChoiceOption } from "ui/packages/radioGroup";
+import { useDragScroll } from "ui/packages/scroll";
 import useSelectStyles from "./Select.styles";
 import { canFocusGui } from "./selectFocus";
 import { shouldHandleSelectKey } from "./selectKey";
@@ -27,6 +28,8 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const [highlight, setHighlight] = useState(-1);
 	const recent = useRef<{ key: string; at: number }>();
 	const onKeyRef = useRef<(input: InputObject, fromControl: boolean) => void>();
+	const [listFrame, setListFrame] = useState<ScrollingFrame>();
+	const drag = useDragScroll(listFrame);
 	const current = options.find((option) => option.value === value);
 	const shown = open && active;
 
@@ -41,7 +44,8 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 		setOpen(true);
 	};
 
-	const choose = (index: number) => {
+	const choose = (index: number, fromPointer = false) => {
+		if (fromPointer && drag.suppressClick()) return;
 		const choice = options[index];
 		if (choice === undefined || choice.disabled) return;
 		close();
@@ -124,6 +128,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 				<Popup anchor={anchor} onDismiss={close} onInput={(input) => onKey(input, true)}>
 					<scrollingframe
 						key="Options"
+						ref={setListFrame}
 						{...styles.list}
 						Event={{ InputBegan: (_, input) => onKey(input, true) }}
 					>
@@ -147,7 +152,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 								Active={!choice.disabled}
 								Selectable={!choice.disabled}
 								Event={{
-									Activated: () => choose(index),
+									Activated: () => choose(index, true),
 									MouseEnter: () => {
 										if (!choice.disabled) setHighlight(index);
 									},

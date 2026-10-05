@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { useDragScroll } from "ui/packages/scroll";
 import useVirtualListStyles from "./VirtualList.styles";
 import {
 	ensureVisibleScroll,
@@ -39,6 +40,7 @@ function VirtualList<T>(props: CustomizedProps<ScrollingFrame, VirtualListProps<
 	const frameRef = useRef<ScrollingFrame>();
 	const scrollTopRef = useRef(0);
 	const viewportRef = useRef(0);
+	useDragScroll(frame);
 	const count = items.size();
 	const canvasHeight = math.max(0, count * itemHeight);
 

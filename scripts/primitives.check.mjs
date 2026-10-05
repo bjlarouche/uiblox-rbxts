@@ -38,8 +38,15 @@ globalThis.math = {
 	min: Math.min,
 	max: Math.max,
 	clamp: (value, min, max) => Math.min(max, Math.max(min, value)),
+	abs: Math.abs,
 };
 globalThis.tonumber = (text) => (text.trim() === "" || Number.isNaN(Number(text)) ? undefined : Number(text));
+globalThis.Vector2 = class Vector2 {
+	constructor(x = 0, y = 0) {
+		this.X = x;
+		this.Y = y;
+	}
+};
 const { commitNumber, parseNumberDraft } = await import(
 	pathToFileURL(join(root, "src/ui/packages/numberInput/components/numberValue.ts")).href
 );
@@ -204,6 +211,18 @@ const moved = popupPlacement(140, 200, 120, 24, 10, 20, 400);
 if (moved.x !== 130 || moved.width !== 120) throw new Error("list follows a moved or resized anchor");
 const above = popupPlacement(100, 300, 80, 24, 0, 0, 400);
 if (!above.above || above.y !== 300) throw new Error("list flips above the anchor");
+
+const { nextCanvasPosition, shouldBeginDragScroll } = await import(
+	pathToFileURL(join(root, "src/ui/packages/scroll/dragScroll.ts")).href
+);
+if (shouldBeginDragScroll(new Vector2(0, 0), new Vector2(0, 5), "y")) throw new Error("under threshold stays a click");
+if (!shouldBeginDragScroll(new Vector2(0, 0), new Vector2(0, 6), "y")) throw new Error("threshold starts a drag");
+if (shouldBeginDragScroll(new Vector2(0, 0), new Vector2(10, 4), "y")) throw new Error("horizontal wins over vertical axis");
+if (!shouldBeginDragScroll(new Vector2(0, 0), new Vector2(10, 4), "x")) throw new Error("horizontal drag on x axis");
+const scrolled = nextCanvasPosition(new Vector2(0, 20), new Vector2(0, 40), new Vector2(0, 10), "y", new Vector2(0, 200));
+if (scrolled.X !== 0 || scrolled.Y !== 50) throw new Error("drag moves canvas by pointer delta");
+const clamped = nextCanvasPosition(new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 40), "y", new Vector2(0, 10));
+if (clamped.Y !== 0) throw new Error("canvas clamps at top");
 
 const { clampSplit } = await import(
 	pathToFileURL(join(root, "src/ui/packages/splitPane/components/splitSize.ts")).href
