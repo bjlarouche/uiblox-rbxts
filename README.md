@@ -32,8 +32,9 @@ npm install @rbxts/uiblox
 
 1. Wrap your app (or a subtree) in `ThemeProvider` with `DarkTheme` or `LightTheme`.
 2. Build styles with `makeStyles` / `createStyles` (or `componentStyles`) and spread them onto Instances.
-3. Use packaged components from `@rbxts/uiblox` (`Button`, `Input`, `Select`, …).
-4. Preview components in [Storyblox](https://github.com/bjlarouche/storyblox) with `*.stories` modules.
+3. For hover/press/focus/disabled (and list `_first` / `_last`), put `_hover`-style keys on the style table and call `resolveStyle(style, state)` before spreading.
+4. Use packaged components from `@rbxts/uiblox` (`Button`, `Input`, `Select`, …).
+5. Preview components in [Storyblox](https://github.com/bjlarouche/storyblox) with `*.stories` modules.
 
 ```tsx
 import React from "@rbxts/react";

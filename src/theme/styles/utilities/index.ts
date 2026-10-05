@@ -4,4 +4,12 @@ export { default as classNames, cx } from "./classNames";
 export { applyVariants, CompoundVariant } from "./variants";
 export { default as componentStyles } from "./componentStyles";
 export { resolveResponsive, Responsive } from "../../../hooks/breakpoints";
-export { interactionStyle, InteractionSlots, InteractionState } from "./interaction";
+export {
+	interactionStyle,
+	InteractionSlots,
+	InteractionState,
+	resolveStyle,
+	StyleSelectorKey,
+	StyleState,
+	StyleWithSelectors,
+} from "./resolveStyle";

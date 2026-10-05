@@ -1,4 +1,8 @@
-const { interactionStyle } = await import("../src/theme/styles/utilities/interaction.ts");
+globalThis.typeOf = (value) => (typeof value === "object" && value !== null ? "table" : typeof value);
+globalThis.pairs = (record) => Object.keys(record).map((key) => [key, record[key]]);
+globalThis.tostring = (value) => String(value);
+
+const { interactionStyle } = await import("../src/theme/styles/utilities/resolveStyle.ts");
 
 const base = { BackgroundTransparency: 0, Text: "Go" };
 const slots = {
