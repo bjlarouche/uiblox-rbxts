@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useState } from "@rbxts/react";
+import React, { useCallback, useEffect, useRef, useState } from "@rbxts/react";
 import { cx, CustomizedProps, useTheme, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
-import { useDragScroll } from "ui/packages/scroll";
 import { Typography } from "ui/packages/typography";
+import { VirtualList, VirtualListHandle } from "ui/packages/virtualList";
 import { Icons } from "ui/enums";
 import Tree from "../interfaces/Tree";
 import useTreeViewStyles from "./TreeView.styles";
-import { pathsToExpand, visibleRows } from "./treeRows";
+import { pathsToExpand, TreeRow, treeRowLayout, visibleRows } from "./treeRows";
 
 type DefaultTreeViewComponent = Frame;
 
@@ -19,36 +19,17 @@ export interface TreeViewProps {
 
 function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps>) {
 	const { tree, icon, filter, selected, className, id, ref } = props;
-	const { root, header, list, gridLayout, row, branchIcon, branchTypography, leafIcon, leafTypography } =
-		useTreeViewStyles();
+	const { root, header, list, row, rowIcon, label } = useTreeViewStyles();
 	const { theme } = useTheme();
 	const step = theme.padding.calc(4);
+	const chevronWidth = theme.spacing.calc(1);
+	const iconWidth = theme.spacing.calc(1) + theme.padding.calc(2);
+	const itemHeight = theme.spacing.calc(1) + theme.padding.calc(4);
+	const listRef = useRef<VirtualListHandle>();
 
 	const [clickedPath, setClickedPath] = useState<string | undefined>();
 	const [clickedLeaf, setClickedLeaf] = useState<string | undefined>();
 	const [expanded, setExpanded] = useState<string[]>([]);
-	const [canvasSize, setCanvasSize] = useState<UDim2>(new UDim2(0, 0, 0, 0));
-	const [listFrame, setListFrame] = useState<ScrollingFrame>();
-	const drag = useDragScroll(listFrame);
-
-	const resizeScrollingFrame = (rbx: ScrollingFrame, child?: Instance) => {
-		if (child && !child.IsA("GuiObject")) {
-			return;
-		}
-
-		let height = 0;
-		rbx.GetChildren().forEach((c) => {
-			if (c.IsA("GuiObject")) {
-				height += c.AbsoluteSize.Y;
-			}
-		});
-
-		try {
-			setCanvasSize(new UDim2(0, 0, 0, height));
-		} catch {
-			// Component is unmounting. Do nothing.
-		}
-	};
 
 	const matchesFilter = useCallback(
 		(title: string) => {
@@ -103,6 +84,84 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 	}, [tree, filter, selected]);
 
 	const rows = visibleRows(tree.branches, expanded, selected, clickedPath, matchesFilter);
+	const selectedIndex =
+		selected !== undefined && selected.size() > 0 ? rows.findIndex((entry) => entry.path === selected) : -1;
+
+	useEffect(() => {
+		if (selectedIndex >= 0) listRef.current?.ensureVisible(selectedIndex);
+	}, [selected, selectedIndex]);
+
+	const renderRow = (entry: TreeRow) => {
+		const { chevronX, iconX, labelX } = treeRowLayout(entry.depth, step, chevronWidth, iconWidth);
+		const rowIconImage = entry.kind === "leaf" ? (entry.icon ?? icon ?? Icons.ListPrimary) : entry.icon;
+		const bold =
+			entry.kind === "branch"
+				? entry.emphasized
+				: selected !== undefined
+					? selected === entry.path
+					: clickedLeaf === entry.path;
+
+		return (
+			<textbutton
+				{...row}
+				Event={{
+					MouseButton1Click: () => {
+						if (listRef.current?.suppressClick()) return;
+						if (entry.kind === "leaf") {
+							setClickedLeaf(entry.path);
+							setClickedPath(string.sub(entry.path, 1, entry.path.size() - entry.title.size() - 1));
+							entry.leaf?.onClick?.();
+							return;
+						}
+						entry.branch?.onClick?.();
+						if (entry.expandable) {
+							setExpanded((oldExpanded) =>
+								oldExpanded.includes(entry.path)
+									? oldExpanded.filter((item) => item !== entry.path)
+									: [...oldExpanded, entry.path],
+							);
+						} else {
+							setClickedPath(entry.path);
+						}
+					},
+				}}
+			>
+				{entry.expandable && (
+					<Icon
+						key="Chevron"
+						icon={expanded.includes(entry.path) ? Icons.Expanded : Icons.Collapsed}
+						size={"xxs"}
+						className={cx<ImageLabel>(rowIcon, {
+							AnchorPoint: new Vector2(0.5, 0.5),
+							Position: new UDim2(0, chevronX + chevronWidth / 2, 0.5, 0),
+						})}
+						tint={theme.palette.text.secondary}
+					/>
+				)}
+				{rowIconImage !== undefined && (
+					<Icon
+						key="Icon"
+						icon={rowIconImage}
+						size={"xs"}
+						className={cx<ImageLabel>(rowIcon, { Position: new UDim2(0, iconX, 0.5, 0) })}
+						tint={theme.palette.primary.main}
+					/>
+				)}
+				<Typography
+					text={entry.title}
+					className={
+						cx<TextLabel>(label, {
+							Position: new UDim2(0, labelX, 0.5, 0),
+							Size: new UDim2(1, -labelX, 1, -theme.padding.calc(4)),
+						}) as WriteableStyle<TextLabel>
+					}
+					color={"textPrimary"}
+					variant={"body"}
+					family={bold ? "bold" : "default"}
+				/>
+			</textbutton>
+		);
+	};
 
 	return (
 		<frame key={id || "TreeView"} ref={ref} {...root} {...className}>
@@ -113,143 +172,15 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 				family={"bold"}
 			/>
 
-			<scrollingframe
+			<VirtualList
 				key="List"
-				ref={setListFrame}
-				{...list}
-				CanvasSize={canvasSize}
-				Event={{
-					AncestryChanged: resizeScrollingFrame,
-					ChildAdded: resizeScrollingFrame,
-					ChildRemoved: resizeScrollingFrame,
-				}}
-			>
-				<uigridlayout {...gridLayout} />
-
-				{rows.map((entry, index) => {
-					const inset = (entry.kind === "leaf" ? entry.depth - 1 : entry.depth) * step;
-					const branchLead = entry.icon !== undefined ? theme.spacing.calc(2) : 0;
-
-					if (entry.kind === "branch" && entry.branch) {
-						const branch = entry.branch;
-						return (
-							<textbutton
-								key={`${entry.path}-${index}`}
-								{...row}
-								LayoutOrder={index}
-								Event={{
-									MouseButton1Click: () => {
-										if (drag.suppressClick()) return;
-										if (branch.onClick) branch.onClick();
-										if (entry.expandable) {
-											setExpanded((oldExpanded) =>
-												oldExpanded.includes(entry.path)
-													? oldExpanded.filter((item) => item !== entry.path)
-													: [...oldExpanded, entry.path],
-											);
-										} else {
-											setClickedPath(entry.path);
-										}
-									},
-								}}
-							>
-								{entry.expandable && (
-									<Icon
-										icon={expanded.includes(entry.path) ? Icons.Expanded : Icons.Collapsed}
-										size={"xxs"}
-										className={cx<ImageLabel>(
-											branchIcon,
-											inset > 0 && { Position: new UDim2(0, inset, 0.5, 0) },
-										)}
-										tint={theme.palette.text.secondary}
-									/>
-								)}
-								{entry.icon !== undefined && (
-									<Icon
-										icon={entry.icon}
-										size={"xs"}
-										className={cx<ImageLabel>(branchIcon, {
-											Position: new UDim2(0, inset + (entry.expandable ? branchLead : 0), 0.5, 0),
-										})}
-										tint={theme.palette.primary.main}
-									/>
-								)}
-								<Typography
-									text={entry.title}
-									className={
-										cx<TextLabel>(
-											branchTypography,
-											(inset > 0 || branchLead > 0) && {
-												Size: new UDim2(
-													1,
-													-(theme.spacing.calc(0.5) + theme.padding.calc(2) + inset + branchLead),
-													1,
-													-theme.padding.calc(4),
-												),
-											},
-										) as WriteableStyle<TextLabel>
-									}
-									color={"textPrimary"}
-									variant={"body"}
-									family={entry.emphasized ? "bold" : "default"}
-								/>
-							</textbutton>
-						);
-					}
-
-					const leaf = entry.leaf;
-					return (
-						<textbutton
-							key={`${entry.path}-${index}`}
-							{...row}
-							LayoutOrder={index}
-							Event={{
-								MouseButton1Click: () => {
-									if (drag.suppressClick()) return;
-									setClickedLeaf(entry.path);
-									setClickedPath(string.sub(entry.path, 1, entry.path.size() - entry.title.size() - 1));
-									if (leaf && leaf.onClick) leaf.onClick();
-								},
-							}}
-						>
-							<Icon
-								icon={entry.icon ?? icon ?? Icons.ListPrimary}
-								size={"xs"}
-								className={cx<ImageLabel>(
-									leafIcon,
-									inset > 0 && {
-										Position: new UDim2(0, theme.padding.calc(4) + inset, 0.5, 0),
-									},
-								)}
-								tint={theme.palette.primary.main}
-							/>
-							<Typography
-								text={entry.title}
-								className={
-									cx<TextLabel>(
-										leafTypography,
-										inset > 0 && {
-											Size: new UDim2(
-												1,
-												-(theme.spacing.calc(1) + theme.padding.calc(6) + inset),
-												1,
-												-theme.padding.calc(4),
-											),
-										},
-									) as WriteableStyle<TextLabel>
-								}
-								color={"textPrimary"}
-								variant={"body"}
-								family={
-									(selected !== undefined ? selected === entry.path : clickedLeaf === entry.path)
-										? "bold"
-										: "default"
-								}
-							/>
-						</textbutton>
-					);
-				})}
-			</scrollingframe>
+				items={rows}
+				getKey={(entry) => entry.path}
+				itemHeight={itemHeight}
+				listRef={listRef}
+				className={list}
+				renderItem={(entry) => renderRow(entry)}
+			/>
 		</frame>
 	);
 }

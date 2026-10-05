@@ -224,6 +224,45 @@ const flat = visibleRows([{ title: "Fixture", leaves: [{ title: "Native" }] }], 
 if (!flat[0].emphasized || flat[1].path !== "Fixture/Native" || flat[1].icon !== undefined) {
 	throw new Error("two-level selection");
 }
+const { treeRowLayout } = await import(
+	pathToFileURL(join(root, "src/ui/packages/treeView/components/treeRows.ts")).href
+);
+const ladder = visibleRows(
+	[
+		{
+			title: "Fixture",
+			leaves: [{ title: "Loose" }],
+			branches: [
+				{
+					title: "Animation",
+					leaves: [{ title: "Tween Native" }, { title: "Tween React" }],
+					branches: [{ title: "Easing", leaves: [{ title: "Linear" }], branches: [{ title: "Deep", leaves: [] }] }],
+				},
+			],
+		},
+	],
+	["Fixture", "Fixture/Animation", "Fixture/Animation/Easing"],
+);
+const labelX = (row) => treeRowLayout(row.depth, 16, 16, 24).labelX;
+const byPath = new Map(ladder.map((row) => [row.path, row]));
+for (let depth = 0; depth <= 3; depth++) {
+	const level = ladder.filter((row) => row.depth === depth);
+	if (level.length === 0) throw new Error(`no rows at depth ${depth}`);
+	if (depth > 0 && !(level.some((row) => row.kind === "branch") && level.some((row) => row.kind === "leaf"))) {
+		throw new Error(`depth ${depth} needs a branch and a leaf`);
+	}
+	if (new Set(level.map(labelX)).size !== 1) throw new Error(`branch and leaf labels misalign at depth ${depth}`);
+}
+for (const row of ladder) {
+	const parent = byPath.get(row.path.slice(0, row.path.lastIndexOf("/")));
+	if (parent && labelX(row) <= labelX(parent)) throw new Error(`${row.path} label is not right of its parent`);
+}
+
+const deepLeaves = [];
+for (let i = 0; i < 4999; i++) deepLeaves.push({ title: `Story${i}` });
+const deepRows = visibleRows([{ title: "Package", leaves: deepLeaves }], ["Package"], "Package/Story2500");
+if (deepRows.length !== 5000) throw new Error(`expected 5000 visible rows, got ${deepRows.length}`);
+if (deepRows.findIndex((row) => row.path === "Package/Story2500") < 0) throw new Error("selected deep leaf missing");
 
 const { stepChoice } = await import(
 	pathToFileURL(join(root, "src/ui/packages/select/components/stepChoice.ts")).href
@@ -359,6 +398,10 @@ const keys = [];
 for (let index = mid.start; index <= mid.end; index++) keys.push(`row-${index}`);
 if (keys[0] !== "row-8" || keys[keys.length - 1] !== "row-20") throw new Error("stable keys follow item indices");
 if (itemOffset(10, 24) !== 240) throw new Error("item offset is index times height");
+const deepSelected = deepRows.findIndex((row) => row.path === "Package/Story2500");
+const deepWindow = visibleWindow(ensureVisibleScroll(0, 400, deepSelected, deepRows.length, 24, "nearest"), 400, deepRows.length, 24, 2);
+if (deepWindow.end - deepWindow.start + 1 > 40) throw new Error("deep tree only mounts a window of rows");
+if (deepSelected < deepWindow.start || deepSelected > deepWindow.end) throw new Error("selected deep leaf stays in the mounted window");
 
 const { stateMatrix } = await import(pathToFileURL(join(root, "src/ui/packages/stateMatrix.ts")).href);
 const components = [

@@ -14,6 +14,18 @@ export interface TreeRow {
 	leaf?: Leaf;
 }
 
+export interface TreeRowLayout {
+	chevronX: number;
+	iconX: number;
+	labelX: number;
+}
+
+export function treeRowLayout(depth: number, indent: number, chevronWidth: number, iconWidth: number): TreeRowLayout {
+	const chevronX = depth * indent;
+	const iconX = chevronX + chevronWidth;
+	return { chevronX, iconX, labelX: iconX + iconWidth };
+}
+
 function count<T>(list: ReadonlyArray<T> | undefined) {
 	if (list === undefined) return 0;
 	let total = 0;

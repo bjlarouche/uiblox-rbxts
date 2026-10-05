@@ -31,19 +31,11 @@ const useSelectStyles = makeStyles((theme: Theme) =>
 			BorderSizePixel: 0,
 			ScrollBarThickness: theme.padding.default,
 			ScrollBarImageColor3: theme.palette.text.secondary,
-			CanvasSize: UDim2.fromScale(0, 0),
-			AutomaticCanvasSize: Enum.AutomaticSize.Y,
 			ScrollingDirection: Enum.ScrollingDirection.Y,
 			ZIndex: 20001,
 		} as WriteableStyle<ScrollingFrame>,
-		listSize: {
-			MaxSize: new Vector2(math.huge, theme.spacing.calc(16)),
-		} as WriteableStyle<UISizeConstraint>,
-		layout: {
-			SortOrder: Enum.SortOrder.LayoutOrder,
-		} as WriteableStyle<UIListLayout>,
 		option: {
-			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
+			Size: UDim2.fromScale(1, 1),
 			BackgroundColor3: theme.palette.primary.main,
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
