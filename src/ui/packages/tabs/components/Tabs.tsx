@@ -3,6 +3,7 @@ import { cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import { stepChoice } from "ui/packages/select/components/stepChoice";
+import { TabsOrientation, tabsIsVertical } from "./tabsOrientation";
 import useTabsStyles from "./Tabs.styles";
 
 export interface TabsProps<T> {
@@ -10,12 +11,13 @@ export interface TabsProps<T> {
 	options: ChoiceOption<T>[];
 	onChange: (value: T) => void;
 	disabled?: boolean;
+	orientation?: TabsOrientation;
 }
 
 function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
-	const { value, options, onChange, disabled, className,
-		sx, id, ref } = props;
-	const styles = useTabsStyles();
+	const { value, options, onChange, disabled, orientation, className, sx, id, ref } = props;
+	const styles = useTabsStyles({ orientation });
+	const vertical = tabsIsVertical(orientation);
 
 	const choose = (index: number) => {
 		const choice = options[index];
@@ -26,8 +28,10 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 
 	const onKey = (_: GuiObject, input: InputObject) => {
 		const index = options.findIndex((option) => option.value === value);
-		if (input.KeyCode === Enum.KeyCode.Left) choose(stepChoice(options, index, -1));
-		else if (input.KeyCode === Enum.KeyCode.Right) choose(stepChoice(options, index, 1));
+		const back = vertical ? Enum.KeyCode.Up : Enum.KeyCode.Left;
+		const forward = vertical ? Enum.KeyCode.Down : Enum.KeyCode.Right;
+		if (input.KeyCode === back) choose(stepChoice(options, index, -1));
+		else if (input.KeyCode === forward) choose(stepChoice(options, index, 1));
 	};
 
 	return (
