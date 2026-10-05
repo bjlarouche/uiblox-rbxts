@@ -22,6 +22,7 @@ export * from "./loadingStroke";
 export * from "./numberInput";
 export * from "./numberRangeEditor";
 export * from "./rectEditor";
+export * from "./rayEditor";
 export * from "./udimEditor";
 export * from "./vectorEditor";
 export * from "./cframeEditor";

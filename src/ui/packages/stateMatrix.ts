@@ -124,6 +124,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("GradientEditor", "default", { value: "gradient" }),
 	...pair("GradientEditor", "disabled", { value: "gradient", disabled: true }),
 
+	...pair("RayEditor", "default", { value: "0,0,0,0,1,0" }),
+	...pair("RayEditor", "disabled", { value: "0,0,0,0,1,0", disabled: true }),
+
 	...pair("Switch", "off"),
 	...pair("Switch", "size-small", { size: "small" }),
 	...pair("Switch", "size-medium", { size: "medium" }),
