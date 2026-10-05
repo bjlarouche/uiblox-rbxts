@@ -310,6 +310,11 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Fab", "disabled", { disabled: true }),
 	...pair("Fab", "loading", { loading: true }),
 
+	...pair("AppBar", "default", { text: "Storyblox" }),
+	...pair("AppBar", "flat", { text: "Storyblox", variant: "flat" }),
+	...pair("AppBar", "raised", { text: "Storyblox", variant: "raised" }),
+
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];
