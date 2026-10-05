@@ -32,6 +32,8 @@ Breaking: `theme.palette` is a semantic token map. `theme.options.constants.colo
 
 `componentStyles("Button", factory)` reads that entry. `defaultProps` fills props the caller left unset, before the factory runs. `styleOverrides` merge onto the slots after that. Replace the theme object to change either one.
 
+`interactionStyle(base, slots, state)` paints hover, then pressed, then focused, then disabled. A later slot wins. Disabled covers the others.
+
 On the instance, `className` then `sx`. `sx` wins.
 
 `resolveResponsive` reads a plain value or `{ phone, tablet, desktop }` against `breakpointName`. A wider breakpoint falls back to the next smaller one that is set. Phone is under 600, tablet under 960, and the rest is desktop.
