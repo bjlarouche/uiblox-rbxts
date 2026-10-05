@@ -50,6 +50,7 @@ export * from "./autocomplete";
 export * from "./fab";
 export * from "./appBar";
 export * from "./bottomNavigation";
+export * from "./alert";
 export * from "./listItem";
 export * from "./menu";
 

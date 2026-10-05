@@ -318,6 +318,11 @@ export const stateMatrix: StateCapture[] = [
 	...pair("BottomNavigation", "selected", { value: "Search", options: ["Home", "Search", "Profile"] }),
 	...pair("BottomNavigation", "disabled", { value: "Home", options: ["Home", "Search", "Profile"], disabled: true }),
 
+	...pair("Alert", "info", { text: "Heads up", variant: "info" }),
+	...pair("Alert", "success", { text: "Saved", variant: "success" }),
+	...pair("Alert", "warning", { text: "Check this", variant: "warning" }),
+	...pair("Alert", "error", { text: "Failed", variant: "error" }),
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];
