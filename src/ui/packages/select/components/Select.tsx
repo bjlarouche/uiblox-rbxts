@@ -8,6 +8,7 @@ import { ChoiceOption } from "ui/packages/radioGroup";
 import { VirtualList, VirtualListHandle } from "ui/packages/virtualList";
 import useSelectStyles from "./Select.styles";
 import { filterChoices, usesSelectSearch } from "./selectFilter";
+import { includesChoice, selectionLabel } from "./selectMulti";
 import { groupRows, rowForOption } from "./selectGroups";
 import { canFocusGui } from "./selectFocus";
 import { shouldHandleSelectKey } from "./selectKey";
@@ -16,6 +17,7 @@ import { stepChoice } from "./stepChoice";
 
 export interface SelectProps<T> {
 	value: T;
+	values?: ReadonlyArray<T>;
 	options: ChoiceOption<T>[];
 	onChange: (value: T) => void;
 	disabled?: boolean;
@@ -25,7 +27,7 @@ export interface SelectProps<T> {
 }
 
 function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
-	const { value, options, onChange, disabled, placeholder = "", searchable, size, className,
+	const { value, values, options, onChange, disabled, placeholder = "", searchable, size, className,
 		sx, id, ref } = props;
 	const styles = useSelectStyles({ size });
 	const { theme } = useTheme();
@@ -64,8 +66,12 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 		if (fromPointer && listRef.current?.suppressClick()) return;
 		const choice = filtered[index];
 		if (choice === undefined || choice.disabled) return;
-		close();
-		if (choice.value !== value) onChange(choice.value);
+		if (values === undefined) {
+			close();
+			if (choice.value !== value) onChange(choice.value);
+			return;
+		}
+		onChange(choice.value);
 	};
 
 	const onKey = (input: InputObject, fromControl: boolean) => {
@@ -136,7 +142,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 					current === undefined && styles.placeholder,
 					!active && { TextTransparency: 0.5 },
 				)}
-				Text={current?.label ?? placeholder}
+				Text={values !== undefined ? selectionLabel(options, values, placeholder) : (current?.label ?? placeholder)}
 				Active={active}
 				Selectable={active}
 				Event={{
@@ -194,6 +200,10 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 										);
 									}
 									const index = row.optionIndex;
+									const picked =
+										values !== undefined
+											? includesChoice(values, filtered[index].value)
+											: filtered[index].value === value;
 									return (
 										<textbutton
 											ref={(button) => {
@@ -204,7 +214,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 												index === highlight && styles.highlighted,
 												row.disabled === true && styles.disabledOption,
 											)}
-											Text={row.label}
+											Text={picked ? `✓ ${row.label}` : row.label}
 											Active={row.disabled !== true}
 											Selectable={row.disabled !== true}
 											Event={{
