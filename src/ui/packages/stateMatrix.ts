@@ -242,6 +242,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Drawer", "left", { open: true, variant: "left" }),
 	...pair("Drawer", "right", { open: true, variant: "right" }),
 
+	...pair("Breadcrumbs", "single", { text: "Home" }),
+	...pair("Breadcrumbs", "trail", { text: "Home / Library / Item" }),
+	...pair("Breadcrumbs", "custom-separator", { text: "Home > Item" }),
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];
