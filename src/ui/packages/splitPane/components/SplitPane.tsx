@@ -26,14 +26,13 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 	const [total, setTotal] = useState(0);
 	const [dragging, setDragging] = useState(false);
 	const [hovering, setHovering] = useState(false);
-	const [focused, setFocused] = useState(false);
 	const start = useRef(value);
 	const axis = (vector: Vector2 | Vector3) => (vertical ? vector.Y : vector.X);
 	const size = clampSplit(value, total - thickness, min, max);
 	const at = (offset: number) => (vertical ? UDim2.fromOffset(0, offset) : UDim2.fromOffset(offset, 0));
 	const along = (offset: number, scale = 0) =>
 		vertical ? new UDim2(1, 0, scale, offset) : new UDim2(scale, offset, 1, 0);
-	const pointer = splitPointer(hovering, dragging, focused);
+	const pointer = splitPointer(hovering, dragging);
 	const markTransparency = splitMarkTransparency(pointer, disabled);
 	const markLen = theme.spacing.calc(1) + theme.padding.default;
 	const markGap = theme.padding.default / 2;
@@ -61,7 +60,6 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 					Size={along(thickness)}
 					BackgroundTransparency={splitHitTransparency(pointer, disabled)}
 					Active={active}
-					Selectable={active}
 					Event={{
 						InputBegan: (_, input) => {
 							if (!active || input.UserInputType !== Enum.UserInputType.MouseButton1) return;
@@ -72,8 +70,6 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 							if (active) setHovering(true);
 						},
 						MouseLeave: () => setHovering(false),
-						SelectionGained: () => setFocused(true),
-						SelectionLost: () => setFocused(false),
 					}}
 				>
 					<frame

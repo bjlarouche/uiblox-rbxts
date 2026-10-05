@@ -142,10 +142,9 @@ if (clampSplit(50, 0) !== 0) throw new Error("unmeasured pane collapses");
 const { splitHitTransparency, splitMarkTransparency, splitPointer } = await import(
 	pathToFileURL(join(root, "src/ui/packages/splitPane/components/splitLook.ts")).href
 );
-if (splitPointer(false, false, false) !== "rest") throw new Error("idle divider is rest");
-if (splitPointer(true, false, false) !== "hover") throw new Error("hover wins over rest");
-if (splitPointer(true, true, false) !== "press") throw new Error("drag wins over hover");
-if (splitPointer(false, false, true) !== "focus") throw new Error("focus when selected");
+if (splitPointer(false, false) !== "rest") throw new Error("idle divider is rest");
+if (splitPointer(true, false) !== "hover") throw new Error("hover wins over rest");
+if (splitPointer(true, true) !== "press") throw new Error("drag wins over hover");
 if (splitMarkTransparency("rest") <= splitMarkTransparency("hover")) throw new Error("hover marks are clearer");
 if (splitMarkTransparency("press") !== 0) throw new Error("drag marks are solid");
 if (splitMarkTransparency("rest", true) < splitMarkTransparency("rest")) throw new Error("disabled marks fade");
