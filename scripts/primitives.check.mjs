@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -31,6 +31,66 @@ if (inputInsets(true, true, 12, 4).left !== 16 || inputInsets(true, true, 12, 4)
 if (canActivate(true, false)) throw new Error("disabled must not activate");
 if (canActivate(false, true)) throw new Error("loading must not activate");
 if (!canActivate(false, false)) throw new Error("enabled control must activate");
+
+const { stopOnce, clampUnit, progressUnit, progressSpin, arcKeys } = await import(
+	pathToFileURL(join(root, "src/ui/packages/motion/unit.ts")).href
+);
+let destroyed = 0;
+const stop = stopOnce(() => {
+	destroyed += 1;
+});
+stop();
+stop();
+if (destroyed !== 1) throw new Error("tween cleanup runs once");
+
+if (clampUnit(-0.2) !== 0) throw new Error("unit clamps below 0");
+if (clampUnit(1.4) !== 1) throw new Error("unit clamps above 1");
+if (clampUnit(Number.NaN) !== 0) throw new Error("NaN unit is 0");
+if (clampUnit(0.25) !== 0.25) throw new Error("unit keeps a fraction");
+
+const { skeletonMotion, skeletonLineWidth } = await import(
+	pathToFileURL(join(root, "src/ui/packages/skeleton/components/skeletonMotion.ts")).href
+);
+if (skeletonMotion(undefined, false) !== "pulse") throw new Error("skeleton pulses by default");
+if (skeletonMotion("shimmer", true) !== false) throw new Error("reduced motion holds skeleton still");
+if (skeletonMotion(false, false) !== false) throw new Error("skeleton animation false is static");
+if (skeletonLineWidth(100, 0, 3) !== 100) throw new Error("leading skeleton lines keep width");
+if (skeletonLineWidth(100, 2, 3) !== 62) throw new Error("last skeleton line is shorter");
+
+if (progressUnit(1.5) !== 1) throw new Error("progress value clamps to 1");
+if (progressUnit(-1) !== 0) throw new Error("progress value clamps to 0");
+if (progressUnit(undefined, 50) !== 0.5) throw new Error("progress percent maps to half");
+if (progressUnit(undefined, 150) !== 1) throw new Error("progress percent clamps to 100");
+if (progressSpin(true, false, false) !== "spin") throw new Error("indeterminate progress spins");
+if (progressSpin(true, true, false) !== false) throw new Error("reduced motion stops progress");
+if (progressSpin(true, false, true) !== false) throw new Error("disabled progress stays still");
+if (progressSpin(false, false, false) !== false) throw new Error("determinate progress does not spin");
+if (arcKeys(0)[0].transparency !== 1) throw new Error("empty arc is clear");
+if (arcKeys(1)[1].transparency !== 0) throw new Error("full arc is solid");
+
+const { buttonFace, spinnerPlace, spinnerPixels, iconSpinnerPixels } = await import(
+	pathToFileURL(join(root, "src/ui/packages/button/components/buttonLook.ts")).href
+);
+if (!buttonFace("Save", true).hideText) throw new Error("loading hides the caption");
+if (buttonFace("Save", true, "Saving").text !== "Saving" || buttonFace("Save", true, "Saving").hideText) {
+	throw new Error("loading label replaces the caption");
+}
+if (buttonFace("Save", false).text !== "Save" || buttonFace("Save", false).hideText) {
+	throw new Error("idle caption stays");
+}
+if (spinnerPlace("start").xOffset !== 8 || spinnerPlace("end").xScale !== 1 || spinnerPlace("center").xScale !== 0.5) {
+	throw new Error("spinner place");
+}
+if (spinnerPixels("small") !== 12 || spinnerPixels("large") !== 16) throw new Error("spinner size");
+if (iconSpinnerPixels("xs") !== 8 || iconSpinnerPixels("xl") !== 16) throw new Error("icon spinner size");
+for (const file of [
+	"src/ui/packages/button/components/Button.styles.ts",
+	"src/ui/packages/iconButton/components/IconButton.styles.ts",
+]) {
+	if (readFileSync(join(root, file), "utf8").includes("loading")) {
+		throw new Error(`${file} must ignore loading so size stays put`);
+	}
+}
 
 globalThis.math = {
 	floor: Math.floor,
@@ -525,7 +585,48 @@ for (const pointer of ["hover", "press", "focus"]) {
 		throw new Error(`Slider missing ${pointer}`);
 	}
 }
-
+for (const component of ["Skeleton", "CircularProgress", "LinearProgress", "IconButton"]) {
+	if (!stateMatrix.some((row) => row.component === component && row.theme === "Dark")) {
+		throw new Error(`${component} missing dark`);
+	}
+	if (!stateMatrix.some((row) => row.component === component && row.theme === "Light")) {
+		throw new Error(`${component} missing light`);
+	}
+}
+if (!stateMatrix.some((row) => row.component === "Skeleton" && row.animation === false)) {
+	throw new Error("Skeleton missing static");
+}
+if (!stateMatrix.some((row) => row.component === "Skeleton" && row.reducedMotion === true)) {
+	throw new Error("Skeleton missing reduced motion");
+}
+for (const component of ["CircularProgress", "LinearProgress"]) {
+	for (const value of [0, 0.5, 1]) {
+		if (!stateMatrix.some((row) => row.component === component && row.value === value)) {
+			throw new Error(`${component} missing value ${value}`);
+		}
+	}
+	if (!stateMatrix.some((row) => row.component === component && row.indeterminate === true && row.reducedMotion !== true)) {
+		throw new Error(`${component} missing indeterminate`);
+	}
+	if (!stateMatrix.some((row) => row.component === component && row.reducedMotion === true)) {
+		throw new Error(`${component} missing reduced motion`);
+	}
+	if (!stateMatrix.some((row) => row.component === component && row.disabled === true)) {
+		throw new Error(`${component} missing disabled`);
+	}
+}
+if (!stateMatrix.some((row) => row.component === "Button" && row.loading === true && row.disabled === true)) {
+	throw new Error("Button missing loading disabled");
+}
+if (!stateMatrix.some((row) => row.component === "Button" && row.loading === true && row.reducedMotion === true)) {
+	throw new Error("Button missing loading reduced motion");
+}
+if (!stateMatrix.some((row) => row.component === "Button" && row.loading === true && row.variant === "outlined")) {
+	throw new Error("Button missing outlined loading");
+}
+if (!stateMatrix.some((row) => row.component === "IconButton" && row.loading === true)) {
+	throw new Error("IconButton missing loading");
+}
 const dir = mkdtempSync(join(tmpdir(), "uiblox-primitives-"));
 const tsconfig = {
 	compilerOptions: {
@@ -558,8 +659,11 @@ writeFileSync(
 	`
 import { ButtonProps } from "ui/packages/button";
 import { CheckboxProps } from "ui/packages/checkbox";
+import { CircularProgressProps } from "ui/packages/circularProgress";
 import { IconButtonProps } from "ui/packages/iconButton";
 import { InputProps } from "ui/packages/input";
+import { LinearProgressProps } from "ui/packages/progressBar";
+import { SkeletonProps } from "ui/packages/skeleton";
 import { SwitchProps } from "ui/packages/switch";
 import { NumberInputProps } from "ui/packages/numberInput";
 import { SliderProps } from "ui/packages/slider";
@@ -573,8 +677,18 @@ import { StateCapture } from "ui/packages/stateMatrix";
 import { Branch } from "ui/packages/treeView";
 import { Icons } from "ui/enums";
 
-const button: ButtonProps = { text: "Save", disabled: false, loading: false };
-const icon: IconButtonProps = { icon: Icons.Save, tint: new Color3(1, 1, 1), disabled: true };
+const button: ButtonProps = {
+	text: "Save",
+	disabled: false,
+	loading: true,
+	loadingLabel: "Saving",
+	loadingPosition: "end",
+	reducedMotion: true,
+};
+const icon: IconButtonProps = { icon: Icons.Save, tint: new Color3(1, 1, 1), disabled: true, loading: true };
+const skeleton: SkeletonProps = { variant: "text", lines: 3, gap: 6, animation: false, reducedMotion: true };
+const circular: CircularProgressProps = { value: 0.4, size: 20, thickness: 2, disabled: true };
+const linear: LinearProgressProps = { value: 1.5, progress: 40, indeterminate: false, reducedMotion: true };
 const input: InputProps = { text: "draft", disabled: true, onTextChanged: () => {}, onInput: () => {} };
 const checkbox: CheckboxProps = { value: false, mixed: true, disabled: true, onChange: () => {} };
 const toggle: SwitchProps = { value: true, disabled: false, onChange: () => {} };
@@ -593,6 +707,9 @@ const virtualList: VirtualListProps<string> = {
 };
 void button;
 void icon;
+void skeleton;
+void circular;
+void linear;
 void input;
 void checkbox;
 void toggle;

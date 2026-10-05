@@ -1,3 +1,2 @@
-export { default as ProgressBar } from "./components/ProgressBar";
-export { ProgressBarProps } from "./components/ProgressBar";
-export * from "./components/ProgressBar";
+export { default as ProgressBar, LinearProgress } from "./components/ProgressBar";
+export { ProgressBarProps, LinearProgressProps } from "./components/ProgressBar";
