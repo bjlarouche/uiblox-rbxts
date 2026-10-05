@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import useSplitPaneStyles from "./SplitPane.styles";
-import { splitHitTransparency, splitMarkTransparency, splitPointer } from "./splitLook";
+import { splitHitTransparency, splitMarkTransparency, splitPointer, splitRuleTransparency } from "./splitLook";
 import { clampSplit } from "./splitSize";
 
 export interface SplitPaneProps {
@@ -20,7 +20,7 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 	const { value, onChange, min, max, vertical = false, disabled, first, second, className, id, ref } = props;
 	const styles = useSplitPaneStyles();
 	const { theme } = useTheme();
-	const thickness = theme.padding.calc(2);
+	const thickness = theme.padding.calc(3);
 	const active = canActivate(disabled);
 	const [body, setBody] = useState<Frame>();
 	const [total, setTotal] = useState(0);
@@ -34,9 +34,11 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 		vertical ? new UDim2(1, 0, scale, offset) : new UDim2(scale, offset, 1, 0);
 	const pointer = splitPointer(hovering, dragging);
 	const markTransparency = splitMarkTransparency(pointer, disabled);
-	const markLen = theme.spacing.calc(1) + theme.padding.default;
+	const ruleTransparency = splitRuleTransparency(pointer, disabled);
+	const markLen = theme.spacing.calc(2) + theme.padding.default;
 	const markGap = theme.padding.default / 2;
-	const markThick = theme.options.constants.borders.default;
+	const markThick = theme.options.constants.borders.divider;
+	const ruleThick = theme.options.constants.borders.default;
 	const gripAcross = markThick * 3 + markGap * 2;
 
 	useEffect(() => {
@@ -75,8 +77,8 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 					<frame
 						key="Rule"
 						{...styles.rule}
-						Size={vertical ? new UDim2(1, 0, 0, markThick) : new UDim2(0, markThick, 1, 0)}
-						BackgroundTransparency={markTransparency}
+						Size={vertical ? new UDim2(1, 0, 0, ruleThick) : new UDim2(0, ruleThick, 1, 0)}
+						BackgroundTransparency={ruleTransparency}
 					/>
 					<frame
 						key="Grip"

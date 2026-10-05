@@ -312,15 +312,18 @@ if (clampSplit(900, 1000, 200) !== 800) throw new Error("second pane keeps min")
 if (clampSplit(300, 300, 200, 340) !== 200) throw new Error("short dock favors first pane min");
 if (clampSplit(50, 0) !== 0) throw new Error("unmeasured pane collapses");
 
-const { splitHitTransparency, splitMarkTransparency, splitPointer } = await import(
+const { splitHitTransparency, splitMarkTransparency, splitPointer, splitRuleTransparency } = await import(
 	pathToFileURL(join(root, "src/ui/packages/splitPane/components/splitLook.ts")).href
 );
 if (splitPointer(false, false) !== "rest") throw new Error("idle divider is rest");
 if (splitPointer(true, false) !== "hover") throw new Error("hover wins over rest");
 if (splitPointer(true, true) !== "press") throw new Error("drag wins over hover");
 if (splitMarkTransparency("rest") <= splitMarkTransparency("hover")) throw new Error("hover marks are clearer");
+if (splitMarkTransparency("rest") > 0.2) throw new Error("rest grip is too faint");
 if (splitMarkTransparency("press") !== 0) throw new Error("drag marks are solid");
 if (splitMarkTransparency("rest", true) < splitMarkTransparency("rest")) throw new Error("disabled marks fade");
+if (splitRuleTransparency("rest") <= splitMarkTransparency("rest")) throw new Error("hairline stays fainter than the grip");
+if (splitRuleTransparency("hover") >= splitRuleTransparency("rest")) throw new Error("hover hairline is clearer");
 if (splitHitTransparency("rest") !== 1) throw new Error("idle hit target stays clear");
 if (splitHitTransparency("hover") >= 1) throw new Error("hover wash shows interactivity");
 if (splitHitTransparency("press") >= splitHitTransparency("hover")) throw new Error("drag wash is stronger");
