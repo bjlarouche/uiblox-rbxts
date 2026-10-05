@@ -340,6 +340,8 @@ function miscRows(): StateCapture[] {
 		...pair("Container", "default", { variant: "lg" }),
 		...pair("Container", "sm", { variant: "sm" }),
 		...pair("Container", "fluid", { variant: "false" }),
+		...pair("Divider", "horizontal", { variant: "horizontal" }),
+		...pair("Divider", "vertical", { variant: "vertical" }),
 		...pair("ImageList", "default"),
 		...pair("ImageList", "dense", { size: "small" }),
 		...pair("ImageList", "wide", { size: "large" }),
