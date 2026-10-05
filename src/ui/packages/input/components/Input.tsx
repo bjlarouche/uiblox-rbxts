@@ -20,6 +20,8 @@ export interface InputProps {
 	placeholder?: string;
 	rounded?: boolean;
 	clearsTextOnFocus?: boolean;
+	startAdornment?: React.Element;
+	endAdornment?: React.Element;
 	onTextChanged?: (text: string) => void;
 	onInput?: (text: string) => void;
 	onFocus?: () => void;
@@ -36,6 +38,8 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		disabled = false,
 		hasError = false,
 		rounded = false,
+		startAdornment,
+		endAdornment,
 		onTextChanged,
 		onInput,
 		onFocus,
@@ -43,66 +47,86 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		onEnterPressed,
 		className,
 		id,
-		ref
+		ref,
 	} = props;
 
-	const { root, font, margin, box, helper, errorColorFrame, errorColorText, divider, corner, stroke } =
-		useInputStyles(props);
-	const focused = useRef(false);
+	const focusedRef = useRef(false);
 	const entered = useRef(false);
 	const [draft, setDraft] = useState(text ?? "");
+	const [focused, setFocused] = useState(false);
+
+	const { root, font, margin, shell, box, startSlot, endSlot, helper, errorColorFrame, errorColorText, divider, corner, stroke } =
+		useInputStyles({ ...props, focused });
 
 	useEffect(() => {
-		setDraft((current) => syncInputDraft(focused.current, text, current));
+		setDraft((current) => syncInputDraft(focusedRef.current, text, current));
 	}, [text]);
+
+	const showStroke = variant === "outlined" || variant === "filled";
+	const showCorner = rounded || variant === "outlined" || variant === "filled";
 
 	return (
 		<frame key={id || "Input"} ref={ref} {...root} {...className}>
 			<frame key="Margin" {...margin}>
-				<textbox
-					key={"Field"}
-					{...font}
-					{...box}
-					Active={!disabled}
-					Text={draft}
-					PlaceholderText={placeholder}
-					{...cx(hasError && errorColorText)}
-					Change={{
-						Text: (rbx) => {
-							setDraft(rbx.Text);
-							if (focused.current && onInput) onInput(rbx.Text);
-						},
-					}}
-					Event={{
-						Focused: () => {
-							focused.current = true;
-							entered.current = false;
-							if (onFocus) onFocus();
-						},
-						ReturnPressedFromOnScreenKeyboard: (rbx) => {
-							if (entered.current || !onEnterPressed) return;
-							entered.current = true;
-							onEnterPressed(rbx.Text);
-						},
-						FocusLost: (rbx, enterPressed) => {
-							focused.current = false;
-							const committed = rbx.Text;
-							if (onTextChanged) onTextChanged(committed);
-							if (enterPressed && !entered.current && onEnterPressed) onEnterPressed(committed);
-							entered.current = false;
-							if (onBlur) onBlur();
-							setDraft(text ?? "");
-						},
-					}}
-				>
-					{variant === "outlined" && <uistroke {...stroke} />}
-					{rounded && <uicorner {...corner} />}
-				</textbox>
-				<Divider
-					padding={0}
-					orientation={Orientations.Horizontal}
-					className={cx(divider, hasError && errorColorFrame)}
-				/>
+				<frame key="Shell" {...shell}>
+					{showStroke && <uistroke {...stroke} />}
+					{showCorner && <uicorner {...corner} />}
+					{startAdornment !== undefined && (
+						<frame key="Start" {...startSlot}>
+							{startAdornment}
+						</frame>
+					)}
+					<textbox
+						key={"Field"}
+						{...font}
+						{...box}
+						Active={!disabled}
+						Text={draft}
+						PlaceholderText={placeholder}
+						{...cx(hasError && errorColorText)}
+						Change={{
+							Text: (rbx) => {
+								setDraft(rbx.Text);
+								if (focusedRef.current && onInput) onInput(rbx.Text);
+							},
+						}}
+						Event={{
+							Focused: () => {
+								focusedRef.current = true;
+								entered.current = false;
+								setFocused(true);
+								if (onFocus) onFocus();
+							},
+							ReturnPressedFromOnScreenKeyboard: (rbx) => {
+								if (entered.current || !onEnterPressed) return;
+								entered.current = true;
+								onEnterPressed(rbx.Text);
+							},
+							FocusLost: (rbx, enterPressed) => {
+								focusedRef.current = false;
+								setFocused(false);
+								const committed = rbx.Text;
+								if (onTextChanged) onTextChanged(committed);
+								if (enterPressed && !entered.current && onEnterPressed) onEnterPressed(committed);
+								entered.current = false;
+								if (onBlur) onBlur();
+								setDraft(text ?? "");
+							},
+						}}
+					/>
+					{endAdornment !== undefined && (
+						<frame key="End" {...endSlot}>
+							{endAdornment}
+						</frame>
+					)}
+				</frame>
+				{variant === "standard" && (
+					<Divider
+						padding={0}
+						orientation={Orientations.Horizontal}
+						className={cx(divider, hasError && errorColorFrame)}
+					/>
+				)}
 				{helperText !== undefined && (
 					<textlabel
 						key={"HelperText"}

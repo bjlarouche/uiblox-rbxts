@@ -16,6 +16,18 @@ const { canActivate } = await import(
 if (syncInputDraft(false, "next", "draft") !== "next") throw new Error("unfocused draft must follow text");
 if (syncInputDraft(true, "next", "draft") !== "draft") throw new Error("focused draft must stay editable");
 if (syncInputDraft(false, undefined, "draft") !== "") throw new Error("missing text clears the field");
+
+const { inputInsets } = await import(
+	pathToFileURL(join(root, "src/ui/packages/input/components/inputInsets.ts")).href
+);
+if (inputInsets(false, false, 12, 4).left !== 4 || inputInsets(false, false, 12, 4).right !== 4) {
+	throw new Error("empty adornments keep gap only");
+}
+if (inputInsets(true, false, 12, 4).left !== 16) throw new Error("start adornment adds icon width");
+if (inputInsets(false, true, 12, 4).right !== 16) throw new Error("end adornment adds icon width");
+if (inputInsets(true, true, 12, 4).left !== 16 || inputInsets(true, true, 12, 4).right !== 16) {
+	throw new Error("both adornments inset both sides");
+}
 if (canActivate(true, false)) throw new Error("disabled must not activate");
 if (canActivate(false, true)) throw new Error("loading must not activate");
 if (!canActivate(false, false)) throw new Error("enabled control must activate");
