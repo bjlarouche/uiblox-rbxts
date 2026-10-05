@@ -16,7 +16,6 @@ const SKIP_EXTS = new Set([
 	".wasm",
 ]);
 
-// Split so this file does not match its own denylist when scanned.
 const RULES = [
 	{ id: "creator-hub", re: new RegExp("creator[\\s_-]?hub|creatorhub", "i") },
 	{ id: "lua-apps", re: new RegExp("lua[\\s_-]?apps|luaapps", "i") },
