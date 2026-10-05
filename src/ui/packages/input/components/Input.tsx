@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { ControlSize, cx, CustomizedProps } from "theme";
+import { ControlSize, cx, CustomizedProps, useTheme } from "theme";
+import { canActivate } from "ui/packages/button/components/activation";
+import { spinnerPixels } from "ui/packages/button/components/buttonLook";
+import { CircularProgress } from "ui/packages/circularProgress";
 import { Divider } from "ui/packages/divider";
 import { Orientations } from "ui/enums";
 import { InputColor, InputMargin, InputVariant } from "../types";
@@ -11,6 +14,7 @@ export type DefaultInputComponent = Frame;
 export interface InputProps {
 	color?: InputColor;
 	disabled?: boolean;
+	loading?: boolean;
 	hasError?: boolean;
 	helperText?: string;
 	margin?: InputMargin;
@@ -21,6 +25,7 @@ export interface InputProps {
 	rounded?: boolean;
 	clearsTextOnFocus?: boolean;
 	size?: ControlSize;
+	reducedMotion?: boolean;
 	startAdornment?: React.Element;
 	endAdornment?: React.Element;
 	onTextChanged?: (text: string) => void;
@@ -48,8 +53,11 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		helperText,
 		variant = "standard",
 		disabled = false,
+		loading = false,
 		hasError = false,
 		rounded = false,
+		size,
+		reducedMotion,
 		startAdornment,
 		endAdornment,
 		onTextChanged,
@@ -67,6 +75,9 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const entered = useRef(false);
 	const [draft, setDraft] = useState(text ?? "");
 	const [focused, setFocused] = useState(false);
+	const { theme } = useTheme();
+	const editable = canActivate(disabled, loading);
+	const endSlotContent = loading ? undefined : endAdornment;
 
 	const { root, font, margin, shell, box, startSlot, endSlot, helper, errorColorFrame, errorColorText, divider, corner, stroke } =
 		useInputStyles({ ...props, focused });
@@ -94,25 +105,28 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 						key={"Field"}
 						{...font}
 						{...box}
-						Active={!disabled}
+						Active={editable}
+						TextEditable={editable}
 						Text={draft}
 						PlaceholderText={placeholder}
 						{...cx(hasError && errorColorText)}
 						Change={{
 							Text: (rbx) => {
+								if (!editable) return;
 								setDraft(rbx.Text);
 								if (focusedRef.current && onInput) onInput(rbx.Text);
 							},
 						}}
 						Event={{
 							Focused: () => {
+								if (!editable) return;
 								focusedRef.current = true;
 								entered.current = false;
 								setFocused(true);
 								if (onFocus) onFocus();
 							},
 							ReturnPressedFromOnScreenKeyboard: (rbx) => {
-								if (entered.current || !onEnterPressed) return;
+								if (!editable || entered.current || !onEnterPressed) return;
 								entered.current = true;
 								onEnterPressed(rbx.Text);
 							},
@@ -120,18 +134,29 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 								focusedRef.current = false;
 								setFocused(false);
 								const committed = rbx.Text;
-								if (onTextChanged) onTextChanged(committed);
-								if (enterPressed && !entered.current && onEnterPressed) onEnterPressed(committed);
+								if (editable && onTextChanged) onTextChanged(committed);
+								if (editable && enterPressed && !entered.current && onEnterPressed) onEnterPressed(committed);
 								entered.current = false;
 								if (onBlur) onBlur();
 								setDraft(text ?? "");
 							},
 						}}
 					/>
-					{endAdornment !== undefined && (
+					{loading && (
 						<frame key="End" {...endSlot}>
 							{adornmentAlign()}
-							{endAdornment}
+							<CircularProgress
+								size={spinnerPixels(size)}
+								thickness={2}
+								color={theme.palette.text.secondary}
+								reducedMotion={reducedMotion}
+							/>
+						</frame>
+					)}
+					{endSlotContent !== undefined && (
+						<frame key="End" {...endSlot}>
+							{adornmentAlign()}
+							{endSlotContent}
 						</frame>
 					)}
 				</frame>
