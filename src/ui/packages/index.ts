@@ -23,6 +23,7 @@ export * from "./udimEditor";
 export * from "./vectorEditor";
 export * from "./popup";
 export * from "./modal";
+export * from "./motion";
 export * from "./radioGroup";
 export * from "./select";
 export * from "./slider";
