@@ -254,6 +254,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Stepper", "middle", { value: 1 }),
 	...pair("Stepper", "last", { value: 2 }),
 
+	...pair("Accordion", "closed", { open: false }),
+	...pair("Accordion", "open", { open: true }),
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];

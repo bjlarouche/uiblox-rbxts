@@ -34,6 +34,7 @@ export * from "./drawer";
 export * from "./breadcrumbs";
 export * from "./pagination";
 export * from "./stepper";
+export * from "./accordion";
 export * from "./listItem";
 export * from "./menu";
 export * from "./motion";
