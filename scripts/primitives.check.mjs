@@ -40,7 +40,30 @@ globalThis.math = {
 	clamp: (value, min, max) => Math.min(max, Math.max(min, value)),
 	abs: Math.abs,
 };
-globalThis.tonumber = (text) => (text.trim() === "" || Number.isNaN(Number(text)) ? undefined : Number(text));
+globalThis.tonumber = (text, radix) => {
+	if (typeof text !== "string" || text.trim() === "") return undefined;
+	const value = radix === undefined ? Number(text) : Number.parseInt(text, radix);
+	return Number.isNaN(value) ? undefined : value;
+};
+globalThis.string = {
+	format: (fmt, ...args) => {
+		let index = 0;
+		return fmt.replace(/%0(\d+)X/g, (_, width) => args[index++].toString(16).toUpperCase().padStart(Number(width), "0"));
+	},
+};
+String.prototype.size = function size() {
+	return this.length;
+};
+String.prototype.sub = function sub(from, to) {
+	return this.substring(from - 1, to);
+};
+globalThis.Color3 = class Color3 {
+	constructor(r = 0, g = 0, b = 0) {
+		this.R = r;
+		this.G = g;
+		this.B = b;
+	}
+};
 globalThis.Vector2 = class Vector2 {
 	constructor(x = 0, y = 0) {
 		this.X = x;
@@ -61,6 +84,35 @@ if (parseNumberDraft("8", 0, 10, 5) !== 10) throw new Error("rounds up to step")
 if (parseNumberDraft("6", 1, 11, 5) !== 6) throw new Error("step anchors at min");
 if (commitNumber(Number.NaN) !== undefined) throw new Error("NaN never commits");
 if (commitNumber(Infinity) !== undefined) throw new Error("inf never commits");
+
+const {
+	byteToUnit,
+	channelToByte,
+	colorToHex,
+	hsvToRgb,
+	parseByte,
+	parseHex,
+	resolveHsv,
+	rgbToHsv,
+	sameColor,
+} = await import(pathToFileURL(join(root, "src/ui/packages/colorPicker/components/colorValue.ts")).href);
+if (channelToByte(1) !== 255 || channelToByte(0) !== 0) throw new Error("channel bytes");
+if (byteToUnit(128) !== 128 / 255) throw new Error("byte unit");
+const red = rgbToHsv(1, 0, 0);
+if (Math.abs(red.h) > 1e-6 || red.s !== 1 || red.v !== 1) throw new Error("red hsv");
+const back = hsvToRgb(red.h, red.s, red.v);
+if (Math.abs(back.r - 1) > 1e-6 || Math.abs(back.g) > 1e-6 || Math.abs(back.b) > 1e-6) throw new Error("hsv roundtrip");
+const gray = new Color3(0.5, 0.5, 0.5);
+const kept = resolveHsv(gray, { h: 0.25, s: 1, v: 1 });
+if (kept.h !== 0.25 || kept.s !== 0 || Math.abs(kept.v - 0.5) > 1e-6) throw new Error("gray keeps hue");
+if (parseHex("#336699") === undefined) throw new Error("hex parses");
+if (parseHex("#369") === undefined) throw new Error("short hex parses");
+if (parseHex("nope") !== undefined) throw new Error("bad hex rejected");
+if (parseByte("256") !== undefined || parseByte("1.5") !== undefined) throw new Error("byte bounds");
+if (parseByte("12") !== 12) throw new Error("byte commits");
+const painted = parseHex("#FF0000");
+if (!sameColor(painted, new Color3(1, 0, 0))) throw new Error("hex red");
+if (colorToHex(new Color3(1, 0, 0)) !== "#FF0000") throw new Error("hex format");
 
 const { nextChecked } = await import(
 	pathToFileURL(join(root, "src/ui/packages/checkbox/components/nextChecked.ts")).href
@@ -228,8 +280,8 @@ if (shouldBeginDragScroll(new Vector2(0, 0), new Vector2(10, 4), "y")) throw new
 if (!shouldBeginDragScroll(new Vector2(0, 0), new Vector2(10, 4), "x")) throw new Error("horizontal drag on x axis");
 const scrolled = nextCanvasPosition(new Vector2(0, 20), new Vector2(0, 40), new Vector2(0, 10), "y", new Vector2(0, 200));
 if (scrolled.X !== 0 || scrolled.Y !== 50) throw new Error("drag moves canvas by pointer delta");
-const clamped = nextCanvasPosition(new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 40), "y", new Vector2(0, 10));
-if (clamped.Y !== 0) throw new Error("canvas clamps at top");
+const clampedCanvas = nextCanvasPosition(new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 40), "y", new Vector2(0, 10));
+if (clampedCanvas.Y !== 0) throw new Error("canvas clamps at top");
 
 const { clampSplit } = await import(
 	pathToFileURL(join(root, "src/ui/packages/splitPane/components/splitSize.ts")).href
