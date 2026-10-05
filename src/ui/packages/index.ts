@@ -37,6 +37,7 @@ export * from "./stepper";
 export * from "./accordion";
 export * from "./snackbar";
 export * from "./table";
+export * from "./autocomplete";
 export * from "./listItem";
 export * from "./menu";
 
