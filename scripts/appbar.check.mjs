@@ -1,5 +1,5 @@
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["default", "flat", "raised"]) {
+for (const name of ["default", "flat", "raised", "primary"]) {
 	if (!stateMatrix.some((row) => row.component === "AppBar" && row.name.includes(name))) {
 		throw new Error(`AppBar missing ${name}`);
 	}

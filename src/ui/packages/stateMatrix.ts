@@ -323,6 +323,7 @@ function chromeRows(): StateCapture[] {
 		...pair("AppBar", "default", { text: "Storyblox" }),
 		...pair("AppBar", "flat", { text: "Storyblox", variant: "flat" }),
 		...pair("AppBar", "raised", { text: "Storyblox", variant: "raised" }),
+		...pair("AppBar", "primary", { text: "Storyblox", variant: "primary" }),
 		...pair("BottomNavigation", "default", { value: "Home", options: ["Home", "Search", "Profile"] }),
 	];
 }
