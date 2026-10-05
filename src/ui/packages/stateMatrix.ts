@@ -257,6 +257,8 @@ function surfacesRows(): StateCapture[] {
 		...pair("Card", "flat", { variant: "flat" }),
 		...pair("Card", "raised", { variant: "raised" }),
 		...pair("Chip", "default"),
+		...pair("Chip", "size-small", { size: "small" }),
+		...pair("Chip", "size-large", { size: "large" }),
 		...pair("Chip", "selected", { value: true }),
 		...pair("Chip", "disabled", { disabled: true }),
 		...pair("Chip", "deletable", { text: "Tag" }),

@@ -1,5 +1,5 @@
 import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { ControlSize, CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
 import useChipStyles from "./Chip.styles";
 
@@ -7,14 +7,15 @@ export interface ChipProps {
 	label: string;
 	selected?: boolean;
 	disabled?: boolean;
+	size?: ControlSize;
 	onActivated?: () => void;
 	onDelete?: () => void;
 }
 
 function Chip(props: CustomizedProps<TextButton, ChipProps>) {
-	const { label, selected, disabled, onActivated, onDelete, className, sx, id, ref } = props;
+	const { label, selected, disabled, size, onActivated, onDelete, className, sx, id, ref } = props;
 	const deletable = onDelete !== undefined;
-	const styles = useChipStyles({ selected, disabled, deletable });
+	const styles = useChipStyles({ selected, disabled, deletable, size });
 	return (
 		<textbutton
 			key={id || "Chip"}
