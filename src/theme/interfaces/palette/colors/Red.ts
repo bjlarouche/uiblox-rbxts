@@ -1,5 +1,5 @@
 import { ColorTokens } from "../colorTokens/ColorTokens";
-import { Color3FromHex } from "../../../utilites";
+import { Color3FromHex } from "theme/utilites";
 
 const Red: ColorTokens = {
 	120: Color3FromHex("#290403"),

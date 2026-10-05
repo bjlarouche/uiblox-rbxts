@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { cx, CustomizedProps } from "theme";
-import { Divider } from "../../divider";
+import { Divider } from "ui/packages/divider";
 import { Orientations } from "ui/enums";
 import { InputColor, InputMargin, InputVariant } from "../types";
 import useInputStyles from "./Input.styles";

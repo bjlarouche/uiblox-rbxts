@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "@rbxts/react";
 import { cx, CustomizedProps, DEFAULT_THEME, useTheme, WriteableStyle } from "theme";
 import { Icon } from "ui/packages/icon";
 import { Typography } from "ui/packages/typography";
-import { Icons } from "../../../enums";
+import { Icons } from "ui/enums";
 import Tree from "../interfaces/Tree";
 import useTreeViewStyles from "./TreeView.styles";
 import { pathsToExpand, visibleRows } from "./treeRows";
