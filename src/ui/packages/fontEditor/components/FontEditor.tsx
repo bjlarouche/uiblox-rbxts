@@ -16,10 +16,14 @@ function enumOptions(items: EnumItem[]) {
 	return items.map((item) => ({ label: item.Name, value: item.Name }));
 }
 
+let cachedFamilies: ReturnType<typeof enumFamilies> | undefined;
+
 function builtInFamilies() {
+	if (cachedFamilies !== undefined) return cachedFamilies;
 	const fonts = new Array<{ Family: string }>();
 	for (const item of Enum.Font.GetEnumItems()) fonts.push(Font.fromEnum(item));
-	return enumFamilies(fonts);
+	cachedFamilies = enumFamilies(fonts);
+	return cachedFamilies;
 }
 
 function FontEditor(props: CustomizedProps<Frame, FontEditorProps>) {
