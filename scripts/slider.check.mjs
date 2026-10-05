@@ -25,5 +25,8 @@ if (custom.join(",") !== "0,50") throw new Error(`custom marks ${custom.join(","
 if (!stateMatrix.some((row) => row.component === "Slider" && row.name.includes("marks"))) {
 	throw new Error("Slider missing marks matrix");
 }
+if (stateMatrix.filter((row) => row.component === "Slider" && row.name.includes("accent")).length !== 2) {
+	throw new Error("Slider missing accent");
+}
 
 console.log("slider ok");

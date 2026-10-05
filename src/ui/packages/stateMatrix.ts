@@ -159,6 +159,7 @@ function togglesRows(): StateCapture[] {
 		...pair("Slider", "density-compact", { value: 0.5, density: "compact", size: "small" }),
 		...pair("Slider", "disabled", { value: 0.5, disabled: true }),
 		...pair("Slider", "marks", { value: 0.5, marks: true }),
+		...pair("Slider", "accent", { value: 0.5, variant: "accent" }),
 		...pair("Slider", "hover", { value: 0.5, pointer: "hover" }),
 		...pair("Slider", "press", { value: 0.5, pointer: "press" }),
 		...pair("Slider", "focus", { value: 0.5, pointer: "focus" }),
