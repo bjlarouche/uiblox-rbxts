@@ -49,6 +49,7 @@ export * from "./table";
 export * from "./autocomplete";
 export * from "./fab";
 export * from "./appBar";
+export * from "./bottomNavigation";
 export * from "./listItem";
 export * from "./menu";
 

@@ -314,6 +314,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("AppBar", "flat", { text: "Storyblox", variant: "flat" }),
 	...pair("AppBar", "raised", { text: "Storyblox", variant: "raised" }),
 
+	...pair("BottomNavigation", "default", { value: "Home", options: ["Home", "Search", "Profile"] }),
+	...pair("BottomNavigation", "selected", { value: "Search", options: ["Home", "Search", "Profile"] }),
+	...pair("BottomNavigation", "disabled", { value: "Home", options: ["Home", "Search", "Profile"], disabled: true }),
 
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
