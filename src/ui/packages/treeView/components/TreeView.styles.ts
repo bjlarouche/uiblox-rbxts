@@ -38,7 +38,7 @@ const useTreeViewStyles = makeStyles((theme: Theme) => {
 			FillDirectionMaxCells: 1, // So that there is only one column
 			HorizontalAlignment: Enum.HorizontalAlignment.Center,
 			VerticalAlignment: Enum.VerticalAlignment.Top,
-			SortOrder: Enum.SortOrder.Name,
+			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIGridLayout>,
 		row: {
 			Text: "",
