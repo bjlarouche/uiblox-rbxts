@@ -102,6 +102,7 @@ export const stateMatrix: StateCapture[] = [
 
 	...pair("SplitPane", "default", { value: 160 }),
 	...pair("SplitPane", "disabled", { value: 160, disabled: true }),
+	...pair("SplitPane", "hover", { value: 160, pointer: "hover" }),
 	...pair("SplitPane", "drag", { value: 160, pointer: "press" }),
 	...pair("SplitPane", "long", { value: 80, text: LONG, width: NARROW }),
 
