@@ -6,8 +6,22 @@ import { autocompleteSearchable } from "./autocompleteSearchable";
 export type AutocompleteProps<T> = SelectProps<T>;
 
 function Autocomplete<T>(props: CustomizedProps<Frame, AutocompleteProps<T>>) {
-	const { value, values, options, onChange, disabled, placeholder, searchable, reducedMotion, size, className, sx, id, ref } =
-		props;
+	const {
+		value,
+		values,
+		options,
+		onChange,
+		disabled,
+		loading,
+		placeholder,
+		searchable,
+		reducedMotion,
+		size,
+		className,
+		sx,
+		id,
+		ref,
+	} = props;
 	return (
 		<Select
 			value={value}
@@ -15,6 +29,7 @@ function Autocomplete<T>(props: CustomizedProps<Frame, AutocompleteProps<T>>) {
 			options={options}
 			onChange={onChange}
 			disabled={disabled}
+			loading={loading}
 			placeholder={placeholder}
 			searchable={autocompleteSearchable(searchable)}
 			reducedMotion={reducedMotion}

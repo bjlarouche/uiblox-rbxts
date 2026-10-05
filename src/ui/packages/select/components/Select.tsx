@@ -3,6 +3,8 @@ import { GuiService, UserInputService } from "@rbxts/services";
 import { useReducedMotion } from "hooks";
 import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
+import { spinnerPixels } from "ui/packages/button/components/buttonLook";
+import { CircularProgress } from "ui/packages/circularProgress";
 import { Input } from "ui/packages/input";
 import { playProperty } from "ui/packages/motion";
 import { Popup } from "ui/packages/popup";
@@ -26,6 +28,7 @@ export interface SelectProps<T> {
 	options: ChoiceOption<T>[];
 	onChange: (value: T) => void;
 	disabled?: boolean;
+	loading?: boolean;
 	placeholder?: string;
 	searchable?: boolean;
 	reducedMotion?: boolean;
@@ -33,13 +36,13 @@ export interface SelectProps<T> {
 }
 
 function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
-	const { value, values, options, onChange, disabled, placeholder = "", searchable, reducedMotion: reducedProp, size, className,
+	const { value, values, options, onChange, disabled, loading = false, placeholder = "", searchable, reducedMotion: reducedProp, size, className,
 		sx, id, ref } = props;
 	const reducedMotion = useReducedMotion(reducedProp);
 	const styles = useSelectStyles({ size });
 	const { theme } = useTheme();
 	const row = controlMetrics(theme.density, size).height;
-	const active = canActivate(disabled);
+	const active = canActivate(disabled, loading);
 	const [anchor, setAnchor] = useState<TextButton>();
 	const [open, setOpen] = useState(false);
 	const [held, setHeld] = useState(false);
@@ -146,6 +149,13 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	}, [shown]);
 
 	useEffect(() => {
+		if (loading && open) {
+			setOpen(false);
+			setQuery("");
+		}
+	}, [loading, open]);
+
+	useEffect(() => {
 		const menu = menuRef.current;
 		if (!menu || !held) return;
 		const stop = playProperty(menu, { GroupTransparency: shown ? 0 : 1 }, 0.12, reducedMotion);
@@ -184,9 +194,26 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 					InputBegan: (_, input) => onKey(input, true),
 				}}
 			>
-				<uipadding {...styles.padding} />
+				<uipadding
+					{...cx<UIPadding>(
+						styles.padding,
+						loading && { PaddingRight: new UDim(0, theme.padding.calc(1.5) + spinnerPixels(size) + theme.padding.calc(1)) },
+					)}
+				/>
 				<uicorner {...styles.corner} />
 				<uistroke {...cx<UIStroke>(styles.stroke, focused && styles.focusStroke)} />
+				{loading && (
+					<CircularProgress
+						size={spinnerPixels(size)}
+						thickness={2}
+						color={theme.palette.text.secondary}
+						reducedMotion={reducedMotion}
+						className={{
+							AnchorPoint: new Vector2(1, 0.5),
+							Position: new UDim2(1, -theme.padding.calc(1), 0.5, 0),
+						}}
+					/>
+				)}
 			</textbutton>
 			{(shown || held) && (
 				<Popup anchor={anchor} preferredHeight={menuHeight} onDismiss={close} onInput={(input) => onKey(input, true)}>

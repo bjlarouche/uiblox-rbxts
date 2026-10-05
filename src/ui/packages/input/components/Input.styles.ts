@@ -14,6 +14,7 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean }>("Inpu
 			clearsTextOnFocus = false,
 			startAdornment,
 			endAdornment,
+			loading = false,
 			focused = false,
 			hasError = false,
 			size,
@@ -21,7 +22,7 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean }>("Inpu
 	) => {
 		const metrics = controlMetrics(theme.density, size);
 		const hasStart = startAdornment !== undefined;
-		const hasEnd = endAdornment !== undefined;
+		const hasEnd = endAdornment !== undefined || loading;
 		const icon = metrics.icon;
 		const gap = theme.padding.calc(1);
 		const insets = inputInsets(hasStart, hasEnd, icon, gap);
