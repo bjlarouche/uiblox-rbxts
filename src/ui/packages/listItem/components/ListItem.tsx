@@ -6,12 +6,13 @@ export interface ListItemProps {
 	secondary?: string;
 	selected?: boolean;
 	disabled?: boolean;
+	dense?: boolean;
 	onActivated?: () => void;
 }
 
 function ListItem(props: ListItemProps) {
-	const { text, secondary, selected = false, disabled = false, onActivated } = props;
-	const styles = useListItemStyles({ selected, disabled });
+	const { text, secondary, selected = false, disabled = false, dense = false, onActivated } = props;
+	const styles = useListItemStyles({ selected, disabled, dense });
 	return (
 		<textbutton
 			key="ListItem"

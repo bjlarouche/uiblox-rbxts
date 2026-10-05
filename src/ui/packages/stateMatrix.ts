@@ -255,6 +255,7 @@ function surfacesRows(): StateCapture[] {
 		...pair("ListItem", "selected", { value: true }),
 		...pair("ListItem", "disabled", { disabled: true }),
 		...pair("ListItem", "secondary", { variant: "secondary" }),
+		...pair("ListItem", "dense", { variant: "dense" }),
 		...pair("Card", "flat", { variant: "flat" }),
 		...pair("Card", "raised", { variant: "raised" }),
 		...pair("Chip", "default"),

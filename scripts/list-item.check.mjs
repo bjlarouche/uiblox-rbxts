@@ -5,7 +5,7 @@ const root = process.cwd();
 const { stateMatrix } = await import(pathToFileURL(join(root, "src/ui/packages/stateMatrix.ts")).href);
 
 for (const theme of ["Dark", "Light"]) {
-	for (const name of ["default", "selected", "disabled", "secondary"]) {
+	for (const name of ["default", "selected", "disabled", "secondary", "dense"]) {
 		const hit = stateMatrix.some(
 			(row) => row.component === "ListItem" && row.theme === theme && row.name.includes(`ListItem-${name}-`),
 		);
@@ -20,6 +20,9 @@ if (!stateMatrix.some((row) => row.component === "ListItem" && row.disabled === 
 }
 if (!stateMatrix.some((row) => row.component === "ListItem" && row.variant === "secondary")) {
 	throw new Error("ListItem missing secondary");
+}
+if (!stateMatrix.some((row) => row.component === "ListItem" && row.variant === "dense")) {
+	throw new Error("ListItem missing dense");
 }
 
 console.log("list item ok");
