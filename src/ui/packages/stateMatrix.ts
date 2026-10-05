@@ -331,6 +331,7 @@ function miscRows(): StateCapture[] {
 	return [
 		...pair("BottomNavigation", "selected", { value: "Search", options: ["Home", "Search", "Profile"] }),
 		...pair("BottomNavigation", "disabled", { value: "Home", options: ["Home", "Search", "Profile"], disabled: true }),
+		...pair("BottomNavigation", "icons", { value: "Home", options: ["Home", "Search", "Profile"], variant: "icons" }),
 		...pair("Alert", "info", { text: "Heads up", variant: "info" }),
 		...pair("Alert", "success", { text: "Saved", variant: "success" }),
 		...pair("Alert", "warning", { text: "Check this", variant: "warning" }),
