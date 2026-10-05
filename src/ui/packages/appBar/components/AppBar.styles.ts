@@ -1,14 +1,20 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
 export type AppBarElevation = "flat" | "raised";
+export type AppBarColor = "default" | "primary";
 
-const useAppBarStyles = componentStyles<{ elevation?: AppBarElevation; hasActions?: boolean }>(
+const useAppBarStyles = componentStyles<{ elevation?: AppBarElevation; color?: AppBarColor; hasActions?: boolean }>(
 	"AppBar",
-	(theme: Theme, { elevation = "raised", hasActions = false }) =>
+	(theme: Theme, { elevation = "raised", color = "default", hasActions = false }) =>
 		createStyles({
 			root: {
 				Size: new UDim2(1, 0, 0, theme.spacing.calc(7)),
-				BackgroundColor3: elevation === "raised" ? theme.palette.surface.elevated : theme.palette.surface.paper,
+				BackgroundColor3:
+					color === "primary"
+						? theme.palette.primary.main
+						: elevation === "raised"
+							? theme.palette.surface.elevated
+							: theme.palette.surface.paper,
 				BorderSizePixel: 0,
 				ZIndex: 11000,
 			} as WriteableStyle<Frame>,
@@ -22,7 +28,7 @@ const useAppBarStyles = componentStyles<{ elevation?: AppBarElevation; hasAction
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
 				TextSize: theme.typography.fontSizes.h3 ?? theme.typography.fontSizes.body,
-				TextColor3: theme.palette.text.primary,
+				TextColor3: color === "primary" ? theme.palette.primary.on : theme.palette.text.primary,
 				TextXAlignment: Enum.TextXAlignment.Left,
 				TextYAlignment: Enum.TextYAlignment.Center,
 				TextTruncate: Enum.TextTruncate.AtEnd,
