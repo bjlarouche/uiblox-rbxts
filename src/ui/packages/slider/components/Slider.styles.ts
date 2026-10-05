@@ -38,6 +38,14 @@ const useSliderStyles = componentStyles<SliderStyleProps>("Slider", (theme: Them
 			Thickness: 2,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
+		mark: {
+			Size: new UDim2(0, 2, 0, metrics.sliderTrack + 4),
+			AnchorPoint: new Vector2(0.5, 0.5),
+			BackgroundColor3: theme.palette.text.secondary,
+			BackgroundTransparency: 0.35,
+			BorderSizePixel: 0,
+			ZIndex: 1,
+		} as WriteableStyle<Frame>,
 	});
 });
 

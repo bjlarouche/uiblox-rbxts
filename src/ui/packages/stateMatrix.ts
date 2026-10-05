@@ -28,6 +28,7 @@ export interface StateCapture {
 	size?: StateSize;
 	density?: StateDensity;
 	row?: boolean;
+	marks?: boolean;
 }
 
 const LONG = "Save changes to this story before publishing the preview";
@@ -155,6 +156,7 @@ function togglesRows(): StateCapture[] {
 		...pair("Slider", "size-large", { value: 0.5, size: "large" }),
 		...pair("Slider", "density-compact", { value: 0.5, density: "compact", size: "small" }),
 		...pair("Slider", "disabled", { value: 0.5, disabled: true }),
+		...pair("Slider", "marks", { value: 0.5, marks: true }),
 		...pair("Slider", "hover", { value: 0.5, pointer: "hover" }),
 		...pair("Slider", "press", { value: 0.5, pointer: "press" }),
 		...pair("Slider", "focus", { value: 0.5, pointer: "focus" }),

@@ -3,6 +3,7 @@ import { ControlSize, cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { commitNumber } from "ui/packages/numberInput/components/numberValue";
 import useSliderStyles from "./Slider.styles";
+import { sliderMarkValues } from "./sliderMarks";
 import { isSliderDrag, isSliderMove, nudgeDelta, nudgeValue } from "./sliderNudge";
 
 export interface SliderProps {
@@ -14,12 +15,12 @@ export interface SliderProps {
 	step?: number;
 	disabled?: boolean;
 	size?: ControlSize;
+	marks?: boolean | ReadonlyArray<number>;
 }
 
 function Slider(props: CustomizedProps<Frame, SliderProps>) {
-	const { value, onChange, onCommit, min, max, step, disabled, size, className,
-		sx, id, ref } = props;
-	const { root, track, fill, knob, corner, stroke } = useSliderStyles({ size });
+	const { value, onChange, onCommit, min, max, step, disabled, size, marks, className, sx, id, ref } = props;
+	const { root, track, fill, knob, corner, stroke, mark } = useSliderStyles({ size });
 	const active = canActivate(disabled);
 	const [focused, setFocused] = useState(false);
 	const [hovering, setHovering] = useState(false);
@@ -29,6 +30,8 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 	const ratio = max > min ? (math.clamp(value, min, max) - min) / (max - min) : 0;
 	const faded = disabled === true;
 	const showFocus = focused && active;
+	const markValues = sliderMarkValues(min, max, step, marks);
+	const span = max - min;
 
 	const update = (rbx: Frame, x: number) => {
 		const width = rbx.AbsoluteSize.X;
@@ -60,7 +63,8 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 			key={id || "Slider"}
 			ref={ref}
 			{...root}
-			{...className} {...sx}
+			{...className}
+			{...sx}
 			Active={active}
 			Selectable={active}
 			BackgroundTransparency={showFocus ? 0.85 : 1}
@@ -105,6 +109,17 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 			>
 				<uicorner {...corner} />
 				{showFocus && <uistroke {...stroke} />}
+				{markValues.map((markValue, index) => {
+					const markRatio = span > 0 ? (markValue - min) / span : 0;
+					return (
+						<frame
+							key={`Mark-${index}`}
+							{...mark}
+							Position={UDim2.fromScale(markRatio, 0.5)}
+							BackgroundTransparency={faded ? 0.7 : 0.35}
+						/>
+					);
+				})}
 				<frame
 					key="Fill"
 					{...cx<Frame>(fill, { BackgroundTransparency: faded ? 0.55 : pressed ? 0.1 : 0 })}
