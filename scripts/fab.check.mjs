@@ -10,7 +10,7 @@ if (fabExtended() !== false || fabExtended("") !== false || fabExtended("Compose
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["default", "extended", "small", "large", "disabled", "loading"]) {
+for (const name of ["default", "extended", "small", "large", "disabled", "loading", "accent"]) {
 	if (!stateMatrix.some((row) => row.component === "Fab" && row.name.includes(name))) {
 		throw new Error(`Fab missing ${name}`);
 	}
