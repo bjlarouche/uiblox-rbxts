@@ -1,6 +1,7 @@
 import React, { useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
-import { accordionOpen } from "./accordionOpen";
+import { Icons } from "ui/enums";
+import { accordionGlyph, accordionOpen } from "./accordionOpen";
 import useAccordionStyles from "./Accordion.styles";
 
 export interface AccordionProps {
@@ -32,6 +33,11 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 			<textbutton key="Header" {...styles.header} Event={{ Activated: toggle }}>
 				<uipadding {...styles.padding} />
 				<textlabel key="Title" {...styles.title} Text={title} />
+				<imagelabel
+					key="Icon"
+					{...styles.icon}
+					Image={accordionGlyph(open) === "expanded" ? Icons.Expanded : Icons.Collapsed}
+				/>
 			</textbutton>
 			<frame key="Body" {...styles.body}>
 				<uipadding {...styles.padding} />

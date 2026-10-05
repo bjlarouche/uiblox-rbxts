@@ -24,8 +24,8 @@ const useAccordionStyles = componentStyles<{ open?: boolean; disabled?: boolean 
 			Selectable: disabled !== true,
 		} as WriteableStyle<TextButton>,
 		title: {
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, -theme.spacing.calc(4), 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			Font: theme.typography.fontFamilies.default,
@@ -34,6 +34,16 @@ const useAccordionStyles = componentStyles<{ open?: boolean; disabled?: boolean 
 			TextTransparency: disabled === true ? 0.5 : 0,
 			TextXAlignment: Enum.TextXAlignment.Left,
 		} as WriteableStyle<TextLabel>,
+		icon: {
+			Size: UDim2.fromOffset(theme.options.constants.iconSizes.small, theme.options.constants.iconSizes.small),
+			Position: new UDim2(1, -theme.padding.calc(1.5), 0.5, 0),
+			AnchorPoint: new Vector2(1, 0.5),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+			ScaleType: Enum.ScaleType.Fit,
+			ImageColor3: theme.palette.text.primary,
+			ImageTransparency: disabled === true ? 0.5 : 0,
+		} as WriteableStyle<ImageLabel>,
 		padding: {
 			PaddingTop: new UDim(0, theme.padding.calc(1)),
 			PaddingBottom: new UDim(0, theme.padding.calc(1)),
