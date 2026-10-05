@@ -4,7 +4,6 @@ import { canActivate } from "ui/packages/button/components/activation";
 import useCheckboxStyles from "./Checkbox.styles";
 import {
 	checkboxBoxTransparency,
-	checkboxFilled,
 	checkboxMark,
 	checkboxPointer,
 	checkboxStrokeTransparency,
@@ -27,7 +26,7 @@ function Checkbox(props: CustomizedProps<TextButton, CheckboxProps>) {
 	const [pressed, setPressed] = useState(false);
 	const [focused, setFocused] = useState(false);
 	const active = canActivate(disabled);
-	const filled = checkboxFilled(value, mixed);
+	const filled = value === true || mixed === true;
 	const pointer = active ? checkboxPointer(hovering, pressed, focused) : "rest";
 	const boxTransparency = checkboxBoxTransparency(filled, disabled === true, pointer);
 	const strokeTransparency = checkboxStrokeTransparency(filled, disabled === true, pointer);

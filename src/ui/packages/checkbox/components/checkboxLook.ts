@@ -1,9 +1,5 @@
 export type CheckboxPointer = "rest" | "hover" | "press" | "focus";
 
-export function checkboxFilled(value: boolean, mixed?: boolean) {
-	return value === true || mixed === true;
-}
-
 export function checkboxMark(value: boolean, mixed?: boolean) {
 	if (mixed === true) return "–";
 	return value ? "✓" : "";

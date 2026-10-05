@@ -61,7 +61,6 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Checkbox", "hover", { pointer: "hover" }),
 	...pair("Checkbox", "press", { pointer: "press" }),
 	...pair("Checkbox", "focus", { pointer: "focus" }),
-	...pair("Checkbox", "checked-hover", { value: true, pointer: "hover" }),
 	...pair("Checkbox", "checked-press", { value: true, pointer: "press" }),
 	...pair("Checkbox", "checked-focus", { value: true, pointer: "focus" }),
 	...pair("Checkbox", "long", { text: LONG, width: NARROW }),

@@ -16,10 +16,9 @@ const useCheckboxStyles = makeStyles((theme) =>
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		box: {
-			Size: UDim2.fromOffset(theme.spacing.calc(1.5), theme.spacing.calc(1.5)),
+			Size: UDim2.fromOffset(theme.spacing.calc(2), theme.spacing.calc(2)),
 			BackgroundColor3: theme.palette.background.paper,
 			BorderSizePixel: 0,
-			ClipsDescendants: true,
 		} as WriteableStyle<Frame>,
 		mark: {
 			Size: UDim2.fromScale(1, 1),
@@ -44,7 +43,6 @@ const useCheckboxStyles = makeStyles((theme) =>
 			CornerRadius: new UDim(0, theme.shape.borderRadius),
 		} as WriteableStyle<UICorner>,
 		stroke: {
-			Color: theme.palette.divider,
 			Thickness: 1,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
