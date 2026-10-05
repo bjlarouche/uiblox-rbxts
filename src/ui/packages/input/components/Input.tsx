@@ -29,6 +29,17 @@ export interface InputProps {
 	onEnterPressed?: (text: string) => void;
 }
 
+function adornmentAlign() {
+	return (
+		<uilistlayout
+			FillDirection={Enum.FillDirection.Horizontal}
+			HorizontalAlignment={Enum.HorizontalAlignment.Center}
+			VerticalAlignment={Enum.VerticalAlignment.Center}
+			SortOrder={Enum.SortOrder.LayoutOrder}
+		/>
+	);
+}
+
 function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const {
 		text,
@@ -73,6 +84,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 					{showCorner && <uicorner {...corner} />}
 					{startAdornment !== undefined && (
 						<frame key="Start" {...startSlot}>
+							{adornmentAlign()}
 							{startAdornment}
 						</frame>
 					)}
@@ -116,6 +128,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 					/>
 					{endAdornment !== undefined && (
 						<frame key="End" {...endSlot}>
+							{adornmentAlign()}
 							{endAdornment}
 						</frame>
 					)}
