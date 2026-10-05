@@ -3,20 +3,20 @@ import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 const useSkeletonStyles = componentStyles("Skeleton", (theme: Theme) =>
 	createStyles({
 		block: {
-			BackgroundColor3: theme.palette.action.hover,
+			BackgroundColor3: theme.palette.divider,
 			BackgroundTransparency: 0,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		highlight: {
 			Color: new ColorSequence([
-				new ColorSequenceKeypoint(0, theme.palette.action.hover),
+				new ColorSequenceKeypoint(0, theme.palette.divider),
 				new ColorSequenceKeypoint(0.5, theme.palette.text.secondary),
-				new ColorSequenceKeypoint(1, theme.palette.action.hover),
+				new ColorSequenceKeypoint(1, theme.palette.divider),
 			]),
 			Transparency: new NumberSequence([
-				new NumberSequenceKeypoint(0, 0.35),
+				new NumberSequenceKeypoint(0, 0.25),
 				new NumberSequenceKeypoint(0.5, 0),
-				new NumberSequenceKeypoint(1, 0.35),
+				new NumberSequenceKeypoint(1, 0.25),
 			]),
 		} as WriteableStyle<UIGradient>,
 		rounded: {
