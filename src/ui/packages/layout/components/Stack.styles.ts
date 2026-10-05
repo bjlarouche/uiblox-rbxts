@@ -7,6 +7,8 @@ import {
 	stackGap,
 	stackIsRow,
 	stackJustifyKey,
+	stackNeedsMainFill,
+	stackRootAutomaticSize,
 	stackUsesFlex,
 } from "./stackAlign";
 
@@ -29,29 +31,52 @@ function mainFlex(justify: StackJustify): Enum.UIFlexAlignment {
 	return Enum.UIFlexAlignment.None;
 }
 
+function lineAlign(align: StackAlign): Enum.ItemLineAlignment {
+	if (align === "center") return Enum.ItemLineAlignment.Center;
+	if (align === "end") return Enum.ItemLineAlignment.End;
+	if (align === "stretch") return Enum.ItemLineAlignment.Stretch;
+	return Enum.ItemLineAlignment.Start;
+}
+
+function automaticSize(key: "XY" | "X" | "Y"): Enum.AutomaticSize {
+	if (key === "X") return Enum.AutomaticSize.X;
+	if (key === "Y") return Enum.AutomaticSize.Y;
+	return Enum.AutomaticSize.XY;
+}
+
 const useStackStyles = componentStyles<{
 	direction?: StackDirection;
 	spacing?: number;
+	gap?: number;
+	wrap?: boolean;
 	alignItems?: StackAlign;
 	justifyContent?: StackJustify;
-}>("Stack", (theme: Theme, { direction, spacing, alignItems, justifyContent }) => {
+}>("Stack", (theme: Theme, { direction, spacing, gap, wrap, alignItems, justifyContent }) => {
 	const row = stackIsRow(direction);
 	const cross = stackAlignKey(alignItems);
 	const main = stackJustifyKey(justifyContent);
 	const flex = stackUsesFlex(main) ? mainFlex(main) : Enum.UIFlexAlignment.None;
+	const fillMain = stackNeedsMainFill(wrap, main);
+	const auto = stackRootAutomaticSize(row, fillMain);
 	return createStyles({
 		root: {
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: automaticSize(auto),
+			Size: fillMain
+				? row
+					? new UDim2(1, 0, 0, 0)
+					: new UDim2(0, 0, 1, 0)
+				: UDim2.fromScale(0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		list: {
 			FillDirection: row ? Enum.FillDirection.Horizontal : Enum.FillDirection.Vertical,
 			SortOrder: Enum.SortOrder.LayoutOrder,
-			Padding: new UDim(0, theme.spacing.calc(stackGap(spacing))),
-			HorizontalAlignment: row ? horizontalAlign(main) : horizontalAlign(cross),
-			VerticalAlignment: row ? verticalAlign(cross) : verticalAlign(main),
+			Padding: new UDim(0, theme.spacing.calc(stackGap(spacing, gap))),
+			Wraps: wrap === true,
+			ItemLineAlignment: lineAlign(cross),
+			HorizontalAlignment: row ? horizontalAlign(main) : horizontalAlign(cross === "stretch" ? "start" : cross),
+			VerticalAlignment: row ? verticalAlign(cross === "stretch" ? "start" : cross) : verticalAlign(main),
 			HorizontalFlex: row ? flex : Enum.UIFlexAlignment.None,
 			VerticalFlex: row ? Enum.UIFlexAlignment.None : flex,
 		} as WriteableStyle<UIListLayout>,
