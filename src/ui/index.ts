@@ -25,6 +25,12 @@ export { GridProps } from "./packages";
 export { List } from "./packages";
 export { ListProps } from "./packages";
 
+export { VirtualList } from "./packages";
+export { VirtualListProps } from "./packages";
+export { VirtualListHandle } from "./packages";
+export { VirtualListItemState } from "./packages";
+export { VirtualListAlign } from "./packages";
+
 export { Preloader } from "./packages";
 export { PreloaderProps } from "./packages";
 export { PreloaderAssets as Assets } from "./packages";
