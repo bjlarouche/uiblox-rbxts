@@ -66,6 +66,16 @@ const useSelectStyles = componentStyles<SelectStyleProps>("Select", (theme: Them
 		highlighted: {
 			BackgroundTransparency: 0.6,
 		} as WriteableStyle<TextButton>,
+		group: {
+			Size: UDim2.fromScale(1, 1),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+			TextColor3: theme.palette.text.secondary,
+			Font: theme.typography.fontFamilies.default,
+			TextSize: metrics.font,
+			TextXAlignment: Enum.TextXAlignment.Left,
+			ZIndex: 20002,
+		} as WriteableStyle<TextLabel>,
 		disabledOption: {
 			TextTransparency: 0.5,
 		} as WriteableStyle<TextButton>,

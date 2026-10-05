@@ -7,6 +7,7 @@ export interface ChoiceOption<T> {
 	label: string;
 	value: T;
 	disabled?: boolean;
+	group?: string;
 }
 
 export interface RadioGroupProps<T> {
