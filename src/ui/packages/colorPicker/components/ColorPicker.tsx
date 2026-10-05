@@ -1,15 +1,20 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { UserInputService } from "@rbxts/services";
+import { CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Input } from "ui/packages/input";
 import { NumberInput } from "ui/packages/numberInput";
+import { Popup } from "ui/packages/popup";
 import useColorPickerStyles from "./ColorPicker.styles";
 import {
 	byteToUnit,
 	channelToByte,
+	colorBytes,
 	colorToHex,
 	hsvToColor3,
 	parseHex,
+	recentColors,
+	rememberColor,
 	resolveHsv,
 	sameColor,
 } from "./colorValue";
@@ -38,17 +43,17 @@ function pointerInput(input: InputObject) {
 	);
 }
 
-function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
-	const { value, onChange, disabled, className, id, ref } = props;
+function ColorPanel(props: { value: Color3; onChange: (value: Color3) => void; disabled?: boolean }) {
+	const { value, onChange, disabled } = props;
 	const styles = useColorPickerStyles();
 	const active = canActivate(disabled);
 	const hsvRef = useRef(resolveHsv(value));
 	const [hsv, setHsv] = useState(hsvRef.current);
 	const [hexDraft, setHexDraft] = useState(colorToHex(value));
 	const [hexFault, setHexFault] = useState(false);
-	const [focused, setFocused] = useState(false);
 	const dragging = useRef<"plane" | "hue" | undefined>(undefined);
 	const latest = useRef(value);
+	const recents = recentColors();
 
 	useEffect(() => {
 		if (sameColor(value, latest.current)) return;
@@ -112,18 +117,7 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 	);
 
 	return (
-		<frame
-			key={id || "ColorPicker"}
-			ref={ref}
-			{...styles.root}
-			{...className}
-			BackgroundTransparency={focused && active ? 0.85 : 1}
-			Selectable={active}
-			Event={{
-				SelectionGained: () => setFocused(true),
-				SelectionLost: () => setFocused(false),
-			}}
-		>
+		<frame key="Panel" {...styles.root} BackgroundTransparency={1} Selectable={false}>
 			<uilistlayout {...styles.column} />
 			<frame key="Header" {...styles.row} LayoutOrder={1}>
 				<uilistlayout {...styles.rowLayout} />
@@ -181,9 +175,6 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 					InputEnded: (_, input) => {
 						if (pointerInput(input)) dragging.current = undefined;
 					},
-					MouseLeave: () => {
-						dragging.current = undefined;
-					},
 				}}
 			>
 				<uicorner {...styles.corner} />
@@ -222,9 +213,6 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 					InputEnded: (_, input) => {
 						if (pointerInput(input)) dragging.current = undefined;
 					},
-					MouseLeave: () => {
-						dragging.current = undefined;
-					},
 				}}
 			>
 				<uicorner {...styles.corner} />
@@ -245,6 +233,126 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 					emit(resolveHsv(new Color3(value.R, value.G, byteToUnit(byte)), hsvRef.current)),
 				)}
 			</frame>
+			{recents.size() > 0 && (
+				<frame key="Recent" {...styles.recent} LayoutOrder={5}>
+					<uilistlayout {...styles.rowLayout} />
+					{recents.map((color, index) => (
+						<textbutton
+							key={`Recent-${index}`}
+							{...styles.recentChip}
+							BackgroundColor3={color}
+							LayoutOrder={index}
+							Event={{
+								Activated: () => {
+									if (active) emit(resolveHsv(color, hsvRef.current));
+								},
+							}}
+						>
+							<uicorner {...styles.corner} />
+							<uistroke {...styles.swatchStroke} />
+						</textbutton>
+					))}
+				</frame>
+			)}
+		</frame>
+	);
+}
+
+function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
+	const { value, onChange, disabled, className, id, ref } = props;
+	const styles = useColorPickerStyles();
+	const { theme } = useTheme();
+	const active = canActivate(disabled);
+	const [anchor, setAnchor] = useState<TextButton>();
+	const [open, setOpen] = useState(false);
+	const [hexDraft, setHexDraft] = useState(colorToHex(value));
+	const [hexFault, setHexFault] = useState(false);
+	const shown = open && active;
+
+	useEffect(() => {
+		setHexDraft(colorToHex(value));
+		setHexFault(false);
+	}, [value]);
+
+	const close = () => {
+		rememberColor(value);
+		setOpen(false);
+	};
+
+	useEffect(() => {
+		if (!shown) return;
+		const connection = UserInputService.InputBegan.Connect((input) => {
+			if (input.KeyCode === Enum.KeyCode.Escape || input.KeyCode === Enum.KeyCode.ButtonB) close();
+		});
+		return () => connection.Disconnect();
+	}, [shown, value]);
+
+	return (
+		<frame key={id || "ColorPicker"} ref={ref} {...styles.field} {...className}>
+			<uilistlayout {...styles.rowLayout} />
+			<textbutton
+				key="Swatch"
+				ref={setAnchor}
+				{...styles.swatchButton}
+				BackgroundColor3={value}
+				LayoutOrder={1}
+				Active={active}
+				Selectable={active}
+				Event={{
+					Activated: () => {
+						if (!active) return;
+						if (shown) close();
+						else setOpen(true);
+					},
+				}}
+			>
+				<uicorner {...styles.corner} />
+				<uistroke {...styles.swatchStroke} />
+			</textbutton>
+			<frame key="Value" {...styles.value} LayoutOrder={2}>
+				<Input
+					text={hexDraft}
+					placeholder={colorBytes(value)}
+					disabled={disabled}
+					hasError={hexFault}
+					width={new UDim(1, 0)}
+					onInput={(text) => {
+						setHexDraft(text);
+						const parsed = parseHex(text);
+						if (parsed === undefined) {
+							setHexFault(text.size() > 0);
+							return;
+						}
+						setHexFault(false);
+						onChange(parsed);
+					}}
+					onTextChanged={(text) => {
+						const parsed = parseHex(text);
+						if (parsed === undefined) {
+							setHexFault(false);
+							setHexDraft(colorToHex(value));
+							return;
+						}
+						setHexFault(false);
+						onChange(parsed);
+					}}
+				/>
+			</frame>
+			{shown && (
+				<Popup
+					anchor={anchor}
+					preferredWidth={theme.spacing.calc(18)}
+					preferredHeight={theme.spacing.calc(20)}
+					onDismiss={close}
+				>
+					<frame key="Shell" {...styles.shell}>
+						<uicorner {...styles.corner} />
+						<uistroke {...styles.swatchStroke} />
+						<uipadding {...styles.shellPad} />
+						<ColorPanel value={value} disabled={disabled} onChange={onChange} />
+					</frame>
+				</Popup>
+			)}
 		</frame>
 	);
 }

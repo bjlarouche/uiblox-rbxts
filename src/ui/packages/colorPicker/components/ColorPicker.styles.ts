@@ -88,6 +88,52 @@ const useColorPickerStyles = makeStyles((theme: Theme) =>
 			Size: new UDim2(1, -theme.spacing.calc(1), 1, 0),
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
+		field: {
+			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
+		swatchButton: {
+			Size: UDim2.fromOffset(theme.spacing.calc(2), theme.spacing.calc(2)),
+			BorderSizePixel: 0,
+			AutoButtonColor: false,
+			Text: "",
+		} as WriteableStyle<TextButton>,
+		value: {
+			Size: new UDim2(1, -theme.spacing.calc(3), 1, 0),
+			BackgroundTransparency: 1,
+		} as WriteableStyle<Frame>,
+		shell: {
+			Size: UDim2.fromScale(1, 1),
+			BackgroundColor3: theme.palette.surface.elevated,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
+		shellPad: {
+			PaddingTop: new UDim(0, theme.padding.calc(1)),
+			PaddingBottom: new UDim(0, theme.padding.calc(1)),
+			PaddingLeft: new UDim(0, theme.padding.calc(1)),
+			PaddingRight: new UDim(0, theme.padding.calc(1)),
+		} as WriteableStyle<UIPadding>,
+		recent: {
+			Size: new UDim2(1, 0, 0, theme.spacing.calc(1.5)),
+			BackgroundTransparency: 1,
+		} as WriteableStyle<Frame>,
+		recentChip: {
+			Size: UDim2.fromOffset(theme.spacing.calc(1.5), theme.spacing.calc(1.5)),
+			BorderSizePixel: 0,
+			AutoButtonColor: false,
+			Text: "",
+		} as WriteableStyle<TextButton>,
+		link: {
+			Size: new UDim2(0, 0, 0, theme.spacing.calc(1.5)),
+			AutomaticSize: Enum.AutomaticSize.X,
+			BackgroundTransparency: 1,
+			AutoButtonColor: false,
+			Font: theme.typography.fontFamilies.default,
+			TextSize: theme.typography.fontSizes.caption,
+			TextColor3: theme.palette.text.secondary,
+			TextXAlignment: Enum.TextXAlignment.Left,
+		} as WriteableStyle<TextButton>,
 	}),
 );
 

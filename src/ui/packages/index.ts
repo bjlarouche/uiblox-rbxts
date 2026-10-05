@@ -17,6 +17,7 @@ export * from "./typography";
 export * from "./button";
 export * from "./checkbox";
 export * from "./colorPicker";
+export * from "./fontEditor";
 export * from "./loadingStroke";
 export * from "./numberInput";
 export * from "./udimEditor";

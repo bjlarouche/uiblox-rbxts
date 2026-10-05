@@ -126,6 +126,19 @@ String.prototype.size = function size() {
 String.prototype.sub = function sub(from, to) {
 	return this.substring(from - 1, to);
 };
+String.prototype.lower = function lower() {
+	return this.toLowerCase();
+};
+String.prototype.find = function find(needle, start = 1, _plain) {
+	const index = this.indexOf(needle, start - 1);
+	return index < 0 ? [undefined] : [index + 1];
+};
+Array.prototype.size = function size() {
+	return this.length;
+};
+Array.prototype.insert = function insert(at, value) {
+	this.splice(at, 0, value);
+};
 globalThis.Color3 = class Color3 {
 	constructor(r = 0, g = 0, b = 0) {
 		this.R = r;
@@ -176,10 +189,13 @@ if (commitNumber(Infinity) !== undefined) throw new Error("inf never commits");
 const {
 	byteToUnit,
 	channelToByte,
+	colorBytes,
 	colorToHex,
 	hsvToRgb,
 	parseByte,
 	parseHex,
+	recentColors,
+	rememberColor,
 	resolveHsv,
 	rgbToHsv,
 	sameColor,
@@ -201,6 +217,98 @@ if (parseByte("12") !== 12) throw new Error("byte commits");
 const painted = parseHex("#FF0000");
 if (!sameColor(painted, new Color3(1, 0, 0))) throw new Error("hex red");
 if (colorToHex(new Color3(1, 0, 0)) !== "#FF0000") throw new Error("hex format");
+if (colorBytes(new Color3(1, 0, 0)) !== "255, 0, 0") throw new Error("color bytes");
+rememberColor(new Color3(1, 0, 0));
+rememberColor(new Color3(0, 1, 0));
+if (recentColors().length !== 2 || !sameColor(recentColors()[0], new Color3(0, 1, 0))) throw new Error("recent colors");
+
+globalThis.ColorSequenceKeypoint = class ColorSequenceKeypoint {
+	constructor(time, color) {
+		this.Time = time;
+		this.Value = color;
+	}
+};
+globalThis.ColorSequence = class ColorSequence {
+	constructor(keys) {
+		this.Keypoints = keys;
+	}
+};
+globalThis.NumberSequenceKeypoint = class NumberSequenceKeypoint {
+	constructor(time, value, envelope = 0) {
+		this.Time = time;
+		this.Value = value;
+		this.Envelope = envelope;
+	}
+};
+globalThis.NumberSequence = class NumberSequence {
+	constructor(keys) {
+		this.Keypoints = keys;
+	}
+};
+
+const {
+	hitStop,
+	insertColorStop,
+	insertNumberStop,
+	lerpColor,
+	patchColorStop,
+	readColorStops,
+	removeColorStop,
+	removeNumberStop,
+	sampleColor,
+	writeColorStops,
+	writeNumberStops,
+} = await import(pathToFileURL(join(root, "src/ui/packages/colorPicker/components/sequenceValue.ts")).href);
+const mixed = lerpColor(new Color3(0, 0, 0), new Color3(1, 1, 1), 0.5);
+if (Math.abs(mixed.R - 0.5) > 1e-6) throw new Error("lerp color");
+const stops = [
+	{ t: 0, color: new Color3(1, 0, 0) },
+	{ t: 1, color: new Color3(0, 0, 1) },
+];
+const sampled = sampleColor(stops, 0.5);
+if (Math.abs(sampled.B - 0.5) > 1e-6) throw new Error("sample color");
+const three = insertColorStop(stops, 0.25);
+if (three.length !== 3 || Math.abs(three[1].t - 0.25) > 1e-6) throw new Error("insert color stop");
+if (removeColorStop(three, 1).length !== 2) throw new Error("remove color stop");
+if (removeColorStop(three, 0).length !== 3) throw new Error("keep end stops");
+const patched = patchColorStop(three, 1, { color: new Color3(0, 1, 0) });
+if (!sameColor(patched[1].color, new Color3(0, 1, 0))) throw new Error("patch color stop");
+const written = writeColorStops(stops);
+if (readColorStops(written).length !== 2) throw new Error("color sequence roundtrip");
+if (hitStop([0, 0.5, 1], 0.52, 0.04) !== 1) throw new Error("hit stop");
+if (hitStop([0, 1], 0.4, 0.04) !== -1) throw new Error("miss stop");
+const numbers = [
+	{ t: 0, value: 0, envelope: 0 },
+	{ t: 1, value: 1, envelope: 0 },
+];
+const added = insertNumberStop(numbers, 0.5);
+if (added.length !== 3 || Math.abs(added[1].value - 0.5) > 1e-6) throw new Error("insert number stop");
+if (removeNumberStop(added, 1).length !== 2) throw new Error("remove number stop");
+if (writeNumberStops(numbers).Keypoints.length !== 2) throw new Error("number sequence write");
+
+const { familyLabel, uniqueFamilies } = await import(
+	pathToFileURL(join(root, "src/ui/packages/fontEditor/components/fontValue.ts")).href
+);
+if (familyLabel("rbxasset://fonts/families/Gotham.json") !== "Gotham") throw new Error("family label");
+const families = uniqueFamilies([
+	"rbxasset://fonts/families/Gotham.json",
+	"rbxasset://fonts/families/Gotham.json",
+	"rbxasset://fonts/families/BuilderSans.json",
+]);
+if (families.length !== 2 || families[0].label !== "BuilderSans") throw new Error("unique families");
+
+const { filterChoices, usesSelectSearch } = await import(
+	pathToFileURL(join(root, "src/ui/packages/select/components/selectFilter.ts")).href
+);
+if (!usesSelectSearch(9) || usesSelectSearch(3) || usesSelectSearch(20, false)) throw new Error("select search gate");
+const hits = filterChoices(
+	[
+		{ label: "SourceSans", value: "SourceSans" },
+		{ label: "Gotham", value: "Gotham" },
+	],
+	"goth",
+);
+if (hits.length !== 1 || hits[0].value !== "Gotham") throw new Error("select filter");
 
 const { readAxis, writeUDim, writeUDim2, writeVector2, writeVector3 } = await import(
 	pathToFileURL(join(root, "src/ui/packages/vectorEditor/components/vectorValue.ts")).href,
