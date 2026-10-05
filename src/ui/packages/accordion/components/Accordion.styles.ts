@@ -1,6 +1,6 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
-const useAccordionStyles = componentStyles<{ open?: boolean }>("Accordion", (theme: Theme, { open = false }) =>
+const useAccordionStyles = componentStyles<{ open?: boolean; disabled?: boolean }>("Accordion", (theme: Theme, { open = false, disabled }) =>
 	createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.Y,
@@ -20,8 +20,8 @@ const useAccordionStyles = componentStyles<{ open?: boolean }>("Accordion", (the
 			BorderSizePixel: 0,
 			AutoButtonColor: false,
 			Text: "",
-			Active: true,
-			Selectable: true,
+			Active: disabled !== true,
+			Selectable: disabled !== true,
 		} as WriteableStyle<TextButton>,
 		title: {
 			AutomaticSize: Enum.AutomaticSize.XY,
@@ -31,6 +31,7 @@ const useAccordionStyles = componentStyles<{ open?: boolean }>("Accordion", (the
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.body,
 			TextColor3: theme.palette.text.primary,
+			TextTransparency: disabled === true ? 0.5 : 0,
 			TextXAlignment: Enum.TextXAlignment.Left,
 		} as WriteableStyle<TextLabel>,
 		padding: {

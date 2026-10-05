@@ -7,17 +7,19 @@ export interface AccordionProps {
 	title: string;
 	open?: boolean;
 	defaultOpen?: boolean;
+	disabled?: boolean;
 	onChange?: (open: boolean) => void;
 	children?: React.ReactNode;
 }
 
 function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
-	const { title, open: controlled, defaultOpen, onChange, children, className, sx, id, ref } = props;
+	const { title, open: controlled, defaultOpen, disabled, onChange, children, className, sx, id, ref } = props;
 	const [localOpen, setLocalOpen] = useState(defaultOpen === true);
 	const open = accordionOpen(localOpen, controlled);
-	const styles = useAccordionStyles({ open });
+	const styles = useAccordionStyles({ open, disabled });
 
 	const toggle = () => {
+		if (disabled === true) return;
 		const nextOpen = !open;
 		if (controlled === undefined) setLocalOpen(nextOpen);
 		onChange?.(nextOpen);

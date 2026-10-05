@@ -4,7 +4,7 @@ if (accordionOpen(false, true) !== true) throw new Error("controlled wins");
 if (accordionOpen(true, false) !== false) throw new Error("controlled closed");
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["closed", "open"]) {
+for (const name of ["closed", "open", "disabled"]) {
 	if (stateMatrix.filter((row) => row.component === "Accordion" && row.name.includes(name)).length !== 2) {
 		throw new Error(`Accordion missing ${name}`);
 	}
