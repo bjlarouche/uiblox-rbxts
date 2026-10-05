@@ -114,6 +114,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("NumberRangeEditor", "default", { value: "0,1" }),
 	...pair("NumberRangeEditor", "disabled", { value: "0,1", disabled: true }),
 
+	...pair("RectEditor", "default", { value: "0,0,1,1" }),
+	...pair("RectEditor", "disabled", { value: "0,0,1,1", disabled: true }),
+
 	...pair("Switch", "off"),
 	...pair("Switch", "size-small", { size: "small" }),
 	...pair("Switch", "size-medium", { size: "medium" }),
