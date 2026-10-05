@@ -62,10 +62,13 @@ function VirtualList<T>(props: CustomizedProps<ScrollingFrame, VirtualListProps<
 				);
 			},
 		};
-		return () => {
-			listRef.current = undefined;
-		};
 	});
+
+	useEffect(() => {
+		return () => {
+			if (listRef) listRef.current = undefined;
+		};
+	}, [listRef]);
 
 	useEffect(() => {
 		if (!frame) return;

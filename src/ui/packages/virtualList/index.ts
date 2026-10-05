@@ -5,10 +5,3 @@ export {
 	VirtualListItemState,
 	VirtualListAlign,
 } from "./components/VirtualList";
-export {
-	visibleWindow,
-	ensureVisibleScroll,
-	scrollToIndexOffset,
-	itemOffset,
-	clampScroll,
-} from "./components/virtualWindow";
