@@ -6,15 +6,16 @@ export interface CardProps {
 	title?: string;
 	subtitle?: string;
 	elevation?: PaperElevation;
+	square?: boolean;
 	actions?: React.ReactNode;
 	children?: React.ReactNode;
 }
 
 function Card(props: CardProps) {
-	const { title, subtitle, elevation = "flat", actions, children } = props;
+	const { title, subtitle, elevation = "flat", square, actions, children } = props;
 	const styles = useCardStyles();
 	return (
-		<Paper elevation={elevation}>
+		<Paper elevation={elevation} square={square}>
 			<frame key="Column" {...styles.column}>
 				<uilistlayout {...styles.list} />
 				{title !== undefined && (

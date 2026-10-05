@@ -260,6 +260,7 @@ function surfacesRows(): StateCapture[] {
 		...pair("ListItem", "dense", { variant: "dense" }),
 		...pair("Card", "flat", { variant: "flat" }),
 		...pair("Card", "raised", { variant: "raised" }),
+		...pair("Card", "square", { variant: "square" }),
 		...pair("Chip", "default"),
 		...pair("Chip", "size-small", { size: "small" }),
 		...pair("Chip", "size-large", { size: "large" }),
