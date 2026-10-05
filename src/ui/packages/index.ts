@@ -26,6 +26,7 @@ export * from "./popup";
 export * from "./modal";
 export * from "./dialog";
 export * from "./paper";
+export * from "./card";
 export * from "./listItem";
 export * from "./menu";
 export * from "./motion";
