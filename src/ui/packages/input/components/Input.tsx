@@ -14,6 +14,7 @@ export type DefaultInputComponent = Frame;
 export interface InputProps {
 	color?: InputColor;
 	disabled?: boolean;
+	readOnly?: boolean;
 	loading?: boolean;
 	hasError?: boolean;
 	helperText?: string;
@@ -53,6 +54,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		helperText,
 		variant = "standard",
 		disabled = false,
+		readOnly = false,
 		loading = false,
 		hasError = false,
 		rounded = true,
@@ -76,7 +78,8 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const [draft, setDraft] = useState(text ?? "");
 	const [focused, setFocused] = useState(false);
 	const { theme } = useTheme();
-	const editable = canActivate(disabled, loading);
+	const active = canActivate(disabled, loading);
+	const editable = active && readOnly !== true;
 	const endSlotContent = loading ? undefined : endAdornment;
 
 	const { root, font, margin, shell, box, startSlot, endSlot, helper, errorColorFrame, errorColorText, divider, corner, stroke } =
@@ -105,7 +108,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 						key={"Field"}
 						{...font}
 						{...box}
-						Active={editable}
+						Active={active}
 						TextEditable={editable}
 						Text={draft}
 						PlaceholderText={placeholder}

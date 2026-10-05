@@ -10,6 +10,7 @@ export interface NumberInputProps {
 	max?: number;
 	step?: number;
 	disabled?: boolean;
+	readOnly?: boolean;
 	loading?: boolean;
 	placeholder?: string;
 	width?: UDim;
@@ -18,7 +19,7 @@ export interface NumberInputProps {
 }
 
 function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
-	const { value, onChange, min, max, step, disabled, loading, placeholder, width, size, reducedMotion, className, id, ref } =
+	const { value, onChange, min, max, step, disabled, readOnly, loading, placeholder, width, size, reducedMotion, className, id, ref } =
 		props;
 
 	return (
@@ -30,6 +31,7 @@ function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
 			placeholder={placeholder}
 			width={width}
 			disabled={disabled}
+			readOnly={readOnly}
 			loading={loading}
 			size={size}
 			reducedMotion={reducedMotion}
