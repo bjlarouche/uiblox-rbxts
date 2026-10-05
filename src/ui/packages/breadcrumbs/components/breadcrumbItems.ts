@@ -22,7 +22,8 @@ export function breadcrumbVisible<T extends { label: string }>(items: T[], maxIt
 		return [{ label: items[count - 1].label, index: count - 1 }];
 	}
 	const keepEnd = 1;
-	const keepStart = math.max(1, maxItems - keepEnd - 1);
+	const rawStart = maxItems - keepEnd - 1;
+	const keepStart = rawStart < 1 ? 1 : rawStart;
 	const out: BreadcrumbSlice[] = [];
 	for (let i = 0; i < keepStart; i++) {
 		out.push({ label: items[i].label, index: i });
