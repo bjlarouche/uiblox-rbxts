@@ -1,5 +1,5 @@
 import React from "@rbxts/react";
-import { cx, CustomizedProps } from "theme";
+import { ControlSize, cx, CustomizedProps } from "theme";
 import { pageRange } from "./pageRange";
 import usePaginationStyles from "./Pagination.styles";
 
@@ -9,12 +9,13 @@ export interface PaginationProps {
 	disabled?: boolean;
 	siblingCount?: number;
 	boundaryCount?: number;
+	size?: ControlSize;
 	onChange: (page: number) => void;
 }
 
 function Pagination(props: CustomizedProps<Frame, PaginationProps>) {
-	const { count, page, disabled, siblingCount, boundaryCount, onChange, className, sx, id, ref } = props;
-	const styles = usePaginationStyles();
+	const { count, page, disabled, siblingCount, boundaryCount, size, onChange, className, sx, id, ref } = props;
+	const styles = usePaginationStyles({ size });
 	const tokens = pageRange(count, page, siblingCount, boundaryCount);
 	return (
 		<frame key={id || "Pagination"} ref={ref} {...styles.root} {...className} {...sx}>
