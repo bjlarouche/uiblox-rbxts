@@ -7,11 +7,12 @@ export interface ListItemProps {
 	selected?: boolean;
 	disabled?: boolean;
 	dense?: boolean;
+	divider?: boolean;
 	onActivated?: () => void;
 }
 
 function ListItem(props: ListItemProps) {
-	const { text, secondary, selected = false, disabled = false, dense = false, onActivated } = props;
+	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, onActivated } = props;
 	const styles = useListItemStyles({ selected, disabled, dense });
 	return (
 		<textbutton
@@ -29,6 +30,7 @@ function ListItem(props: ListItemProps) {
 			{secondary !== undefined && secondary.size() > 0 ? (
 				<textlabel key="Secondary" {...styles.secondary} Text={secondary} />
 			) : undefined}
+			{divider === true ? <frame key="Divider" {...styles.divider} /> : undefined}
 		</textbutton>
 	);
 }

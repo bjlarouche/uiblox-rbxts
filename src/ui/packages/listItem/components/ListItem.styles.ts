@@ -47,6 +47,12 @@ const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boole
 				TextColor3: theme.palette.text.secondary,
 				TextXAlignment: Enum.TextXAlignment.Left,
 			} as WriteableStyle<TextLabel>,
+			divider: {
+				LayoutOrder: 3,
+				Size: new UDim2(1, 0, 0, 1),
+				BackgroundColor3: theme.palette.divider,
+				BorderSizePixel: 0,
+			} as WriteableStyle<Frame>,
 		});
 	},
 );
