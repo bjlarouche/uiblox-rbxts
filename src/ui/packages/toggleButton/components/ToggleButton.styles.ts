@@ -1,12 +1,20 @@
-import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
+import { ControlSize, componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
-const useToggleButtonStyles = componentStyles<{ selected?: boolean; disabled?: boolean }>(
+const useToggleButtonStyles = componentStyles<{ selected?: boolean; disabled?: boolean; size?: ControlSize }>(
 	"ToggleButton",
-	(theme: Theme, { selected = false, disabled = false }) =>
-		createStyles({
+	(theme: Theme, { selected = false, disabled = false, size = "medium" }) => {
+		const height = size === "small" ? theme.spacing.calc(3) : size === "large" ? theme.spacing.calc(5) : theme.spacing.calc(4);
+		const textSize =
+			size === "small"
+				? theme.typography.fontSizes.caption
+				: size === "large"
+					? theme.typography.fontSizes.h6
+					: theme.typography.fontSizes.body;
+		const pad = theme.padding.calc(size === "small" ? 1 : 1.5);
+		return createStyles({
 			root: {
 				AutomaticSize: Enum.AutomaticSize.X,
-				Size: new UDim2(0, 0, 0, theme.spacing.calc(4)),
+				Size: new UDim2(0, 0, 0, height),
 				BackgroundColor3: selected ? theme.palette.action.selected : theme.palette.surface.input,
 				BorderSizePixel: 0,
 				AutoButtonColor: false,
@@ -18,11 +26,11 @@ const useToggleButtonStyles = componentStyles<{ selected?: boolean; disabled?: b
 						? theme.palette.primary.main
 						: theme.palette.text.primary,
 				Font: theme.typography.fontFamilies.default,
-				TextSize: theme.typography.fontSizes.body,
+				TextSize: textSize,
 			} as WriteableStyle<TextButton>,
 			padding: {
-				PaddingLeft: new UDim(0, theme.padding.calc(1.5)),
-				PaddingRight: new UDim(0, theme.padding.calc(1.5)),
+				PaddingLeft: new UDim(0, pad),
+				PaddingRight: new UDim(0, pad),
 			} as WriteableStyle<UIPadding>,
 			corner: {
 				CornerRadius: new UDim(0, theme.shape.borderRadius),
@@ -45,7 +53,8 @@ const useToggleButtonStyles = componentStyles<{ selected?: boolean; disabled?: b
 				SortOrder: Enum.SortOrder.LayoutOrder,
 				Padding: new UDim(0, theme.padding.calc(0.5)),
 			} as WriteableStyle<UIListLayout>,
-		}),
+		});
+	},
 );
 
 export default useToggleButtonStyles;
