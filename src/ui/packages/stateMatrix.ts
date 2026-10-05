@@ -193,6 +193,8 @@ function compositeRows(): StateCapture[] {
 			open: true,
 			filter: "con",
 		}),
+		...pair("Select", "empty", { value: "", options: [], open: true }),
+		...pair("Select", "no-results", { value: "Continue", options: ["Continue", "Other"], open: true, filter: "zzz" }),
 		...pair("Tabs", "default", { value: "Continue", options: ["Continue", "Docs", "Actions"] }),
 		...pair("Tabs", "disabled", { value: "Continue", options: ["Continue", "Docs", "Actions"], disabled: true }),
 		...pair("Tabs", "hover", { value: "Continue", options: ["Continue", "Docs", "Actions"], pointer: "hover" }),
@@ -288,6 +290,13 @@ function chromeRows(): StateCapture[] {
 		...pair("Autocomplete", "default", { value: "Continue", options: ["Continue", "Other"] }),
 		...pair("Autocomplete", "open", { value: "Continue", options: ["Continue", "Other"], open: true }),
 		...pair("Autocomplete", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
+		...pair("Autocomplete", "empty", { value: "", options: [], open: true }),
+		...pair("Autocomplete", "no-results", {
+			value: "Continue",
+			options: ["Continue", "Other"],
+			open: true,
+			filter: "zzz",
+		}),
 		...pair("Fab", "default"),
 		...pair("Fab", "small", { size: "small" }),
 		...pair("Fab", "large", { size: "large" }),
@@ -333,6 +342,7 @@ function miscRows(): StateCapture[] {
 		...pair("FormHelperText", "error", { text: "Required", hasError: true }),
 		...pair("Menu", "closed", { open: false }),
 		...pair("Menu", "open", { open: true }),
+		...pair("Menu", "empty", { open: true, options: [] }),
 	];
 }
 

@@ -15,6 +15,10 @@ function Autocomplete<T>(props: CustomizedProps<Frame, AutocompleteProps<T>>) {
 		loading,
 		placeholder,
 		searchable,
+		defaultOpen,
+		defaultQuery,
+		emptyText,
+		empty,
 		reducedMotion,
 		size,
 		className,
@@ -32,6 +36,10 @@ function Autocomplete<T>(props: CustomizedProps<Frame, AutocompleteProps<T>>) {
 			loading={loading}
 			placeholder={placeholder}
 			searchable={autocompleteSearchable(searchable)}
+			defaultOpen={defaultOpen}
+			defaultQuery={defaultQuery}
+			emptyText={emptyText}
+			empty={empty}
 			reducedMotion={reducedMotion}
 			size={size}
 			className={className}

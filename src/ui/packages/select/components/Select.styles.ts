@@ -43,7 +43,7 @@ const useSelectStyles = componentStyles<SelectStyleProps>("Select", (theme: Them
 		} as WriteableStyle<Frame>,
 		list: {
 			Size: UDim2.fromScale(1, 1),
-			BackgroundColor3: theme.palette.surface.elevated,
+			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			ScrollBarThickness: theme.padding.default,
 			ScrollBarImageColor3: theme.palette.text.secondary,

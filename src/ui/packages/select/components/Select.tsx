@@ -10,7 +10,7 @@ import { playProperty } from "ui/packages/motion";
 import { Popup } from "ui/packages/popup";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import { Shadow } from "ui/packages/shadow";
-import { VirtualList, VirtualListHandle } from "ui/packages/virtualList";
+import { EmptyListHint, VirtualList, VirtualListHandle } from "ui/packages/virtualList";
 import useSelectStyles from "./Select.styles";
 import { optionLabel } from "./optionLabel";
 import { filterChoices, usesSelectSearch } from "./selectFilter";
@@ -31,12 +31,16 @@ export interface SelectProps<T> {
 	loading?: boolean;
 	placeholder?: string;
 	searchable?: boolean;
+	defaultOpen?: boolean;
+	defaultQuery?: string;
+	emptyText?: string;
+	empty?: React.Element;
 	reducedMotion?: boolean;
 	size?: ControlSize;
 }
 
 function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
-	const { value, values, options, onChange, disabled, loading = false, placeholder = "", searchable, reducedMotion: reducedProp, size, className,
+	const { value, values, options, onChange, disabled, loading = false, placeholder = "", searchable, defaultOpen, defaultQuery, emptyText, empty, reducedMotion: reducedProp, size, className,
 		sx, id, ref } = props;
 	const reducedMotion = useReducedMotion(reducedProp);
 	const styles = useSelectStyles({ size });
@@ -44,11 +48,11 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const row = controlMetrics(theme.density, size).height;
 	const active = canActivate(disabled, loading);
 	const [anchor, setAnchor] = useState<TextButton>();
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(defaultOpen === true && !loading);
 	const [held, setHeld] = useState(false);
 	const [focused, setFocused] = useState(false);
 	const [highlight, setHighlight] = useState(-1);
-	const [query, setQuery] = useState("");
+	const [query, setQuery] = useState(defaultQuery ?? "");
 	const recent = useRef<{ key: string; at: number }>();
 	const typed = useRef<{ text: string; at: number }>();
 	const onKeyRef = useRef<(input: InputObject, fromControl: boolean) => void>();
@@ -59,7 +63,15 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const search = usesSelectSearch(options.size(), searchable);
 	const filtered = filterChoices(options, query);
 	const rows = groupRows(filtered);
-	const menuHeight = math.min(rows.size() * row, theme.spacing.calc(16)) + (search ? row : 0);
+	const listHeight = rows.size() === 0 ? row : math.min(rows.size() * row, theme.spacing.calc(16));
+	const menuHeight = listHeight + (search ? row : 0);
+	const emptyHint =
+		empty ?? (
+			<EmptyListHint
+				text={emptyText ?? (query.size() > 0 || options.size() > 0 ? "No results" : "No options")}
+				height={row}
+			/>
+		);
 
 	const close = () => {
 		setOpen(false);
@@ -248,6 +260,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 								getKey={(row, index) => `${row.kind}-${row.label}-${index}`}
 								itemHeight={row}
 								listRef={listRef}
+								empty={emptyHint}
 								className={styles.list}
 								renderItem={(row) => {
 									if (row.kind === "header") {

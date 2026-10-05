@@ -4,7 +4,7 @@ if (optionLabel("Go", true) !== "✓ Go" || optionLabel("Go", false) !== "Go") {
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["hover", "focus", "open"]) {
+for (const name of ["hover", "focus", "open", "empty", "no-results"]) {
 	if (stateMatrix.filter((row) => row.component === "Select" && row.name.includes(name)).length !== 2) {
 		throw new Error(`Select missing ${name}`);
 	}
