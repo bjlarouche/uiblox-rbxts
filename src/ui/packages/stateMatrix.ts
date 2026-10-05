@@ -281,6 +281,7 @@ function chromeRows(): StateCapture[] {
 		...pair("Avatar", "initials", { text: "BL" }),
 		...pair("Avatar", "image", { variant: "image" }),
 		...pair("Avatar", "small", { size: "small" }),
+		...pair("Avatar", "rounded", { variant: "rounded" }),
 		...pair("Drawer", "closed", { open: false }),
 		...pair("Drawer", "left", { open: true, variant: "left" }),
 		...pair("Drawer", "right", { open: true, variant: "right" }),
