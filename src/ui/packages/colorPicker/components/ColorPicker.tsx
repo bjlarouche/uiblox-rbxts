@@ -95,21 +95,19 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 	const hueColor = hsvToColor3(hsv.h, 1, 1);
 	const channel = (label: string, unit: number, apply: (byte: number) => void) => (
 		<frame key={label} {...styles.channel}>
-			<uilistlayout
-				FillDirection={Enum.FillDirection.Horizontal}
-				Padding={new UDim(0, 4)}
-				VerticalAlignment={Enum.VerticalAlignment.Center}
-			/>
+			<uilistlayout {...styles.rowLayout} />
 			<textlabel {...styles.label} Text={label} />
-			<NumberInput
-				value={channelToByte(unit)}
-				min={0}
-				max={255}
-				step={1}
-				disabled={disabled}
-				width={new UDim(1, -16)}
-				onChange={(byte) => apply(byte)}
-			/>
+			<frame {...styles.channelField}>
+				<NumberInput
+					value={channelToByte(unit)}
+					min={0}
+					max={255}
+					step={1}
+					disabled={disabled}
+					width={new UDim(1, 0)}
+					onChange={(byte) => apply(byte)}
+				/>
+			</frame>
 		</frame>
 	);
 
@@ -151,10 +149,9 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 							emit(resolveHsv(parsed, hsvRef.current));
 						}}
 						onTextChanged={(text) => {
-							setHexDraft(text);
 							const parsed = parseHex(text);
 							if (parsed === undefined) {
-								setHexFault(text.size() > 0);
+								setHexFault(false);
 								setHexDraft(colorToHex(latest.current));
 								return;
 							}

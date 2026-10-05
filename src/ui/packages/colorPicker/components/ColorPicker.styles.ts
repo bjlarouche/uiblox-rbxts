@@ -84,6 +84,10 @@ const useColorPickerStyles = makeStyles((theme: Theme) =>
 			TextColor3: theme.options.constants.colors.textMuted,
 			TextXAlignment: Enum.TextXAlignment.Left,
 		} as WriteableStyle<TextLabel>,
+		channelField: {
+			Size: new UDim2(1, -theme.spacing.calc(1), 1, 0),
+			BackgroundTransparency: 1,
+		} as WriteableStyle<Frame>,
 	}),
 );
 
