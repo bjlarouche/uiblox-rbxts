@@ -43,6 +43,15 @@ stop();
 stop();
 if (destroyed !== 1) throw new Error("tween cleanup runs once");
 
+const { motionDuration } = await import(
+	pathToFileURL(join(root, "src/ui/packages/motion/duration.ts")).href
+);
+if (motionDuration(0.14) !== 0.14) throw new Error("motion keeps a positive duration");
+if (motionDuration(0.14, true) !== 0) throw new Error("reduced motion snaps");
+if (motionDuration(0) !== 0 || motionDuration(-1) !== 0 || motionDuration(Number.NaN) !== 0) {
+	throw new Error("invalid motion duration snaps");
+}
+
 if (clampUnit(-0.2) !== 0) throw new Error("unit clamps below 0");
 if (clampUnit(1.4) !== 1) throw new Error("unit clamps above 1");
 if (clampUnit(Number.NaN) !== 0) throw new Error("NaN unit is 0");
@@ -576,6 +585,9 @@ if (!stateMatrix.some((row) => row.component === "Switch" && row.disabled === tr
 }
 if (!stateMatrix.some((row) => row.component === "Switch" && row.disabled === true && row.value === true)) {
 	throw new Error("Switch missing disabled on");
+}
+if (!stateMatrix.some((row) => row.component === "Switch" && row.reducedMotion === true)) {
+	throw new Error("Switch missing reduced motion");
 }
 for (const pointer of ["hover", "press", "focus"]) {
 	if (!stateMatrix.some((row) => row.component === "Switch" && row.value === true && row.pointer === pointer)) {

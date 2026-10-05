@@ -97,6 +97,7 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Switch", "on-hover", { value: true, pointer: "hover" }),
 	...pair("Switch", "on-press", { value: true, pointer: "press" }),
 	...pair("Switch", "on-focus", { value: true, pointer: "focus" }),
+	...pair("Switch", "reduced", { value: true, reducedMotion: true }),
 	...pair("Switch", "long", { text: LONG, width: NARROW }),
 
 	...pair("Slider", "default", { value: 0.5 }),

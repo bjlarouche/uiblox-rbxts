@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { TweenService } from "@rbxts/services";
 import { cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
+import { playProperty } from "ui/packages/motion";
 import useSwitchStyles from "./Switch.styles";
 import {
 	switchPointer,
@@ -16,13 +16,14 @@ export interface SwitchProps {
 	onChange: (value: boolean) => void;
 	disabled?: boolean;
 	label?: string;
+	reducedMotion?: boolean;
 }
 
 const THUMB_INSET = 3;
-const THUMB_TWEEN = new TweenInfo(0.14, Enum.EasingStyle.Quad, Enum.EasingDirection.Out);
+const THUMB_SECONDS = 0.14;
 
 function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
-	const { value, onChange, disabled, label, className, id, ref } = props;
+	const { value, onChange, disabled, label, reducedMotion, className, id, ref } = props;
 	const { root, row, track, trackOn, knob, label: labelStyle, corner, stroke } = useSwitchStyles();
 	const [hovering, setHovering] = useState(false);
 	const [pressed, setPressed] = useState(false);
@@ -41,19 +42,14 @@ function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
 			Position: new UDim2(placement.scaleX, placement.offsetX, 0.5, 0),
 			AnchorPoint: new Vector2(placement.anchorX, 0.5),
 		};
-		if (!placed.current) {
+		if (!placed.current || reducedMotion === true) {
 			thumb.Position = goal.Position;
 			thumb.AnchorPoint = goal.AnchorPoint;
 			placed.current = true;
 			return;
 		}
-		const tween = TweenService.Create(thumb, THUMB_TWEEN, goal);
-		tween.Play();
-		return () => {
-			tween.Cancel();
-			tween.Destroy();
-		};
-	}, [placement.scaleX, placement.offsetX, placement.anchorX]);
+		return playProperty(thumb, goal, THUMB_SECONDS, reducedMotion);
+	}, [placement.scaleX, placement.offsetX, placement.anchorX, reducedMotion]);
 
 	return (
 		<textbutton
