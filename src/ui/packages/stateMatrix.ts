@@ -312,6 +312,10 @@ function miscRows(): StateCapture[] {
 		...pair("ToggleButton", "disabled", { disabled: true }),
 		...pair("ToggleButtonGroup", "default", { value: "Left", options: ["Left", "Center", "Right"] }),
 		...pair("ToggleButtonGroup", "selected", { value: "Center", options: ["Left", "Center", "Right"] }),
+		...pair("Link", "default", { text: "Open docs" }),
+		...pair("Link", "hover-underline", { text: "Open docs", variant: "hover", pointer: "hover" }),
+		...pair("Link", "disabled", { text: "Open docs", disabled: true }),
+		...pair("Link", "error", { text: "Open docs", variant: "error" }),
 		...pair("Menu", "closed", { open: false }),
 		...pair("Menu", "open", { open: true }),
 	];
