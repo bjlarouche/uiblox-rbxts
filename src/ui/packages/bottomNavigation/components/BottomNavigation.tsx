@@ -9,11 +9,12 @@ export interface BottomNavigationProps<T> {
 	options: ChoiceOption<T>[];
 	onChange: (value: T) => void;
 	disabled?: boolean;
+	showLabels?: boolean;
 }
 
 function BottomNavigation<T>(props: CustomizedProps<Frame, BottomNavigationProps<T>>) {
-	const { value, options, onChange, disabled, className, sx, id, ref } = props;
-	const styles = useBottomNavigationStyles();
+	const { value, options, onChange, disabled, showLabels = true, className, sx, id, ref } = props;
+	const styles = useBottomNavigationStyles({ showLabels });
 	const count = math.max(options.size(), 1);
 
 	return (
@@ -27,7 +28,7 @@ function BottomNavigation<T>(props: CustomizedProps<Frame, BottomNavigationProps
 						key={`${choice.label}-${index}`}
 						{...cx<TextButton>(styles.item, selected && styles.selected, !active && styles.disabledItem)}
 						Size={new UDim2(1 / count, 0, 1, 0)}
-						Text={choice.label}
+						Text={showLabels === false ? "" : choice.label}
 						LayoutOrder={index}
 						Active={active}
 						Selectable={active}
