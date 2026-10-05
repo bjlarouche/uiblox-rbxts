@@ -1,6 +1,6 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
-const useDrawerStyles = componentStyles("Drawer", (theme: Theme) =>
+const useDrawerStyles = componentStyles<{ width?: number }>("Drawer", (theme: Theme, { width }) =>
 	createStyles({
 		root: {
 			Size: UDim2.fromScale(1, 1),
@@ -18,7 +18,7 @@ const useDrawerStyles = componentStyles("Drawer", (theme: Theme) =>
 			ZIndex: 30000,
 		} as WriteableStyle<TextButton>,
 		panel: {
-			Size: new UDim2(0, theme.spacing.calc(20), 1, 0),
+			Size: new UDim2(0, width !== undefined && width > 0 ? width : theme.spacing.calc(20), 1, 0),
 			BackgroundColor3: theme.palette.surface.elevated,
 			BorderSizePixel: 0,
 			ZIndex: 30001,
