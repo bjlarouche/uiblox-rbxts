@@ -3,7 +3,7 @@ import { useReducedMotion } from "hooks";
 import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { playProperty } from "ui/packages/motion";
-import useSwitchStyles from "./Switch.styles";
+import useSwitchStyles, { SwitchColor } from "./Switch.styles";
 import {
 	switchPointer,
 	switchStrokeTransparency,
@@ -18,17 +18,18 @@ export interface SwitchProps {
 	disabled?: boolean;
 	label?: string;
 	size?: ControlSize;
+	color?: SwitchColor;
 	reducedMotion?: boolean;
 }
 
 const THUMB_SECONDS = 0.14;
 
 function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
-	const { value, onChange, disabled, label, size, reducedMotion: reducedProp, className,
+	const { value, onChange, disabled, label, size, color = "primary", reducedMotion: reducedProp, className,
 		sx, id, ref } = props;
 	const reducedMotion = useReducedMotion(reducedProp);
 	const { theme } = useTheme();
-	const { root, row, track, trackOn, knob, label: labelStyle, corner, stroke } = useSwitchStyles({ size });
+	const { root, row, track, trackOn, knob, label: labelStyle, corner, stroke } = useSwitchStyles({ size, color });
 	const [hovering, setHovering] = useState(false);
 	const [pressed, setPressed] = useState(false);
 	const [focused, setFocused] = useState(false);
