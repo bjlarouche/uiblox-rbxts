@@ -39,15 +39,15 @@ export interface InteractionSlots<T extends object = object> {
 
 export type InteractionState = Pick<StyleState, "hover" | "pressed" | "focused" | "disabled">;
 
-/** Order matters: later keys win. `_disabled` is last so it covers the rest. */
+/** Order matters: later keys win. Structural first, then interaction; `_disabled` last. */
 const SELECTORS: Array<[StyleSelectorKey, keyof StyleState]> = [
+	["_first", "first"],
+	["_last", "last"],
+	["_selected", "selected"],
+	["_checked", "checked"],
 	["_hover", "hover"],
 	["_pressed", "pressed"],
 	["_focus", "focused"],
-	["_selected", "selected"],
-	["_checked", "checked"],
-	["_first", "first"],
-	["_last", "last"],
 	["_disabled", "disabled"],
 ];
 
