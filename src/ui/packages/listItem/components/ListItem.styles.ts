@@ -1,8 +1,9 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boolean }>("ListItem", 
-	(theme: Theme, { selected = false, disabled = false }) =>
-		createStyles({
+const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boolean; dense?: boolean }>("ListItem", 
+	(theme: Theme, { selected = false, disabled = false, dense = false }) => {
+		const pad = theme.padding.calc(dense === true ? 0.5 : 1);
+		return createStyles({
 			root: {
 				Size: new UDim2(1, 0, 0, 0),
 				AutomaticSize: Enum.AutomaticSize.Y,
@@ -15,10 +16,10 @@ const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boole
 				Selectable: !disabled,
 			} as WriteableStyle<TextButton>,
 			padding: {
-				PaddingTop: new UDim(0, theme.padding.calc(1)),
-				PaddingBottom: new UDim(0, theme.padding.calc(1)),
-				PaddingLeft: new UDim(0, theme.padding.calc(1)),
-				PaddingRight: new UDim(0, theme.padding.calc(1)),
+				PaddingTop: new UDim(0, pad),
+				PaddingBottom: new UDim(0, pad),
+				PaddingLeft: new UDim(0, pad),
+				PaddingRight: new UDim(0, pad),
 			} as WriteableStyle<UIPadding>,
 			list: {
 				FillDirection: Enum.FillDirection.Vertical,
@@ -31,7 +32,7 @@ const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boole
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
-				TextSize: theme.typography.fontSizes.body,
+				TextSize: dense === true ? theme.typography.fontSizes.caption : theme.typography.fontSizes.body,
 				TextColor3: disabled ? theme.palette.text.disabled : theme.palette.text.primary,
 				TextXAlignment: Enum.TextXAlignment.Left,
 			} as WriteableStyle<TextLabel>,
@@ -46,7 +47,8 @@ const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boole
 				TextColor3: theme.palette.text.secondary,
 				TextXAlignment: Enum.TextXAlignment.Left,
 			} as WriteableStyle<TextLabel>,
-		}),
+		});
+	},
 );
 
 export default useListItemStyles;
