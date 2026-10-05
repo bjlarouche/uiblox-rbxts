@@ -304,6 +304,12 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Autocomplete", "open", { value: "Continue", options: ["Continue", "Other"], open: true }),
 	...pair("Autocomplete", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
 
+	...pair("Fab", "default"),
+	...pair("Fab", "small", { size: "small" }),
+	...pair("Fab", "large", { size: "large" }),
+	...pair("Fab", "disabled", { disabled: true }),
+	...pair("Fab", "loading", { loading: true }),
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];

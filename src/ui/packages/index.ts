@@ -47,6 +47,7 @@ export * from "./accordion";
 export * from "./snackbar";
 export * from "./table";
 export * from "./autocomplete";
+export * from "./fab";
 export * from "./listItem";
 export * from "./menu";
 
