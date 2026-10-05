@@ -1,7 +1,7 @@
 import React from "@rbxts/react";
 import usePaperStyles from "./Paper.styles";
 
-export type PaperElevation = "flat" | "raised";
+export type PaperElevation = "flat" | "raised" | "outlined";
 
 export interface PaperProps {
 	elevation?: PaperElevation;
@@ -16,6 +16,7 @@ function Paper(props: PaperProps) {
 		<frame key="Paper" {...styles.root}>
 			<uipadding {...styles.padding} />
 			{square !== true && <uicorner {...styles.corner} />}
+			{elevation === "outlined" && <uistroke {...styles.stroke} />}
 			{children}
 		</frame>
 	);
