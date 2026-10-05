@@ -238,6 +238,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Avatar", "image", { variant: "image" }),
 	...pair("Avatar", "small", { size: "small" }),
 
+	...pair("Drawer", "closed", { open: false }),
+	...pair("Drawer", "left", { open: true, variant: "left" }),
+	...pair("Drawer", "right", { open: true, variant: "right" }),
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];
