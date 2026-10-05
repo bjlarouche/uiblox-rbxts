@@ -110,17 +110,19 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 			>
 				<uicorner {...corner} />
 				{showFocus && <uistroke {...stroke} />}
-				{markValues.map((markValue, index) => {
-					const markRatio = span > 0 ? (markValue - min) / span : 0;
-					return (
-						<frame
-							key={`Mark-${index}`}
-							{...mark}
-							Position={UDim2.fromScale(markRatio, 0.5)}
-							BackgroundTransparency={faded ? 0.7 : 0.35}
-						/>
-					);
-				})}
+				<>
+					{markValues.map((markValue, index) => {
+						const markRatio = span > 0 ? (markValue - min) / span : 0;
+						return (
+							<frame
+								key={`Mark-${index}`}
+								{...mark}
+								Position={UDim2.fromScale(markRatio, 0.5)}
+								BackgroundTransparency={faded ? 0.7 : 0.35}
+							/>
+						);
+					})}
+				</>
 				<frame
 					key="Fill"
 					{...cx<Frame>(fill, { BackgroundTransparency: faded ? 0.55 : pressed ? 0.1 : 0 })}
