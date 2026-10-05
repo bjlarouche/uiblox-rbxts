@@ -30,6 +30,7 @@ export enum Icons {
 	NewspaperVariant3 = "rbxassetid://9056545032",
 	Close = "rbxassetid://9070598165",
 	CloseCircle = "rbxassetid://9070597768",
+	Search = "rbxasset://textures/ui/SearchIcon.png",
 	Collapsed = "rbxassetid://9306279342",
 	Expanded = "rbxassetid://9306279848",
 	Book = "rbxassetid://9311703342",
