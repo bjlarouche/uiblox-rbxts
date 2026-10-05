@@ -9,13 +9,14 @@ export interface RatingProps {
 	max?: number;
 	size?: ControlSize;
 	disabled?: boolean;
+	readOnly?: boolean;
 	onChange: (value: number) => void;
 }
 
 function Rating(props: CustomizedProps<Frame, RatingProps>) {
-	const { value, max = 5, size = "medium", disabled, onChange, className, sx, id, ref } = props;
+	const { value, max = 5, size = "medium", disabled, readOnly, onChange, className, sx, id, ref } = props;
 	const styles = useRatingStyles({ disabled, size });
-	const active = canActivate(disabled);
+	const active = canActivate(disabled) && readOnly !== true;
 	const stars: number[] = [];
 	for (let i = 1; i <= max; i++) stars.push(i);
 	return (
