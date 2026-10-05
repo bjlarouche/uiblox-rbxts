@@ -14,3 +14,7 @@ export { default as Box } from "./components/Box";
 export { BoxProps } from "./components/Box";
 export { BoxPad } from "./components/boxPad";
 export { BoxBg } from "./components/Box.styles";
+
+export { default as Container } from "./components/Container";
+export { ContainerProps } from "./components/Container";
+export { ContainerMaxWidth, containerMaxPx } from "./components/containerWidth";
