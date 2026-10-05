@@ -41,9 +41,9 @@ const makeRootStyles = (theme: Theme, { size, color, fullWidth, variant }: Butto
 		);
 	}
 
-	defaultStyles.BackgroundColor3 = color === "primary" ? theme.palette.secondary.main : theme.palette.text.primary;
-
-	defaultStyles.TextColor3 = theme.palette.background.default;
+	const brand = color === "primary" ? theme.palette.primary : undefined;
+	defaultStyles.BackgroundColor3 = brand ? brand.main : theme.palette.text.primary;
+	defaultStyles.TextColor3 = brand ? brand.on : theme.palette.text.inverse;
 
 	switch (variant) {
 		case "contained":
@@ -51,12 +51,12 @@ const makeRootStyles = (theme: Theme, { size, color, fullWidth, variant }: Butto
 			defaultStyles.BorderSizePixel = 0;
 			break;
 		case "outlined":
-			defaultStyles.TextColor3 = color === "primary" ? theme.palette.secondary.main : theme.palette.text.primary;
+			defaultStyles.TextColor3 = brand ? brand.main : theme.palette.text.primary;
 			defaultStyles.BackgroundTransparency = 1;
 			defaultStyles.BorderSizePixel = theme.options.constants.borders.default;
 			break;
 		case "text":
-			defaultStyles.TextColor3 = color === "primary" ? theme.palette.secondary.main : theme.palette.text.primary;
+			defaultStyles.TextColor3 = brand ? brand.main : theme.palette.text.primary;
 			defaultStyles.BackgroundTransparency = 1;
 			defaultStyles.BorderSizePixel = 0;
 			break;
@@ -83,7 +83,7 @@ const useButtonStyles = makeStyles<ButtonProps>(
 				CornerRadius: new UDim(0, theme.shape.borderRadius),
 			} as WriteableStyle<UICorner>,
 			stroke: {
-				Color: color === "primary" ? theme.palette.secondary.main : theme.palette.text.primary,
+				Color: color === "primary" ? theme.palette.primary.main : theme.palette.text.primary,
 				Transparency: 0,
 				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 			} as WriteableStyle<UIStroke>,

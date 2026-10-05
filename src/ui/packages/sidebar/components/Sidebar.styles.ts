@@ -13,7 +13,7 @@ const useSidebarStyles = makeStyles<SidebarProps>((theme: Theme, props: SidebarP
 	return createStyles({
 		root: {
 			Size: new UDim2(0, size === "compact" ? sidebarWidths.compact : sidebarWidths.large, 1, 0),
-			BackgroundColor3: theme.options.constants.colors.backgroundUIMuted,
+			BackgroundColor3: theme.palette.surface.paper,
 			BorderSizePixel: 0,
 			ZIndex: 5000,
 		} as WriteableStyle<Frame>,

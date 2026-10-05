@@ -10,4 +10,3 @@ export { default as Turquoise } from "./Turquoise";
 export { default as Yellow } from "./Yellow";
 export { default as Dark } from "./Dark";
 export { default as Light } from "./Light";
-export { default as Colors } from "./Colors";

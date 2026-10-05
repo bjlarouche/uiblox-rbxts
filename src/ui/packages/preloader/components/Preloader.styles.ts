@@ -5,7 +5,7 @@ const usePreloaderStyles = makeStyles<PreloaderProps>((theme: Theme, props: Prel
 	return createStyles({
 		container: {
 			Size: new UDim2(1, 0, 1, 0),
-			BackgroundColor3: theme.palette.background.default,
+			BackgroundColor3: theme.palette.surface.canvas,
 			BorderSizePixel: 0,
 			ZIndex: 100000,
 		} as WriteableStyle<Frame>,

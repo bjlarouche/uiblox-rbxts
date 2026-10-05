@@ -17,13 +17,13 @@ const useCheckboxStyles = makeStyles((theme) =>
 		} as WriteableStyle<UIListLayout>,
 		box: {
 			Size: UDim2.fromOffset(theme.spacing.calc(2), theme.spacing.calc(2)),
-			BackgroundColor3: theme.palette.background.paper,
+			BackgroundColor3: theme.palette.surface.input,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		mark: {
 			Size: UDim2.fromScale(1, 1),
 			BackgroundTransparency: 1,
-			TextColor3: theme.palette.background.default,
+			TextColor3: theme.palette.primary.on,
 			Font: theme.typography.fontFamilies.semibold,
 			TextSize: theme.typography.fontSizes.caption,
 			TextXAlignment: Enum.TextXAlignment.Center,

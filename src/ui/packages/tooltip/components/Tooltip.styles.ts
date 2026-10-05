@@ -11,7 +11,7 @@ const useTooltipStyles = makeStyles((theme: Theme) =>
 		label: {
 			AutomaticSize: Enum.AutomaticSize.XY,
 			Size: UDim2.fromScale(0, 0),
-			BackgroundColor3: theme.palette.background.paper,
+			BackgroundColor3: theme.palette.surface.overlay,
 			BorderSizePixel: 0,
 			TextColor3: theme.palette.text.primary,
 			Font: theme.typography.fontFamilies.default,
@@ -29,7 +29,7 @@ const useTooltipStyles = makeStyles((theme: Theme) =>
 			CornerRadius: new UDim(0, theme.shape.borderRadius),
 		} as WriteableStyle<UICorner>,
 		stroke: {
-			Color: theme.palette.divider,
+			Color: theme.palette.border,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
 	}),

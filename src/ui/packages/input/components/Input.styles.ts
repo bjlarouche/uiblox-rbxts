@@ -24,8 +24,8 @@ const useInputStyles = makeStyles<InputProps & { focused?: boolean }>(
 		const gap = theme.padding.calc(1);
 		const insets = inputInsets(hasStart, hasEnd, icon, gap);
 		const fieldHeight = theme.spacing.calc(2) + (variant === "standard" ? 0 : theme.padding.calc(1));
-		const accent = color === "primary" ? theme.palette.secondary.main : theme.palette.text.primary;
-		const focusAccent = hasError ? theme.palette.error.main : theme.palette.primary.main;
+		const accent = color === "primary" ? theme.palette.primary.main : theme.palette.text.primary;
+		const focusAccent = hasError ? theme.palette.status.error.main : theme.palette.focus;
 
 		const makeRootStyles = () => {
 			const defaultStyles: WriteableStyle<Frame> = {};
@@ -68,10 +68,10 @@ const useInputStyles = makeStyles<InputProps & { focused?: boolean }>(
 			};
 
 			if (variant === "filled") {
-				shell.BackgroundColor3 = theme.palette.background.paper;
+				shell.BackgroundColor3 = theme.palette.surface.input;
 				shell.BackgroundTransparency = 0;
 			} else if (variant === "outlined") {
-				shell.BackgroundColor3 = theme.palette.background.paper;
+				shell.BackgroundColor3 = theme.palette.surface.input;
 				shell.BackgroundTransparency = 0.35;
 			}
 
@@ -150,11 +150,11 @@ const useInputStyles = makeStyles<InputProps & { focused?: boolean }>(
 				ZIndex: 11000,
 			} as WriteableStyle<TextLabel>,
 			errorColorFrame: {
-				BackgroundColor3: theme.palette.error.main,
-				BorderColor3: theme.palette.error.main,
+				BackgroundColor3: theme.palette.status.error.main,
+				BorderColor3: theme.palette.status.error.main,
 			} as WriteableStyle<Frame>,
 			errorColorText: {
-				TextColor3: theme.palette.error.main,
+				TextColor3: theme.palette.status.error.main,
 			} as WriteableStyle<TextLabel>,
 			divider: {
 				Position: new UDim2(0, 0, 0, fieldHeight),
@@ -165,7 +165,7 @@ const useInputStyles = makeStyles<InputProps & { focused?: boolean }>(
 				CornerRadius: new UDim(0, theme.shape.borderRadius),
 			} as WriteableStyle<UICorner>,
 			stroke: {
-				Color: hasError ? theme.palette.error.main : focused ? focusAccent : accent,
+				Color: hasError ? theme.palette.status.error.main : focused ? focusAccent : accent,
 				Transparency: focused || hasError ? 0 : 0.45,
 				Thickness: focused ? 1.5 : 1,
 				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,

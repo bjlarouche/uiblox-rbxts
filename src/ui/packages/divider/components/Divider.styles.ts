@@ -7,10 +7,10 @@ const useDividerStyles = makeStyles<DividerProps>((theme, props) => {
 		position,
 		orientation = Orientations.Horizontal,
 		padding = theme.padding.calc(2),
-		color = theme.options.constants.colors.divider,
+		color = theme.palette.divider,
 		transparency = 0,
 		weight = theme.options.constants.borders.default,
-		anchorPoint = new Vector2(0,0)
+		anchorPoint = new Vector2(0, 0),
 	} = props;
 
 	return createStyles({
@@ -22,7 +22,7 @@ const useDividerStyles = makeStyles<DividerProps>((theme, props) => {
 				orientation === Orientations.Vertical ? 1 : 0,
 				orientation === Orientations.Vertical ? -padding * 2 : weight,
 			),
-			BackgroundColor3: color || Color3.fromRGB(255, 255, 255),
+			BackgroundColor3: color,
 			BackgroundTransparency: transparency,
 			AnchorPoint: anchorPoint,
 		} as WriteableStyle<Frame>,

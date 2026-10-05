@@ -9,15 +9,14 @@ const useTypographyStyles = makeStyles<TypographyProps>(
 	) => {
 		const DEFAULT_COLOR = theme.palette.text.primary;
 
-		// Map of room size to stud dimensions
-		const COLOR_TO_PALLETTE_MAP = new Map<TypographyColor, Color3>([
+		const COLOR_TO_PALETTE_MAP = new Map<TypographyColor, Color3>([
 			["initial", DEFAULT_COLOR],
 			["primary", theme.palette.primary.main],
-			["secondary", theme.palette.secondary.main],
+			["secondary", theme.palette.accent.main],
 			["textPrimary", theme.palette.text.primary],
 			["textSecondary", theme.palette.text.secondary],
-			["error", theme.palette.error.main],
-			["warning", theme.palette.warning.main],
+			["error", theme.palette.status.error.main],
+			["warning", theme.palette.status.warning.main],
 		]);
 
 		const COLOR_TO_PALETTE = (color: TypographyColor, parent?: Instance): Color3 => {
@@ -29,7 +28,7 @@ const useTypographyStyles = makeStyles<TypographyProps>(
 				return DEFAULT_COLOR;
 			}
 
-			const lookup = COLOR_TO_PALLETTE_MAP.get(color);
+			const lookup = COLOR_TO_PALETTE_MAP.get(color);
 
 			return lookup || DEFAULT_COLOR;
 		};
@@ -37,9 +36,7 @@ const useTypographyStyles = makeStyles<TypographyProps>(
 		const makeRootStyles = () => {
 			const defaultStyles: WriteableStyle<TextLabel> = {};
 
-			if (color === "warning") {
-				defaultStyles.TextColor3 = theme.options.constants.colors.caution;
-			} else if (color) {
+			if (color) {
 				defaultStyles.TextColor3 = COLOR_TO_PALETTE(color);
 			}
 

@@ -26,7 +26,7 @@ const useIconStyles = makeStyles<IconProps>((theme, props) => {
 	return createStyles({
 		container: {
 			Size: getIconSize(props),
-			BackgroundColor3: theme.palette.secondary.main,
+			BackgroundColor3: theme.palette.primary.main,
 			ImageColor3: theme.palette.text.primary,
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,

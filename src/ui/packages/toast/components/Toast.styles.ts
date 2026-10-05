@@ -4,19 +4,32 @@ import ToastVariants from "../enums/ToastVariants";
 import { ToastProps } from "./Toast";
 
 const useToastStyles = makeStyles<ToastProps>((theme: Theme, { variant = ToastVariants.default }) => {
-	const getToastColor = (): Color3 => {
+	const getToastColors = (): { background: Color3; content: Color3 } => {
 		switch (variant) {
 			case ToastVariants.success:
-				return DEFAULT_THEME.palette.success.main;
+				return {
+					background: theme.palette.status.success.main,
+					content: theme.palette.status.success.on,
+				};
 			case ToastVariants.error:
-				return DEFAULT_THEME.palette.error.main;
+				return {
+					background: theme.palette.status.error.main,
+					content: theme.palette.status.error.on,
+				};
 			case ToastVariants.warning:
-				return DEFAULT_THEME.palette.warning.main;
+				return {
+					background: theme.palette.status.warning.main,
+					content: theme.palette.status.warning.on,
+				};
 			default:
-				return DEFAULT_THEME.options.constants.colors.backgroundUIContrast;
+				return {
+					background: theme.palette.surface.overlay,
+					content: theme.palette.text.primary,
+				};
 		}
 	};
 
+	const toastColors = getToastColors();
 	const ACTIVE_POSITION = new UDim2(0.5, 0, 1, -DEFAULT_THEME.padding.calc(2));
 	const INACTIVE_POSITION = new UDim2(0.5, 0, 1, DEFAULT_THEME.spacing.calc(20) + DEFAULT_THEME.padding.calc(2));
 
@@ -24,7 +37,7 @@ const useToastStyles = makeStyles<ToastProps>((theme: Theme, { variant = ToastVa
 		container: {
 			Size: new UDim2(0, theme.spacing.calc(20), 0, theme.spacing.calc(4)),
 			Position: INACTIVE_POSITION,
-			BackgroundColor3: getToastColor(),
+			BackgroundColor3: toastColors.background,
 			AnchorPoint: new Vector2(0.5, 1),
 			BorderSizePixel: 0,
 			ZIndex: 50000,
@@ -36,7 +49,7 @@ const useToastStyles = makeStyles<ToastProps>((theme: Theme, { variant = ToastVa
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			TextSize: theme.typography.fontSizes.body,
-			TextColor3: theme.options.constants.extendedPalette.Common.White,
+			TextColor3: toastColors.content,
 			Font: theme.typography.fontFamilies.default,
 			TextScaled: false,
 			ZIndex: 50001,
@@ -45,7 +58,7 @@ const useToastStyles = makeStyles<ToastProps>((theme: Theme, { variant = ToastVa
 			Size: new UDim2(0, theme.spacing.calc(1), 0, theme.spacing.calc(1)),
 			Position: new UDim2(1, -theme.padding.calc(2), 0, theme.padding.calc(2)),
 			AnchorPoint: new Vector2(1, 0),
-			ImageColor3: theme.options.constants.colors.iconDefault,
+			ImageColor3: toastColors.content,
 			Image: Icons.Close,
 			BackgroundTransparency: 1,
 			AutoButtonColor: false,
