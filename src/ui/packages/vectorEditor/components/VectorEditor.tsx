@@ -21,6 +21,7 @@ function VectorEditor(props: CustomizedProps<Frame, VectorEditorProps>) {
 	return (
 		<frame key={id || "VectorEditor"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.row} />
+			<>
 			{axes.map((axis, index) => (
 				<frame key={axis} {...styles.axis} Size={new UDim2(1 / axes.size(), 0, 0, 32)} LayoutOrder={index + 1}>
 					<uilistlayout {...styles.row} />
@@ -38,6 +39,7 @@ function VectorEditor(props: CustomizedProps<Frame, VectorEditorProps>) {
 					</frame>
 				</frame>
 			))}
+			</>
 		</frame>
 	);
 }

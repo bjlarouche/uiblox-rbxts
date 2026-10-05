@@ -22,6 +22,7 @@ function Rating(props: CustomizedProps<Frame, RatingProps>) {
 	return (
 		<frame key={id || "Rating"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
+			<>
 			{stars.map((n) => (
 				<imagebutton
 					key={`Star-${n}`}
@@ -37,6 +38,7 @@ function Rating(props: CustomizedProps<Frame, RatingProps>) {
 					}}
 				/>
 			))}
+			</>
 		</frame>
 	);
 }

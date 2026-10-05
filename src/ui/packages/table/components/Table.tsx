@@ -23,6 +23,7 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 			<frame key="Header" {...styles.header} LayoutOrder={0}>
 				<uipadding {...styles.padding} />
 				<uilistlayout {...styles.cells} />
+				<>
 				{columns.map((label, index) => (
 					<textlabel
 						key={`h-${label}-${index}`}
@@ -32,7 +33,9 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 						LayoutOrder={index}
 					/>
 				))}
+				</>
 			</frame>
+			<>
 			{rows.map((cells, rowIndex) => (
 				<textbutton
 					key={`r-${rowIndex}`}
@@ -44,6 +47,7 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 				>
 					<uipadding {...styles.padding} />
 					<uilistlayout {...styles.cells} />
+					<>
 					{columns.map((_, colIndex) => (
 						<textlabel
 							key={`c-${rowIndex}-${colIndex}`}
@@ -53,8 +57,10 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 							LayoutOrder={colIndex}
 						/>
 					))}
+					</>
 				</textbutton>
 			))}
+			</>
 		</frame>
 	);
 }

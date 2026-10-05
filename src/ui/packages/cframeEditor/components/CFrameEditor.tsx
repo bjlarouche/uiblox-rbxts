@@ -29,6 +29,7 @@ function CFrameEditor(props: CustomizedProps<Frame, CFrameEditorProps>) {
 	return (
 		<frame key={id || "CFrameEditor"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.wrap} />
+			<>
 			{cframeFields().map((field, index) => (
 				<frame key={field} {...styles.axis} LayoutOrder={index + 1}>
 					<uilistlayout {...styles.row} />
@@ -43,6 +44,7 @@ function CFrameEditor(props: CustomizedProps<Frame, CFrameEditorProps>) {
 					</frame>
 				</frame>
 			))}
+			</>
 		</frame>
 	);
 }

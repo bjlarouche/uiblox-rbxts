@@ -53,6 +53,7 @@ export function ToggleButtonGroup<T>(props: CustomizedProps<Frame, ToggleButtonG
 	return (
 		<frame key={id || "ToggleButtonGroup"} ref={ref} {...styles.group} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
+			<>
 			{options.map((choice, index) => (
 				<ToggleButton
 					key={`${choice.label}-${index}`}
@@ -66,6 +67,7 @@ export function ToggleButtonGroup<T>(props: CustomizedProps<Frame, ToggleButtonG
 					className={{ LayoutOrder: index }}
 				/>
 			))}
+			</>
 		</frame>
 	);
 }

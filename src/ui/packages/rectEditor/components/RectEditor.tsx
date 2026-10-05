@@ -23,6 +23,7 @@ function RectEditor(props: CustomizedProps<Frame, RectEditorProps>) {
 	return (
 		<frame key={id || "RectEditor"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.wrap} />
+			<>
 			{rectFields().map((field, index) => (
 				<frame key={field} {...styles.axis} LayoutOrder={index + 1}>
 					<uilistlayout {...styles.row} />
@@ -37,6 +38,7 @@ function RectEditor(props: CustomizedProps<Frame, RectEditorProps>) {
 					</frame>
 				</frame>
 			))}
+			</>
 		</frame>
 	);
 }

@@ -38,6 +38,7 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 	return (
 		<scrollingframe key={id || "Tabs"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
+			<>
 			{options.map((choice, index) => {
 				const active = canActivate(disabled || choice.disabled);
 				const selected = choice.value === value;
@@ -56,6 +57,7 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 					</textbutton>
 				);
 			})}
+			</>
 		</scrollingframe>
 	);
 }

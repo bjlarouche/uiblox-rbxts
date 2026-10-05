@@ -90,6 +90,7 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 							Padding={new UDim(0, markGap)}
 							SortOrder={Enum.SortOrder.LayoutOrder}
 						/>
+						<>
 						{[1, 2, 3].map((index) => (
 							<frame
 								key={`Mark${index}`}
@@ -99,6 +100,7 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 								BackgroundTransparency={markTransparency}
 							/>
 						))}
+						</>
 					</frame>
 				</frame>
 				<frame key="Second" {...styles.pane} Position={at(size + thickness)} Size={along(-size - thickness, 1)}>

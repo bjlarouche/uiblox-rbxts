@@ -115,6 +115,7 @@ function Skeleton(props: CustomizedProps<Frame, SkeletonProps>) {
 				FillDirection={Enum.FillDirection.Vertical}
 				SortOrder={Enum.SortOrder.LayoutOrder}
 			/>
+			<>
 			{rows.map((index) => (
 				<SkeletonBlock
 					key={`line-${index}`}
@@ -124,6 +125,7 @@ function Skeleton(props: CustomizedProps<Frame, SkeletonProps>) {
 					motion={motion}
 				/>
 			))}
+			</>
 		</frame>
 	);
 }

@@ -15,6 +15,7 @@ function Stepper(props: CustomizedProps<Frame, StepperProps>) {
 	return (
 		<frame key={id || "Stepper"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
+			<>
 			{steps.map((label, index) => {
 				const state = stepState(index, activeStep);
 				return (
@@ -30,6 +31,7 @@ function Stepper(props: CustomizedProps<Frame, StepperProps>) {
 					/>
 				);
 			})}
+			</>
 		</frame>
 	);
 }
