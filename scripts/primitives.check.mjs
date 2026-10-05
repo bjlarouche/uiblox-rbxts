@@ -200,10 +200,17 @@ const { popupPlacement } = await import(
 );
 const below = popupPlacement(100, 200, 80, 24, 10, 20, 400);
 if (below.above || below.x !== 90 || below.y !== 204 || below.width !== 80) throw new Error("list opens under the anchor");
-const moved = popupPlacement(140, 200, 120, 24, 10, 20, 400);
-if (moved.x !== 130 || moved.width !== 120) throw new Error("list follows a moved or resized anchor");
-const above = popupPlacement(100, 300, 80, 24, 0, 0, 400);
-if (!above.above || above.y !== 300) throw new Error("list flips above the anchor");
+if (below.maxHeight !== 196) throw new Error("below uses the space under the anchor");
+const moved = popupPlacement(140, 200, 120, 24, 10, 20, 400, 1000, 40);
+if (moved.above || moved.x !== 130 || moved.width !== 120) throw new Error("list follows a moved or resized anchor");
+const above = popupPlacement(100, 300, 80, 24, 0, 0, 400, 800, 120);
+if (!above.above || above.y !== 300 || above.maxHeight !== 300) throw new Error("list flips above the anchor");
+const clamped = popupPlacement(950, 40, 200, 24, 0, 0, 500, 1000, 40);
+if (clamped.x !== 800 || clamped.width !== 200) throw new Error("list clamps to the right edge");
+const left = popupPlacement(-30, 40, 80, 24, 10, 0, 500, 400, 40);
+if (left.x !== 0) throw new Error("list clamps to the left edge");
+const wide = popupPlacement(10, 10, 500, 20, 0, 0, 400, 320, 40);
+if (wide.width !== 320 || wide.x !== 0) throw new Error("list width stays inside the layer");
 
 const { clampSplit } = await import(
 	pathToFileURL(join(root, "src/ui/packages/splitPane/components/splitSize.ts")).href

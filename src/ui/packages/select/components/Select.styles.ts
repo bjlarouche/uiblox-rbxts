@@ -26,8 +26,7 @@ const useSelectStyles = makeStyles((theme: Theme) =>
 			PaddingRight: new UDim(0, theme.padding.default),
 		} as WriteableStyle<UIPadding>,
 		list: {
-			Size: UDim2.fromScale(1, 0),
-			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: UDim2.fromScale(1, 1),
 			BackgroundColor3: theme.palette.background.paper,
 			BorderSizePixel: 0,
 			ScrollBarThickness: theme.padding.default,

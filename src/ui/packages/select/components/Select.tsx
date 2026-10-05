@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { GuiService, UserInputService } from "@rbxts/services";
-import { cx, CustomizedProps } from "theme";
+import { cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Popup } from "ui/packages/popup";
 import { ChoiceOption } from "ui/packages/radioGroup";
@@ -20,6 +20,9 @@ export interface SelectProps<T> {
 function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const { value, options, onChange, disabled, placeholder = "", className, id, ref } = props;
 	const styles = useSelectStyles();
+	const { theme } = useTheme();
+	const row = theme.spacing.calc(2);
+	const menuHeight = math.min(options.size() * row, theme.spacing.calc(16));
 	const active = canActivate(disabled);
 	const [anchor, setAnchor] = useState<TextButton>();
 	const [open, setOpen] = useState(false);
@@ -121,7 +124,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 				<uistroke {...styles.stroke} />
 			</textbutton>
 			{shown && (
-				<Popup anchor={anchor} onDismiss={close} onInput={(input) => onKey(input, true)}>
+				<Popup anchor={anchor} preferredHeight={menuHeight} onDismiss={close} onInput={(input) => onKey(input, true)}>
 					<scrollingframe
 						key="Options"
 						{...styles.list}
