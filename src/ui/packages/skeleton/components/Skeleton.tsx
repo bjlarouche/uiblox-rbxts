@@ -20,11 +20,11 @@ export interface SkeletonProps {
 function SkeletonBlock(
 	props: CustomizedProps<Frame, SkeletonProps> & { width: number; height: number; motion: SkeletonAnimation },
 ) {
-	const { variant = "text", width, height, motion, className,
-		sx, id, ref } = props;
+	const { variant = "text", width, height, motion, className, sx, id, ref } = props;
 	const { block, highlight, rounded, circular } = useSkeletonStyles();
 	const fillRef = useRef<Frame>();
 	const gradientRef = useRef<UIGradient>();
+	const showGradient = motion !== "pulse";
 
 	useEffect(() => {
 		const fill = fillRef.current;
@@ -36,14 +36,13 @@ function SkeletonBlock(
 		}
 		if (motion === "pulse") {
 			fill.BackgroundTransparency = 0;
-			return loopProperty(fill, { BackgroundTransparency: 0.55 }, 0.9, true);
+			return loopProperty(fill, { BackgroundTransparency: 0.45 }, 0.9, true);
 		}
 		fill.BackgroundTransparency = 0;
 		if (gradient) gradient.Offset = new Vector2(0, 0);
 	}, [motion]);
 
 	const corner = variant === "circular" ? circular : variant === "rectangular" ? undefined : rounded;
-
 	const side = variant === "circular" ? width : undefined;
 
 	return (
@@ -52,11 +51,12 @@ function SkeletonBlock(
 			ref={ref}
 			BackgroundTransparency={1}
 			BorderSizePixel={0}
-			{...className} {...sx}
+			{...className}
+			{...sx}
 			Size={new UDim2(0, side ?? width, 0, side ?? height)}
 		>
 			<frame ref={fillRef} {...block} Size={new UDim2(1, 0, 1, 0)}>
-				{motion === "shimmer" && <uigradient ref={gradientRef} {...highlight} />}
+				{showGradient && <uigradient ref={gradientRef} {...highlight} />}
 				{corner !== undefined && <uicorner {...corner} />}
 			</frame>
 		</frame>
@@ -104,12 +104,17 @@ function Skeleton(props: CustomizedProps<Frame, SkeletonProps>) {
 		<frame
 			key={id || "Skeleton"}
 			ref={ref}
-			{...className} {...sx}
+			{...className}
+			{...sx}
 			Size={new UDim2(0, width, 0, blockHeight)}
 			BackgroundTransparency={1}
 			BorderSizePixel={0}
 		>
-			<uilistlayout Padding={new UDim(0, gap)} FillDirection={Enum.FillDirection.Vertical} SortOrder={Enum.SortOrder.LayoutOrder} />
+			<uilistlayout
+				Padding={new UDim(0, gap)}
+				FillDirection={Enum.FillDirection.Vertical}
+				SortOrder={Enum.SortOrder.LayoutOrder}
+			/>
 			{rows.map((index) => (
 				<SkeletonBlock
 					key={`line-${index}`}

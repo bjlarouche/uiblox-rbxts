@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "@rbxts/react";
+import { useReducedMotion } from "hooks";
 import { CustomizedProps, useTheme, WriteableStyle } from "theme";
 import { CircularProgress } from "ui/packages/circularProgress";
 import { LoadingStroke } from "ui/packages/loadingStroke";
@@ -45,7 +46,7 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 		loading = false,
 		loadingLabel,
 		loadingPosition = "center",
-		reducedMotion,
+		reducedMotion: reducedProp,
 		rounded = true,
 		hoveringDisabled = false,
 		animating = false,
@@ -61,17 +62,19 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 		sx,
 		children,
 		id,
-		ref
+		ref,
 	} = props;
 
 	const { root, font, corner, stroke } = useButtonStyles(props);
 	const { theme } = useTheme();
+	const reducedMotion = useReducedMotion(reducedProp);
 	const [hovering, setHovering] = useState(false);
 	const [focused, setFocused] = useState(false);
 	const active = canActivate(disabled, loading);
 	const pressed = disabled || (!hoveringDisabled && active && (hovering || focused));
 	const face = buttonFace(text, loading, loadingLabel);
 	const place = spinnerPlace(loadingPosition);
+	const busy = loading || animating;
 	const branded = (props.color ?? "primary") === "primary";
 	const spinnerColor =
 		variant === "contained"
@@ -94,7 +97,8 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 			ref={ref}
 			{...root}
 			{...font}
-			{...className} {...sx}
+			{...className}
+			{...sx}
 			Active={active}
 			AutoButtonColor={active}
 			Selectable={active}
@@ -140,8 +144,8 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 				},
 			}}
 		>
-			{variant === "outlined" && !animating && <uistroke {...stroke} />}
-			{animating && <LoadingStroke animating={animating} />}
+			{variant === "outlined" && !busy && <uistroke {...stroke} />}
+			{busy && <LoadingStroke animating={busy && !reducedMotion} color={spinnerColor} />}
 			{rounded && <uicorner {...corner} />}
 			{loading && (
 				<CircularProgress

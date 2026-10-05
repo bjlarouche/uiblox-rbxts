@@ -33,6 +33,9 @@ const useIconButtonStyles = componentStyles<IconButtonProps>("IconButton", (them
 			ScaleType: Enum.ScaleType.Fit,
 			ZIndex: 12000,
 		} as WriteableStyle<Frame>,
+		corner: {
+			CornerRadius: new UDim(0, theme.shape.borderRadius),
+		} as WriteableStyle<UICorner>,
 	});
 });
 
