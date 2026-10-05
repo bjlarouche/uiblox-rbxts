@@ -279,6 +279,7 @@ function chromeRows(): StateCapture[] {
 	return [
 		...pair("Badge", "invisible", { value: 0 }),
 		...pair("Badge", "dot", { variant: "dot" }),
+		...pair("Badge", "primary", { variant: "primary" }),
 		...pair("Avatar", "initials", { text: "BL" }),
 		...pair("Avatar", "image", { variant: "image" }),
 		...pair("Avatar", "small", { size: "small" }),

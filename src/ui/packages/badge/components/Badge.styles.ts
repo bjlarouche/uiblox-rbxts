@@ -1,7 +1,17 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
-const useBadgeStyles = componentStyles<{ variant?: "standard" | "dot" }>("Badge", (theme: Theme, { variant = "standard" }) => {
+export type BadgeColor = "error" | "primary" | "success";
+
+const useBadgeStyles = componentStyles<{ variant?: "standard" | "dot"; color?: BadgeColor }>(
+	"Badge",
+	(theme: Theme, { variant = "standard", color = "error" }) => {
 	const diameter = variant === "dot" ? theme.spacing.calc(1) : theme.spacing.calc(2) + theme.padding.calc(1);
+	const tone =
+		color === "primary"
+			? theme.palette.primary
+			: color === "success"
+				? theme.palette.status.success
+				: theme.palette.status.error;
 	return createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.XY,
@@ -14,11 +24,11 @@ const useBadgeStyles = componentStyles<{ variant?: "standard" | "dot" }>("Badge"
 			Position: UDim2.fromScale(1, 0),
 			AutomaticSize: variant === "dot" ? Enum.AutomaticSize.None : Enum.AutomaticSize.X,
 			Size: UDim2.fromOffset(diameter, diameter),
-			BackgroundColor3: theme.palette.status.error.main,
+			BackgroundColor3: tone.main,
 			BorderSizePixel: 0,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.caption,
-			TextColor3: theme.palette.text.inverse,
+			TextColor3: color === "error" ? theme.palette.text.inverse : tone.on,
 			TextXAlignment: Enum.TextXAlignment.Center,
 			TextYAlignment: Enum.TextYAlignment.Center,
 			ZIndex: 2,
