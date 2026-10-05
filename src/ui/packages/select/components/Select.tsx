@@ -8,6 +8,7 @@ import { ChoiceOption } from "ui/packages/radioGroup";
 import { VirtualList, VirtualListHandle } from "ui/packages/virtualList";
 import useSelectStyles from "./Select.styles";
 import { filterChoices, usesSelectSearch } from "./selectFilter";
+import { groupRows, rowForOption } from "./selectGroups";
 import { canFocusGui } from "./selectFocus";
 import { shouldHandleSelectKey } from "./selectKey";
 import { typeaheadChoice } from "./selectTypeahead";
@@ -43,7 +44,8 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const shown = open && active;
 	const search = usesSelectSearch(options.size(), searchable);
 	const filtered = filterChoices(options, query);
-	const menuHeight = math.min(filtered.size() * row, theme.spacing.calc(16)) + (search ? row : 0);
+	const rows = groupRows(filtered);
+	const menuHeight = math.min(rows.size() * row, theme.spacing.calc(16)) + (search ? row : 0);
 
 	const close = () => {
 		setOpen(false);
@@ -121,7 +123,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 
 	useEffect(() => {
 		if (!shown || highlight < 0) return;
-		listRef.current?.ensureVisible(highlight);
+		listRef.current?.ensureVisible(rowForOption(rows, highlight));
 	}, [shown, highlight]);
 
 	return (
@@ -178,36 +180,46 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 						>
 							<VirtualList
 								key="Options"
-								items={filtered}
-								getKey={(choice, index) => `${choice.label}-${index}`}
+								items={rows}
+								getKey={(row, index) => `${row.kind}-${row.label}-${index}`}
 								itemHeight={row}
 								listRef={listRef}
 								className={styles.list}
-								renderItem={(choice, index) => (
-									<textbutton
-										ref={(button) => {
-											if (button && index === highlight && canFocusGui(button)) GuiService.SelectedObject = button;
-										}}
-										{...cx<TextButton>(
-											styles.option,
-											index === highlight && styles.highlighted,
-											choice.disabled === true && styles.disabledOption,
-										)}
-										Text={choice.label}
-										Active={!choice.disabled}
-										Selectable={!choice.disabled}
-										Event={{
-											Activated: () => choose(index, true),
-											MouseEnter: () => {
-												if (!choice.disabled) setHighlight(index);
-											},
-											SelectionGained: () => setHighlight(index),
-											InputBegan: (_, input) => onKey(input, true),
-										}}
-									>
-										<uipadding {...styles.padding} />
-									</textbutton>
-								)}
+								renderItem={(row) => {
+									if (row.kind === "header") {
+										return (
+											<textlabel {...styles.group} Text={row.label}>
+												<uipadding {...styles.padding} />
+											</textlabel>
+										);
+									}
+									const index = row.optionIndex;
+									return (
+										<textbutton
+											ref={(button) => {
+												if (button && index === highlight && canFocusGui(button)) GuiService.SelectedObject = button;
+											}}
+											{...cx<TextButton>(
+												styles.option,
+												index === highlight && styles.highlighted,
+												row.disabled === true && styles.disabledOption,
+											)}
+											Text={row.label}
+											Active={row.disabled !== true}
+											Selectable={row.disabled !== true}
+											Event={{
+												Activated: () => choose(index, true),
+												MouseEnter: () => {
+													if (row.disabled !== true) setHighlight(index);
+												},
+												SelectionGained: () => setHighlight(index),
+												InputBegan: (_, input) => onKey(input, true),
+											}}
+										>
+											<uipadding {...styles.padding} />
+										</textbutton>
+									);
+								}}
 							/>
 						</frame>
 					</frame>
