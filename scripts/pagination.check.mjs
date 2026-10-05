@@ -16,7 +16,7 @@ if (!nearStart.includes(1) || nearStart.filter((t) => t === "ellipsis").size() <
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["first", "middle", "disabled", "collapsed"]) {
+for (const name of ["first", "middle", "disabled", "collapsed", "size-small"]) {
 	if (stateMatrix.filter((row) => row.component === "Pagination" && row.name.includes(name)).length !== 2) {
 		throw new Error(`Pagination missing ${name}`);
 	}

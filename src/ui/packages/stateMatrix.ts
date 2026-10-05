@@ -292,6 +292,7 @@ function chromeRows(): StateCapture[] {
 		...pair("Pagination", "middle", { value: 3 }),
 		...pair("Pagination", "collapsed", { value: 10, size: "large" }),
 		...pair("Pagination", "disabled", { value: 2, disabled: true }),
+		...pair("Pagination", "size-small", { value: 2, size: "small" }),
 		...pair("Stepper", "first", { value: 0 }),
 		...pair("Stepper", "middle", { value: 1 }),
 		...pair("Stepper", "last", { value: 2 }),
