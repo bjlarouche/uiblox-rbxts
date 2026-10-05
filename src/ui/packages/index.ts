@@ -32,6 +32,7 @@ export * from "./badge";
 export * from "./avatar";
 export * from "./drawer";
 export * from "./breadcrumbs";
+export * from "./pagination";
 export * from "./listItem";
 export * from "./menu";
 export * from "./motion";
