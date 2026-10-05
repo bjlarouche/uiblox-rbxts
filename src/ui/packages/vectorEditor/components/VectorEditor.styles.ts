@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useVectorEditorStyles = makeStyles((theme: Theme) =>
+const useVectorEditorStyles = componentStyles("VectorEditor", (theme: Theme) =>
 	createStyles({
 		root: {
 			Size: new UDim2(1, 0, 0, 0),

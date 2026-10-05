@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useProgressBarStyles = makeStyles((theme: Theme) =>
+const useProgressBarStyles = componentStyles("ProgressBar", (theme: Theme) =>
 	createStyles({
 		container: {
 			BackgroundTransparency: 1,

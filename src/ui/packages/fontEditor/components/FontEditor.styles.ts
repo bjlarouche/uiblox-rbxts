@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useFontEditorStyles = makeStyles((theme: Theme) =>
+const useFontEditorStyles = componentStyles("FontEditor", (theme: Theme) =>
 	createStyles({
 		root: {
 			Size: new UDim2(1, 0, 0, 0),

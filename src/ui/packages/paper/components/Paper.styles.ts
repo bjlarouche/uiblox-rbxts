@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const usePaperStyles = makeStyles<{ elevation?: "flat" | "raised" }>((theme: Theme, { elevation = "flat" }) =>
+const usePaperStyles = componentStyles<{ elevation?: "flat" | "raised" }>("Paper", (theme: Theme, { elevation = "flat" }) =>
 	createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.XY,

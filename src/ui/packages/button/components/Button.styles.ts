@@ -1,4 +1,4 @@
-import { controlMetrics, createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 import { ButtonProps } from "./Button";
 
 const makeRootStyles = (theme: Theme, { size = "small", color, fullWidth, variant }: ButtonProps) => {
@@ -54,7 +54,7 @@ const makeRootStyles = (theme: Theme, { size = "small", color, fullWidth, varian
 	return defaultStyles;
 };
 
-const useButtonStyles = makeStyles<ButtonProps>(
+const useButtonStyles = componentStyles<ButtonProps>("Button", 
 	(theme, { size = "small", color = "primary", fullWidth = false, variant = "contained" }) => {
 		const metrics = controlMetrics(theme.density, size);
 		return createStyles({

@@ -1,8 +1,8 @@
-import { createStyles, makeStyles, WriteableStyle } from "theme";
+import { createStyles, componentStyles, WriteableStyle } from "theme";
 import { TypographyColor } from "../types/TypographyColor";
 import { TypographyProps } from "./Typography";
 
-const useTypographyStyles = makeStyles<TypographyProps>(
+const useTypographyStyles = componentStyles<TypographyProps>("Typography", 
 	(
 		theme,
 		{ color = "initial", variant = "body", family = "default", align = "left", noWrap = false, lineClamp = false },

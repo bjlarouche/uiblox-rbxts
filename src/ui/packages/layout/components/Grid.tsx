@@ -1,6 +1,6 @@
 
 import React from "@rbxts/react";
-import { makeStyles, Theme, createStyles, WriteableStyle, CustomizedProps } from "theme";
+import { componentStyles, Theme, createStyles, WriteableStyle, CustomizedProps } from "theme";
 
 export interface GridProps {
 	cellPadding?: UDim2;
@@ -13,7 +13,7 @@ export interface GridProps {
 	verticalAlignment?: Enum.VerticalAlignment;
 }
 
-const useGridStyles = makeStyles<GridProps>((_: Theme, props: GridProps) =>
+const useGridStyles = componentStyles<GridProps>("Grid", (_: Theme, props: GridProps) =>
 	createStyles({
 		baseGrid: {
 			AutomaticSize: Enum.AutomaticSize.XY,

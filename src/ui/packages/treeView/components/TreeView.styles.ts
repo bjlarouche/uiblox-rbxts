@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useTreeViewStyles = makeStyles((theme: Theme) => {
+const useTreeViewStyles = componentStyles("TreeView", (theme: Theme) => {
 	return createStyles({
 		root: {
 			Size: new UDim2(1, -theme.padding.calc(4), 1, -theme.padding.calc(4)),

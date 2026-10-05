@@ -1,8 +1,8 @@
-import { createStyles, makeStyles, WriteableStyle } from "theme";
+import { createStyles, componentStyles, WriteableStyle } from "theme";
 import { Orientations } from "ui/enums";
 import { DividerProps } from "./Divider";
 
-const useDividerStyles = makeStyles<DividerProps>((theme, props) => {
+const useDividerStyles = componentStyles<DividerProps>("Divider", (theme, props) => {
 	const {
 		position,
 		orientation = Orientations.Horizontal,

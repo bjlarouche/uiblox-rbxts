@@ -1,6 +1,6 @@
 
 import React from "@rbxts/react";
-import { makeStyles, Theme, createStyles, WriteableStyle, CustomizedProps } from "theme";
+import { componentStyles, Theme, createStyles, WriteableStyle, CustomizedProps } from "theme";
 
 export interface ListProps {
 	padding?: UDim;
@@ -13,7 +13,7 @@ export interface ListProps {
 	verticalFlex?: Enum.UIFlexAlignment;
 }
 
-const useListStyles = makeStyles<ListProps>((_: Theme, props: ListProps) =>
+const useListStyles = componentStyles<ListProps>("List", (_: Theme, props: ListProps) =>
 	createStyles({
 		baseList: {
 			AutomaticSize: Enum.AutomaticSize.XY,

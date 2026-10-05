@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useDialogStyles = makeStyles((theme: Theme) =>
+const useDialogStyles = componentStyles("Dialog", (theme: Theme) =>
 	createStyles({
 		column: {
 			AutomaticSize: Enum.AutomaticSize.XY,

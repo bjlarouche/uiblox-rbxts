@@ -1,10 +1,10 @@
-import { controlMetrics, ControlSize, createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
 export interface SwitchStyleProps {
 	size?: ControlSize;
 }
 
-const useSwitchStyles = makeStyles<SwitchStyleProps>((theme: Theme, { size }) => {
+const useSwitchStyles = componentStyles<SwitchStyleProps>("Switch", (theme: Theme, { size }) => {
 	const metrics = controlMetrics(theme.density, size);
 	return createStyles({
 		root: {

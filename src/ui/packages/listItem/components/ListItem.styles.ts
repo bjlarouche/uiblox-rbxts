@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, WriteableStyle } from "theme";
+import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useListItemStyles = makeStyles<{ selected?: boolean; disabled?: boolean }>(
+const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boolean }>("ListItem", 
 	(theme: Theme, { selected = false, disabled = false }) =>
 		createStyles({
 			root: {
