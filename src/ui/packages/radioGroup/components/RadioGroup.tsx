@@ -16,12 +16,12 @@ export interface RadioGroupProps<T> {
 	onChange: (value: T) => void;
 	disabled?: boolean;
 	size?: ControlSize;
+	row?: boolean;
 }
 
 function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
-	const { value, options, onChange, disabled, size, className,
-		sx, id, ref } = props;
-	const { root, list, option, row, ring, dot, stroke, corner, label } = useRadioGroupStyles({ size });
+	const { value, options, onChange, disabled, size, row, className, sx, id, ref } = props;
+	const { root, list, option, optionRow, ring, dot, stroke, corner, label } = useRadioGroupStyles({ size, row });
 
 	return (
 		<frame key={id || "RadioGroup"} ref={ref} {...root} {...className} {...sx}>
@@ -42,7 +42,7 @@ function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 							},
 						}}
 					>
-						<uilistlayout {...row} />
+						<uilistlayout {...optionRow} />
 						<frame {...ring} LayoutOrder={1}>
 							<uicorner {...corner} />
 							<uistroke {...stroke} Transparency={fade} />
