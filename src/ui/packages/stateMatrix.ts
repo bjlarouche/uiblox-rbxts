@@ -153,7 +153,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Select", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
 	...pair("Select", "hover", { value: "Continue", options: ["Continue", "Other"], open: true, pointer: "hover" }),
 	...pair("Select", "press", { value: "Continue", options: ["Continue", "Other"], pointer: "press" }),
+	...pair("Select", "focus", { value: "Continue", options: ["Continue", "Other"], pointer: "focus" }),
 	...pair("Select", "long", { value: LONG, options: [LONG, "Other"], text: LONG, width: NARROW, open: true }),
+
 	...pair("Select", "search", {
 		value: "Continue",
 		options: ["Continue", "Other", "Docs", "Actions", "Source", "Settings", "Theme", "Inspector", "Controls"],

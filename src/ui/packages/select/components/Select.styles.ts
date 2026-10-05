@@ -27,8 +27,8 @@ const useSelectStyles = componentStyles<SelectStyleProps>("Select", (theme: Them
 			TextColor3: theme.palette.text.secondary,
 		} as WriteableStyle<TextButton>,
 		padding: {
-			PaddingLeft: new UDim(0, theme.padding.default),
-			PaddingRight: new UDim(0, theme.padding.default),
+			PaddingLeft: new UDim(0, theme.padding.calc(1.5)),
+			PaddingRight: new UDim(0, theme.padding.calc(1.5)),
 		} as WriteableStyle<UIPadding>,
 		menu: {
 			Size: UDim2.fromScale(1, 1),
@@ -52,7 +52,7 @@ const useSelectStyles = componentStyles<SelectStyleProps>("Select", (theme: Them
 		} as WriteableStyle<ScrollingFrame>,
 		option: {
 			Size: UDim2.fromScale(1, 1),
-			BackgroundColor3: theme.palette.primary.main,
+			BackgroundColor3: theme.palette.action.hover,
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			AutoButtonColor: false,
@@ -64,7 +64,11 @@ const useSelectStyles = componentStyles<SelectStyleProps>("Select", (theme: Them
 			ZIndex: 20002,
 		} as WriteableStyle<TextButton>,
 		highlighted: {
-			BackgroundTransparency: 0.6,
+			BackgroundTransparency: 0,
+		} as WriteableStyle<TextButton>,
+		selected: {
+			BackgroundColor3: theme.palette.action.selected,
+			BackgroundTransparency: 0,
 		} as WriteableStyle<TextButton>,
 		group: {
 			Size: UDim2.fromScale(1, 1),
@@ -86,7 +90,13 @@ const useSelectStyles = componentStyles<SelectStyleProps>("Select", (theme: Them
 			Color: theme.palette.border,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
+		focusStroke: {
+			Color: theme.palette.focus,
+			Thickness: 2,
+			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+		} as WriteableStyle<UIStroke>,
 	});
 });
+
 
 export default useSelectStyles;

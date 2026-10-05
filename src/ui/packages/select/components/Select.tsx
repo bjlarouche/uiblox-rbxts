@@ -7,8 +7,10 @@ import { Input } from "ui/packages/input";
 import { playProperty } from "ui/packages/motion";
 import { Popup } from "ui/packages/popup";
 import { ChoiceOption } from "ui/packages/radioGroup";
+import { Shadow } from "ui/packages/shadow";
 import { VirtualList, VirtualListHandle } from "ui/packages/virtualList";
 import useSelectStyles from "./Select.styles";
+import { optionLabel } from "./optionLabel";
 import { filterChoices, usesSelectSearch } from "./selectFilter";
 import { canFocusGui } from "./selectFocus";
 import { groupRows, rowForOption } from "./selectGroups";
@@ -184,12 +186,13 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 			>
 				<uipadding {...styles.padding} />
 				<uicorner {...styles.corner} />
-				<uistroke {...styles.stroke} />
+				<uistroke {...cx<UIStroke>(styles.stroke, focused && styles.focusStroke)} />
 			</textbutton>
 			{(shown || held) && (
 				<Popup anchor={anchor} preferredHeight={menuHeight} onDismiss={close} onInput={(input) => onKey(input, true)}>
 					<canvasgroup ref={menuRef} Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} GroupTransparency={1}>
 					<frame key="Menu" {...styles.menu}>
+						<Shadow />
 						<uicorner {...styles.corner} />
 						<uistroke {...styles.stroke} />
 						<uilistlayout FillDirection={Enum.FillDirection.Vertical} SortOrder={Enum.SortOrder.LayoutOrder} />
@@ -239,10 +242,11 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 											}}
 											{...cx<TextButton>(
 												styles.option,
+												picked && styles.selected,
 												index === highlight && styles.highlighted,
 												row.disabled === true && styles.disabledOption,
 											)}
-											Text={picked ? `✓ ${row.label}` : row.label}
+											Text={optionLabel(row.label, picked)}
 											Active={row.disabled !== true}
 											Selectable={row.disabled !== true}
 											Event={{
