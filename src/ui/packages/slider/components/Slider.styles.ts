@@ -1,11 +1,15 @@
 import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
+export type SliderColor = "primary" | "accent";
+
 export interface SliderStyleProps {
 	size?: ControlSize;
+	color?: SliderColor;
 }
 
-const useSliderStyles = componentStyles<SliderStyleProps>("Slider", (theme: Theme, { size }) => {
+const useSliderStyles = componentStyles<SliderStyleProps>("Slider", (theme: Theme, { size, color = "primary" }) => {
 	const metrics = controlMetrics(theme.density, size);
+	const tone = color === "accent" ? theme.palette.accent.main : theme.palette.primary.main;
 	return createStyles({
 		root: {
 			Size: new UDim2(1, 0, 0, metrics.sliderHeight),
@@ -20,7 +24,7 @@ const useSliderStyles = componentStyles<SliderStyleProps>("Slider", (theme: Them
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		fill: {
-			BackgroundColor3: theme.palette.primary.main,
+			BackgroundColor3: tone,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		knob: {

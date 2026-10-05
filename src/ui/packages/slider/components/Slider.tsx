@@ -2,7 +2,7 @@ import React, { useRef, useState } from "@rbxts/react";
 import { ControlSize, cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { commitNumber } from "ui/packages/numberInput/components/numberValue";
-import useSliderStyles from "./Slider.styles";
+import useSliderStyles, { SliderColor } from "./Slider.styles";
 import { sliderMarkValues } from "./sliderMarks";
 import { isSliderDrag, isSliderMove, nudgeDelta, nudgeValue } from "./sliderNudge";
 
@@ -16,11 +16,12 @@ export interface SliderProps {
 	disabled?: boolean;
 	size?: ControlSize;
 	marks?: boolean | ReadonlyArray<number>;
+	color?: SliderColor;
 }
 
 function Slider(props: CustomizedProps<Frame, SliderProps>) {
-	const { value, onChange, onCommit, min, max, step, disabled, size, marks, className, sx, id, ref } = props;
-	const { root, track, fill, knob, corner, stroke, mark } = useSliderStyles({ size });
+	const { value, onChange, onCommit, min, max, step, disabled, size, marks, color = "primary", className, sx, id, ref } = props;
+	const { root, track, fill, knob, corner, stroke, mark } = useSliderStyles({ size, color });
 	const active = canActivate(disabled);
 	const [focused, setFocused] = useState(false);
 	const [hovering, setHovering] = useState(false);
