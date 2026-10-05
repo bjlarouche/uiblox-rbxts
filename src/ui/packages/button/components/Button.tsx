@@ -46,7 +46,7 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 		loadingLabel,
 		loadingPosition = "center",
 		reducedMotion,
-		rounded = false,
+		rounded = true,
 		hoveringDisabled = false,
 		animating = false,
 		onLeftClick,
