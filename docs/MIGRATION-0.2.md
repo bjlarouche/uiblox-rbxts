@@ -32,9 +32,26 @@ Breaking: `theme.palette` is a semantic token map. `theme.options.constants.colo
 
 `componentStyles("Button", factory)` reads that entry. `defaultProps` fills props the caller left unset, before the factory runs. `styleOverrides` merge onto the slots after that. Replace the theme object to change either one.
 
-`interactionStyle(base, slots, state)` paints hover, then pressed, then focused, then disabled. A later slot wins. Disabled covers the others.
+`resolveStyle(style, state)` peels selector keys from a style table and merges the active ones. Order: `_hover`, `_pressed`, `_focus`, `_selected`, `_checked`, `_first`, `_last`, then `_disabled`. A later key wins. Call it before spreading onto an Instance. Selector keys are stripped from the result.
 
-On the instance, `className` then `sx`. `sx` wins.
+```ts
+const painted = resolveStyle(
+	{
+		BackgroundTransparency: 0,
+		_hover: { BackgroundTransparency: 0.1 },
+		_pressed: { BackgroundTransparency: 0.2 },
+		_focus: { Text: "Focus" },
+		_first: { LayoutOrder: 0 },
+		_last: { LayoutOrder: 99 },
+		_disabled: { BackgroundTransparency: 0.5 },
+	},
+	{ hover: true, first: index === 0, last: index === count - 1, disabled },
+);
+```
+
+`interactionStyle(base, slots, state)` is the same resolver with separate slot tables (`hover` / `pressed` / `focused` / `disabled`). Prefer `_hover` keys on the style object when writing new code.
+
+On the instance, `className` then `sx`. `sx` wins. Kit components do not call `resolveStyle` on `sx` yet — resolve yourself before spreading, or keep selector keys off `className` / `sx`.
 
 `resolveResponsive` reads a plain value or `{ phone, tablet, desktop }` against `breakpointName`. A wider breakpoint falls back to the next smaller one that is set. Phone is under 600, tablet under 960, and the rest is desktop.
 
