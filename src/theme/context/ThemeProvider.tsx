@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "@rbxts/react";
 import { DEFAULT_THEME } from "theme/constants";
-import { Theme } from "theme/interfaces";
+import { Theme } from "theme/interfaces/theme";
 import { CustomizedProps } from "theme/types";
 import { ThemeScope } from "./themeScope";
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { PropsWithChildren } from "@rbxts/react";
-import { WriteableStyle } from "theme/interfaces";
+import { WriteableStyle } from "theme/styles";
 
 export interface CommonProps<T extends Instance> extends PropsWithChildren {
 	className?: WriteableStyle<T>;
