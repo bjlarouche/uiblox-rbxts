@@ -22,6 +22,7 @@ const useSplitPaneStyles = makeStyles((theme: Theme) =>
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			Active: true,
+			ZIndex: 5,
 		} as WriteableStyle<Frame>,
 		rule: {
 			BackgroundColor3: theme.palette.divider,
