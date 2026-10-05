@@ -50,7 +50,7 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Button", "size-small", { size: "small" }),
 	...pair("Button", "size-medium", { size: "medium" }),
 	...pair("Button", "size-large", { size: "large" }),
-	...pair("Button", "density-compact", { density: "compact" }),
+	...pair("Button", "density-compact", { density: "compact", size: "small" }),
 	...pair("Button", "hover", { pointer: "hover" }),
 	...pair("Button", "press", { pointer: "press" }),
 	...pair("Button", "focus", { pointer: "focus" }),
