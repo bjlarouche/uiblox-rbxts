@@ -303,6 +303,7 @@ function chromeRows(): StateCapture[] {
 		...pair("Table", "empty", { text: "" }),
 		...pair("Table", "default", { text: "Name / Role" }),
 		...pair("Table", "selected", { text: "Name / Role", value: 0 }),
+		...pair("Table", "dense", { text: "Name / Role", variant: "dense" }),
 		...pair("Autocomplete", "default", { value: "Continue", options: ["Continue", "Other"] }),
 		...pair("Autocomplete", "open", { value: "Continue", options: ["Continue", "Other"], open: true }),
 		...pair("Autocomplete", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),

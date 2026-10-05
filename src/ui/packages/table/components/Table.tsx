@@ -7,12 +7,13 @@ export interface TableProps {
 	columns: string[];
 	rows: string[][];
 	selected?: number;
+	dense?: boolean;
 	onRowActivated?: (index: number) => void;
 }
 
 function Table(props: CustomizedProps<Frame, TableProps>) {
-	const { columns, rows, selected, onRowActivated, className, sx, id, ref } = props;
-	const styles = useTableStyles();
+	const { columns, rows, selected, dense, onRowActivated, className, sx, id, ref } = props;
+	const styles = useTableStyles({ dense });
 	const width = columns.size() > 0 ? 1 / columns.size() : 1;
 
 	return (
