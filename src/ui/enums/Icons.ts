@@ -28,6 +28,7 @@ export enum Icons {
 	NewspaperVariant1 = "rbxassetid://9056545367",
 	NewspaperVariant2 = "rbxassetid://9056545251",
 	NewspaperVariant3 = "rbxassetid://9056545032",
+	PageLayoutSidebarRight = "rbxassetid://94615499225611",
 	Close = "rbxassetid://9070598165",
 	CloseCircle = "rbxassetid://9070597768",
 	Search = "rbxasset://textures/ui/SearchIcon.png",
