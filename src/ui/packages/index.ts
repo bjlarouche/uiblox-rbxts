@@ -29,6 +29,7 @@ export * from "./paper";
 export * from "./card";
 export * from "./chip";
 export * from "./badge";
+export * from "./avatar";
 export * from "./listItem";
 export * from "./menu";
 export * from "./motion";

@@ -234,6 +234,10 @@ export const stateMatrix: StateCapture[] = [
 	...pair("Badge", "max", { value: 100 }),
 	...pair("Badge", "invisible", { value: 0 }),
 
+	...pair("Avatar", "initials", { text: "BL" }),
+	...pair("Avatar", "image", { variant: "image" }),
+	...pair("Avatar", "small", { size: "small" }),
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];
