@@ -22,10 +22,11 @@ export interface MenuProps {
 	emptyText?: string;
 	empty?: React.Element;
 	dense?: boolean;
+	selected?: string;
 }
 
 function Menu(props: MenuProps) {
-	const { anchor, open, items, onSelect, onClose, emptyText, empty, dense } = props;
+	const { anchor, open, items, onSelect, onClose, emptyText, empty, dense, selected } = props;
 	const styles = useMenuStyles();
 	if (!open) return undefined;
 	const vacant = items.size() === 0;
@@ -45,6 +46,7 @@ function Menu(props: MenuProps) {
 								text={item.text}
 								disabled={item.disabled}
 								dense={dense}
+								selected={item.id === selected}
 								onActivated={() => {
 									if (item.disabled === true) return;
 									onSelect(item.id);
