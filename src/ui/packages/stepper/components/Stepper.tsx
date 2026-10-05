@@ -6,11 +6,12 @@ import useStepperStyles from "./Stepper.styles";
 export interface StepperProps {
 	steps: string[];
 	activeStep: number;
+	orientation?: "horizontal" | "vertical";
 }
 
 function Stepper(props: CustomizedProps<Frame, StepperProps>) {
-	const { steps, activeStep, className, sx, id, ref } = props;
-	const styles = useStepperStyles();
+	const { steps, activeStep, orientation = "horizontal", className, sx, id, ref } = props;
+	const styles = useStepperStyles({ orientation });
 	return (
 		<frame key={id || "Stepper"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.list} />

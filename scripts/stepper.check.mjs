@@ -4,7 +4,7 @@ if (stepState(0, 2) !== "complete" || stepState(2, 2) !== "active" || stepState(
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["first", "middle", "last"]) {
+for (const name of ["first", "middle", "last", "vertical"]) {
 	if (stateMatrix.filter((row) => row.component === "Stepper" && row.name.includes(name)).length !== 2) {
 		throw new Error(`Stepper missing ${name}`);
 	}
