@@ -3,6 +3,7 @@ for (const [component, name] of [
 	["ToggleButton", "default"],
 	["ToggleButton", "selected"],
 	["ToggleButton", "disabled"],
+	["ToggleButton", "size-small"],
 	["ToggleButtonGroup", "default"],
 	["ToggleButtonGroup", "selected"],
 ]) {

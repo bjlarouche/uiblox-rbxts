@@ -1,5 +1,5 @@
 import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { ControlSize, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import useToggleButtonStyles from "./ToggleButton.styles";
@@ -8,12 +8,13 @@ export interface ToggleButtonProps {
 	label: string;
 	selected?: boolean;
 	disabled?: boolean;
+	size?: ControlSize;
 	onActivated?: () => void;
 }
 
 function ToggleButton(props: CustomizedProps<TextButton, ToggleButtonProps>) {
-	const { label, selected, disabled, onActivated, className, sx, id, ref } = props;
-	const styles = useToggleButtonStyles({ selected, disabled });
+	const { label, selected, disabled, size = "medium", onActivated, className, sx, id, ref } = props;
+	const styles = useToggleButtonStyles({ selected, disabled, size });
 	const active = canActivate(disabled);
 	return (
 		<textbutton
@@ -43,11 +44,12 @@ export interface ToggleButtonGroupProps<T> {
 	options: ChoiceOption<T>[];
 	onChange: (value: T) => void;
 	disabled?: boolean;
+	size?: ControlSize;
 }
 
 export function ToggleButtonGroup<T>(props: CustomizedProps<Frame, ToggleButtonGroupProps<T>>) {
-	const { value, options, onChange, disabled, className, sx, id, ref } = props;
-	const styles = useToggleButtonStyles({});
+	const { value, options, onChange, disabled, size, className, sx, id, ref } = props;
+	const styles = useToggleButtonStyles({ size });
 	return (
 		<frame key={id || "ToggleButtonGroup"} ref={ref} {...styles.group} {...className} {...sx}>
 			<uilistlayout {...styles.list} />
@@ -57,6 +59,7 @@ export function ToggleButtonGroup<T>(props: CustomizedProps<Frame, ToggleButtonG
 					label={choice.label}
 					selected={choice.value === value}
 					disabled={disabled === true || choice.disabled === true}
+					size={size}
 					onActivated={() => {
 						if (choice.value !== value) onChange(choice.value);
 					}}
