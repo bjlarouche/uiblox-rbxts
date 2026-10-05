@@ -364,6 +364,14 @@ if (portalTarget(looseHost) !== undefined) throw new Error("unlayered host has n
 const { isDismissInput } = await import(
 	pathToFileURL(join(root, "src/ui/packages/modal/components/dismissInput.ts")).href
 );
+const { pointerRoute, isKeyKind, shouldTakeKey } = await import(
+	pathToFileURL(join(root, "src/interaction/pointerRoute.ts")).href
+);
+if (pointerRoute(false) !== "local" || pointerRoute(undefined) !== "local") throw new Error("pointer stays on the control");
+if (pointerRoute(true) !== "global") throw new Error("global pointer replaces the control listener");
+if (!isKeyKind("Keyboard") || !isKeyKind("Gamepad1") || isKeyKind("MouseButton1")) throw new Error("key kinds");
+if (shouldTakeKey(true) || !shouldTakeKey(false) || !shouldTakeKey(true, true)) throw new Error("processed keys stay out");
+
 if (!isDismissInput({ KeyCode: { Name: "Escape" } })) throw new Error("escape dismisses");
 if (!isDismissInput({ KeyCode: { Name: "ButtonB" } })) throw new Error("button b dismisses");
 if (isDismissInput({ KeyCode: { Name: "ButtonA" } }) || isDismissInput({ KeyCode: { Name: "Return" } })) {
