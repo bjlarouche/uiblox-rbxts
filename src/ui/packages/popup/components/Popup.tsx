@@ -4,13 +4,15 @@ import { popupPlacement } from "./placement";
 
 export interface PopupProps {
 	anchor?: GuiObject;
+	/** Desired content height. Used to flip above the anchor and to cap the shell. */
+	preferredHeight?: number;
 	onDismiss?: () => void;
 	onInput?: (input: InputObject) => void;
 	children?: React.ReactNode;
 }
 
 function Popup(props: PopupProps) {
-	const { anchor, onDismiss, onInput, children } = props;
+	const { anchor, preferredHeight, onDismiss, onInput, children } = props;
 	const dismiss = useRef(onDismiss);
 	dismiss.current = onDismiss;
 	const [, bump] = useState(0);
@@ -26,7 +28,7 @@ function Popup(props: PopupProps) {
 				else bump((n) => n + 1);
 				return;
 			}
-			const stamp = `${anchor.AbsolutePosition.X},${anchor.AbsolutePosition.Y},${anchor.AbsoluteSize.X},${anchor.AbsoluteSize.Y},${current.AbsolutePosition.X},${current.AbsolutePosition.Y},${current.AbsoluteSize.Y}`;
+			const stamp = `${anchor.AbsolutePosition.X},${anchor.AbsolutePosition.Y},${anchor.AbsoluteSize.X},${anchor.AbsoluteSize.Y},${current.AbsolutePosition.X},${current.AbsolutePosition.Y},${current.AbsoluteSize.X},${current.AbsoluteSize.Y}`;
 			if (stamp === last.stamp) return;
 			last.stamp = stamp;
 			bump((n) => n + 1);
@@ -52,7 +54,11 @@ function Popup(props: PopupProps) {
 		layer.AbsolutePosition.X,
 		layer.AbsolutePosition.Y,
 		layer.AbsoluteSize.Y,
+		layer.AbsoluteSize.X,
+		preferredHeight ?? 0,
 	);
+	const capped =
+		preferredHeight !== undefined && preferredHeight > 0 ? math.min(preferredHeight, place.maxHeight) : undefined;
 
 	return createPortal(
 		<frame key="Popup" Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} ZIndex={20000}>
@@ -75,8 +81,9 @@ function Popup(props: PopupProps) {
 				key="Content"
 				Position={UDim2.fromOffset(place.x, place.y)}
 				AnchorPoint={new Vector2(0, place.above ? 1 : 0)}
-				Size={UDim2.fromOffset(place.width, 0)}
-				AutomaticSize={Enum.AutomaticSize.Y}
+				Size={capped !== undefined ? UDim2.fromOffset(place.width, capped) : UDim2.fromOffset(place.width, 0)}
+				AutomaticSize={capped !== undefined ? Enum.AutomaticSize.None : Enum.AutomaticSize.Y}
+				ClipsDescendants={capped !== undefined}
 				BackgroundTransparency={1}
 				Active={false}
 				ZIndex={20001}

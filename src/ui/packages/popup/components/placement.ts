@@ -1,3 +1,11 @@
+export interface PopupPlace {
+	x: number;
+	y: number;
+	width: number;
+	maxHeight: number;
+	above: boolean;
+}
+
 export function popupPlacement(
 	anchorX: number,
 	anchorY: number,
@@ -6,9 +14,25 @@ export function popupPlacement(
 	layerX: number,
 	layerY: number,
 	layerH: number,
-) {
-	const x = anchorX - layerX;
-	const y = anchorY - layerY;
-	const above = y + anchorH / 2 > layerH / 2;
-	return { x, y: above ? y : y + anchorH, width: anchorW, above };
+	layerW = math.huge,
+	contentH = 0,
+): PopupPlace {
+	const localX = anchorX - layerX;
+	const localY = anchorY - layerY;
+	const spaceAbove = math.max(0, localY);
+	const spaceBelow = math.max(0, layerH - (localY + anchorH));
+	const above = contentH > spaceBelow && spaceAbove > spaceBelow;
+	const maxHeight = above ? spaceAbove : spaceBelow;
+	let width = anchorW;
+	if (width > layerW) width = math.max(0, layerW);
+	let x = localX;
+	if (x < 0) x = 0;
+	if (x + width > layerW) x = math.max(0, layerW - width);
+	return {
+		x,
+		y: above ? localY : localY + anchorH,
+		width,
+		maxHeight,
+		above,
+	};
 }
