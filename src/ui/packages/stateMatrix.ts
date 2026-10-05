@@ -377,6 +377,7 @@ function miscRows(): StateCapture[] {
 		...pair("Backdrop", "closed", { open: false }),
 		...pair("Divider", "horizontal", { variant: "horizontal" }),
 		...pair("Divider", "vertical", { variant: "vertical" }),
+		...pair("Divider", "label", { text: "Or" }),
 		...pair("ImageList", "default"),
 		...pair("ImageList", "dense", { size: "small" }),
 		...pair("ImageList", "wide", { size: "large" }),
