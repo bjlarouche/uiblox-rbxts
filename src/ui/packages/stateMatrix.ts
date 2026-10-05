@@ -217,4 +217,9 @@ export const stateMatrix: StateCapture[] = [
 
 	...pair("Paper", "flat", { variant: "flat" }),
 	...pair("Paper", "raised", { variant: "raised" }),
+
+	...pair("ListItem", "default"),
+	...pair("ListItem", "selected", { value: true }),
+	...pair("ListItem", "disabled", { disabled: true }),
+	...pair("ListItem", "secondary", { variant: "secondary" }),
 ];
