@@ -63,7 +63,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	}, [text]);
 
 	const showStroke = variant === "outlined" || variant === "filled";
-	const showCorner = rounded || variant === "outlined" || variant === "filled";
+	const showCorner = rounded;
 
 	return (
 		<frame key={id || "Input"} ref={ref} {...root} {...className}>
