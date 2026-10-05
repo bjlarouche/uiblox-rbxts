@@ -19,6 +19,10 @@ Breaking: `theme.palette` is a semantic token map. `theme.options.constants.colo
 | `options.constants.colors.alert/caution/link` | `palette.status.error` / `warning` / `text.link` |
 | `options.constants.extendedPalette.*` | import scale from `@rbxts/uiblox` |
 
+## Styles
+
+`makeStyles` keeps one result per theme object and primitive prop key. Strings, numbers, booleans, and datatypes (`Color3`, `UDim`, `UDim2`, vectors, `EnumItem`, `CFrame`, `BrickColor`) are part of the key. Callbacks, instances, and tables count only as present or absent. Do not mutate the tables it returns.
+
 ## Contrast
 
 `pnpm test` runs `scripts/contrast.check.mjs`. Targets: normal text ≥4.5:1, UI/focus/border ≥3:1. Exceptions: decorative `divider`, `text.disabled`, `action.disabled`.
