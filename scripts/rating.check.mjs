@@ -1,5 +1,5 @@
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["default", "filled", "disabled", "size-small"]) {
+for (const name of ["default", "filled", "disabled", "size-small", "readonly"]) {
 	if (!stateMatrix.some((row) => row.component === "Rating" && row.name.includes(name))) {
 		throw new Error(`Rating missing ${name}`);
 	}
