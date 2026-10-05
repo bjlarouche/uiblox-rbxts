@@ -7,7 +7,7 @@ if (accordionGlyph(true) !== "expanded" || accordionGlyph() !== "collapsed" || a
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["closed", "open", "disabled", "indicator"]) {
+for (const name of ["closed", "open", "disabled", "indicator", "square"]) {
 	if (stateMatrix.filter((row) => row.component === "Accordion" && row.name.includes(name)).length !== 2) {
 		throw new Error(`Accordion missing ${name}`);
 	}

@@ -9,12 +9,13 @@ export interface AccordionProps {
 	open?: boolean;
 	defaultOpen?: boolean;
 	disabled?: boolean;
+	square?: boolean;
 	onChange?: (open: boolean) => void;
 	children?: React.ReactNode;
 }
 
 function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
-	const { title, open: controlled, defaultOpen, disabled, onChange, children, className, sx, id, ref } = props;
+	const { title, open: controlled, defaultOpen, disabled, square, onChange, children, className, sx, id, ref } = props;
 	const [localOpen, setLocalOpen] = useState(defaultOpen === true);
 	const open = accordionOpen(localOpen, controlled);
 	const styles = useAccordionStyles({ open, disabled });
@@ -28,7 +29,7 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 
 	return (
 		<frame key={id || "Accordion"} ref={ref} {...styles.root} {...className} {...sx}>
-			<uicorner {...styles.corner} />
+			{square !== true && <uicorner {...styles.corner} />}
 			<uilistlayout {...styles.list} />
 			<textbutton key="Header" {...styles.header} Event={{ Activated: toggle }}>
 				<uipadding {...styles.padding} />
