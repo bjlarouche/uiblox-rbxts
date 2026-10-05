@@ -290,6 +290,7 @@ function chromeRows(): StateCapture[] {
 		...pair("Stepper", "last", { value: 2 }),
 		...pair("Accordion", "closed", { open: false }),
 		...pair("Accordion", "open", { open: true }),
+		...pair("Accordion", "disabled", { open: false, disabled: true }),
 		...pair("Snackbar", "open", { open: true, text: "Saved" }),
 		...pair("Snackbar", "closed", { open: false, text: "Saved" }),
 		...pair("Table", "empty", { text: "" }),
