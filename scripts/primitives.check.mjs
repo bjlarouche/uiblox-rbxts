@@ -283,9 +283,6 @@ for (const pointer of ["hover", "press", "focus"]) {
 		throw new Error(`Slider missing ${pointer}`);
 	}
 }
-if (!stateMatrix.some((row) => row.component === "Slider" && row.pointer === "focus")) {
-	throw new Error("Slider missing focus");
-}
 
 const dir = mkdtempSync(join(tmpdir(), "uiblox-primitives-"));
 const tsconfig = {
