@@ -9,3 +9,8 @@ export * from "./components/List";
 export { default as Stack } from "./components/Stack";
 export { StackProps } from "./components/Stack";
 export { StackAlign, StackDirection, StackJustify } from "./components/stackAlign";
+
+export { default as Box } from "./components/Box";
+export { BoxProps } from "./components/Box";
+export { BoxPad } from "./components/boxPad";
+export { BoxBg } from "./components/Box.styles";
