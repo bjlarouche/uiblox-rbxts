@@ -2,9 +2,10 @@ import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, Writ
 
 export interface RadioGroupStyleProps {
 	size?: ControlSize;
+	row?: boolean;
 }
 
-const useRadioGroupStyles = componentStyles<RadioGroupStyleProps>("RadioGroup", (theme: Theme, { size }) => {
+const useRadioGroupStyles = componentStyles<RadioGroupStyleProps>("RadioGroup", (theme: Theme, { size, row }) => {
 	const metrics = controlMetrics(theme.density, size);
 	return createStyles({
 		root: {
@@ -14,8 +15,10 @@ const useRadioGroupStyles = componentStyles<RadioGroupStyleProps>("RadioGroup", 
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		list: {
+			FillDirection: row === true ? Enum.FillDirection.Horizontal : Enum.FillDirection.Vertical,
 			Padding: new UDim(0, theme.padding.default),
 			SortOrder: Enum.SortOrder.LayoutOrder,
+			VerticalAlignment: Enum.VerticalAlignment.Center,
 		} as WriteableStyle<UIListLayout>,
 		option: {
 			AutomaticSize: Enum.AutomaticSize.XY,
@@ -24,7 +27,7 @@ const useRadioGroupStyles = componentStyles<RadioGroupStyleProps>("RadioGroup", 
 			BorderSizePixel: 0,
 			Text: "",
 		} as WriteableStyle<TextButton>,
-		row: {
+		optionRow: {
 			FillDirection: Enum.FillDirection.Horizontal,
 			Padding: new UDim(0, theme.padding.default),
 			VerticalAlignment: Enum.VerticalAlignment.Center,
