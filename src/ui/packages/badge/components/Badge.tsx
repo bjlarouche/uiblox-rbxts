@@ -1,19 +1,20 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { badgeText } from "./badgeValue";
-import useBadgeStyles from "./Badge.styles";
+import useBadgeStyles, { BadgeColor } from "./Badge.styles";
 
 export interface BadgeProps {
 	count?: number;
 	max?: number;
 	invisible?: boolean;
 	variant?: "standard" | "dot";
+	color?: BadgeColor;
 	children?: React.ReactNode;
 }
 
 function Badge(props: CustomizedProps<Frame, BadgeProps>) {
-	const { count = 0, max = 99, invisible = false, variant = "standard", children, className, sx, id, ref } = props;
-	const styles = useBadgeStyles({ variant });
+	const { count = 0, max = 99, invisible = false, variant = "standard", color = "error", children, className, sx, id, ref } = props;
+	const styles = useBadgeStyles({ variant, color });
 	const isDot = variant === "dot";
 	const shown = !invisible && (isDot || count > 0);
 	return (
