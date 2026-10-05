@@ -1,3 +1,3 @@
-export { breakpointName, orientationName } from "./breakpoints";
-export { BreakpointName, OrientationName } from "./breakpoints";
+export { breakpointName, orientationName, resolveResponsive } from "./breakpoints";
+export { BreakpointName, OrientationName, Responsive } from "./breakpoints";
 export { useBreakpoints } from "./useBreakpoints";
