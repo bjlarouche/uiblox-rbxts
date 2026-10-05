@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "@rbxts/react";
+import { useReducedMotion } from "hooks";
 import { CustomizedProps, useTheme } from "theme";
 import { arcKeys, loopProperty, progressSpin } from "ui/packages/motion";
 
@@ -12,8 +13,9 @@ export interface CircularProgressProps {
 }
 
 function CircularProgress(props: CustomizedProps<Frame, CircularProgressProps>) {
-	const { value, size = 24, thickness = 3, color, disabled, reducedMotion, className,
+	const { value, size = 24, thickness = 3, color, disabled, reducedMotion: reducedProp, className,
 		sx, id, ref } = props;
+	const reducedMotion = useReducedMotion(reducedProp);
 	const { theme } = useTheme();
 	const indeterminate = value === undefined;
 	const motion = progressSpin(indeterminate, reducedMotion, disabled);

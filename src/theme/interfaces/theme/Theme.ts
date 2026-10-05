@@ -7,6 +7,7 @@ import ThemeOptions from "./ThemeOptions";
 interface Theme {
 	type: string;
 	density: ThemeDensity;
+	reducedMotion?: boolean;
 	options: ThemeOptions;
 	palette: Palette;
 	padding: Padding;

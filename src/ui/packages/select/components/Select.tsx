@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { GuiService, UserInputService } from "@rbxts/services";
+import { useReducedMotion } from "hooks";
 import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Input } from "ui/packages/input";
@@ -30,8 +31,9 @@ export interface SelectProps<T> {
 }
 
 function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
-	const { value, values, options, onChange, disabled, placeholder = "", searchable, reducedMotion, size, className,
+	const { value, values, options, onChange, disabled, placeholder = "", searchable, reducedMotion: reducedProp, size, className,
 		sx, id, ref } = props;
+	const reducedMotion = useReducedMotion(reducedProp);
 	const styles = useSelectStyles({ size });
 	const { theme } = useTheme();
 	const row = controlMetrics(theme.density, size).height;

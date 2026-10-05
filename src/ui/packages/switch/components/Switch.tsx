@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
+import { useReducedMotion } from "hooks";
 import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { playProperty } from "ui/packages/motion";
@@ -23,8 +24,9 @@ export interface SwitchProps {
 const THUMB_SECONDS = 0.14;
 
 function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
-	const { value, onChange, disabled, label, size, reducedMotion, className,
+	const { value, onChange, disabled, label, size, reducedMotion: reducedProp, className,
 		sx, id, ref } = props;
+	const reducedMotion = useReducedMotion(reducedProp);
 	const { theme } = useTheme();
 	const { root, row, track, trackOn, knob, label: labelStyle, corner, stroke } = useSwitchStyles({ size });
 	const [hovering, setHovering] = useState(false);

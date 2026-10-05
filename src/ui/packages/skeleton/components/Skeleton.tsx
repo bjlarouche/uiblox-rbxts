@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "@rbxts/react";
+import { useReducedMotion } from "hooks";
 import { CustomizedProps } from "theme";
 import { loopProperty } from "ui/packages/motion";
 import useSkeletonStyles from "./Skeleton.styles";
@@ -70,12 +71,13 @@ function Skeleton(props: CustomizedProps<Frame, SkeletonProps>) {
 		lines = 1,
 		gap = 8,
 		animation,
-		reducedMotion,
+		reducedMotion: reducedProp,
 		className,
 		sx,
 		id,
 		ref,
 	} = props;
+	const reducedMotion = useReducedMotion(reducedProp);
 	const motion = skeletonMotion(animation, reducedMotion);
 	const count = variant === "text" ? math.max(lines, 1) : 1;
 
