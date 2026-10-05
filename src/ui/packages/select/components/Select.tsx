@@ -3,15 +3,17 @@ import { GuiService, UserInputService } from "@rbxts/services";
 import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Input } from "ui/packages/input";
+import { playProperty } from "ui/packages/motion";
 import { Popup } from "ui/packages/popup";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import { VirtualList, VirtualListHandle } from "ui/packages/virtualList";
 import useSelectStyles from "./Select.styles";
 import { filterChoices, usesSelectSearch } from "./selectFilter";
-import { includesChoice, selectionLabel } from "./selectMulti";
-import { groupRows, rowForOption } from "./selectGroups";
 import { canFocusGui } from "./selectFocus";
+import { groupRows, rowForOption } from "./selectGroups";
 import { shouldHandleSelectKey } from "./selectKey";
+import { menuHold } from "./selectMotion";
+import { includesChoice, selectionLabel } from "./selectMulti";
 import { typeaheadChoice } from "./selectTypeahead";
 import { stepChoice } from "./stepChoice";
 
@@ -23,11 +25,12 @@ export interface SelectProps<T> {
 	disabled?: boolean;
 	placeholder?: string;
 	searchable?: boolean;
+	reducedMotion?: boolean;
 	size?: ControlSize;
 }
 
 function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
-	const { value, values, options, onChange, disabled, placeholder = "", searchable, size, className,
+	const { value, values, options, onChange, disabled, placeholder = "", searchable, reducedMotion, size, className,
 		sx, id, ref } = props;
 	const styles = useSelectStyles({ size });
 	const { theme } = useTheme();
@@ -35,6 +38,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const active = canActivate(disabled);
 	const [anchor, setAnchor] = useState<TextButton>();
 	const [open, setOpen] = useState(false);
+	const [held, setHeld] = useState(false);
 	const [focused, setFocused] = useState(false);
 	const [highlight, setHighlight] = useState(-1);
 	const [query, setQuery] = useState("");
@@ -42,6 +46,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const typed = useRef<{ text: string; at: number }>();
 	const onKeyRef = useRef<(input: InputObject, fromControl: boolean) => void>();
 	const listRef = useRef<VirtualListHandle>();
+	const menuRef = useRef<CanvasGroup>();
 	const current = options.find((option) => option.value === value);
 	const shown = open && active;
 	const search = usesSelectSearch(options.size(), searchable);
@@ -132,6 +137,26 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 		listRef.current?.ensureVisible(rowForOption(rows, highlight));
 	}, [shown, highlight]);
 
+	useEffect(() => {
+		if (shown) setHeld(true);
+	}, [shown]);
+
+	useEffect(() => {
+		const menu = menuRef.current;
+		if (!menu || !held) return;
+		const stop = playProperty(menu, { GroupTransparency: shown ? 0 : 1 }, 0.12, reducedMotion);
+		const seconds = menuHold(shown, reducedMotion);
+		if (seconds === 0) {
+			if (!shown) setHeld(false);
+			return stop;
+		}
+		const wait = task.delay(seconds, () => setHeld(false));
+		return () => {
+			stop();
+			task.cancel(wait);
+		};
+	}, [shown, held, reducedMotion]);
+
 	return (
 		<frame key={id || "Select"} ref={ref} {...styles.root} {...className} {...sx}>
 			<textbutton
@@ -159,8 +184,9 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 				<uicorner {...styles.corner} />
 				<uistroke {...styles.stroke} />
 			</textbutton>
-			{shown && (
+			{(shown || held) && (
 				<Popup anchor={anchor} preferredHeight={menuHeight} onDismiss={close} onInput={(input) => onKey(input, true)}>
+					<canvasgroup ref={menuRef} Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} GroupTransparency={1}>
 					<frame key="Menu" {...styles.menu}>
 						<uicorner {...styles.corner} />
 						<uistroke {...styles.stroke} />
@@ -233,6 +259,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 							/>
 						</frame>
 					</frame>
+					</canvasgroup>
 				</Popup>
 			)}
 		</frame>
