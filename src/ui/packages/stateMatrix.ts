@@ -223,6 +223,9 @@ export const stateMatrix: StateCapture[] = [
 	...pair("ListItem", "disabled", { disabled: true }),
 	...pair("ListItem", "secondary", { variant: "secondary" }),
 
+	...pair("Card", "flat", { variant: "flat" }),
+	...pair("Card", "raised", { variant: "raised" }),
+
 	...pair("Menu", "closed", { open: false }),
 	...pair("Menu", "open", { open: true }),
 ];
