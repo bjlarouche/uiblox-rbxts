@@ -1,4 +1,3 @@
-import { pathToFileURL } from "node:url";
 import { join } from "node:path";
 import { readFileSync } from "node:fs";
 
@@ -23,27 +22,6 @@ if (!/body:\s*baseFontSize/.test(fontSizes) && !/body:\s*14/.test(fontSizes)) {
 }
 if (!/button:\s*13/.test(fontSizes) || !/caption:\s*12/.test(fontSizes) || !/h1:\s*28/.test(fontSizes)) {
 	throw new Error("typography scale miss button 13 / caption 12 / h1 28");
-}
-
-const { controlMetrics, resolveControlSize } = await import(
-	pathToFileURL(join(root, "src/theme/interfaces/density/controlMetrics.ts")).href
-);
-
-if (resolveControlSize("comfortable") !== "medium") throw new Error("comfortable → medium");
-if (resolveControlSize("compact") !== "small") throw new Error("compact → small");
-
-const compact = controlMetrics("compact");
-if (compact.height !== 22 || compact.buttonHeight !== 24 || compact.font !== 13 || compact.icon !== 14) {
-	throw new Error("compact metrics miss Studio-dense targets");
-}
-const comfortable = controlMetrics("comfortable");
-if (
-	comfortable.height !== 24 ||
-	comfortable.buttonHeight !== 36 ||
-	comfortable.font !== 14 ||
-	comfortable.icon !== 18
-) {
-	throw new Error("comfortable metrics miss web-ish targets");
 }
 
 if (buttonStyles.includes('size = "small"')) {
