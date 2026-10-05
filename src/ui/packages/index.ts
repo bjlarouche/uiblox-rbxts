@@ -32,6 +32,7 @@ export * from "./cframeEditor";
 export * from "./enumPicker";
 export * from "./popup";
 export * from "./modal";
+export * from "./backdrop";
 export * from "./dialog";
 export * from "./paper";
 export * from "./card";
