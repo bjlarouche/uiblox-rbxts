@@ -70,6 +70,45 @@ if (checkboxBoxTransparency(false, false, "hover") !== 0.85) throw new Error("un
 if (checkboxStrokeTransparency(false, true, "rest") !== 0.55) throw new Error("disabled stroke fades");
 if (checkboxStrokeTransparency(false, false, "focus") !== 0) throw new Error("focus stroke is solid");
 
+const {
+	switchPointer,
+	switchTrackTransparency,
+	switchThumbTransparency,
+	switchStrokeTransparency,
+	switchThumbPlacement,
+} = await import(pathToFileURL(join(root, "src/ui/packages/switch/components/switchLook.ts")).href);
+if (switchPointer(false, true, true) !== "press") throw new Error("switch press wins");
+if (switchPointer(true, false, true) !== "focus") throw new Error("switch focus wins");
+if (switchPointer(true, false, false) !== "hover") throw new Error("switch hover");
+if (switchTrackTransparency(true, false, "rest") !== 0) throw new Error("on track solid");
+if (switchTrackTransparency(false, false, "rest") !== 0.35) throw new Error("off track muted");
+if (switchTrackTransparency(true, true, "rest") !== 0.55) throw new Error("disabled on fades");
+if (switchThumbTransparency(true) !== 0.35) throw new Error("disabled thumb fades");
+if (switchStrokeTransparency(false, "focus") !== 0) throw new Error("focus stroke solid");
+if (switchStrokeTransparency(true, "focus") !== 1) throw new Error("disabled stroke hidden");
+const onThumb = switchThumbPlacement(true, 3);
+const offThumb = switchThumbPlacement(false, 3);
+if (onThumb.scaleX !== 1 || onThumb.offsetX !== -3 || onThumb.anchorX !== 1) throw new Error("on thumb placement");
+if (offThumb.scaleX !== 0 || offThumb.offsetX !== 3 || offThumb.anchorX !== 0) throw new Error("off thumb placement");
+
+const { nudgeDelta, nudgeValue, isSliderDrag, isSliderMove } = await import(
+	pathToFileURL(join(root, "src/ui/packages/slider/components/sliderNudge.ts")).href
+);
+if (nudgeDelta("Left") !== -1 || nudgeDelta("DPadRight") !== 1 || nudgeDelta("ButtonL") !== -1) {
+	throw new Error("slider key directions");
+}
+if (nudgeDelta("Escape") !== undefined) throw new Error("slider ignores unrelated keys");
+if (nudgeValue(5, 0, 10, 1, 1) !== 6) throw new Error("slider step nudge");
+if (nudgeValue(5, 0, 10, 1, -1) !== 4) throw new Error("slider step back");
+if (nudgeValue(9, 0, 10, 1, 1) !== 10) throw new Error("slider clamps max");
+if (nudgeValue(0, 0, 10, undefined, 1) !== 1) throw new Error("slider default tenth step");
+if (!isSliderDrag("MouseButton1") || !isSliderDrag("Touch") || isSliderDrag("Keyboard")) {
+	throw new Error("slider drag kinds");
+}
+if (!isSliderMove("MouseMovement") || !isSliderMove("Touch") || isSliderMove("MouseButton1")) {
+	throw new Error("slider move kinds");
+}
+
 const { branchHoldsSelection, visibleRows } = await import(
 	pathToFileURL(join(root, "src/ui/packages/treeView/components/treeRows.ts")).href
 );
@@ -215,6 +254,7 @@ const components = [
 	"Input",
 	"Checkbox",
 	"Switch",
+	"Slider",
 	"RadioGroup",
 	"Select",
 	"Tabs",
@@ -241,17 +281,17 @@ for (const component of components) {
 		throw new Error(`${component} missing long text at narrow width`);
 	}
 }
-for (const component of ["Button", "Checkbox", "Switch", "RadioGroup", "Select", "Tabs", "SplitPane", "Tooltip", "TreeView"]) {
+for (const component of ["Button", "Checkbox", "Switch", "Slider", "RadioGroup", "Select", "Tabs", "SplitPane", "Tooltip", "TreeView"]) {
 	if (!stateMatrix.some((row) => row.component === component && row.pointer === "hover")) {
 		throw new Error(`${component} missing hover`);
 	}
 }
-for (const component of ["Button", "Checkbox", "Switch", "Select", "SplitPane"]) {
+for (const component of ["Button", "Checkbox", "Switch", "Slider", "Select", "SplitPane"]) {
 	if (!stateMatrix.some((row) => row.component === component && row.pointer === "press")) {
 		throw new Error(`${component} missing press`);
 	}
 }
-for (const component of ["Button", "Input", "Checkbox", "Switch", "RadioGroup", "Select", "Tabs", "SplitPane"]) {
+for (const component of ["Button", "Input", "Checkbox", "Switch", "Slider", "RadioGroup", "Select", "Tabs", "SplitPane"]) {
 	if (!stateMatrix.some((row) => row.component === component && row.disabled === true)) {
 		throw new Error(`${component} missing disabled`);
 	}
@@ -267,6 +307,21 @@ for (const pointer of ["press", "focus"]) {
 		throw new Error(`Checkbox missing checked ${pointer}`);
 	}
 }
+if (!stateMatrix.some((row) => row.component === "Switch" && row.disabled === true && row.value !== true)) {
+	throw new Error("Switch missing disabled off");
+}
+if (!stateMatrix.some((row) => row.component === "Switch" && row.disabled === true && row.value === true)) {
+	throw new Error("Switch missing disabled on");
+}
+for (const pointer of ["hover", "press", "focus"]) {
+	if (!stateMatrix.some((row) => row.component === "Switch" && row.value === true && row.pointer === pointer)) {
+		throw new Error(`Switch missing on ${pointer}`);
+	}
+	if (!stateMatrix.some((row) => row.component === "Slider" && row.pointer === pointer)) {
+		throw new Error(`Slider missing ${pointer}`);
+	}
+}
+
 const dir = mkdtempSync(join(tmpdir(), "uiblox-primitives-"));
 const tsconfig = {
 	compilerOptions: {
