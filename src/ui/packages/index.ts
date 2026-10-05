@@ -20,6 +20,7 @@ export * from "./numberInput";
 export * from "./udimEditor";
 export * from "./vectorEditor";
 export * from "./popup";
+export * from "./modal";
 export * from "./radioGroup";
 export * from "./select";
 export * from "./slider";
