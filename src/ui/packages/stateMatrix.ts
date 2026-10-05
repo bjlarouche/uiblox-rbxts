@@ -278,6 +278,7 @@ function chromeRows(): StateCapture[] {
 		...pair("Drawer", "right", { open: true, variant: "right" }),
 		...pair("Breadcrumbs", "single", { text: "Home" }),
 		...pair("Breadcrumbs", "trail", { text: "Home / Library / Item" }),
+		...pair("Breadcrumbs", "collapsed", { text: "Home / … / Item", size: "small" }),
 		...pair("Breadcrumbs", "custom-separator", { text: "Home > Item" }),
 		...pair("Pagination", "first", { value: 1 }),
 		...pair("Pagination", "middle", { value: 3 }),
