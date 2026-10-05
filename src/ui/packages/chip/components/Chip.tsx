@@ -8,14 +8,15 @@ export interface ChipProps {
 	selected?: boolean;
 	disabled?: boolean;
 	size?: ControlSize;
+	variant?: "filled" | "outlined";
 	onActivated?: () => void;
 	onDelete?: () => void;
 }
 
 function Chip(props: CustomizedProps<TextButton, ChipProps>) {
-	const { label, selected, disabled, size, onActivated, onDelete, className, sx, id, ref } = props;
+	const { label, selected, disabled, size, variant = "filled", onActivated, onDelete, className, sx, id, ref } = props;
 	const deletable = onDelete !== undefined;
-	const styles = useChipStyles({ selected, disabled, deletable, size });
+	const styles = useChipStyles({ selected, disabled, deletable, size, variant });
 	return (
 		<textbutton
 			key={id || "Chip"}
