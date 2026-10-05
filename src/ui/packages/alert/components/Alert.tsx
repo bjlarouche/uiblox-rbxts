@@ -13,16 +13,14 @@ export interface AlertProps {
 
 function Alert(props: CustomizedProps<Frame, AlertProps>) {
 	const { severity, title, message, onClose, className, sx, id, ref } = props;
-	const styles = useAlertStyles({ severity });
+	const dismissible = onClose !== undefined;
+	const styles = useAlertStyles({ severity, dismissible });
 	return (
 		<frame key={id || "Alert"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uipadding {...styles.padding} />
 			<uicorner {...styles.corner} />
 			<uistroke {...styles.stroke} />
-			<uilistlayout {...styles.layout} />
-			{title !== undefined && title !== "" && <textlabel key="Title" {...styles.title} Text={title} />}
-			<textlabel key="Message" {...styles.message} Text={message} />
-			{onClose !== undefined && (
+			{dismissible && (
 				<imagebutton
 					key="Close"
 					{...styles.close}
@@ -30,6 +28,11 @@ function Alert(props: CustomizedProps<Frame, AlertProps>) {
 					Event={{ Activated: () => onClose() }}
 				/>
 			)}
+			<frame key="Body" {...styles.body}>
+				<uilistlayout {...styles.layout} />
+				{title !== undefined && title !== "" && <textlabel key="Title" {...styles.title} Text={title} />}
+				<textlabel key="Message" {...styles.message} Text={message} />
+			</frame>
 		</frame>
 	);
 }

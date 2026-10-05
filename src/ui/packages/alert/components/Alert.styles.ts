@@ -1,8 +1,11 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 import { AlertSeverity, alertSeverity } from "./alertTone";
 
-const useAlertStyles = componentStyles<{ severity?: AlertSeverity }>("Alert", (theme: Theme, { severity }) => {
+const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?: boolean }>(
+	"Alert",
+	(theme: Theme, { severity, dismissible }) => {
 	const tone = theme.palette.status[alertSeverity(severity)];
+	const closeSize = theme.spacing.calc(2);
 	return createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.Y,
@@ -25,6 +28,12 @@ const useAlertStyles = componentStyles<{ severity?: AlertSeverity }>("Alert", (t
 			Transparency: 0,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
+		body: {
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, dismissible === true ? -(closeSize + theme.padding.calc(1)) : 0, 0, 0),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
 		layout: {
 			FillDirection: Enum.FillDirection.Vertical,
 			HorizontalAlignment: Enum.HorizontalAlignment.Left,
@@ -56,8 +65,8 @@ const useAlertStyles = componentStyles<{ severity?: AlertSeverity }>("Alert", (t
 			LayoutOrder: 2,
 		} as WriteableStyle<TextLabel>,
 		close: {
-			Size: UDim2.fromOffset(theme.spacing.calc(2), theme.spacing.calc(2)),
-			Position: new UDim2(1, -theme.padding.calc(1), 0, theme.padding.calc(1)),
+			Size: UDim2.fromOffset(closeSize, closeSize),
+			Position: new UDim2(1, 0, 0, 0),
 			AnchorPoint: new Vector2(1, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
