@@ -3,7 +3,7 @@ import { CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import useSplitPaneStyles from "./SplitPane.styles";
 import { splitHitTransparency, splitMarkTransparency, splitPointer, splitRuleTransparency } from "./splitLook";
-import { clampSplit } from "./splitSize";
+import { clampSplit, splitBoxDims, splitRuleDims, toUDim2 } from "./splitSize";
 
 export interface SplitPaneProps {
 	value: number;
@@ -77,14 +77,10 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 					<frame
 						key="Rule"
 						{...styles.rule}
-						Size={vertical ? new UDim2(1, 0, 0, ruleThick) : new UDim2(0, ruleThick, 1, 0)}
+						Size={toUDim2(splitRuleDims(vertical, ruleThick))}
 						BackgroundTransparency={ruleTransparency}
 					/>
-					<frame
-						key="Grip"
-						{...styles.grip}
-						Size={vertical ? UDim2.fromOffset(markLen, gripAcross) : UDim2.fromOffset(gripAcross, markLen)}
-					>
+					<frame key="Grip" {...styles.grip} Size={toUDim2(splitBoxDims(vertical, markLen, gripAcross))}>
 						<uilistlayout
 							key="GripLayout"
 							FillDirection={vertical ? Enum.FillDirection.Vertical : Enum.FillDirection.Horizontal}
@@ -98,7 +94,7 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 								key={`Mark${index}`}
 								{...styles.mark}
 								LayoutOrder={index}
-								Size={vertical ? UDim2.fromOffset(markLen, markThick) : UDim2.fromOffset(markThick, markLen)}
+								Size={toUDim2(splitBoxDims(vertical, markLen, markThick))}
 								BackgroundTransparency={markTransparency}
 							/>
 						))}
