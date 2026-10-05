@@ -17,6 +17,8 @@ export * from "./checkbox";
 export * from "./colorPicker";
 export * from "./loadingStroke";
 export * from "./numberInput";
+export * from "./udimEditor";
+export * from "./vectorEditor";
 export * from "./popup";
 export * from "./radioGroup";
 export * from "./select";
