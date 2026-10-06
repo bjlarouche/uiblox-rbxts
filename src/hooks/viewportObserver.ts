@@ -22,7 +22,7 @@ export function observeViewport(host: GuiObject, listener: Listener): () => void
 			const current = hosts.get(host);
 			if (current === undefined) return;
 			current.size = { width: host.AbsoluteSize.X, height: host.AbsoluteSize.Y };
-			for (const listener of current.listeners) listener(current.size);
+			for (const cb of current.listeners) cb(current.size);
 		};
 		read();
 		entry.connection = host.GetPropertyChangedSignal("AbsoluteSize").Connect(read);
