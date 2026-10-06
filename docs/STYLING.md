@@ -1,6 +1,6 @@
 # Uiblox styling
 
-Theme tokens + style helpers for Roblox Instance props. No CSS string parser.
+Theme tokens and style helpers for Instance props. No CSS parser.
 
 ## Web → Roblox support
 
