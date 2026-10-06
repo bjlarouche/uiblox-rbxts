@@ -11,6 +11,7 @@ export * from "./layout";
 export * from "./preloader";
 export * from "./progressBar";
 export * from "./scroll";
+export * from "./reorder";
 export * from "./shadow";
 export * from "./sidebar";
 export * from "./toast";
