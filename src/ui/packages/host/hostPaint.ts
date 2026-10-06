@@ -5,6 +5,7 @@ export interface HostPaint {
 	props: { [key: string]: unknown };
 	padding?: ResolvedSx["padding"];
 	corner?: ResolvedSx["corner"];
+	gradient?: ResolvedSx["gradient"];
 	gap?: number;
 }
 
@@ -26,6 +27,7 @@ export function paintHostStyle(
 		props: resolveStyle(merged, state ?? {}) as { [key: string]: unknown },
 		padding: resolved.padding,
 		corner: resolved.corner,
+		gradient: resolved.gradient,
 		gap: resolved.gap,
 	};
 }

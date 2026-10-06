@@ -42,6 +42,21 @@ globalThis.UDim = class UDim {
 		this.Offset = offset;
 	}
 };
+globalThis.ColorSequenceKeypoint = class ColorSequenceKeypoint {
+	constructor(time, value) {
+		this.Time = time;
+		this.Value = value;
+	}
+};
+globalThis.ColorSequence = class ColorSequence {
+	constructor(keypoints) {
+		this.Keypoints = keypoints;
+	}
+};
+globalThis.math.max = Math.max;
+Array.prototype.size = function size() {
+	return this.length;
+};
 globalThis.UDim2 = class UDim2 {
 	constructor(xScale = 0, xOffset = 0, yScale = 0, yOffset = 0) {
 		this.X = new UDim(xScale, xOffset);
@@ -128,5 +143,14 @@ const merged = cx(className, resolveSx(theme, { bgcolor: "surface.paper", Text: 
 if (merged.Text !== "b" || merged.BackgroundColor3 !== paper || merged.BackgroundTransparency !== 0) {
 	throw new Error("cx precedence");
 }
+
+const shaded = resolveSx(theme, { gradient: { colors: ["primary.main", "surface.paper", hover], rotation: 90 } });
+const stops = shaded.gradient?.Color.Keypoints ?? [];
+if (stops.length !== 3 || stops[0].Value !== primary || stops[1].Time !== 0.5 || stops[2].Value !== hover) throw new Error("gradient stops");
+if (shaded.gradient.Rotation !== 90 || shaded.root.gradient !== undefined) throw new Error("gradient rotation/root");
+const solid = resolveSx(theme, { gradient: { colors: ["surface.paper"] } });
+if (solid.gradient.Color.Keypoints.length !== 2 || solid.gradient.Color.Keypoints[1].Time !== 1) throw new Error("single stop gradient");
+const phoneShade = resolveSx(theme, { gradient: { phone: { colors: [hover] }, desktop: { colors: [paper] } } }, 400);
+if (phoneShade.gradient.Color.Keypoints[0].Value !== hover) throw new Error("responsive gradient");
 
 console.log("resolve sx ok");

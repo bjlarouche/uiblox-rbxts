@@ -91,16 +91,19 @@ function SxHost(props: SxHostProps) {
 	const painted = new Array<React.Element>();
 	let hasPad = false;
 	let hasCorner = false;
+	let hasGradient = false;
 	for (const node of nodes) {
 		if (!React.isValidElement(node)) continue;
 		const kind = hostKind(elementType(node));
 		if (kind === "uipadding") hasPad = true;
 		if (kind === "uicorner") hasCorner = true;
+		if (kind === "uigradient") hasGradient = true;
 		const patch = kind !== undefined ? layoutGapPatch(kind, elementProps(node), paint.gap) : undefined;
 		painted.push(patch !== undefined ? React.cloneElement(node, patch) : node);
 	}
 	if (!hasPad && paint.padding !== undefined) painted.push(React.createElement("uipadding", paint.padding));
 	if (!hasCorner && paint.corner !== undefined) painted.push(React.createElement("uicorner", paint.corner));
+	if (!hasGradient && paint.gradient !== undefined) painted.push(React.createElement("uigradient", paint.gradient));
 
 	return React.createElement(tag, {
 		...paint.props,
