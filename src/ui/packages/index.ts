@@ -24,6 +24,7 @@ export * from "./loadingStroke";
 export * from "./numberInput";
 export * from "./numberRangeEditor";
 export * from "./dateRange";
+export * from "./sparkline";
 export * from "./rectEditor";
 export * from "./rayEditor";
 export * from "./physicalPropertiesEditor";
