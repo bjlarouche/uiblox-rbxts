@@ -20,6 +20,7 @@ export * from "./typography";
 export * from "./text";
 export * from "./weekGrid";
 export * from "./button";
+export * from "./copyButton";
 export * from "./checkbox";
 export * from "./colorPicker";
 export * from "./fontEditor";
