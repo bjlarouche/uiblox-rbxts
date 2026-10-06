@@ -124,7 +124,8 @@ Order (later wins): `_first` → `_last` → `_odd` → `_even` → `_selected` 
 Compose: `className` then `sx` (sx wins), then explicit host props. `SxHost` tracks hover, press, and focus and runs `resolveStyle` unless `state` overrides a flag. `_disabled` follows `state.disabled`. An existing `UIPadding`, `UICorner`, or layout `Padding` / `CellPadding` child wins over sx `p` / `radius` / `gap`.
 
 ```tsx
-<Box sx={{ p: 2, bgcolor: "surface.paper", radius: 4 }} />
+<Button text="Save" sx={{ bgcolor: "primary.main", _hover: { bgcolor: "primary.hover" } }} />
+<IconButton icon={Icons.Close} tint={theme.palette.text.primary} sx={{ radius: 8 }} />
 <Stack direction="row" sx={{ gap: 2, width: { phone: 160, desktop: 320 } }}>
 	<textlabel Text="A" />
 </Stack>

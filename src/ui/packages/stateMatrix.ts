@@ -64,6 +64,8 @@ function controlsRows(): StateCapture[] {
 		...pair("Button", "outlined-loading", { loading: true, variant: "outlined" }),
 		...pair("Button", "text-loading", { loading: true, variant: "text" }),
 		...pair("Button", "long", { text: LONG, width: NARROW }),
+		...pair("Button", "sx", { variant: "sx" }),
+		...pair("IconButton", "sx", { variant: "sx" }),
 		...pair("Input", "default", { text: "Story" }),
 		...pair("Input", "size-small", { text: "Story", size: "small" }),
 		...pair("Input", "size-medium", { text: "Story", size: "medium" }),
