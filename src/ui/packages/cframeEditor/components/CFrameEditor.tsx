@@ -2,13 +2,16 @@ import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { NumberInput } from "ui/packages/numberInput";
 import useCFrameEditorStyles from "./CFrameEditor.styles";
-import { CFrameField, cframeFields, nextCFrameParts } from "./cframeValue";
+import { CFrameField, nextCFrameParts } from "./cframeValue";
 
 export interface CFrameEditorProps {
 	value: CFrame;
 	onChange: (value: CFrame) => void;
 	disabled?: boolean;
 }
+
+const POSITION: CFrameField[] = ["X", "Y", "Z"];
+const ORIENTATION: CFrameField[] = ["RX", "RY", "RZ"];
 
 function CFrameEditor(props: CustomizedProps<Frame, CFrameEditorProps>) {
 	const { value, onChange, disabled, className, sx, id, ref } = props;
@@ -26,25 +29,37 @@ function CFrameEditor(props: CustomizedProps<Frame, CFrameEditorProps>) {
 		);
 	};
 
+	const group = (title: string, fields: CFrameField[], order: number, offset: number) => (
+		<frame key={title} {...styles.group} LayoutOrder={order}>
+			<uilistlayout {...styles.wrap} />
+			<textlabel {...styles.groupLabel} Text={title} LayoutOrder={1} />
+			<frame key="Axes" {...styles.axes} LayoutOrder={2}>
+				<uilistlayout {...styles.row} />
+				<>
+					{fields.map((field, index) => (
+						<frame key={field} {...styles.axis} LayoutOrder={index + 1}>
+							<uilistlayout {...styles.row} />
+							<textlabel {...styles.label} Text={field} />
+							<frame {...styles.field}>
+								<NumberInput
+									value={amounts[offset + index]}
+									disabled={disabled}
+									width={new UDim(1, 0)}
+									onChange={(amount) => commit(field, amount)}
+								/>
+							</frame>
+						</frame>
+					))}
+				</>
+			</frame>
+		</frame>
+	);
+
 	return (
 		<frame key={id || "CFrameEditor"} ref={ref} {...styles.root} {...className} {...sx}>
 			<uilistlayout {...styles.wrap} />
-			<>
-			{cframeFields().map((field, index) => (
-				<frame key={field} {...styles.axis} LayoutOrder={index + 1}>
-					<uilistlayout {...styles.row} />
-					<textlabel {...styles.label} Text={field} />
-					<frame {...styles.field}>
-						<NumberInput
-							value={amounts[index]}
-							disabled={disabled}
-							width={new UDim(1, 0)}
-							onChange={(amount) => commit(field, amount)}
-						/>
-					</frame>
-				</frame>
-			))}
-			</>
+			{group("Position", POSITION, 1, 0)}
+			{group("Orientation", ORIENTATION, 2, 3)}
 		</frame>
 	);
 }

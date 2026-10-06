@@ -19,8 +19,7 @@ export interface NumberSequenceEditorProps {
 }
 
 function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditorProps>) {
-	const { value, onChange, disabled, className,
-		sx, id, ref } = props;
+	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = useColorPickerStyles();
 	const active = canActivate(disabled);
 	const stops = readNumberStops(value);
@@ -42,8 +41,8 @@ function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditor
 			<uilistlayout {...styles.column} />
 			<frame
 				key="Bar"
-				{...styles.hue}
-				BackgroundColor3={new Color3(0.2, 0.2, 0.2)}
+				{...styles.sequenceBar}
+				BackgroundColor3={new Color3(1, 1, 1)}
 				LayoutOrder={1}
 				Active={active}
 				Event={{
@@ -62,11 +61,13 @@ function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditor
 						}
 						const updated = insertNumberStop(stops, alpha);
 						commit(updated);
-						setSelected(hitStop(
-							updated.map((stop) => stop.t),
-							alpha,
-							1,
-						));
+						setSelected(
+							hitStop(
+								updated.map((stop) => stop.t),
+								alpha,
+								1,
+							),
+						);
 					},
 					InputChanged: (rbx, input) => {
 						if (!dragging.current || input.UserInputType !== Enum.UserInputType.MouseMovement) return;
@@ -78,21 +79,30 @@ function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditor
 				}}
 			>
 				<uicorner {...styles.corner} />
+				<uistroke {...styles.swatchStroke} />
 				<uigradient Transparency={value} />
 				<>
-				{stops.map((stop, stopIndex) => (
-					<frame
-						key={`Stop-${stopIndex}`}
-						{...styles.hueKnob}
-						Position={UDim2.fromScale(stop.t, 0.5)}
-						ZIndex={stopIndex === index ? 2 : 1}
-					>
-						<uicorner {...styles.corner} />
-					</frame>
-				))}
+					{stops.map((stop, stopIndex) => (
+						<frame
+							key={`Stop-${stopIndex}`}
+							{...styles.stop}
+							BackgroundColor3={new Color3(0.85, 0.85, 0.85)}
+							Position={UDim2.fromScale(stop.t, 0.5)}
+							ZIndex={stopIndex === index ? 2 : 1}
+						>
+							<uicorner CornerRadius={new UDim(0, 2)} />
+							<uistroke Thickness={stopIndex === index ? 2 : 1} Color={new Color3(1, 1, 1)} />
+						</frame>
+					))}
 				</>
 			</frame>
-			<frame key="Fields" {...styles.row} LayoutOrder={2} Size={new UDim2(1, 0, 0, 0)} AutomaticSize={Enum.AutomaticSize.Y}>
+			<frame
+				key="Fields"
+				{...styles.row}
+				LayoutOrder={2}
+				Size={new UDim2(1, 0, 0, 0)}
+				AutomaticSize={Enum.AutomaticSize.Y}
+			>
 				<uilistlayout {...styles.rowLayout} />
 				<frame key="Value" {...styles.channel}>
 					<uilistlayout {...styles.rowLayout} />
