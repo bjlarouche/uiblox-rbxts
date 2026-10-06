@@ -397,7 +397,7 @@ function chromeRows(): StateCapture[] {
 	];
 }
 
-function miscRows(): StateCapture[] {
+function miscRowsA(): StateCapture[] {
 	return [
 		...pair("BottomNavigation", "selected", { value: "Search", options: ["Home", "Search", "Profile"] }),
 		...pair("BottomNavigation", "disabled", { value: "Home", options: ["Home", "Search", "Profile"], disabled: true }),
@@ -453,6 +453,11 @@ function miscRows(): StateCapture[] {
 		...pair("StyleSx", "narrow", { width: NARROW }),
 		...pair("StyleSx", "disabled", { disabled: true }),
 		...pair("StyleSx", "loading", { loading: true }),
+	];
+}
+
+function miscRowsB(): StateCapture[] {
+	return [
 		...pair("Container", "default", { variant: "lg" }),
 		...pair("Container", "sm", { variant: "sm" }),
 		...pair("Container", "fluid", { variant: "false" }),
@@ -515,4 +520,13 @@ function concatRows(...chunks: StateCapture[][]): StateCapture[] {
 	return out;
 }
 
-export const stateMatrix: StateCapture[] = concatRows(controlsRows(), editorsRows(), togglesRows(), compositeRows(), surfacesRows(), chromeRows(), miscRows());
+export const stateMatrix: StateCapture[] = concatRows(
+	controlsRows(),
+	editorsRows(),
+	togglesRows(),
+	compositeRows(),
+	surfacesRows(),
+	chromeRows(),
+	miscRowsA(),
+	miscRowsB(),
+);
