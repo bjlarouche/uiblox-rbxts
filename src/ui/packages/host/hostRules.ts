@@ -18,6 +18,18 @@ export function sxUsesBreakpoints(sx: object | undefined): boolean {
 	return false;
 }
 
+export function elementProps(element: unknown): { [key: string]: unknown } {
+	if (typeOf(element) !== "table") return {};
+	const props = (element as { props?: unknown }).props;
+	if (typeOf(props) !== "table") return {};
+	return props as { [key: string]: unknown };
+}
+
+export function elementType(element: unknown): unknown {
+	if (typeOf(element) !== "table") return undefined;
+	return (element as { type?: unknown }).type;
+}
+
 export function hostKind(typeName: unknown): string | undefined {
 	if (!typeIs(typeName, "string")) return undefined;
 	return string.lower(typeName as string);

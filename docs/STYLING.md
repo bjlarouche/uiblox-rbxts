@@ -121,7 +121,7 @@ const painted = resolveStyle(classes.root, { hover, pressed, focusVisible, disab
 
 Order (later wins): `_first` → `_last` → `_odd` → `_even` → `_selected` → `_checked` → `_loading` → `_hover` → `_pressed` → `_focus` → `_focusVisible` → `_disabled`.
 
-Compose: `className` then `sx` (sx wins), then explicit host props. `SxHost` peels selector keys. An existing `UIPadding`, `UICorner`, or layout `Padding` / `CellPadding` child wins over sx `p` / `radius` / `gap`.
+Compose: `className` then `sx` (sx wins), then explicit host props. `SxHost` tracks hover, press, and focus and runs `resolveStyle` unless `state` overrides a flag. `_disabled` follows `state.disabled`. An existing `UIPadding`, `UICorner`, or layout `Padding` / `CellPadding` child wins over sx `p` / `radius` / `gap`.
 
 ```tsx
 <Box sx={{ p: 2, bgcolor: "surface.paper", radius: 4 }} />

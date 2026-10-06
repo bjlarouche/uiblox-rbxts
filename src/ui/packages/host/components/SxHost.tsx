@@ -3,7 +3,7 @@ import { observeViewport } from "hooks/viewportObserver";
 import { useTheme } from "theme";
 import { StyleState } from "theme/styles/utilities/resolveStyle";
 import { SxInput } from "theme/styles/utilities/resolveSx";
-import { hostKind, hostRest, layoutGapPatch, sxUsesBreakpoints } from "../hostRules";
+import { elementProps, elementType, hostKind, hostRest, layoutGapPatch, sxUsesBreakpoints } from "../hostRules";
 import { paintHostStyle } from "../hostPaint";
 
 export interface SxHostProps {
@@ -32,6 +32,9 @@ function SxHost(props: SxHostProps) {
 	const { theme } = useTheme();
 	const bound = useRef<GuiObject>();
 	const [width, setWidth] = useState<number | undefined>(undefined);
+	const [hover, setHover] = useState(false);
+	const [pressed, setPressed] = useState(false);
+	const [focused, setFocused] = useState(false);
 
 	useEffect(() => {
 		const host = bound.current;
@@ -41,39 +44,68 @@ function SxHost(props: SxHostProps) {
 		});
 	}, [sx]);
 
-	const paint = paintHostStyle(theme, props.base, props.className, sx, width, props.state);
+	const passed = props.state;
+	const locked = passed?.disabled === true;
+	const paint = paintHostStyle(theme, props.base, props.className, sx, width, {
+		hover,
+		pressed,
+		focused,
+		...passed,
+	});
+	const rest = hostRest(props);
+	const caller = rest.Event as { [key: string]: (...args: never[]) => void } | undefined;
+	rest.Event = {
+		...caller,
+		MouseEnter: (...args: never[]) => {
+			if (!locked) setHover(true);
+			caller?.MouseEnter?.(...args);
+		},
+		MouseLeave: (...args: never[]) => {
+			setHover(false);
+			setPressed(false);
+			caller?.MouseLeave?.(...args);
+		},
+		MouseButton1Down: (...args: never[]) => {
+			if (!locked) setPressed(true);
+			caller?.MouseButton1Down?.(...args);
+		},
+		MouseButton1Up: (...args: never[]) => {
+			setPressed(false);
+			caller?.MouseButton1Up?.(...args);
+		},
+		SelectionGained: (...args: never[]) => {
+			if (!locked) setFocused(true);
+			caller?.SelectionGained?.(...args);
+		},
+		SelectionLost: (...args: never[]) => {
+			setFocused(false);
+			caller?.SelectionLost?.(...args);
+		},
+	};
 	const nodes = React.Children.toArray(props.children);
-	const painted = new Array<React.Element | string | number>();
+	const painted = new Array<React.Element>();
 	let hasPad = false;
 	let hasCorner = false;
 	for (const node of nodes) {
-		if (typeIs(node, "string") || typeIs(node, "number")) {
-			painted.push(node);
-			continue;
-		}
 		if (!React.isValidElement(node)) continue;
-		const kind = hostKind((node as { type?: unknown }).type);
+		const kind = hostKind(elementType(node));
 		if (kind === "uipadding") hasPad = true;
 		if (kind === "uicorner") hasCorner = true;
-		const patch =
-			kind !== undefined ? layoutGapPatch(kind, (node.props ?? {}) as { [key: string]: unknown }, paint.gap) : undefined;
+		const patch = kind !== undefined ? layoutGapPatch(kind, elementProps(node), paint.gap) : undefined;
 		painted.push(patch !== undefined ? React.cloneElement(node, patch) : node);
 	}
 	if (!hasPad && paint.padding !== undefined) painted.push(React.createElement("uipadding", paint.padding));
 	if (!hasCorner && paint.corner !== undefined) painted.push(React.createElement("uicorner", paint.corner));
 
-	return React.createElement(
-		tag,
-		{
-			...paint.props,
-			...hostRest(props),
-			ref: (instance: GuiObject) => {
-				bound.current = instance;
-				setRef(props.hostRef, instance);
-			},
+	return React.createElement(tag, {
+		...paint.props,
+		...rest,
+		ref: (instance: GuiObject) => {
+			bound.current = instance;
+			setRef(props.hostRef, instance);
 		},
-		...painted,
-	);
+		children: painted,
+	});
 }
 
 export default SxHost;
