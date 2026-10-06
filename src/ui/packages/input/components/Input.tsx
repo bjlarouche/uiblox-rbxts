@@ -27,6 +27,9 @@ export interface InputProps {
 	rounded?: boolean;
 	clearsTextOnFocus?: boolean;
 	size?: ControlSize;
+	multiline?: boolean;
+	minRows?: number;
+	maxRows?: number;
 	reducedMotion?: boolean;
 	startAdornment?: React.Element;
 	endAdornment?: React.Element;
@@ -60,6 +63,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		hasError = false,
 		rounded = true,
 		size,
+		multiline = false,
 		reducedMotion,
 		startAdornment,
 		endAdornment,
@@ -78,13 +82,14 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const entered = useRef(false);
 	const [draft, setDraft] = useState(text ?? "");
 	const [focused, setFocused] = useState(false);
+	const [contentHeight, setContentHeight] = useState(0);
 	const { theme } = useTheme();
 	const active = canActivate(disabled, loading);
 	const editable = active && readOnly !== true;
 	const endSlotContent = loading ? undefined : endAdornment;
 
 	const { root, font, margin, shell, box, startSlot, endSlot, helper, errorColorFrame, errorColorText, divider, corner, stroke } =
-		useInputStyles({ ...props, focused });
+		useInputStyles({ ...props, focused, contentHeight });
 
 	useEffect(() => {
 		setDraft((current) => syncInputDraft(focusedRef.current, text, current));
@@ -113,12 +118,16 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 						TextEditable={editable}
 						Text={draft}
 						PlaceholderText={placeholder}
+						MultiLine={multiline}
 						{...cx(hasError && errorColorText)}
 						Change={{
 							Text: (rbx) => {
 								if (!editable) return;
 								setDraft(rbx.Text);
 								if (focusedRef.current && onInput) onInput(rbx.Text);
+							},
+							TextBounds: (rbx) => {
+								if (multiline) setContentHeight(rbx.TextBounds.Y);
 							},
 						}}
 						Event={{
@@ -130,7 +139,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 								if (onFocus) onFocus();
 							},
 							ReturnPressedFromOnScreenKeyboard: (rbx) => {
-								if (!editable || entered.current || !onEnterPressed) return;
+								if (!editable || multiline || entered.current || !onEnterPressed) return;
 								entered.current = true;
 								onEnterPressed(rbx.Text);
 							},
@@ -139,7 +148,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 								setFocused(false);
 								const committed = rbx.Text;
 								if (editable && onTextChanged) onTextChanged(committed);
-								if (editable && enterPressed && !entered.current && onEnterPressed) onEnterPressed(committed);
+								if (editable && !multiline && enterPressed && !entered.current && onEnterPressed) onEnterPressed(committed);
 								entered.current = false;
 								if (onBlur) onBlur();
 								setDraft(text ?? "");

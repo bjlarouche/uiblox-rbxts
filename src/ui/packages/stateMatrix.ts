@@ -29,6 +29,7 @@ export interface StateCapture {
 	density?: StateDensity;
 	row?: boolean;
 	marks?: boolean;
+	multiline?: boolean;
 }
 
 const LONG = "Save changes to this story before publishing the preview";
@@ -85,6 +86,7 @@ function controlsRows(): StateCapture[] {
 	pushPair(out, "Input", "error", { text: "Story", hasError: true });
 	pushPair(out, "Input", "placeholder", { text: "", placeholder: "Search stories" });
 	pushPair(out, "Input", "long", { text: LONG, width: NARROW });
+	pushPair(out, "Input", "multiline", { text: "First line\nSecond line", width: NARROW, multiline: true });
 	pushPair(out, "Input", "sx", { variant: "sx" });
 	pushPair(out, "Checkbox", "unchecked");
 	pushPair(out, "Checkbox", "size-small", { size: "small" });

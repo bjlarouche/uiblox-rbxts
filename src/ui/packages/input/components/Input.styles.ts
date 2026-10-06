@@ -1,8 +1,9 @@
 import { controlMetrics, createStyles, componentStyles, WriteableStyle } from "theme";
 import { InputProps } from "./Input";
 import { inputInsets } from "./inputInsets";
+import { multilineHeight } from "./multilineHeight";
 
-const useInputStyles = componentStyles<InputProps & { focused?: boolean }>("Input", 
+const useInputStyles = componentStyles<InputProps & { focused?: boolean; contentHeight?: number }>("Input",
 	(
 		theme,
 		{
@@ -18,6 +19,10 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean }>("Inpu
 			focused = false,
 			hasError = false,
 			size,
+			multiline = false,
+			minRows = 2,
+			maxRows = 5,
+			contentHeight = 0,
 		},
 	) => {
 		const metrics = controlMetrics(theme.density, size);
@@ -26,7 +31,10 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean }>("Inpu
 		const icon = metrics.icon;
 		const gap = theme.padding.calc(1);
 		const insets = inputInsets(hasStart, hasEnd, icon, gap);
-		const fieldHeight = metrics.height + (variant === "standard" ? 0 : theme.padding.calc(1));
+		const verticalPad = theme.padding.calc(1);
+		const fieldHeight = multiline
+			? multilineHeight(contentHeight, metrics.font, minRows, maxRows, verticalPad)
+			: metrics.height + (variant === "standard" ? 0 : verticalPad);
 		const accent = color === "primary" ? theme.palette.primary.main : theme.palette.text.primary;
 		const focusAccent = hasError ? theme.palette.status.error.main : theme.palette.focus;
 
@@ -91,9 +99,15 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean }>("Inpu
 			defaultStyles.Position = new UDim2(0, insets.left, 0, 0);
 			defaultStyles.Size = new UDim2(1, -(insets.left + insets.right), 1, 0);
 			defaultStyles.TextXAlignment = Enum.TextXAlignment.Left;
-			defaultStyles.TextTruncate = Enum.TextTruncate.AtEnd;
+			defaultStyles.TextYAlignment = multiline ? Enum.TextYAlignment.Top : Enum.TextYAlignment.Center;
+			defaultStyles.TextWrapped = multiline;
+			defaultStyles.TextTruncate = multiline ? Enum.TextTruncate.None : Enum.TextTruncate.AtEnd;
 			defaultStyles.ClearTextOnFocus = clearsTextOnFocus;
 			defaultStyles.ZIndex = 12000;
+			if (multiline) {
+				defaultStyles.Position = new UDim2(0, insets.left, 0, verticalPad);
+				defaultStyles.Size = new UDim2(1, -(insets.left + insets.right), 1, -verticalPad * 2);
+			}
 
 			return defaultStyles;
 		};
