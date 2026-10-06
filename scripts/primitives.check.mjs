@@ -191,6 +191,14 @@ if (parseNumberDraft("8", 0, 10, 5) !== 10) throw new Error("rounds up to step")
 if (parseNumberDraft("6", 1, 11, 5) !== 6) throw new Error("step anchors at min");
 if (commitNumber(Number.NaN) !== undefined) throw new Error("NaN never commits");
 if (commitNumber(Infinity) !== undefined) throw new Error("inf never commits");
+const { formatNumber } = await import(
+	pathToFileURL(join(root, "src/ui/packages/numberInput/components/numberValue.ts")).href
+);
+if (formatNumber(0.699999988079071) !== "0.7") throw new Error("format trims float tail");
+if (formatNumber(0.30000001192092896) !== "0.3") throw new Error("format trims friction tail");
+if (formatNumber(0.5) !== "0.5") throw new Error("format keeps a short decimal");
+if (formatNumber(1) !== "1") throw new Error("format drops a zero fraction");
+if (formatNumber(-1.25) !== "-1.25") throw new Error("format keeps a sign");
 
 const {
 	byteToUnit,

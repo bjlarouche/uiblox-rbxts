@@ -1,7 +1,8 @@
-import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useRectEditorStyles = componentStyles("RectEditor", (theme: Theme) =>
-	createStyles({
+const useRectEditorStyles = componentStyles("RectEditor", (theme: Theme) => {
+	const gap = theme.padding.calc(1);
+	return createStyles({
 		root: {
 			Size: new UDim2(1, 0, 0, 0),
 			AutomaticSize: Enum.AutomaticSize.Y,
@@ -13,29 +14,50 @@ const useRectEditorStyles = componentStyles("RectEditor", (theme: Theme) =>
 			Padding: new UDim(0, theme.padding.calc(0.5)),
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
-		row: {
-			FillDirection: Enum.FillDirection.Horizontal,
-			Padding: new UDim(0, theme.padding.calc(1)),
-			VerticalAlignment: Enum.VerticalAlignment.Center,
-			SortOrder: Enum.SortOrder.LayoutOrder,
-		} as WriteableStyle<UIListLayout>,
-		axis: {
-			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
+		group: {
+			Size: new UDim2(1, 0, 0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
-		label: {
-			Size: new UDim2(0, theme.spacing.calc(3), 1, 0),
+		groupLabel: {
+			Size: new UDim2(1, 0, 0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
 			BackgroundTransparency: 1,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.caption,
 			TextColor3: theme.palette.text.secondary,
 			TextXAlignment: Enum.TextXAlignment.Left,
 		} as WriteableStyle<TextLabel>,
-		field: {
-			Size: new UDim2(1, -theme.spacing.calc(3), 1, 0),
+		pair: {
+			FillDirection: Enum.FillDirection.Horizontal,
+			Padding: new UDim(0, gap),
+			SortOrder: Enum.SortOrder.LayoutOrder,
+		} as WriteableStyle<UIListLayout>,
+		cell: {
+			Size: new UDim2(0.5, -gap / 2, 0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
-	}),
-);
+		stack: {
+			FillDirection: Enum.FillDirection.Vertical,
+			Padding: new UDim(0, theme.padding.calc(0.5)),
+			SortOrder: Enum.SortOrder.LayoutOrder,
+		} as WriteableStyle<UIListLayout>,
+		label: {
+			Size: new UDim2(1, 0, 0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			BackgroundTransparency: 1,
+			Font: theme.typography.fontFamilies.default,
+			TextSize: theme.typography.fontSizes.caption,
+			TextColor3: theme.palette.text.secondary,
+			TextXAlignment: Enum.TextXAlignment.Left,
+			TextTruncate: Enum.TextTruncate.AtEnd,
+		} as WriteableStyle<TextLabel>,
+		field: {
+			Size: new UDim2(1, 0, 0, controlMetrics(theme.density).height),
+			BackgroundTransparency: 1,
+		} as WriteableStyle<Frame>,
+	});
+});
 
 export default useRectEditorStyles;
