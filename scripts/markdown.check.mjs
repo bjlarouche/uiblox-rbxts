@@ -35,7 +35,7 @@ globalThis.math = {
 	max: Math.max,
 };
 
-const { parseMarkdown, inlinesToPlain, inlinesToRichText } = await import(
+const { parseMarkdown, inlinesToPlain, inlinesToRichText, inlinePieces, markdownLinkPayload } = await import(
 	"../src/ui/packages/markdown/parseMarkdown.ts",
 );
 const { htmlToMarkdown } = await import("../src/ui/packages/markdown/htmlToMarkdown.ts");
@@ -66,6 +66,21 @@ if (inlines[6].kind !== "link" || inlines[6].href !== "https://x.test") throw ne
 
 const rich = inlinesToRichText(inlines);
 if (!rich.includes("<b>bold</b>") || !rich.includes("<i>it</i>")) throw new Error("rich text");
+if (rich.includes("https://x.test")) throw new Error("link hides the address");
+if (!rich.includes("<u>go</u>")) throw new Error("link is underlined");
+
+const payload = markdownLinkPayload(inlines[6]);
+if (payload === undefined || payload.text !== "go" || payload.href !== "https://x.test") throw new Error("link payload");
+if (markdownLinkPayload(inlines[0]) !== undefined) throw new Error("bold is not a link");
+if (markdownLinkPayload({ kind: "link", text: "", href: "x" }) !== undefined) throw new Error("empty link");
+
+const pieces = inlinePieces(parseMarkdown("See [north route](route) today.")[0].inlines);
+const linked = pieces.find((piece) => piece.kind === "link");
+if (linked === undefined || linked.text !== "north route" || linked.href !== "route") throw new Error("piece payload");
+if (pieces.some((piece) => piece.kind === "word" && piece.text.includes("route"))) throw new Error("link is not a word");
+if (pieces.some((piece) => piece.kind !== "link" && piece.text !== undefined && String(piece.text).includes("(route)"))) {
+	throw new Error("address leaked into text");
+}
 
 const junk = parseMarkdown("<script>alert(1)</script>\nnot html mode");
 if (junk[0].kind !== "paragraph") throw new Error("unsupported stays text");

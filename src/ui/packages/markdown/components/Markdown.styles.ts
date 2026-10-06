@@ -82,6 +82,31 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
+		flow: {
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, 0, 0, 0),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
+		flowLayout: {
+			FillDirection: Enum.FillDirection.Horizontal,
+			HorizontalAlignment: Enum.HorizontalAlignment.Left,
+			VerticalAlignment: Enum.VerticalAlignment.Center,
+			SortOrder: Enum.SortOrder.LayoutOrder,
+			Wraps: true,
+			Padding: new UDim(0, 4),
+		} as WriteableStyle<UIListLayout>,
+		word: {
+			AutomaticSize: Enum.AutomaticSize.XY,
+			Size: UDim2.fromScale(0, 0),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+			Font: theme.typography.fontFamilies.default,
+			TextSize: theme.typography.fontSizes.body,
+			TextColor3: theme.palette.text.primary,
+			TextXAlignment: Enum.TextXAlignment.Left,
+			RichText: true,
+		} as WriteableStyle<TextLabel>,
 	});
 });
 
