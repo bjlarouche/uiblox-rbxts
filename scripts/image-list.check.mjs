@@ -10,8 +10,8 @@ if (imageListItemSize() !== 96 || imageListItemSize(0) !== 96 || imageListItemSi
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const name of ["default", "dense", "wide"]) {
-	if (!stateMatrix.some((row) => row.component === "ImageList" && row.name.includes(name))) {
+for (const name of ["default", "dense", "wide", "titled", "untitled"]) {
+	if (!stateMatrix.some((row) => row.component === "ImageList" && row.name.includes(`ImageList-${name}-`))) {
 		throw new Error(`ImageList missing ${name}`);
 	}
 }
