@@ -4,26 +4,26 @@ import { imageListCell, imageListCols, imageListGap } from "./imageListLayout";
 const useImageListStyles = componentStyles<{ cols?: number; gap?: number; itemSize?: number; aspect?: number }>(
 	"ImageList",
 	(theme: Theme, { cols, gap, itemSize, aspect }) => {
+		const columns = imageListCols(cols);
 		const cell = imageListCell(itemSize, aspect);
 		const pad = theme.spacing.calc(imageListGap(gap));
 		const bar = theme.spacing.calc(2.5);
+		const span = columns * cell.width + math.max(0, columns - 1) * pad;
 		return createStyles({
 			root: {
-				AutomaticSize: Enum.AutomaticSize.XY,
-				Size: UDim2.fromScale(0, 0),
+				AutomaticSize: Enum.AutomaticSize.Y,
+				Size: UDim2.fromOffset(span, 0),
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 			} as WriteableStyle<Frame>,
-			grid: {
-				CellSize: UDim2.fromOffset(cell.width, cell.height),
-				CellPadding: UDim2.fromOffset(pad, pad),
+			flow: {
 				FillDirection: Enum.FillDirection.Horizontal,
-				FillDirectionMaxCells: imageListCols(cols),
+				Wraps: true,
+				Padding: new UDim(0, pad),
 				SortOrder: Enum.SortOrder.LayoutOrder,
-				StartCorner: Enum.StartCorner.TopLeft,
 				HorizontalAlignment: Enum.HorizontalAlignment.Left,
 				VerticalAlignment: Enum.VerticalAlignment.Top,
-			} as WriteableStyle<UIGridLayout>,
+			} as WriteableStyle<UIListLayout>,
 			tile: {
 				Size: UDim2.fromOffset(cell.width, cell.height),
 				BackgroundColor3: theme.palette.surface.input,
