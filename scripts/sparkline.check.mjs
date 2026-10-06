@@ -7,11 +7,12 @@ globalThis.math = {
 	min: Math.min,
 	max: Math.max,
 	sqrt: Math.sqrt,
+	floor: Math.floor,
 	atan2: Math.atan2,
 	deg: (value) => (value * 180) / Math.PI,
 };
 
-const { sparklineLayout } = await import("../src/ui/packages/sparkline/sparklineLayout.ts");
+const { sparklineArea, sparklineLayout } = await import("../src/ui/packages/sparkline/sparklineLayout.ts");
 
 if (sparklineLayout([], 120, 36).length !== 0) throw new Error("empty");
 if (sparklineLayout([4], 120, 36).length !== 0) throw new Error("single");
@@ -28,5 +29,16 @@ if (rise[0].length < 30) throw new Error("rise length");
 
 const drop = sparklineLayout([10, 0], 100, 40);
 if (drop[0].rotation <= 0) throw new Error("drop rotation");
+
+if (sparklineArea([], 100, 40).length !== 0 || sparklineArea([4], 100, 40).length !== 0) throw new Error("empty area");
+const area = sparklineArea([0, 10], 100, 40);
+if (area.length < 4) throw new Error("area slices");
+const baseline = area[0].y + area[0].height;
+for (const bar of area) {
+	if (Math.abs(bar.y + bar.height - baseline) > 0.01) throw new Error("area baseline");
+	if (bar.width <= 0) throw new Error("area width");
+}
+if (area[area.length - 1].height <= area[0].height) throw new Error("area rises");
+if (rise[0].height !== undefined) throw new Error("line stays a line");
 
 console.log("sparkline ok");
