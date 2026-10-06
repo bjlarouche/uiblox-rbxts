@@ -2,6 +2,7 @@ import React from "@rbxts/react";
 import { cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { ChoiceOption } from "ui/packages/radioGroup";
+import { SxHost } from "ui/packages/host";
 import useBottomNavigationStyles from "./BottomNavigation.styles";
 
 export interface BottomNavigationProps<T> {
@@ -18,7 +19,7 @@ function BottomNavigation<T>(props: CustomizedProps<Frame, BottomNavigationProps
 	const count = math.max(options.size(), 1);
 
 	return (
-		<frame key={id || "BottomNavigation"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "BottomNavigation"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.list} />
 			<>
 			{options.map((choice, index) => {
@@ -44,7 +45,7 @@ function BottomNavigation<T>(props: CustomizedProps<Frame, BottomNavigationProps
 				);
 			})}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

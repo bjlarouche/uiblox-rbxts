@@ -1,6 +1,7 @@
 import React, { useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
+import { SxHost } from "ui/packages/host";
 import { accordionGlyph, accordionOpen } from "./accordionOpen";
 import useAccordionStyles from "./Accordion.styles";
 
@@ -28,7 +29,7 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 	};
 
 	return (
-		<frame key={id || "Accordion"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Accordion"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			{square !== true && <uicorner {...styles.corner} />}
 			<uilistlayout {...styles.list} />
 			<textbutton key="Header" {...styles.header} Event={{ Activated: toggle }}>
@@ -44,7 +45,7 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 				<uipadding {...styles.padding} />
 				{children}
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 

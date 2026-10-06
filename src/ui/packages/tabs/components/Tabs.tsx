@@ -3,6 +3,7 @@ import { cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import { stepChoice } from "ui/packages/select/components/stepChoice";
+import { SxHost } from "ui/packages/host";
 import { TabsOrientation, tabsIsVertical } from "./tabsOrientation";
 import useTabsStyles from "./Tabs.styles";
 
@@ -36,7 +37,7 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 	};
 
 	return (
-		<scrollingframe key={id || "Tabs"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="scrollingframe" key={id || "Tabs"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.list} />
 			<>
 			{options.map((choice, index) => {
@@ -58,7 +59,7 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 				);
 			})}
 			</>
-		</scrollingframe>
+		</SxHost>
 	);
 }
 
