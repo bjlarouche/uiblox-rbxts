@@ -3,6 +3,11 @@ import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
 const { stateMatrix } = await import(pathToFileURL(join(root, "src/ui/packages/stateMatrix.ts")).href);
+const { cardColumnWidth } = await import(pathToFileURL(join(root, "src/ui/packages/card/components/cardWidth.ts")).href);
+const fluid = cardColumnWidth(true, 256);
+const fixed = cardColumnWidth(undefined, 256);
+if (fluid.scale !== 1 || fluid.offset !== 0) throw new Error("fluid card width");
+if (fixed.scale !== 0 || fixed.offset !== 256 || cardColumnWidth(false, 256).offset !== 256) throw new Error("fixed card width");
 
 for (const variant of ["flat", "raised", "square"]) {
 	if (!stateMatrix.some((row) => row.component === "Card" && row.variant === variant && row.theme === "Dark")) {

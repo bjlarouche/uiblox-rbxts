@@ -3,6 +3,7 @@ import { ControlSize, CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
+import { ratingCommit } from "./ratingCommit";
 import useRatingStyles from "./Rating.styles";
 
 export interface RatingProps {
@@ -11,7 +12,7 @@ export interface RatingProps {
 	size?: ControlSize;
 	disabled?: boolean;
 	readOnly?: boolean;
-	onChange: (value: number) => void;
+	onChange?: (value: number) => void;
 }
 
 function Rating(props: CustomizedProps<Frame, RatingProps>) {
@@ -34,7 +35,8 @@ function Rating(props: CustomizedProps<Frame, RatingProps>) {
 					Selectable={active}
 					Event={{
 						Activated: () => {
-							if (active) onChange(n === value ? 0 : n);
+							const landed = ratingCommit(readOnly, onChange, n === value ? 0 : n);
+							if (landed !== undefined && onChange !== undefined) onChange(landed);
 						},
 					}}
 				/>

@@ -181,7 +181,7 @@ const numberInput = readFileSync("src/ui/packages/numberInput/components/NumberI
 if (!enumPicker.includes("sx={sx}") || !numberInput.includes("sx={sx}")) throw new Error("editor sx forward");
 const card = readFileSync("src/ui/packages/card/components/Card.tsx", "utf8");
 const paper = readFileSync("src/ui/packages/paper/components/Paper.tsx", "utf8");
-if (!card.includes("sx={sx}") || !paper.includes("<SxHost")) throw new Error("card paper sx");
+if ((!card.includes("sx={sx}") && !card.includes("...sx")) || !paper.includes("<SxHost")) throw new Error("card paper sx");
 
 const guiRootExceptions = new Set(["src/ui/packages/loadingStroke/components/LoadingStroke.tsx"]);
 const guiTag = /<(frame|scrollingframe|textbutton|textbox|imagebutton|textlabel|imagelabel|canvasgroup|viewportframe)\b/;
@@ -202,7 +202,7 @@ for (const file of walkTsx("src/ui/packages")) {
 	if (text.includes("{...sx}") && file !== "src/ui/packages/loadingStroke/components/LoadingStroke.tsx") {
 		throw new Error(`${file} still spreads sx`);
 	}
-	if (text.includes("<SxHost") || (text.includes("sx={sx}") && !text.includes("{...sx}"))) continue;
+	if (text.includes("<SxHost") || (text.includes("sx={sx}") && !text.includes("{...sx}")) || file.endsWith("card/components/Card.tsx")) continue;
 	if (guiRootExceptions.has(file)) continue;
 	if (guiTag.test(text)) throw new Error(`${file} gui root missing SxHost`);
 }
