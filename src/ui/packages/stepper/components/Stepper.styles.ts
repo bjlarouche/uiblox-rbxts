@@ -27,6 +27,7 @@ const useStepperStyles = componentStyles<{ orientation?: "horizontal" | "vertica
 			} as WriteableStyle<TextLabel>,
 			active: { TextColor3: theme.palette.primary.main } as WriteableStyle<TextLabel>,
 			complete: { TextColor3: theme.palette.text.primary } as WriteableStyle<TextLabel>,
+			error: { TextColor3: theme.palette.status.error.main } as WriteableStyle<TextLabel>,
 		}),
 );
 
