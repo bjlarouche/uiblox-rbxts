@@ -1,21 +1,50 @@
 import React from "@rbxts/react";
-import { cx, CustomizedProps } from "theme";
-import { rowSelected } from "./rowSelected";
+import { cx, CustomizedProps, WriteableStyle } from "theme";
 import { SxHost } from "ui/packages/host";
+import { rowSelected } from "./rowSelected";
+import {
+	canSort,
+	columnSizes,
+	headerText,
+	isTextCell,
+	resolveColumn,
+	TableAlign,
+	TableSortDirection,
+} from "./tableColumns";
 import useTableStyles from "./Table.styles";
 
+export interface TableColumn {
+	header: string | React.ReactNode;
+	width?: number | UDim;
+	flex?: number;
+	align?: TableAlign;
+	sortable?: boolean;
+}
+
+export type TableCell = string | React.ReactNode;
+
 export interface TableProps {
-	columns: string[];
-	rows: string[][];
+	columns: Array<string | TableColumn>;
+	rows: Array<Array<TableCell>>;
 	selected?: number;
 	dense?: boolean;
+	sortColumn?: number;
+	sortDirection?: TableSortDirection;
+	onSort?: (column: number) => void;
 	onRowActivated?: (index: number) => void;
 }
 
+function textAlign(align: TableAlign) {
+	if (align === "center") return Enum.TextXAlignment.Center;
+	if (align === "right") return Enum.TextXAlignment.Right;
+	return Enum.TextXAlignment.Left;
+}
+
 function Table(props: CustomizedProps<Frame, TableProps>) {
-	const { columns, rows, selected, dense, onRowActivated, className, sx, id, ref } = props;
+	const { columns, rows, selected, dense, sortColumn, sortDirection, onSort, onRowActivated, className, sx, id, ref } = props;
 	const styles = useTableStyles({ dense });
-	const width = columns.size() > 0 ? 1 / columns.size() : 1;
+	const resolved = columns.map((column) => resolveColumn(column));
+	const sizes = columnSizes(resolved);
 
 	return (
 		<SxHost tag="frame" key={id || "Table"} hostRef={ref} base={styles.root} className={className} sx={sx}>
@@ -25,42 +54,94 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 				<uipadding {...styles.padding} />
 				<uilistlayout {...styles.cells} />
 				<>
-				{columns.map((label, index) => (
-					<textlabel
-						key={`h-${label}-${index}`}
-						{...cx<TextLabel>(styles.cell, styles.headerCell)}
-						Text={label}
-						Size={new UDim2(width, 0, 0, 0)}
-						LayoutOrder={index}
-					/>
-				))}
+					{resolved.map((column, index) => {
+						const size = sizes[index];
+						const box = new UDim2(size.scale, size.offset, 0, 0);
+						const align = textAlign(column.align);
+						const active = sortColumn === index && column.sortable;
+						const label = typeIs(column.header, "string") ? headerText(column.header, active, sortDirection) : undefined;
+						const clickable = canSort(column.sortable, onSort !== undefined);
+						if (clickable) {
+							return (
+								<textbutton
+									key={`h-${index}`}
+									{...(cx<TextLabel>(styles.cell, styles.headerCell) as WriteableStyle<TextButton>)}
+									Text={label ?? ""}
+									Size={box}
+									TextXAlignment={align}
+									AutoButtonColor={false}
+									LayoutOrder={index}
+									Event={{ Activated: () => onSort?.(index) }}
+								>
+									{label === undefined && (column.header as React.ReactNode)}
+								</textbutton>
+							);
+						}
+						if (label !== undefined) {
+							return (
+								<textlabel
+									key={`h-${index}`}
+									{...cx<TextLabel>(styles.cell, styles.headerCell)}
+									Text={label}
+									Size={box}
+									TextXAlignment={align}
+									LayoutOrder={index}
+								/>
+							);
+						}
+						return (
+							<frame key={`h-${index}`} Size={box} AutomaticSize={Enum.AutomaticSize.Y} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={index}>
+								{column.header as React.ReactNode}
+							</frame>
+						);
+					})}
 				</>
 			</frame>
 			<>
-			{rows.map((cells, rowIndex) => (
-				<textbutton
-					key={`r-${rowIndex}`}
-					{...cx<TextButton>(styles.row, rowSelected(rowIndex, selected) && styles.selected)}
-					LayoutOrder={rowIndex + 1}
-					Event={{
-						Activated: () => onRowActivated?.(rowIndex),
-					}}
-				>
-					<uipadding {...styles.padding} />
-					<uilistlayout {...styles.cells} />
-					<>
-					{columns.map((_, colIndex) => (
-						<textlabel
-							key={`c-${rowIndex}-${colIndex}`}
-							{...styles.cell}
-							Text={cells[colIndex] ?? ""}
-							Size={new UDim2(width, 0, 0, 0)}
-							LayoutOrder={colIndex}
-						/>
-					))}
-					</>
-				</textbutton>
-			))}
+				{rows.map((cells, rowIndex) => (
+					<textbutton
+						key={`r-${rowIndex}`}
+						{...cx<TextButton>(styles.row, rowSelected(rowIndex, selected) && styles.selected)}
+						LayoutOrder={rowIndex + 1}
+						Event={{
+							Activated: () => onRowActivated?.(rowIndex),
+						}}
+					>
+						<uipadding {...styles.padding} />
+						<uilistlayout {...styles.cells} />
+						<>
+							{resolved.map((column, colIndex) => {
+								const size = sizes[colIndex];
+								const box = new UDim2(size.scale, size.offset, 0, 0);
+								const value = cells[colIndex];
+								if (isTextCell(value)) {
+									return (
+										<textlabel
+											key={`c-${rowIndex}-${colIndex}`}
+											{...styles.cell}
+											Text={(value as string | undefined) ?? ""}
+											Size={box}
+											TextXAlignment={textAlign(column.align)}
+											LayoutOrder={colIndex}
+										/>
+									);
+								}
+								return (
+									<frame
+										key={`c-${rowIndex}-${colIndex}`}
+										Size={box}
+										AutomaticSize={Enum.AutomaticSize.Y}
+										BackgroundTransparency={1}
+										BorderSizePixel={0}
+										LayoutOrder={colIndex}
+									>
+										{value}
+									</frame>
+								);
+							})}
+						</>
+					</textbutton>
+				))}
 			</>
 		</SxHost>
 	);
