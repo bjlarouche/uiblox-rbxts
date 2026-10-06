@@ -162,14 +162,29 @@ if (!autocomplete.includes("sx={sx}") || !select.includes("<SxHost") || !select.
 	throw new Error("autocomplete select sx");
 }
 const stroke = readFileSync("src/ui/packages/loadingStroke/components/LoadingStroke.tsx", "utf8");
-if (!stroke.includes("<uistroke") || !stroke.includes("{...sx}")) throw new Error("loading stroke host");
-
-const rawSxAllowed = new Set([
-	"src/ui/packages/loadingStroke/components/LoadingStroke.tsx",
-]);
+const strokeStyle = readFileSync("src/ui/packages/loadingStroke/components/loadingStrokeSx.ts", "utf8");
+if (!stroke.includes("<uistroke") || !stroke.includes("{...sx}") || !stroke.includes("LoadingStrokeStyle")) {
+	throw new Error("loading stroke host");
+}
+if (!strokeStyle.includes("BackgroundColor3?: never") || !strokeStyle.includes("Size?: never")) {
+	throw new Error("loading stroke gui sx");
+}
 const enumPicker = readFileSync("src/ui/packages/enumPicker/components/EnumPicker.tsx", "utf8");
 const numberInput = readFileSync("src/ui/packages/numberInput/components/NumberInput.tsx", "utf8");
 if (!enumPicker.includes("sx={sx}") || !numberInput.includes("sx={sx}")) throw new Error("editor sx forward");
+
+const guiRootExceptions = new Set([
+	"src/ui/packages/loadingStroke/components/LoadingStroke.tsx",
+	"src/ui/packages/shadow/components/Shadow.tsx",
+	"src/ui/packages/popup/components/Popup.tsx",
+	"src/ui/packages/modal/components/Modal.tsx",
+	"src/ui/packages/drawer/components/Drawer.tsx",
+	"src/ui/packages/dialog/components/Dialog.tsx",
+	"src/ui/packages/card/components/Card.tsx",
+	"src/ui/packages/listItem/components/ListItem.tsx",
+	"src/ui/packages/virtualList/components/EmptyListHint.tsx",
+]);
+const guiTag = /<(frame|scrollingframe|textbutton|textbox|imagebutton|textlabel|imagelabel|canvasgroup|viewportframe)\b/;
 function walkTsx(dir, out = []) {
 	for (const name of readdirSync(dir)) {
 		const path = join(dir, name);
@@ -178,9 +193,18 @@ function walkTsx(dir, out = []) {
 	}
 	return out;
 }
+const index = readFileSync("src/ui/packages/index.ts", "utf8");
 for (const file of walkTsx("src/ui/packages")) {
-	if (!readFileSync(file, "utf8").includes("{...sx}")) continue;
-	if (!rawSxAllowed.has(file)) throw new Error(`${file} still spreads sx`);
+	const text = readFileSync(file, "utf8");
+	const pkg = file.split("/")[3];
+	if (!index.includes(`"./${pkg}"`)) continue;
+	if (!text.includes("export default")) continue;
+	if (text.includes("{...sx}") && file !== "src/ui/packages/loadingStroke/components/LoadingStroke.tsx") {
+		throw new Error(`${file} still spreads sx`);
+	}
+	if (text.includes("<SxHost") || (text.includes("sx={sx}") && !text.includes("{...sx}"))) continue;
+	if (guiRootExceptions.has(file)) continue;
+	if (guiTag.test(text)) throw new Error(`${file} gui root missing SxHost`);
 }
 
 console.log("host sx ok");
