@@ -54,6 +54,7 @@ function SxHost(props: SxHostProps) {
 	});
 	const rest = hostRest(props);
 	const caller = rest.Event as { [key: string]: (...args: never[]) => void } | undefined;
+	const pressable = tag === "textbutton" || tag === "imagebutton";
 	rest.Event = {
 		...caller,
 		MouseEnter: (...args: never[]) => {
@@ -65,14 +66,6 @@ function SxHost(props: SxHostProps) {
 			setPressed(false);
 			caller?.MouseLeave?.(...args);
 		},
-		MouseButton1Down: (...args: never[]) => {
-			if (!locked) setPressed(true);
-			caller?.MouseButton1Down?.(...args);
-		},
-		MouseButton1Up: (...args: never[]) => {
-			setPressed(false);
-			caller?.MouseButton1Up?.(...args);
-		},
 		SelectionGained: (...args: never[]) => {
 			if (!locked) setFocused(true);
 			caller?.SelectionGained?.(...args);
@@ -82,6 +75,18 @@ function SxHost(props: SxHostProps) {
 			caller?.SelectionLost?.(...args);
 		},
 	};
+	// GuiButton-only; Frames reject MouseButton1* and crash Select/Menu hosts.
+	if (pressable) {
+		const events = rest.Event as { [key: string]: (...args: never[]) => void };
+		events.MouseButton1Down = (...args: never[]) => {
+			if (!locked) setPressed(true);
+			caller?.MouseButton1Down?.(...args);
+		};
+		events.MouseButton1Up = (...args: never[]) => {
+			setPressed(false);
+			caller?.MouseButton1Up?.(...args);
+		};
+	}
 	const nodes = React.Children.toArray(props.children);
 	const painted = new Array<React.Element>();
 	let hasPad = false;
