@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { PropsWithChildren } from "@rbxts/react";
 import { WriteableStyle } from "theme/styles";
+import { SxInput } from "theme/styles/utilities/resolveSx";
 
 export interface CommonProps<T extends Instance> extends PropsWithChildren {
 	className?: WriteableStyle<T>;
-	sx?: WriteableStyle<T>;
+	sx?: WriteableStyle<T> & SxInput;
 	component?: T;
 	id?: React.Key;
 	ref?: React.Ref<T>;
