@@ -57,6 +57,7 @@ export * from "./bottomNavigation";
 export * from "./alert";
 export * from "./toggleButton";
 export * from "./link";
+export * from "./markdown";
 export * from "./rating";
 export * from "./listItem";
 export * from "./menu";
