@@ -5,12 +5,13 @@ import { textBox } from "./textBox";
 
 export interface TextProps {
 	text?: string;
+	wrap?: boolean;
 }
 
 function Text(props: CustomizedProps<TextLabel, TextProps>) {
-	const { text = "", className, sx, id, ref } = props;
+	const { text = "", wrap, className, sx, id, ref } = props;
 	const { theme } = useTheme();
-	const box = textBox();
+	const box = textBox(wrap);
 	return (
 		<SxHost
 			tag="textlabel"
@@ -19,7 +20,8 @@ function Text(props: CustomizedProps<TextLabel, TextProps>) {
 			base={{
 				Text: text,
 				Size: new UDim2(box.widthScale, 0, box.heightScale, 0),
-				AutomaticSize: Enum.AutomaticSize.XY,
+				AutomaticSize: box.automatic === "Y" ? Enum.AutomaticSize.Y : Enum.AutomaticSize.XY,
+				TextWrapped: box.wrapped,
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
