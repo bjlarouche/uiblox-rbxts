@@ -47,467 +47,473 @@ function pair(component: string, name: string, patch: Partial<StateCapture> = {}
 	}));
 }
 
+function pushPair(out: StateCapture[], component: string, name: string, patch: Partial<StateCapture> = {}) {
+	for (const row of pair(component, name, patch)) {
+		out.push(row);
+	}
+}
+
 function controlsRows(): StateCapture[] {
-	return [
-		...pair("Button", "default"),
-		...pair("Button", "size-small", { size: "small" }),
-		...pair("Button", "size-medium", { size: "medium" }),
-		...pair("Button", "size-large", { size: "large" }),
-		...pair("Button", "density-compact", { density: "compact", size: "small" }),
-		...pair("Button", "hover", { pointer: "hover" }),
-		...pair("Button", "press", { pointer: "press" }),
-		...pair("Button", "focus", { pointer: "focus" }),
-		...pair("Button", "disabled", { disabled: true }),
-		...pair("Button", "loading", { loading: true }),
-		...pair("Button", "loading-disabled", { loading: true, disabled: true }),
-		...pair("Button", "loading-reduced", { loading: true, reducedMotion: true }),
-		...pair("Button", "outlined-loading", { loading: true, variant: "outlined" }),
-		...pair("Button", "text-loading", { loading: true, variant: "text" }),
-		...pair("Button", "long", { text: LONG, width: NARROW }),
-		...pair("Button", "sx", { variant: "sx" }),
-		...pair("IconButton", "sx", { variant: "sx" }),
-		...pair("Input", "default", { text: "Story" }),
-		...pair("Input", "size-small", { text: "Story", size: "small" }),
-		...pair("Input", "size-medium", { text: "Story", size: "medium" }),
-		...pair("Input", "size-large", { text: "Story", size: "large" }),
-		...pair("Input", "density-compact", { text: "Story", density: "compact", size: "small" }),
-		...pair("Input", "focus", { text: "Story", pointer: "focus" }),
-		...pair("Input", "disabled", { text: "Story", disabled: true }),
-		...pair("Input", "readonly", { text: "Story" }),
-		...pair("Input", "loading", { text: "Story", loading: true }),
-		...pair("Input", "loading-reduced", { text: "Story", loading: true, reducedMotion: true }),
-		...pair("Input", "error", { text: "Story", hasError: true }),
-		...pair("Input", "placeholder", { text: "", placeholder: "Search stories" }),
-		...pair("Input", "long", { text: LONG, width: NARROW }),
-		...pair("Input", "sx", { variant: "sx" }),
-		...pair("Checkbox", "unchecked"),
-		...pair("Checkbox", "size-small", { size: "small" }),
-		...pair("Checkbox", "size-medium", { size: "medium" }),
-		...pair("Checkbox", "size-large", { size: "large" }),
-		...pair("Checkbox", "density-compact", { density: "compact", size: "small" }),
-		...pair("Checkbox", "checked", { value: true }),
-		...pair("Checkbox", "mixed", { mixed: true }),
-		...pair("Checkbox", "disabled", { disabled: true }),
-	];
+	const out: StateCapture[] = [];
+	pushPair(out, "Button", "default");
+	pushPair(out, "Button", "size-small", { size: "small" });
+	pushPair(out, "Button", "size-medium", { size: "medium" });
+	pushPair(out, "Button", "size-large", { size: "large" });
+	pushPair(out, "Button", "density-compact", { density: "compact", size: "small" });
+	pushPair(out, "Button", "hover", { pointer: "hover" });
+	pushPair(out, "Button", "press", { pointer: "press" });
+	pushPair(out, "Button", "focus", { pointer: "focus" });
+	pushPair(out, "Button", "disabled", { disabled: true });
+	pushPair(out, "Button", "loading", { loading: true });
+	pushPair(out, "Button", "loading-disabled", { loading: true, disabled: true });
+	pushPair(out, "Button", "loading-reduced", { loading: true, reducedMotion: true });
+	pushPair(out, "Button", "outlined-loading", { loading: true, variant: "outlined" });
+	pushPair(out, "Button", "text-loading", { loading: true, variant: "text" });
+	pushPair(out, "Button", "long", { text: LONG, width: NARROW });
+	pushPair(out, "Button", "sx", { variant: "sx" });
+	pushPair(out, "IconButton", "sx", { variant: "sx" });
+	pushPair(out, "Input", "default", { text: "Story" });
+	pushPair(out, "Input", "size-small", { text: "Story", size: "small" });
+	pushPair(out, "Input", "size-medium", { text: "Story", size: "medium" });
+	pushPair(out, "Input", "size-large", { text: "Story", size: "large" });
+	pushPair(out, "Input", "density-compact", { text: "Story", density: "compact", size: "small" });
+	pushPair(out, "Input", "focus", { text: "Story", pointer: "focus" });
+	pushPair(out, "Input", "disabled", { text: "Story", disabled: true });
+	pushPair(out, "Input", "readonly", { text: "Story" });
+	pushPair(out, "Input", "loading", { text: "Story", loading: true });
+	pushPair(out, "Input", "loading-reduced", { text: "Story", loading: true, reducedMotion: true });
+	pushPair(out, "Input", "error", { text: "Story", hasError: true });
+	pushPair(out, "Input", "placeholder", { text: "", placeholder: "Search stories" });
+	pushPair(out, "Input", "long", { text: LONG, width: NARROW });
+	pushPair(out, "Input", "sx", { variant: "sx" });
+	pushPair(out, "Checkbox", "unchecked");
+	pushPair(out, "Checkbox", "size-small", { size: "small" });
+	pushPair(out, "Checkbox", "size-medium", { size: "medium" });
+	pushPair(out, "Checkbox", "size-large", { size: "large" });
+	pushPair(out, "Checkbox", "density-compact", { density: "compact", size: "small" });
+	pushPair(out, "Checkbox", "checked", { value: true });
+	pushPair(out, "Checkbox", "mixed", { mixed: true });
+	pushPair(out, "Checkbox", "disabled", { disabled: true });
+	return out;
 }
 
 function editorsRows(): StateCapture[] {
-	return [
-		...pair("Checkbox", "disabled-checked", { value: true, disabled: true }),
-		...pair("Checkbox", "hover", { pointer: "hover" }),
-		...pair("Checkbox", "press", { pointer: "press" }),
-		...pair("Checkbox", "focus", { pointer: "focus" }),
-		...pair("Checkbox", "checked-press", { value: true, pointer: "press" }),
-		...pair("Checkbox", "checked-focus", { value: true, pointer: "focus" }),
-		...pair("Checkbox", "long", { text: LONG, width: NARROW }),
-		...pair("Checkbox", "sx", { variant: "sx" }),
-		...pair("ColorPicker", "default", { value: "#336699" }),
-		...pair("ColorPicker", "open", { value: "#336699", open: true }),
-		...pair("ColorPicker", "focus", { value: "#336699", pointer: "focus" }),
-		...pair("ColorPicker", "disabled", { value: "#336699", disabled: true }),
-		...pair("ColorPicker", "error", { value: "#336699", hasError: true }),
-		...pair("ColorPicker", "long", { value: "#336699", text: LONG, width: NARROW }),
-		...pair("ColorPicker", "sx", { value: "#336699" }),
-		...pair("BrickColorPicker", "default", { value: "Bright red" }),
-		...pair("BrickColorPicker", "open", { value: "Bright red", open: true }),
-		...pair("BrickColorPicker", "disabled", { value: "Bright red", disabled: true }),
-		...pair("BrickColorPicker", "sx", { value: "Bright red" }),
-		...pair("VectorEditor", "default", { value: "1,2" }),
-		...pair("VectorEditor", "disabled", { value: "1,2,3", disabled: true }),
-		...pair("VectorEditor", "long", { value: "1,2", text: LONG, width: NARROW }),
-		...pair("VectorEditor", "sx", { value: "1,2" }),
-		...pair("UDimEditor", "default", { value: "0.5,8" }),
-		...pair("UDimEditor", "disabled", { value: "0.5,8", disabled: true }),
-		...pair("UDimEditor", "long", { value: "0.5,8", text: LONG, width: NARROW }),
-		...pair("UDimEditor", "sx", { value: "0.5,8" }),
-		...pair("CFrameEditor", "default", { value: "0,0,0" }),
-		...pair("CFrameEditor", "disabled", { value: "0,0,0", disabled: true }),
-		...pair("CFrameEditor", "sx", { value: "0,0,0" }),
-		...pair("EnumPicker", "default", { value: "Continue", options: ["Continue", "Other"] }),
-		...pair("EnumPicker", "open", { value: "Continue", options: ["Continue", "Other"], open: true }),
-		...pair("EnumPicker", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
-		...pair("EnumPicker", "sx", { value: "Continue", options: ["Continue", "Other"] }),
-		...pair("NumberRangeEditor", "default", { value: "0,1" }),
-		...pair("NumberRangeEditor", "disabled", { value: "0,1", disabled: true }),
-		...pair("NumberRangeEditor", "sx", { value: "0,1" }),
-		...pair("RectEditor", "default", { value: "0,0,1,1" }),
-		...pair("RectEditor", "disabled", { value: "0,0,1,1", disabled: true }),
-		...pair("RectEditor", "narrow", { value: "0,0,100,50", width: 320 }),
-		...pair("RectEditor", "sx", { value: "0,0,1,1" }),
-		...pair("AssetField", "empty", { text: "" }),
-		...pair("AssetField", "default", { text: "123" }),
-		...pair("AssetField", "disabled", { text: "123", disabled: true }),
-		...pair("AssetField", "sx", { text: "123" }),
-		...pair("GradientEditor", "default", { value: "gradient" }),
-	];
+	const out: StateCapture[] = [];
+	pushPair(out, "Checkbox", "disabled-checked", { value: true, disabled: true });
+	pushPair(out, "Checkbox", "hover", { pointer: "hover" });
+	pushPair(out, "Checkbox", "press", { pointer: "press" });
+	pushPair(out, "Checkbox", "focus", { pointer: "focus" });
+	pushPair(out, "Checkbox", "checked-press", { value: true, pointer: "press" });
+	pushPair(out, "Checkbox", "checked-focus", { value: true, pointer: "focus" });
+	pushPair(out, "Checkbox", "long", { text: LONG, width: NARROW });
+	pushPair(out, "Checkbox", "sx", { variant: "sx" });
+	pushPair(out, "ColorPicker", "default", { value: "#336699" });
+	pushPair(out, "ColorPicker", "open", { value: "#336699", open: true });
+	pushPair(out, "ColorPicker", "focus", { value: "#336699", pointer: "focus" });
+	pushPair(out, "ColorPicker", "disabled", { value: "#336699", disabled: true });
+	pushPair(out, "ColorPicker", "error", { value: "#336699", hasError: true });
+	pushPair(out, "ColorPicker", "long", { value: "#336699", text: LONG, width: NARROW });
+	pushPair(out, "ColorPicker", "sx", { value: "#336699" });
+	pushPair(out, "BrickColorPicker", "default", { value: "Bright red" });
+	pushPair(out, "BrickColorPicker", "open", { value: "Bright red", open: true });
+	pushPair(out, "BrickColorPicker", "disabled", { value: "Bright red", disabled: true });
+	pushPair(out, "BrickColorPicker", "sx", { value: "Bright red" });
+	pushPair(out, "VectorEditor", "default", { value: "1,2" });
+	pushPair(out, "VectorEditor", "disabled", { value: "1,2,3", disabled: true });
+	pushPair(out, "VectorEditor", "long", { value: "1,2", text: LONG, width: NARROW });
+	pushPair(out, "VectorEditor", "sx", { value: "1,2" });
+	pushPair(out, "UDimEditor", "default", { value: "0.5,8" });
+	pushPair(out, "UDimEditor", "disabled", { value: "0.5,8", disabled: true });
+	pushPair(out, "UDimEditor", "long", { value: "0.5,8", text: LONG, width: NARROW });
+	pushPair(out, "UDimEditor", "sx", { value: "0.5,8" });
+	pushPair(out, "CFrameEditor", "default", { value: "0,0,0" });
+	pushPair(out, "CFrameEditor", "disabled", { value: "0,0,0", disabled: true });
+	pushPair(out, "CFrameEditor", "sx", { value: "0,0,0" });
+	pushPair(out, "EnumPicker", "default", { value: "Continue", options: ["Continue", "Other"] });
+	pushPair(out, "EnumPicker", "open", { value: "Continue", options: ["Continue", "Other"], open: true });
+	pushPair(out, "EnumPicker", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true });
+	pushPair(out, "EnumPicker", "sx", { value: "Continue", options: ["Continue", "Other"] });
+	pushPair(out, "NumberRangeEditor", "default", { value: "0,1" });
+	pushPair(out, "NumberRangeEditor", "disabled", { value: "0,1", disabled: true });
+	pushPair(out, "NumberRangeEditor", "sx", { value: "0,1" });
+	pushPair(out, "RectEditor", "default", { value: "0,0,1,1" });
+	pushPair(out, "RectEditor", "disabled", { value: "0,0,1,1", disabled: true });
+	pushPair(out, "RectEditor", "narrow", { value: "0,0,100,50", width: 320 });
+	pushPair(out, "RectEditor", "sx", { value: "0,0,1,1" });
+	pushPair(out, "AssetField", "empty", { text: "" });
+	pushPair(out, "AssetField", "default", { text: "123" });
+	pushPair(out, "AssetField", "disabled", { text: "123", disabled: true });
+	pushPair(out, "AssetField", "sx", { text: "123" });
+	pushPair(out, "GradientEditor", "default", { value: "gradient" });
+	return out;
 }
 
 function togglesRows(): StateCapture[] {
-	return [
-		...pair("GradientEditor", "disabled", { value: "gradient", disabled: true }),
-		...pair("RayEditor", "default", { value: "0,0,0,0,1,0" }),
-		...pair("RayEditor", "disabled", { value: "0,0,0,0,1,0", disabled: true }),
-		...pair("PhysicalPropertiesEditor", "default", { value: "0.7,0.3,0.5" }),
-		...pair("PhysicalPropertiesEditor", "disabled", { value: "0.7,0.3,0.5", disabled: true }),
-		...pair("PhysicalPropertiesEditor", "narrow", { value: "0.699999988079071,0.30000001192092896,0.5,1,1", width: 320 }),
-		...pair("GradientEditor", "sx", { value: "gradient" }),
-		...pair("RayEditor", "sx", { value: "0,0,0,0,1,0" }),
-		...pair("PhysicalPropertiesEditor", "sx", { value: "0.7,0.3,0.5" }),
-		...pair("FontEditor", "sx", { value: "Gotham" }),
-		...pair("ColorSequenceEditor", "sx", { value: "0,1,1" }),
-		...pair("NumberSequenceEditor", "sx", { value: "0,1" }),
-		...pair("Switch", "off"),
-		...pair("Switch", "size-small", { size: "small" }),
-		...pair("Switch", "size-medium", { size: "medium" }),
-		...pair("Switch", "size-large", { size: "large" }),
-		...pair("Switch", "density-compact", { density: "compact", size: "small" }),
-		...pair("Switch", "on", { value: true }),
-		...pair("Switch", "accent", { value: true, variant: "accent" }),
-		...pair("Switch", "disabled", { disabled: true }),
-		...pair("Switch", "disabled-on", { value: true, disabled: true }),
-		...pair("Switch", "hover", { pointer: "hover" }),
-		...pair("Switch", "press", { pointer: "press" }),
-		...pair("Switch", "focus", { pointer: "focus" }),
-		...pair("Switch", "on-hover", { value: true, pointer: "hover" }),
-		...pair("Switch", "on-press", { value: true, pointer: "press" }),
-		...pair("Switch", "on-focus", { value: true, pointer: "focus" }),
-		...pair("Switch", "reduced", { value: true, reducedMotion: true }),
-		...pair("Switch", "long", { text: LONG, width: NARROW }),
-		...pair("Switch", "sx", { variant: "sx" }),
-		...pair("Slider", "default", { value: 0.5 }),
-		...pair("Slider", "size-small", { value: 0.5, size: "small" }),
-		...pair("Slider", "size-medium", { value: 0.5, size: "medium" }),
-		...pair("Slider", "size-large", { value: 0.5, size: "large" }),
-		...pair("Slider", "density-compact", { value: 0.5, density: "compact", size: "small" }),
-		...pair("Slider", "disabled", { value: 0.5, disabled: true }),
-		...pair("Slider", "marks", { value: 0.5, marks: true }),
-		...pair("Slider", "accent", { value: 0.5, variant: "accent" }),
-		...pair("Slider", "hover", { value: 0.5, pointer: "hover" }),
-		...pair("Slider", "press", { value: 0.5, pointer: "press" }),
-		...pair("Slider", "focus", { value: 0.5, pointer: "focus" }),
-		...pair("Slider", "long", { value: 0.25, text: LONG, width: NARROW }),
-		...pair("Slider", "sx", { value: 0.5, variant: "sx" }),
-		...pair("RadioGroup", "default", { value: "Continue", options: ["Continue", "Other"] }),
-		...pair("RadioGroup", "row", { value: "Continue", options: ["Continue", "Other"], row: true }),
-		...pair("RadioGroup", "size-small", { value: "Continue", options: ["Continue", "Other"], size: "small" }),
-		...pair("RadioGroup", "size-large", { value: "Continue", options: ["Continue", "Other"], size: "large" }),
-		...pair("RadioGroup", "density-compact", { value: "Continue", options: ["Continue", "Other"], density: "compact", size: "small" }),
-	];
+	const out: StateCapture[] = [];
+	pushPair(out, "GradientEditor", "disabled", { value: "gradient", disabled: true });
+	pushPair(out, "RayEditor", "default", { value: "0,0,0,0,1,0" });
+	pushPair(out, "RayEditor", "disabled", { value: "0,0,0,0,1,0", disabled: true });
+	pushPair(out, "PhysicalPropertiesEditor", "default", { value: "0.7,0.3,0.5" });
+	pushPair(out, "PhysicalPropertiesEditor", "disabled", { value: "0.7,0.3,0.5", disabled: true });
+	pushPair(out, "PhysicalPropertiesEditor", "narrow", { value: "0.699999988079071,0.30000001192092896,0.5,1,1", width: 320 });
+	pushPair(out, "GradientEditor", "sx", { value: "gradient" });
+	pushPair(out, "RayEditor", "sx", { value: "0,0,0,0,1,0" });
+	pushPair(out, "PhysicalPropertiesEditor", "sx", { value: "0.7,0.3,0.5" });
+	pushPair(out, "FontEditor", "sx", { value: "Gotham" });
+	pushPair(out, "ColorSequenceEditor", "sx", { value: "0,1,1" });
+	pushPair(out, "NumberSequenceEditor", "sx", { value: "0,1" });
+	pushPair(out, "Switch", "off");
+	pushPair(out, "Switch", "size-small", { size: "small" });
+	pushPair(out, "Switch", "size-medium", { size: "medium" });
+	pushPair(out, "Switch", "size-large", { size: "large" });
+	pushPair(out, "Switch", "density-compact", { density: "compact", size: "small" });
+	pushPair(out, "Switch", "on", { value: true });
+	pushPair(out, "Switch", "accent", { value: true, variant: "accent" });
+	pushPair(out, "Switch", "disabled", { disabled: true });
+	pushPair(out, "Switch", "disabled-on", { value: true, disabled: true });
+	pushPair(out, "Switch", "hover", { pointer: "hover" });
+	pushPair(out, "Switch", "press", { pointer: "press" });
+	pushPair(out, "Switch", "focus", { pointer: "focus" });
+	pushPair(out, "Switch", "on-hover", { value: true, pointer: "hover" });
+	pushPair(out, "Switch", "on-press", { value: true, pointer: "press" });
+	pushPair(out, "Switch", "on-focus", { value: true, pointer: "focus" });
+	pushPair(out, "Switch", "reduced", { value: true, reducedMotion: true });
+	pushPair(out, "Switch", "long", { text: LONG, width: NARROW });
+	pushPair(out, "Switch", "sx", { variant: "sx" });
+	pushPair(out, "Slider", "default", { value: 0.5 });
+	pushPair(out, "Slider", "size-small", { value: 0.5, size: "small" });
+	pushPair(out, "Slider", "size-medium", { value: 0.5, size: "medium" });
+	pushPair(out, "Slider", "size-large", { value: 0.5, size: "large" });
+	pushPair(out, "Slider", "density-compact", { value: 0.5, density: "compact", size: "small" });
+	pushPair(out, "Slider", "disabled", { value: 0.5, disabled: true });
+	pushPair(out, "Slider", "marks", { value: 0.5, marks: true });
+	pushPair(out, "Slider", "accent", { value: 0.5, variant: "accent" });
+	pushPair(out, "Slider", "hover", { value: 0.5, pointer: "hover" });
+	pushPair(out, "Slider", "press", { value: 0.5, pointer: "press" });
+	pushPair(out, "Slider", "focus", { value: 0.5, pointer: "focus" });
+	pushPair(out, "Slider", "long", { value: 0.25, text: LONG, width: NARROW });
+	pushPair(out, "Slider", "sx", { value: 0.5, variant: "sx" });
+	pushPair(out, "RadioGroup", "default", { value: "Continue", options: ["Continue", "Other"] });
+	pushPair(out, "RadioGroup", "row", { value: "Continue", options: ["Continue", "Other"], row: true });
+	pushPair(out, "RadioGroup", "size-small", { value: "Continue", options: ["Continue", "Other"], size: "small" });
+	pushPair(out, "RadioGroup", "size-large", { value: "Continue", options: ["Continue", "Other"], size: "large" });
+	pushPair(out, "RadioGroup", "density-compact", { value: "Continue", options: ["Continue", "Other"], density: "compact", size: "small" });
+	return out;
 }
 
 function compositeRows(): StateCapture[] {
-	return [
-		...pair("RadioGroup", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
-		...pair("RadioGroup", "disabled-option", {
+	const out: StateCapture[] = [];
+	pushPair(out, "RadioGroup", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true });
+	pushPair(out, "RadioGroup", "disabled-option", {
 			value: "Continue",
 			options: ["Continue", "Other"],
 			disabledOption: "Other",
-		}),
-		...pair("RadioGroup", "hover", { value: "Continue", options: ["Continue", "Other"], pointer: "hover" }),
-		...pair("RadioGroup", "long", { value: LONG, options: [LONG, "Other"], text: LONG, width: NARROW }),
-		...pair("RadioGroup", "sx", { value: "Continue", options: ["Continue", "Other"], variant: "sx" }),
-		...pair("Select", "default", { value: "Continue", options: ["Continue", "Other"] }),
-		...pair("Select", "size-small", { value: "Continue", options: ["Continue", "Other"], size: "small" }),
-		...pair("Select", "size-large", { value: "Continue", options: ["Continue", "Other"], size: "large" }),
-		...pair("Select", "density-compact", { value: "Continue", options: ["Continue", "Other"], density: "compact", size: "small" }),
-		...pair("Select", "open", { value: "Continue", options: ["Continue", "Other"], open: true }),
-		...pair("Select", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
-		...pair("Select", "loading", { value: "Continue", options: ["Continue", "Other"], loading: true }),
-		...pair("Select", "loading-reduced", { value: "Continue", options: ["Continue", "Other"], loading: true, reducedMotion: true }),
-		...pair("Select", "hover", { value: "Continue", options: ["Continue", "Other"], open: true, pointer: "hover" }),
-		...pair("Select", "press", { value: "Continue", options: ["Continue", "Other"], pointer: "press" }),
-		...pair("Select", "focus", { value: "Continue", options: ["Continue", "Other"], pointer: "focus" }),
-		...pair("Select", "long", { value: LONG, options: [LONG, "Other"], text: LONG, width: NARROW, open: true }),
-		...pair("Select", "sx", { value: "Continue", options: ["Continue", "Other"], variant: "sx" }),
-		...pair("Select", "search", {
+		});
+	pushPair(out, "RadioGroup", "hover", { value: "Continue", options: ["Continue", "Other"], pointer: "hover" });
+	pushPair(out, "RadioGroup", "long", { value: LONG, options: [LONG, "Other"], text: LONG, width: NARROW });
+	pushPair(out, "RadioGroup", "sx", { value: "Continue", options: ["Continue", "Other"], variant: "sx" });
+	pushPair(out, "Select", "default", { value: "Continue", options: ["Continue", "Other"] });
+	pushPair(out, "Select", "size-small", { value: "Continue", options: ["Continue", "Other"], size: "small" });
+	pushPair(out, "Select", "size-large", { value: "Continue", options: ["Continue", "Other"], size: "large" });
+	pushPair(out, "Select", "density-compact", { value: "Continue", options: ["Continue", "Other"], density: "compact", size: "small" });
+	pushPair(out, "Select", "open", { value: "Continue", options: ["Continue", "Other"], open: true });
+	pushPair(out, "Select", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true });
+	pushPair(out, "Select", "loading", { value: "Continue", options: ["Continue", "Other"], loading: true });
+	pushPair(out, "Select", "loading-reduced", { value: "Continue", options: ["Continue", "Other"], loading: true, reducedMotion: true });
+	pushPair(out, "Select", "hover", { value: "Continue", options: ["Continue", "Other"], open: true, pointer: "hover" });
+	pushPair(out, "Select", "press", { value: "Continue", options: ["Continue", "Other"], pointer: "press" });
+	pushPair(out, "Select", "focus", { value: "Continue", options: ["Continue", "Other"], pointer: "focus" });
+	pushPair(out, "Select", "long", { value: LONG, options: [LONG, "Other"], text: LONG, width: NARROW, open: true });
+	pushPair(out, "Select", "sx", { value: "Continue", options: ["Continue", "Other"], variant: "sx" });
+	pushPair(out, "Select", "search", {
 			value: "Continue",
 			options: ["Continue", "Other", "Docs", "Actions", "Source", "Settings", "Theme", "Inspector", "Controls"],
 			open: true,
 			filter: "con",
-		}),
-		...pair("Select", "empty", { value: "", options: [], open: true }),
-		...pair("Select", "no-results", { value: "Continue", options: ["Continue", "Other"], open: true, filter: "zzz" }),
-		...pair("Tabs", "default", { value: "Continue", options: ["Continue", "Docs", "Actions"] }),
-		...pair("Tabs", "vertical", { value: "Continue", options: ["Continue", "Docs", "Actions"], variant: "vertical" }),
-		...pair("Tabs", "disabled", { value: "Continue", options: ["Continue", "Docs", "Actions"], disabled: true }),
-		...pair("Tabs", "centered", { value: "Continue", options: ["Continue", "Docs", "Actions"], variant: "centered" }),
-		...pair("Tabs", "hover", { value: "Continue", options: ["Continue", "Docs", "Actions"], pointer: "hover" }),
-		...pair("Tabs", "long", {
+		});
+	pushPair(out, "Select", "empty", { value: "", options: [], open: true });
+	pushPair(out, "Select", "no-results", { value: "Continue", options: ["Continue", "Other"], open: true, filter: "zzz" });
+	pushPair(out, "Tabs", "default", { value: "Continue", options: ["Continue", "Docs", "Actions"] });
+	pushPair(out, "Tabs", "vertical", { value: "Continue", options: ["Continue", "Docs", "Actions"], variant: "vertical" });
+	pushPair(out, "Tabs", "disabled", { value: "Continue", options: ["Continue", "Docs", "Actions"], disabled: true });
+	pushPair(out, "Tabs", "centered", { value: "Continue", options: ["Continue", "Docs", "Actions"], variant: "centered" });
+	pushPair(out, "Tabs", "hover", { value: "Continue", options: ["Continue", "Docs", "Actions"], pointer: "hover" });
+	pushPair(out, "Tabs", "long", {
 			value: LONG,
 			options: [LONG, "Docs", "Actions", "Source", "Settings"],
 			text: LONG,
 			width: NARROW,
-		}),
-		...pair("Tabs", "sx", { value: "Continue", options: ["Continue", "Docs", "Actions"], variant: "sx" }),
-		...pair("SplitPane", "default", { value: 160 }),
-		...pair("SplitPane", "disabled", { value: 160, disabled: true }),
-		...pair("SplitPane", "hover", { value: 160, pointer: "hover" }),
-		...pair("SplitPane", "drag", { value: 160, pointer: "press" }),
-		...pair("SplitPane", "long", { value: 80, text: LONG, width: NARROW }),
-		...pair("SplitPane", "sx", { value: 160 }),
-		...pair("Tooltip", "hidden"),
-		...pair("Tooltip", "shown", { pointer: "hover" }),
-		...pair("Tooltip", "long", { text: LONG, width: NARROW, pointer: "hover" }),
-		...pair("Tooltip", "sx", { text: "Hint" }),
-		...pair("TreeView", "default", { selected: "Fixture/Styled" }),
-		...pair("TreeView", "hover", { selected: "Fixture/Styled", pointer: "hover" }),
-		...pair("TreeView", "filter", { selected: "Fixture/Styled", filter: "sty" }),
-		...pair("TreeView", "long", { selected: `Fixture/${LONG}`, text: LONG, width: NARROW }),
-		...pair("TreeView", "sx", { selected: "Fixture/Styled" }),
-		...pair("IconButton", "loading", { loading: true }),
-		...pair("IconButton", "loading-disabled", { loading: true, disabled: true }),
-	];
+		});
+	pushPair(out, "Tabs", "sx", { value: "Continue", options: ["Continue", "Docs", "Actions"], variant: "sx" });
+	pushPair(out, "SplitPane", "default", { value: 160 });
+	pushPair(out, "SplitPane", "disabled", { value: 160, disabled: true });
+	pushPair(out, "SplitPane", "hover", { value: 160, pointer: "hover" });
+	pushPair(out, "SplitPane", "drag", { value: 160, pointer: "press" });
+	pushPair(out, "SplitPane", "long", { value: 80, text: LONG, width: NARROW });
+	pushPair(out, "SplitPane", "sx", { value: 160 });
+	pushPair(out, "Tooltip", "hidden");
+	pushPair(out, "Tooltip", "shown", { pointer: "hover" });
+	pushPair(out, "Tooltip", "long", { text: LONG, width: NARROW, pointer: "hover" });
+	pushPair(out, "Tooltip", "sx", { text: "Hint" });
+	pushPair(out, "TreeView", "default", { selected: "Fixture/Styled" });
+	pushPair(out, "TreeView", "hover", { selected: "Fixture/Styled", pointer: "hover" });
+	pushPair(out, "TreeView", "filter", { selected: "Fixture/Styled", filter: "sty" });
+	pushPair(out, "TreeView", "long", { selected: `Fixture/${LONG}`, text: LONG, width: NARROW });
+	pushPair(out, "TreeView", "sx", { selected: "Fixture/Styled" });
+	pushPair(out, "IconButton", "loading", { loading: true });
+	pushPair(out, "IconButton", "loading-disabled", { loading: true, disabled: true });
+	return out;
 }
 
 function surfacesRows(): StateCapture[] {
-	return [
-		...pair("IconButton", "loading-reduced", { loading: true, reducedMotion: true }),
-		...pair("Skeleton", "text", { variant: "text", animation: "pulse" }),
-		...pair("Skeleton", "text-static", { variant: "text", animation: false }),
-		...pair("Skeleton", "text-reduced", { variant: "text", animation: "shimmer", reducedMotion: true }),
-		...pair("Skeleton", "rectangular", { variant: "rectangular", animation: false }),
-		...pair("Skeleton", "rounded", { variant: "rounded", animation: "pulse" }),
-		...pair("Skeleton", "circular", { variant: "circular", animation: false }),
-		...pair("Skeleton", "shimmer", { variant: "rounded", animation: "shimmer" }),
-		...pair("Skeleton", "sx", { variant: "text", animation: false }),
-		...pair("CircularProgress", "empty", { value: 0 }),
-		...pair("CircularProgress", "half", { value: 0.5 }),
-		...pair("CircularProgress", "full", { value: 1 }),
-		...pair("CircularProgress", "indeterminate", { indeterminate: true }),
-		...pair("CircularProgress", "reduced", { indeterminate: true, reducedMotion: true }),
-		...pair("CircularProgress", "disabled", { value: 0.4, disabled: true }),
-		...pair("CircularProgress", "sx", { value: 0.4 }),
-		...pair("LinearProgress", "empty", { value: 0 }),
-		...pair("LinearProgress", "half", { value: 0.5 }),
-		...pair("LinearProgress", "full", { value: 1 }),
-		...pair("LinearProgress", "indeterminate", { indeterminate: true }),
-		...pair("LinearProgress", "reduced", { indeterminate: true, reducedMotion: true }),
-		...pair("LinearProgress", "disabled", { value: 0.6, disabled: true }),
-		...pair("LinearProgress", "sx", { value: 0.5, variant: "sx" }),
-		...pair("Dialog", "closed", { open: false }),
-		...pair("Dialog", "open", { open: true }),
-		...pair("Dialog", "sx", { open: true }),
-		...pair("Popup", "sx"),
-		...pair("Modal", "sx", { open: true }),
-		...pair("Paper", "flat", { variant: "flat" }),
-		...pair("Paper", "raised", { variant: "raised" }),
-		...pair("Paper", "square", { variant: "square" }),
-		...pair("Paper", "outlined", { variant: "outlined" }),
-		...pair("ListItem", "default"),
-		...pair("ListItem", "selected", { value: true }),
-		...pair("ListItem", "disabled", { disabled: true }),
-		...pair("ListItem", "secondary", { variant: "secondary" }),
-		...pair("ListItem", "dense", { variant: "dense" }),
-		...pair("ListItem", "divider", { variant: "divider" }),
-		...pair("ListItem", "sx"),
-		...pair("Card", "flat", { variant: "flat" }),
-		...pair("Card", "raised", { variant: "raised" }),
-		...pair("Card", "square", { variant: "square" }),
-		...pair("Card", "sx", { variant: "flat" }),
-		...pair("Chip", "default"),
-		...pair("Chip", "size-small", { size: "small" }),
-		...pair("Chip", "size-large", { size: "large" }),
-		...pair("Chip", "selected", { value: true }),
-		...pair("Chip", "disabled", { disabled: true }),
-		...pair("Chip", "deletable", { text: "Tag" }),
-		...pair("Chip", "outlined", { variant: "outlined" }),
-		...pair("Chip", "primary", { variant: "primary" }),
-		...pair("Chip", "sx", { variant: "sx" }),
-		...pair("Badge", "count", { value: 3 }),
-		...pair("Badge", "max", { value: 100 }),
-	];
+	const out: StateCapture[] = [];
+	pushPair(out, "IconButton", "loading-reduced", { loading: true, reducedMotion: true });
+	pushPair(out, "Skeleton", "text", { variant: "text", animation: "pulse" });
+	pushPair(out, "Skeleton", "text-static", { variant: "text", animation: false });
+	pushPair(out, "Skeleton", "text-reduced", { variant: "text", animation: "shimmer", reducedMotion: true });
+	pushPair(out, "Skeleton", "rectangular", { variant: "rectangular", animation: false });
+	pushPair(out, "Skeleton", "rounded", { variant: "rounded", animation: "pulse" });
+	pushPair(out, "Skeleton", "circular", { variant: "circular", animation: false });
+	pushPair(out, "Skeleton", "shimmer", { variant: "rounded", animation: "shimmer" });
+	pushPair(out, "Skeleton", "sx", { variant: "text", animation: false });
+	pushPair(out, "CircularProgress", "empty", { value: 0 });
+	pushPair(out, "CircularProgress", "half", { value: 0.5 });
+	pushPair(out, "CircularProgress", "full", { value: 1 });
+	pushPair(out, "CircularProgress", "indeterminate", { indeterminate: true });
+	pushPair(out, "CircularProgress", "reduced", { indeterminate: true, reducedMotion: true });
+	pushPair(out, "CircularProgress", "disabled", { value: 0.4, disabled: true });
+	pushPair(out, "CircularProgress", "sx", { value: 0.4 });
+	pushPair(out, "LinearProgress", "empty", { value: 0 });
+	pushPair(out, "LinearProgress", "half", { value: 0.5 });
+	pushPair(out, "LinearProgress", "full", { value: 1 });
+	pushPair(out, "LinearProgress", "indeterminate", { indeterminate: true });
+	pushPair(out, "LinearProgress", "reduced", { indeterminate: true, reducedMotion: true });
+	pushPair(out, "LinearProgress", "disabled", { value: 0.6, disabled: true });
+	pushPair(out, "LinearProgress", "sx", { value: 0.5, variant: "sx" });
+	pushPair(out, "Dialog", "closed", { open: false });
+	pushPair(out, "Dialog", "open", { open: true });
+	pushPair(out, "Dialog", "sx", { open: true });
+	pushPair(out, "Popup", "sx");
+	pushPair(out, "Modal", "sx", { open: true });
+	pushPair(out, "Paper", "flat", { variant: "flat" });
+	pushPair(out, "Paper", "raised", { variant: "raised" });
+	pushPair(out, "Paper", "square", { variant: "square" });
+	pushPair(out, "Paper", "outlined", { variant: "outlined" });
+	pushPair(out, "ListItem", "default");
+	pushPair(out, "ListItem", "selected", { value: true });
+	pushPair(out, "ListItem", "disabled", { disabled: true });
+	pushPair(out, "ListItem", "secondary", { variant: "secondary" });
+	pushPair(out, "ListItem", "dense", { variant: "dense" });
+	pushPair(out, "ListItem", "divider", { variant: "divider" });
+	pushPair(out, "ListItem", "sx");
+	pushPair(out, "Card", "flat", { variant: "flat" });
+	pushPair(out, "Card", "raised", { variant: "raised" });
+	pushPair(out, "Card", "square", { variant: "square" });
+	pushPair(out, "Card", "sx", { variant: "flat" });
+	pushPair(out, "Chip", "default");
+	pushPair(out, "Chip", "size-small", { size: "small" });
+	pushPair(out, "Chip", "size-large", { size: "large" });
+	pushPair(out, "Chip", "selected", { value: true });
+	pushPair(out, "Chip", "disabled", { disabled: true });
+	pushPair(out, "Chip", "deletable", { text: "Tag" });
+	pushPair(out, "Chip", "outlined", { variant: "outlined" });
+	pushPair(out, "Chip", "primary", { variant: "primary" });
+	pushPair(out, "Chip", "sx", { variant: "sx" });
+	pushPair(out, "Badge", "count", { value: 3 });
+	pushPair(out, "Badge", "max", { value: 100 });
+	return out;
 }
 
 function chromeRows(): StateCapture[] {
-	return [
-		...pair("Badge", "invisible", { value: 0 }),
-		...pair("Badge", "dot", { variant: "dot" }),
-		...pair("Badge", "primary", { variant: "primary" }),
-		...pair("Badge", "sx", { value: 3, variant: "sx" }),
-		...pair("Avatar", "initials", { text: "BL" }),
-		...pair("Avatar", "image", { variant: "image" }),
-		...pair("Avatar", "small", { size: "small" }),
-		...pair("Avatar", "rounded", { variant: "rounded" }),
-		...pair("Avatar", "sx", { text: "BL", variant: "sx" }),
-		...pair("Drawer", "closed", { open: false }),
-		...pair("Drawer", "left", { open: true, variant: "left" }),
-		...pair("Drawer", "right", { open: true, variant: "right" }),
-		...pair("Drawer", "wide", { open: true, variant: "wide" }),
-		...pair("Drawer", "sx", { open: true, variant: "left" }),
-		...pair("Shadow", "sx"),
-		...pair("EmptyListHint", "sx", { text: "None" }),
-		...pair("Breadcrumbs", "single", { text: "Home" }),
-		...pair("Breadcrumbs", "trail", { text: "Home / Library / Item" }),
-		...pair("Breadcrumbs", "collapsed", { text: "Home / … / Item", size: "small" }),
-		...pair("Breadcrumbs", "custom-separator", { text: "Home > Item" }),
-		...pair("Breadcrumbs", "sx", { text: "Home / Item", variant: "sx" }),
-		...pair("Pagination", "first", { value: 1 }),
-		...pair("Pagination", "middle", { value: 3 }),
-		...pair("Pagination", "collapsed", { value: 10, size: "large" }),
-		...pair("Pagination", "disabled", { value: 2, disabled: true }),
-		...pair("Pagination", "size-small", { value: 2, size: "small" }),
-		...pair("Pagination", "outlined", { value: 2, variant: "outlined" }),
-		...pair("Pagination", "sx", { value: 2, variant: "sx" }),
-		...pair("Stepper", "first", { value: 0 }),
-		...pair("Stepper", "middle", { value: 1 }),
-		...pair("Stepper", "last", { value: 2 }),
-		...pair("Stepper", "vertical", { value: 1, variant: "vertical" }),
-		...pair("Stepper", "sx", { value: 1, variant: "sx" }),
-		...pair("Accordion", "closed", { open: false }),
-		...pair("Accordion", "open", { open: true }),
-		...pair("Accordion", "disabled", { open: false, disabled: true }),
-		...pair("Accordion", "indicator", { open: true }),
-		...pair("Accordion", "square", { variant: "square" }),
-		...pair("Accordion", "sx", { open: true, variant: "sx" }),
-		...pair("Snackbar", "open", { open: true, text: "Saved" }),
-		...pair("Snackbar", "closed", { open: false, text: "Saved" }),
-		...pair("Snackbar", "action", { open: true, text: "Undo" }),
-		...pair("Toast", "sx", { text: "Saved" }),
-		...pair("Table", "empty", { text: "" }),
-		...pair("Table", "default", { text: "Name / Role" }),
-		...pair("Table", "selected", { text: "Name / Role", value: 0 }),
-		...pair("Table", "dense", { text: "Name / Role", variant: "dense" }),
-		...pair("Table", "sx", { text: "Name / Role", variant: "sx" }),
-		...pair("Autocomplete", "default", { value: "Continue", options: ["Continue", "Other"] }),
-		...pair("Autocomplete", "open", { value: "Continue", options: ["Continue", "Other"], open: true }),
-		...pair("Autocomplete", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true }),
-		...pair("Autocomplete", "empty", { value: "", options: [], open: true }),
-		...pair("Autocomplete", "no-results", {
+	const out: StateCapture[] = [];
+	pushPair(out, "Badge", "invisible", { value: 0 });
+	pushPair(out, "Badge", "dot", { variant: "dot" });
+	pushPair(out, "Badge", "primary", { variant: "primary" });
+	pushPair(out, "Badge", "sx", { value: 3, variant: "sx" });
+	pushPair(out, "Avatar", "initials", { text: "BL" });
+	pushPair(out, "Avatar", "image", { variant: "image" });
+	pushPair(out, "Avatar", "small", { size: "small" });
+	pushPair(out, "Avatar", "rounded", { variant: "rounded" });
+	pushPair(out, "Avatar", "sx", { text: "BL", variant: "sx" });
+	pushPair(out, "Drawer", "closed", { open: false });
+	pushPair(out, "Drawer", "left", { open: true, variant: "left" });
+	pushPair(out, "Drawer", "right", { open: true, variant: "right" });
+	pushPair(out, "Drawer", "wide", { open: true, variant: "wide" });
+	pushPair(out, "Drawer", "sx", { open: true, variant: "left" });
+	pushPair(out, "Shadow", "sx");
+	pushPair(out, "EmptyListHint", "sx", { text: "None" });
+	pushPair(out, "Breadcrumbs", "single", { text: "Home" });
+	pushPair(out, "Breadcrumbs", "trail", { text: "Home / Library / Item" });
+	pushPair(out, "Breadcrumbs", "collapsed", { text: "Home / … / Item", size: "small" });
+	pushPair(out, "Breadcrumbs", "custom-separator", { text: "Home > Item" });
+	pushPair(out, "Breadcrumbs", "sx", { text: "Home / Item", variant: "sx" });
+	pushPair(out, "Pagination", "first", { value: 1 });
+	pushPair(out, "Pagination", "middle", { value: 3 });
+	pushPair(out, "Pagination", "collapsed", { value: 10, size: "large" });
+	pushPair(out, "Pagination", "disabled", { value: 2, disabled: true });
+	pushPair(out, "Pagination", "size-small", { value: 2, size: "small" });
+	pushPair(out, "Pagination", "outlined", { value: 2, variant: "outlined" });
+	pushPair(out, "Pagination", "sx", { value: 2, variant: "sx" });
+	pushPair(out, "Stepper", "first", { value: 0 });
+	pushPair(out, "Stepper", "middle", { value: 1 });
+	pushPair(out, "Stepper", "last", { value: 2 });
+	pushPair(out, "Stepper", "vertical", { value: 1, variant: "vertical" });
+	pushPair(out, "Stepper", "sx", { value: 1, variant: "sx" });
+	pushPair(out, "Accordion", "closed", { open: false });
+	pushPair(out, "Accordion", "open", { open: true });
+	pushPair(out, "Accordion", "disabled", { open: false, disabled: true });
+	pushPair(out, "Accordion", "indicator", { open: true });
+	pushPair(out, "Accordion", "square", { variant: "square" });
+	pushPair(out, "Accordion", "sx", { open: true, variant: "sx" });
+	pushPair(out, "Snackbar", "open", { open: true, text: "Saved" });
+	pushPair(out, "Snackbar", "closed", { open: false, text: "Saved" });
+	pushPair(out, "Snackbar", "action", { open: true, text: "Undo" });
+	pushPair(out, "Toast", "sx", { text: "Saved" });
+	pushPair(out, "Table", "empty", { text: "" });
+	pushPair(out, "Table", "default", { text: "Name / Role" });
+	pushPair(out, "Table", "selected", { text: "Name / Role", value: 0 });
+	pushPair(out, "Table", "dense", { text: "Name / Role", variant: "dense" });
+	pushPair(out, "Table", "sx", { text: "Name / Role", variant: "sx" });
+	pushPair(out, "Autocomplete", "default", { value: "Continue", options: ["Continue", "Other"] });
+	pushPair(out, "Autocomplete", "open", { value: "Continue", options: ["Continue", "Other"], open: true });
+	pushPair(out, "Autocomplete", "disabled", { value: "Continue", options: ["Continue", "Other"], disabled: true });
+	pushPair(out, "Autocomplete", "empty", { value: "", options: [], open: true });
+	pushPair(out, "Autocomplete", "no-results", {
 			value: "Continue",
 			options: ["Continue", "Other"],
 			open: true,
 			filter: "zzz",
-		}),
-		...pair("Fab", "default"),
-		...pair("Fab", "extended", { text: "Compose" }),
-		...pair("Fab", "extended-narrow", { text: "Compose", width: 128 }),
-		...pair("Fab", "small", { size: "small" }),
-		...pair("Fab", "medium", { size: "medium" }),
-		...pair("Fab", "large", { size: "large" }),
-		...pair("Fab", "disabled", { disabled: true }),
-		...pair("Fab", "loading", { loading: true }),
-		...pair("Fab", "accent", { variant: "accent" }),
-		...pair("Fab", "sx", { variant: "sx" }),
-		...pair("AppBar", "default", { text: "Storyblox" }),
-		...pair("AppBar", "flat", { text: "Storyblox", variant: "flat" }),
-		...pair("AppBar", "raised", { text: "Storyblox", variant: "raised" }),
-		...pair("AppBar", "primary", { text: "Storyblox", variant: "primary" }),
-		...pair("AppBar", "sx", { text: "Storyblox", variant: "sx" }),
-		...pair("BottomNavigation", "default", { value: "Home", options: ["Home", "Search", "Profile"] }),
-	];
+		});
+	pushPair(out, "Fab", "default");
+	pushPair(out, "Fab", "extended", { text: "Compose" });
+	pushPair(out, "Fab", "extended-narrow", { text: "Compose", width: 128 });
+	pushPair(out, "Fab", "small", { size: "small" });
+	pushPair(out, "Fab", "medium", { size: "medium" });
+	pushPair(out, "Fab", "large", { size: "large" });
+	pushPair(out, "Fab", "disabled", { disabled: true });
+	pushPair(out, "Fab", "loading", { loading: true });
+	pushPair(out, "Fab", "accent", { variant: "accent" });
+	pushPair(out, "Fab", "sx", { variant: "sx" });
+	pushPair(out, "AppBar", "default", { text: "Storyblox" });
+	pushPair(out, "AppBar", "flat", { text: "Storyblox", variant: "flat" });
+	pushPair(out, "AppBar", "raised", { text: "Storyblox", variant: "raised" });
+	pushPair(out, "AppBar", "primary", { text: "Storyblox", variant: "primary" });
+	pushPair(out, "AppBar", "sx", { text: "Storyblox", variant: "sx" });
+	pushPair(out, "BottomNavigation", "default", { value: "Home", options: ["Home", "Search", "Profile"] });
+	return out;
 }
 
 function miscRowsA(): StateCapture[] {
-	return [
-		...pair("BottomNavigation", "selected", { value: "Search", options: ["Home", "Search", "Profile"] }),
-		...pair("BottomNavigation", "disabled", { value: "Home", options: ["Home", "Search", "Profile"], disabled: true }),
-		...pair("BottomNavigation", "icons", { value: "Home", options: ["Home", "Search", "Profile"], variant: "icons" }),
-		...pair("BottomNavigation", "sx", { value: "Home", options: ["Home", "Search", "Profile"], variant: "sx" }),
-		...pair("Alert", "info", { text: "Heads up", variant: "info" }),
-		...pair("Alert", "success", { text: "Saved", variant: "success" }),
-		...pair("Alert", "warning", { text: "Check this", variant: "warning" }),
-		...pair("Alert", "error", { text: "Failed", variant: "error" }),
-		...pair("Alert", "filled", { text: "Heads up", variant: "filled" }),
-		...pair("Alert", "square", { text: "Heads up", variant: "square" }),
-		...pair("Alert", "sx", { text: "Heads up", variant: "sx" }),
-		...pair("ToggleButton", "default"),
-		...pair("ToggleButton", "selected", { value: true }),
-		...pair("ToggleButton", "disabled", { disabled: true }),
-		...pair("ToggleButton", "size-small", { size: "small" }),
-		...pair("ToggleButton", "sx", { variant: "sx" }),
-		...pair("ToggleButtonGroup", "default", { value: "Left", options: ["Left", "Center", "Right"] }),
-		...pair("ToggleButtonGroup", "selected", { value: "Center", options: ["Left", "Center", "Right"] }),
-		...pair("ToggleButtonGroup", "vertical", { value: "Center", options: ["Left", "Center", "Right"], variant: "vertical" }),
-		...pair("ToggleButtonGroup", "sx", { value: "Left", options: ["Left", "Center", "Right"], variant: "sx" }),
-		...pair("Link", "default", { text: "Open docs" }),
-		...pair("Link", "hover-underline", { text: "Open docs", variant: "hover", pointer: "hover" }),
-		...pair("Link", "disabled", { text: "Open docs", disabled: true }),
-		...pair("Link", "error", { text: "Open docs", variant: "error" }),
-		...pair("Link", "sx", { text: "Open docs", variant: "sx" }),
-		...pair("Rating", "default", { value: 0 }),
-		...pair("Rating", "filled", { value: 3 }),
-		...pair("Rating", "disabled", { value: 4, disabled: true }),
-		...pair("Rating", "size-small", { value: 3, size: "small" }),
-		...pair("Rating", "readonly", { value: 3 }),
-		...pair("Rating", "sx", { value: 3, variant: "sx" }),
-		...pair("Stack", "column", { variant: "column" }),
-		...pair("Stack", "row", { variant: "row" }),
-		...pair("Stack", "spaced", { variant: "column", size: "large" }),
-		...pair("Stack", "wrap", { variant: "row", width: WIDE }),
-		...pair("Stack", "justify-between", { variant: "space-between", width: WIDE }),
-		...pair("Stack", "align-stretch", { variant: "stretch" }),
-		...pair("FlexItem", "grow", { variant: "grow" }),
-		...pair("FlexItem", "shrink", { variant: "shrink" }),
-		...pair("FlexItem", "fill", { variant: "fill" }),
-		...pair("Grid", "columns-3", { variant: "3" }),
-		...pair("Grid", "start-bottom-right", { variant: "bottom-right" }),
-		...pair("Grid", "gap", { size: "medium" }),
-		...pair("Box", "plain"),
-		...pair("Box", "padded", { size: "medium" }),
-		...pair("Box", "paper", { variant: "paper" }),
-		...pair("Box", "sx", { variant: "sx" }),
-		...pair("Stack", "sx", { variant: "sx" }),
-		...pair("Paper", "sx", { variant: "sx" }),
-		...pair("StyleSx", "default"),
-		...pair("StyleSx", "hover", { pointer: "hover" }),
-		...pair("StyleSx", "narrow", { width: NARROW }),
-		...pair("StyleSx", "disabled", { disabled: true }),
-		...pair("StyleSx", "loading", { loading: true }),
-	];
+	const out: StateCapture[] = [];
+	pushPair(out, "BottomNavigation", "selected", { value: "Search", options: ["Home", "Search", "Profile"] });
+	pushPair(out, "BottomNavigation", "disabled", { value: "Home", options: ["Home", "Search", "Profile"], disabled: true });
+	pushPair(out, "BottomNavigation", "icons", { value: "Home", options: ["Home", "Search", "Profile"], variant: "icons" });
+	pushPair(out, "BottomNavigation", "sx", { value: "Home", options: ["Home", "Search", "Profile"], variant: "sx" });
+	pushPair(out, "Alert", "info", { text: "Heads up", variant: "info" });
+	pushPair(out, "Alert", "success", { text: "Saved", variant: "success" });
+	pushPair(out, "Alert", "warning", { text: "Check this", variant: "warning" });
+	pushPair(out, "Alert", "error", { text: "Failed", variant: "error" });
+	pushPair(out, "Alert", "filled", { text: "Heads up", variant: "filled" });
+	pushPair(out, "Alert", "square", { text: "Heads up", variant: "square" });
+	pushPair(out, "Alert", "sx", { text: "Heads up", variant: "sx" });
+	pushPair(out, "ToggleButton", "default");
+	pushPair(out, "ToggleButton", "selected", { value: true });
+	pushPair(out, "ToggleButton", "disabled", { disabled: true });
+	pushPair(out, "ToggleButton", "size-small", { size: "small" });
+	pushPair(out, "ToggleButton", "sx", { variant: "sx" });
+	pushPair(out, "ToggleButtonGroup", "default", { value: "Left", options: ["Left", "Center", "Right"] });
+	pushPair(out, "ToggleButtonGroup", "selected", { value: "Center", options: ["Left", "Center", "Right"] });
+	pushPair(out, "ToggleButtonGroup", "vertical", { value: "Center", options: ["Left", "Center", "Right"], variant: "vertical" });
+	pushPair(out, "ToggleButtonGroup", "sx", { value: "Left", options: ["Left", "Center", "Right"], variant: "sx" });
+	pushPair(out, "Link", "default", { text: "Open docs" });
+	pushPair(out, "Link", "hover-underline", { text: "Open docs", variant: "hover", pointer: "hover" });
+	pushPair(out, "Link", "disabled", { text: "Open docs", disabled: true });
+	pushPair(out, "Link", "error", { text: "Open docs", variant: "error" });
+	pushPair(out, "Link", "sx", { text: "Open docs", variant: "sx" });
+	pushPair(out, "Rating", "default", { value: 0 });
+	pushPair(out, "Rating", "filled", { value: 3 });
+	pushPair(out, "Rating", "disabled", { value: 4, disabled: true });
+	pushPair(out, "Rating", "size-small", { value: 3, size: "small" });
+	pushPair(out, "Rating", "readonly", { value: 3 });
+	pushPair(out, "Rating", "sx", { value: 3, variant: "sx" });
+	pushPair(out, "Stack", "column", { variant: "column" });
+	pushPair(out, "Stack", "row", { variant: "row" });
+	pushPair(out, "Stack", "spaced", { variant: "column", size: "large" });
+	pushPair(out, "Stack", "wrap", { variant: "row", width: WIDE });
+	pushPair(out, "Stack", "justify-between", { variant: "space-between", width: WIDE });
+	pushPair(out, "Stack", "align-stretch", { variant: "stretch" });
+	pushPair(out, "FlexItem", "grow", { variant: "grow" });
+	pushPair(out, "FlexItem", "shrink", { variant: "shrink" });
+	pushPair(out, "FlexItem", "fill", { variant: "fill" });
+	pushPair(out, "Grid", "columns-3", { variant: "3" });
+	pushPair(out, "Grid", "start-bottom-right", { variant: "bottom-right" });
+	pushPair(out, "Grid", "gap", { size: "medium" });
+	pushPair(out, "Box", "plain");
+	pushPair(out, "Box", "padded", { size: "medium" });
+	pushPair(out, "Box", "paper", { variant: "paper" });
+	pushPair(out, "Box", "sx", { variant: "sx" });
+	pushPair(out, "Stack", "sx", { variant: "sx" });
+	pushPair(out, "Paper", "sx", { variant: "sx" });
+	pushPair(out, "StyleSx", "default");
+	pushPair(out, "StyleSx", "hover", { pointer: "hover" });
+	pushPair(out, "StyleSx", "narrow", { width: NARROW });
+	pushPair(out, "StyleSx", "disabled", { disabled: true });
+	pushPair(out, "StyleSx", "loading", { loading: true });
+	return out;
 }
 
 function miscRowsB(): StateCapture[] {
-	return [
-		...pair("Container", "default", { variant: "lg" }),
-		...pair("Container", "sm", { variant: "sm" }),
-		...pair("Container", "fluid", { variant: "false" }),
-		...pair("Backdrop", "default"),
-		...pair("Backdrop", "invisible", { variant: "invisible" }),
-		...pair("Backdrop", "closed", { open: false }),
-		...pair("Backdrop", "sx", { variant: "sx" }),
-		...pair("Sidebar", "sx", { variant: "sx" }),
-		...pair("Divider", "horizontal", { variant: "horizontal" }),
-		...pair("Divider", "vertical", { variant: "vertical" }),
-		...pair("Divider", "label", { text: "Or" }),
-		...pair("Divider", "sx", { variant: "sx" }),
-		...pair("Icon", "sx", { variant: "sx" }),
-		...pair("ImageList", "default"),
-		...pair("ImageList", "dense", { size: "small" }),
-		...pair("ImageList", "wide", { size: "large" }),
-		...pair("ImageList", "titled", { text: "Cove" }),
-		...pair("ImageList", "untitled", { text: "" }),
-		...pair("ImageList", "sx"),
-		...pair("SpeedDial", "closed", { open: false }),
-		...pair("SpeedDial", "open", { open: true }),
-		...pair("SpeedDial", "disabled", { open: false, disabled: true }),
-		...pair("SpeedDial", "down", { open: true, variant: "down" }),
-		...pair("SpeedDial", "sx", { open: false }),
-		...pair("List", "sx"),
-		...pair("Preloader", "sx"),
-		...pair("VirtualList", "sx"),
-		...pair("FormLabel", "default", { text: "Email" }),
-		...pair("FormLabel", "required", { text: "Email", value: true }),
-		...pair("FormLabel", "error", { text: "Email", hasError: true }),
-		...pair("FormLabel", "sx", { text: "Email", variant: "sx" }),
-		...pair("FormHelperText", "default", { text: "We never share this" }),
-		...pair("FormHelperText", "error", { text: "Required", hasError: true }),
-		...pair("FormHelperText", "sx", { text: "Hint", variant: "sx" }),
-		...pair("Typography", "sx", { text: "Title", variant: "sx" }),
-		...pair("Menu", "closed", { open: false }),
-		...pair("Menu", "open", { open: true }),
-		...pair("Menu", "empty", { open: true, options: [] }),
-		...pair("Menu", "dense", { open: true, variant: "dense" }),
-		...pair("Menu", "selected", { open: true, selected: "a" }),
-		...pair("Menu", "sx", { open: true }),
-		...pair("Markdown", "default", { text: "# Title\n\nHello **world**" }),
-		...pair("Markdown", "empty", { text: "" }),
-		...pair("Markdown", "sx", { text: "# Title" }),
-		...pair("MarkdownEditor", "split", { text: "# Title", variant: "split" }),
-		...pair("MarkdownEditor", "edit", { text: "# Title", variant: "edit" }),
-		...pair("MarkdownEditor", "preview", { text: "# Title", variant: "preview" }),
-		...pair("MarkdownEditor", "density-compact", { text: "# Title", density: "compact", variant: "split" }),
-		...pair("MarkdownEditor", "sx", { text: "# Title", variant: "split" }),
-	];
+	const out: StateCapture[] = [];
+	pushPair(out, "Container", "default", { variant: "lg" });
+	pushPair(out, "Container", "sm", { variant: "sm" });
+	pushPair(out, "Container", "fluid", { variant: "false" });
+	pushPair(out, "Backdrop", "default");
+	pushPair(out, "Backdrop", "invisible", { variant: "invisible" });
+	pushPair(out, "Backdrop", "closed", { open: false });
+	pushPair(out, "Backdrop", "sx", { variant: "sx" });
+	pushPair(out, "Sidebar", "sx", { variant: "sx" });
+	pushPair(out, "Divider", "horizontal", { variant: "horizontal" });
+	pushPair(out, "Divider", "vertical", { variant: "vertical" });
+	pushPair(out, "Divider", "label", { text: "Or" });
+	pushPair(out, "Divider", "sx", { variant: "sx" });
+	pushPair(out, "Icon", "sx", { variant: "sx" });
+	pushPair(out, "ImageList", "default");
+	pushPair(out, "ImageList", "dense", { size: "small" });
+	pushPair(out, "ImageList", "wide", { size: "large" });
+	pushPair(out, "ImageList", "titled", { text: "Cove" });
+	pushPair(out, "ImageList", "untitled", { text: "" });
+	pushPair(out, "ImageList", "sx");
+	pushPair(out, "SpeedDial", "closed", { open: false });
+	pushPair(out, "SpeedDial", "open", { open: true });
+	pushPair(out, "SpeedDial", "disabled", { open: false, disabled: true });
+	pushPair(out, "SpeedDial", "down", { open: true, variant: "down" });
+	pushPair(out, "SpeedDial", "sx", { open: false });
+	pushPair(out, "List", "sx");
+	pushPair(out, "Preloader", "sx");
+	pushPair(out, "VirtualList", "sx");
+	pushPair(out, "FormLabel", "default", { text: "Email" });
+	pushPair(out, "FormLabel", "required", { text: "Email", value: true });
+	pushPair(out, "FormLabel", "error", { text: "Email", hasError: true });
+	pushPair(out, "FormLabel", "sx", { text: "Email", variant: "sx" });
+	pushPair(out, "FormHelperText", "default", { text: "We never share this" });
+	pushPair(out, "FormHelperText", "error", { text: "Required", hasError: true });
+	pushPair(out, "FormHelperText", "sx", { text: "Hint", variant: "sx" });
+	pushPair(out, "Typography", "sx", { text: "Title", variant: "sx" });
+	pushPair(out, "Menu", "closed", { open: false });
+	pushPair(out, "Menu", "open", { open: true });
+	pushPair(out, "Menu", "empty", { open: true, options: [] });
+	pushPair(out, "Menu", "dense", { open: true, variant: "dense" });
+	pushPair(out, "Menu", "selected", { open: true, selected: "a" });
+	pushPair(out, "Menu", "sx", { open: true });
+	pushPair(out, "Markdown", "default", { text: "# Title\n\nHello **world**" });
+	pushPair(out, "Markdown", "empty", { text: "" });
+	pushPair(out, "Markdown", "sx", { text: "# Title" });
+	pushPair(out, "MarkdownEditor", "split", { text: "# Title", variant: "split" });
+	pushPair(out, "MarkdownEditor", "edit", { text: "# Title", variant: "edit" });
+	pushPair(out, "MarkdownEditor", "preview", { text: "# Title", variant: "preview" });
+	pushPair(out, "MarkdownEditor", "density-compact", { text: "# Title", density: "compact", variant: "split" });
+	pushPair(out, "MarkdownEditor", "sx", { text: "# Title", variant: "split" });
+	return out;
 }
 
 function concatRows(...chunks: StateCapture[][]): StateCapture[] {
