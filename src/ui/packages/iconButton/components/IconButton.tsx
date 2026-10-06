@@ -7,9 +7,11 @@ import { canActivate } from "ui/packages/button/components/activation";
 import { iconSpinnerPixels } from "ui/packages/button/components/buttonLook";
 import { CircularProgress } from "ui/packages/circularProgress";
 import useIconButtonStyles from "./IconButton.styles";
+import { transportGlyph, TransportGlyph } from "./transportGlyph";
 
 export interface IconButtonProps {
 	icon: Icons;
+	glyph?: TransportGlyph;
 	size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
 	tint: Color3;
 	selected?: boolean;
@@ -24,6 +26,7 @@ type DefaultIconButtonComponent = ImageButton;
 function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButtonProps>) {
 	const {
 		icon,
+		glyph,
 		selected,
 		tint,
 		disabled,
@@ -38,6 +41,7 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 	const { container, corner } = useIconButtonStyles(props);
 	const reducedMotion = useReducedMotion(reducedProp);
 	const active = canActivate(disabled, loading);
+	const drawn = glyph !== undefined ? transportGlyph(glyph) : undefined;
 	const [hovering, setHovering] = useState(false);
 	const [focused, setFocused] = useState(false);
 
@@ -60,8 +64,8 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 			AutoButtonColor={active}
 			Selectable={active}
 			BackgroundTransparency={loading ? 1 : !active || hovering || selected || focused ? 0.5 : 1}
-			Image={tostring(icon)}
-			ImageTransparency={loading ? 1 : 0}
+			Image={drawn !== undefined ? "" : tostring(icon)}
+			ImageTransparency={drawn !== undefined || loading ? 1 : 0}
 			ImageColor3={tint ?? (container as WriteableStyle<ImageLabel>).ImageColor3}
 			Event={{
 				MouseButton1Click: () => {
@@ -78,6 +82,28 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 			}}
 		>
 			<uicorner {...corner} />
+			{drawn !== undefined ? (
+				<frame
+					key="Glyph"
+					AnchorPoint={new Vector2(0.5, 0.5)}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromOffset(16, 16)}
+					BackgroundTransparency={1}
+					BorderSizePixel={0}
+					ZIndex={12001}
+				>
+					{drawn.map((part, index) => (
+						<frame
+							key={`g-${index}`}
+							Position={UDim2.fromOffset(part.x, part.y)}
+							Size={UDim2.fromOffset(math.max(part.w, 1), math.max(part.h, 1))}
+							BackgroundColor3={tint}
+							BorderSizePixel={0}
+							ZIndex={12001}
+						/>
+					))}
+				</frame>
+			) : undefined}
 			{loading && (
 				<CircularProgress
 					size={iconSpinnerPixels(props.size)}
