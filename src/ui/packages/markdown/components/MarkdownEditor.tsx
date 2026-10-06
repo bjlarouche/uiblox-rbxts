@@ -7,6 +7,7 @@ import { Icons } from "ui/enums";
 import { ToggleButtonGroup } from "ui/packages/toggleButton";
 import { htmlToMarkdown } from "../htmlToMarkdown";
 import Markdown from "./Markdown";
+import { clampEditorHeight } from "./markdownEditorHeight";
 import useMarkdownEditorStyles, { MarkdownEditorMode } from "./MarkdownEditor.styles";
 
 export interface MarkdownEditorProps {
@@ -18,6 +19,12 @@ export interface MarkdownEditorProps {
 	onFullscreenChange?: (fullscreen: boolean) => void;
 	preview?: (value: string) => React.Element;
 	placeholder?: string;
+	resizable?: boolean;
+	height?: number;
+	defaultHeight?: number;
+	minHeight?: number;
+	maxHeight?: number;
+	onHeightChange?: (height: number) => void;
 }
 
 const MODE_OPTIONS = [
@@ -51,6 +58,12 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 		onFullscreenChange,
 		preview,
 		placeholder = "Write markdown…",
+		resizable = false,
+		height: heightProp,
+		defaultHeight = 360,
+		minHeight = 200,
+		maxHeight = 720,
+		onHeightChange,
 		className,
 		sx,
 		id,
@@ -61,9 +74,14 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 	const [fullscreenState, setFullscreenState] = useState(false);
 	const [draft, setDraft] = useState(value);
 	const [htmlDraft, setHtmlDraft] = useState<string | undefined>(undefined);
+	const [heightState, setHeightState] = useState(defaultHeight);
+	const [dragging, setDragging] = useState(false);
 	const focused = useRef(false);
+	const dragStart = useRef(0);
+	const heightStart = useRef(0);
 	const mode = modeProp ?? modeState;
 	const fullscreen = fullscreenProp ?? fullscreenState;
+	const height = clampEditorHeight(heightProp ?? heightState, minHeight, maxHeight);
 	const compact = theme.density === "compact";
 	const styles = useMarkdownEditorStyles({ fullscreen, compact });
 
@@ -79,17 +97,30 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 		if (fullscreenProp === undefined) setFullscreenState(fullNext);
 		onFullscreenChange?.(fullNext);
 	};
+	const setHeight = (requested: number) => {
+		const clamped = clampEditorHeight(requested, minHeight, maxHeight);
+		if (heightProp === undefined) setHeightState(clamped);
+		if (clamped !== height) onHeightChange?.(clamped);
+	};
 
 	const showEdit = mode === "split" || mode === "edit";
 	const showPreview = mode === "split" || mode === "preview";
 	const previewNode = preview !== undefined ? preview(value) : <Markdown value={value} />;
 
 	return (
-		<SxHost tag="frame" key={id || "MarkdownEditor"} hostRef={ref} base={styles.root} className={className} sx={sx}>
+		<SxHost
+			tag="frame"
+			key={id || "MarkdownEditor"}
+			hostRef={ref}
+			base={{ ...styles.root, Size: resizable && !fullscreen ? new UDim2(1, 0, 0, height) : UDim2.fromScale(1, 1) }}
+			className={className}
+			sx={sx}
+		>
 			<uicorner {...styles.corner} />
 			<uistroke {...styles.stroke} />
-			<uilistlayout {...styles.layout} />
-			<frame key="Toolbar" {...styles.toolbar}>
+			<frame key="Content" {...styles.content}>
+				<uilistlayout {...styles.layout} />
+				<frame key="Toolbar" {...styles.toolbar}>
 				<uipadding {...styles.toolbarPad} />
 				<uilistlayout {...styles.toolbarRow} />
 				<ToggleButtonGroup
@@ -117,8 +148,8 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 					onClick={() => setFullscreen(!fullscreen)}
 					className={{ LayoutOrder: 99 }}
 				/>
-			</frame>
-			{htmlDraft !== undefined && (
+				</frame>
+				{htmlDraft !== undefined && (
 				<frame
 					key="HtmlPaste"
 					Size={new UDim2(1, 0, 0, 96)}
@@ -179,8 +210,8 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 						/>
 					</frame>
 				</frame>
-			)}
-			<frame key="Body" {...styles.body} LayoutOrder={3}>
+				)}
+				<frame key="Body" {...styles.body} LayoutOrder={3}>
 				{mode === "split" && <uilistlayout {...styles.split} />}
 				{showEdit && (
 					<frame key="EditPane" {...(mode === "split" ? styles.pane : styles.paneFull)} LayoutOrder={1}>
@@ -222,7 +253,58 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 						{previewNode}
 					</scrollingframe>
 				)}
+				</frame>
 			</frame>
+			{resizable && !fullscreen && (
+				<textbutton
+					key="ResizeGrip"
+					{...styles.resizeGrip}
+					Text=""
+					Active={true}
+					Selectable={true}
+					Event={{
+						InputBegan: (_, input) => {
+							if (
+								input.UserInputType === Enum.UserInputType.MouseButton1 ||
+								input.UserInputType === Enum.UserInputType.Touch
+							) {
+								dragStart.current = input.Position.Y;
+								heightStart.current = height;
+								setDragging(true);
+							} else if (input.KeyCode === Enum.KeyCode.Up) setHeight(height - 16);
+							else if (input.KeyCode === Enum.KeyCode.Down) setHeight(height + 16);
+						},
+					}}
+				>
+					<frame key="Long" {...styles.resizeMark} Position={UDim2.fromOffset(4, 14)} Size={UDim2.fromOffset(12, 2)} />
+					<frame key="Short" {...styles.resizeMark} Position={UDim2.fromOffset(10, 10)} Size={UDim2.fromOffset(6, 2)} />
+				</textbutton>
+			)}
+			{dragging && (
+				<frame
+					key="ResizeOverlay"
+					{...styles.resizeOverlay}
+					Event={{
+						InputChanged: (_, input) => {
+							if (
+								input.UserInputType === Enum.UserInputType.MouseMovement ||
+								input.UserInputType === Enum.UserInputType.Touch
+							) {
+								setHeight(heightStart.current + input.Position.Y - dragStart.current);
+							}
+						},
+						InputEnded: (_, input) => {
+							if (
+								input.UserInputType === Enum.UserInputType.MouseButton1 ||
+								input.UserInputType === Enum.UserInputType.Touch
+							) {
+								setDragging(false);
+							}
+						},
+						MouseLeave: () => setDragging(false),
+					}}
+				/>
+			)}
 		</SxHost>
 	);
 }

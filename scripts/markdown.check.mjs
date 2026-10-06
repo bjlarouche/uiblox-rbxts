@@ -29,11 +29,17 @@ globalThis.tonumber = (v) => {
 	const n = Number(v);
 	return Number.isFinite(n) ? n : undefined;
 };
+globalThis.math = {
+	clamp: (value, min, max) => Math.min(Math.max(value, min), max),
+	min: Math.min,
+	max: Math.max,
+};
 
 const { parseMarkdown, inlinesToPlain, inlinesToRichText } = await import(
 	"../src/ui/packages/markdown/parseMarkdown.ts",
 );
 const { htmlToMarkdown } = await import("../src/ui/packages/markdown/htmlToMarkdown.ts");
+const { clampEditorHeight } = await import("../src/ui/packages/markdown/components/markdownEditorHeight.ts");
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
 
 function kinds(source) {
@@ -92,6 +98,11 @@ if (!evil.includes("Hi") || !evil.includes("Ok")) throw new Error("kept text");
 
 const unknown = htmlToMarkdown("<div><span>Loose</span></div>");
 if (!unknown.includes("Loose")) throw new Error("unwrap unknown");
+
+if (clampEditorHeight(120, 200, 600) !== 200) throw new Error("editor min height");
+if (clampEditorHeight(800, 200, 600) !== 600) throw new Error("editor max height");
+if (clampEditorHeight(320, 200, 600) !== 320) throw new Error("editor height");
+if (clampEditorHeight(320, 600, 200) !== 320) throw new Error("editor reversed bounds");
 
 // mode switching must not drop value — pure data contract
 let value = "# Keep\n\ntext";

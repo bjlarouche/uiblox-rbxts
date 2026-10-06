@@ -12,6 +12,11 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 				BackgroundColor3: theme.palette.surface.paper,
 				BorderSizePixel: 0,
 			} as WriteableStyle<Frame>,
+			content: {
+				Size: UDim2.fromScale(1, 1),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+			} as WriteableStyle<Frame>,
 			corner: {
 				CornerRadius: new UDim(0, theme.shape.borderRadius),
 			} as WriteableStyle<UICorner>,
@@ -114,6 +119,30 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 				BackgroundColor3: theme.palette.divider,
 				BorderSizePixel: 0,
 				LayoutOrder: 2,
+			} as WriteableStyle<Frame>,
+			resizeGrip: {
+				AnchorPoint: new Vector2(1, 1),
+				Position: UDim2.fromScale(1, 1),
+				Size: UDim2.fromOffset(22, 22),
+				BackgroundColor3: theme.palette.surface.elevated,
+				BackgroundTransparency: 0.15,
+				BorderSizePixel: 0,
+				AutoButtonColor: false,
+				ZIndex: 20,
+			} as WriteableStyle<TextButton>,
+			resizeMark: {
+				AnchorPoint: new Vector2(0.5, 0.5),
+				BackgroundColor3: theme.palette.text.secondary,
+				BorderSizePixel: 0,
+				Rotation: -45,
+				ZIndex: 21,
+			} as WriteableStyle<Frame>,
+			resizeOverlay: {
+				Size: UDim2.fromScale(1, 1),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				Active: true,
+				ZIndex: 30,
 			} as WriteableStyle<Frame>,
 		});
 	},
