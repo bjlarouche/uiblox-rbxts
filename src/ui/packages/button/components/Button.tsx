@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "@rbxts/react";
 import { useReducedMotion } from "hooks";
 import { CustomizedProps, useTheme, WriteableStyle } from "theme";
+import { SxHost } from "ui/packages/host";
 import { CircularProgress } from "ui/packages/circularProgress";
 import { LoadingStroke } from "ui/packages/loadingStroke";
 import { ButtonSize, ButtonColor, ButtonVariant } from "../types";
@@ -92,13 +93,14 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 	}, [active]);
 
 	return (
-		<textbutton
+		<SxHost
+			tag="textbutton"
 			key={id || "Button"}
-			ref={ref}
-			{...root}
-			{...font}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			base={{ ...root, ...font }}
+			className={className}
+			sx={sx}
+			state={{ disabled, loading, hover: hovering, pressed, focused }}
 			Active={active}
 			AutoButtonColor={active}
 			Selectable={active}
@@ -161,7 +163,7 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 				/>
 			)}
 			{children}
-		</textbutton>
+		</SxHost>
 	);
 }
 

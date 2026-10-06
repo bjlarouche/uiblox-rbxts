@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "@rbxts/react";
 import { useReducedMotion } from "hooks";
 import { Icons } from "ui/enums";
 import { CustomizedProps, WriteableStyle } from "theme";
+import { SxHost } from "ui/packages/host";
 import { canActivate } from "ui/packages/button/components/activation";
 import { iconSpinnerPixels } from "ui/packages/button/components/buttonLook";
 import { CircularProgress } from "ui/packages/circularProgress";
@@ -47,12 +48,14 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 	}, [active]);
 
 	return (
-		<imagebutton
+		<SxHost
+			tag="imagebutton"
 			key={id || "IconButton"}
-			ref={ref}
-			{...container}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			base={container}
+			className={className}
+			sx={sx}
+			state={{ disabled, loading, selected, hover: hovering, focused }}
 			Active={active}
 			AutoButtonColor={active}
 			Selectable={active}
@@ -87,7 +90,7 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 					}}
 				/>
 			)}
-		</imagebutton>
+		</SxHost>
 	);
 }
 

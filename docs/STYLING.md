@@ -125,6 +125,8 @@ Compose: `className` then `sx` (sx wins), then explicit host props. `SxHost` tra
 
 ```tsx
 <Box sx={{ p: 2, bgcolor: "surface.paper", radius: 4 }} />
+<Button text="Save" sx={{ bgcolor: "primary.main", _hover: { bgcolor: "primary.hover" } }} />
+<IconButton icon={Icons.Close} sx={{ p: 1 }} />
 <Stack direction="row" sx={{ gap: 2, width: { phone: 160, desktop: 320 } }}>
 	<textlabel Text="A" />
 </Stack>
