@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { Input } from "ui/packages/input";
 import useAssetFieldStyles from "./AssetField.styles";
 import { assetPreviewUri } from "./assetPreviewUri";
@@ -18,7 +19,7 @@ function AssetField(props: CustomizedProps<Frame, AssetFieldProps>) {
 	const uri = preview === true ? assetPreviewUri(value) : undefined;
 
 	return (
-		<frame key={id || "AssetField"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "AssetField"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.list} />
 			<Input
 				text={value}
@@ -32,7 +33,7 @@ function AssetField(props: CustomizedProps<Frame, AssetFieldProps>) {
 					<uicorner {...styles.corner} />
 				</imagelabel>
 			)}
-		</frame>
+		</SxHost>
 	);
 }
 

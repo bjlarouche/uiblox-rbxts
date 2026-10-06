@@ -1,5 +1,6 @@
 import React, { useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Input } from "ui/packages/input";
 import { Select } from "ui/packages/select";
@@ -40,7 +41,7 @@ function FontEditor(props: CustomizedProps<Frame, FontEditorProps>) {
 	const stylesList = enumOptions(Enum.FontStyle.GetEnumItems());
 
 	return (
-		<frame key={id || "FontEditor"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "FontEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.column} />
 			<frame key="Family" {...styles.row} LayoutOrder={1}>
 				<Select
@@ -104,7 +105,7 @@ function FontEditor(props: CustomizedProps<Frame, FontEditorProps>) {
 				<uicorner {...styles.corner} />
 				<uistroke {...styles.stroke} />
 			</textlabel>
-		</frame>
+		</SxHost>
 	);
 }
 

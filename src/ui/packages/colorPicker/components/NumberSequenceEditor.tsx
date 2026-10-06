@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { canActivate } from "ui/packages/button/components/activation";
 import { NumberInput } from "ui/packages/numberInput";
 import useColorPickerStyles from "./ColorPicker.styles";
@@ -37,7 +38,7 @@ function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditor
 	};
 
 	return (
-		<frame key={id || "NumberSequenceEditor"} ref={ref} {...styles.root} {...className} {...sx} Selectable={false}>
+		<SxHost tag="frame" key={id || "NumberSequenceEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }} Selectable={false}>
 			<uilistlayout {...styles.column} />
 			<frame
 				key="Bar"
@@ -144,7 +145,7 @@ function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditor
 					}}
 				/>
 			)}
-		</frame>
+		</SxHost>
 	);
 }
 

@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import usePhysicalPropertiesEditorStyles from "./PhysicalPropertiesEditor.styles";
 import { PhysicalField, patchPhysicalParts, physicalFields } from "./physicalParts";
@@ -29,7 +30,7 @@ function PhysicalPropertiesEditor(props: CustomizedProps<Frame, PhysicalProperti
 	};
 
 	return (
-		<frame key={id || "PhysicalPropertiesEditor"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "PhysicalPropertiesEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.wrap} />
 			<>
 			{physicalFields().map((field, index) => (
@@ -47,7 +48,7 @@ function PhysicalPropertiesEditor(props: CustomizedProps<Frame, PhysicalProperti
 				</frame>
 			))}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

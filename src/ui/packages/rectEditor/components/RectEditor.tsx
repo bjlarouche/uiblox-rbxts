@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import useRectEditorStyles from "./RectEditor.styles";
 import { RectField, rectFields, writeRectParts } from "./rectValue";
@@ -21,7 +22,7 @@ function RectEditor(props: CustomizedProps<Frame, RectEditorProps>) {
 	};
 
 	return (
-		<frame key={id || "RectEditor"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "RectEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.wrap} />
 			<>
 			{rectFields().map((field, index) => (
@@ -39,7 +40,7 @@ function RectEditor(props: CustomizedProps<Frame, RectEditorProps>) {
 				</frame>
 			))}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

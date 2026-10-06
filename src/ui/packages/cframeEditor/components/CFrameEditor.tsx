@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import useCFrameEditorStyles from "./CFrameEditor.styles";
 import { CFrameField, nextCFrameParts } from "./cframeValue";
@@ -56,11 +57,11 @@ function CFrameEditor(props: CustomizedProps<Frame, CFrameEditorProps>) {
 	);
 
 	return (
-		<frame key={id || "CFrameEditor"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "CFrameEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.wrap} />
 			{group("Position", POSITION, 1, 0)}
 			{group("Orientation", ORIENTATION, 2, 3)}
-		</frame>
+		</SxHost>
 	);
 }
 

@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import useVectorEditorStyles from "./VectorEditor.styles";
 import { AxisKey, readAxis, writeVector2, writeVector3 } from "./vectorValue";
@@ -19,7 +20,7 @@ function VectorEditor(props: CustomizedProps<Frame, VectorEditorProps>) {
 	const axes = props.axes ?? (isVector3 ? (["X", "Y", "Z"] as AxisKey[]) : (["X", "Y"] as AxisKey[]));
 
 	return (
-		<frame key={id || "VectorEditor"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "VectorEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.row} />
 			<>
 			{axes.map((axis, index) => (
@@ -40,7 +41,7 @@ function VectorEditor(props: CustomizedProps<Frame, VectorEditorProps>) {
 				</frame>
 			))}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import useNumberRangeEditorStyles from "./NumberRangeEditor.styles";
 import { writeNumberRange } from "./numberRangeValue";
@@ -20,7 +21,7 @@ function NumberRangeEditor(props: CustomizedProps<Frame, NumberRangeEditorProps>
 	};
 
 	return (
-		<frame key={id || "NumberRangeEditor"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "NumberRangeEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.row} />
 			<frame key="Min" {...styles.axis} LayoutOrder={1}>
 				<uilistlayout {...styles.row} />
@@ -36,7 +37,7 @@ function NumberRangeEditor(props: CustomizedProps<Frame, NumberRangeEditorProps>
 					<NumberInput value={value.Max} disabled={disabled} width={new UDim(1, 0)} onChange={(amount) => commit("Max", amount)} />
 				</frame>
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 
