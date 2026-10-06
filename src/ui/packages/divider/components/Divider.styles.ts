@@ -18,6 +18,7 @@ const useDividerStyles = componentStyles<DividerProps>("Divider", (theme, props)
 			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
+			ClipsDescendants: true,
 		} as WriteableStyle<Frame>,
 		line: {
 			Size: new UDim2(1, 0, 0, weight),
@@ -28,8 +29,8 @@ const useDividerStyles = componentStyles<DividerProps>("Divider", (theme, props)
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		caption: {
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: Enum.AutomaticSize.X,
+			Size: new UDim2(0, 0, 1, 0),
 			AnchorPoint: new Vector2(0.5, 0.5),
 			Position: new UDim2(0.5, 0, 0.5, 0),
 			BackgroundColor3: theme.palette.surface.canvas,
@@ -37,6 +38,8 @@ const useDividerStyles = componentStyles<DividerProps>("Divider", (theme, props)
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.caption,
 			TextColor3: theme.palette.text.secondary,
+			TextTruncate: Enum.TextTruncate.AtEnd,
+			TextXAlignment: Enum.TextXAlignment.Center,
 			ZIndex: 2,
 		} as WriteableStyle<TextLabel>,
 		captionPad: {
