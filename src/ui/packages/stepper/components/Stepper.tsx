@@ -8,17 +8,18 @@ export interface StepperProps {
 	steps: string[];
 	activeStep: number;
 	orientation?: "horizontal" | "vertical";
+	errorStep?: number;
 }
 
 function Stepper(props: CustomizedProps<Frame, StepperProps>) {
-	const { steps, activeStep, orientation = "horizontal", className, sx, id, ref } = props;
+	const { steps, activeStep, orientation = "horizontal", errorStep, className, sx, id, ref } = props;
 	const styles = useStepperStyles({ orientation });
 	return (
 		<SxHost tag="frame" key={id || "Stepper"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			<uilistlayout {...styles.list} />
 			<>
 			{steps.map((label, index) => {
-				const state = stepState(index, activeStep);
+				const state = stepState(index, activeStep, errorStep);
 				return (
 					<textlabel
 						key={`${label}-${index}`}
@@ -26,6 +27,7 @@ function Stepper(props: CustomizedProps<Frame, StepperProps>) {
 							styles.step,
 							state === "active" && styles.active,
 							state === "complete" && styles.complete,
+							state === "error" && styles.error,
 						)}
 						Text={`${index + 1}. ${label}`}
 						LayoutOrder={index}
