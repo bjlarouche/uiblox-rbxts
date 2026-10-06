@@ -119,6 +119,8 @@ const hosts = [
 	"src/ui/packages/splitPane/components/SplitPane.tsx",
 	"src/ui/packages/treeView/components/TreeView.tsx",
 	"src/ui/packages/virtualList/components/VirtualList.tsx",
+	"src/ui/packages/markdown/components/Markdown.tsx",
+	"src/ui/packages/markdown/components/MarkdownEditor.tsx",
 ];
 for (const file of hosts) {
 	const text = readFileSync(file, "utf8");
@@ -127,7 +129,7 @@ for (const file of hosts) {
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table", "Toast", "Tooltip", "Skeleton", "CircularProgress", "ImageList", "List", "Preloader", "SpeedDial", "SplitPane", "TreeView", "VirtualList"]) {
+for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table", "Toast", "Tooltip", "Skeleton", "CircularProgress", "ImageList", "List", "Preloader", "SpeedDial", "SplitPane", "TreeView", "VirtualList", "Markdown", "MarkdownEditor"]) {
 	if (stateMatrix.filter((row) => row.component === component && row.name.includes("-sx-")).length !== 2) {
 		throw new Error(`${component} sx matrix`);
 	}
@@ -149,8 +151,6 @@ if (!stroke.includes("<uistroke") || !stroke.includes("{...sx}")) throw new Erro
 
 const rawSxAllowed = new Set([
 	"src/ui/packages/loadingStroke/components/LoadingStroke.tsx",
-	"src/ui/packages/markdown/components/Markdown.tsx",
-	"src/ui/packages/markdown/components/MarkdownEditor.tsx",
 	"src/ui/packages/assetField/components/AssetField.tsx",
 	"src/ui/packages/brickColorPicker/components/BrickColorPicker.tsx",
 	"src/ui/packages/cframeEditor/components/CFrameEditor.tsx",

@@ -468,10 +468,12 @@ function miscRows(): StateCapture[] {
 		...pair("Menu", "selected", { open: true, selected: "a" }),
 		...pair("Markdown", "default", { text: "# Title\n\nHello **world**" }),
 		...pair("Markdown", "empty", { text: "" }),
+		...pair("Markdown", "sx", { text: "# Title" }),
 		...pair("MarkdownEditor", "split", { text: "# Title", variant: "split" }),
 		...pair("MarkdownEditor", "edit", { text: "# Title", variant: "edit" }),
 		...pair("MarkdownEditor", "preview", { text: "# Title", variant: "preview" }),
 		...pair("MarkdownEditor", "density-compact", { text: "# Title", density: "compact", variant: "split" }),
+		...pair("MarkdownEditor", "sx", { text: "# Title", variant: "split" }),
 	];
 }
 
