@@ -171,6 +171,14 @@ export function removeNumberStop(stops: NumberStop[], index: number) {
 	return updated;
 }
 
+export function sequencePress(kind: string) {
+	return kind === "MouseButton1" || kind === "Touch";
+}
+
+export function sequenceMove(kind: string) {
+	return kind === "MouseMovement" || kind === "Touch";
+}
+
 export function hitStop(times: number[], alpha: number, threshold: number) {
 	let best = -1;
 	let distance = threshold;

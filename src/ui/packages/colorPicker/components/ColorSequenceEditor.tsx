@@ -10,6 +10,8 @@ import {
 	patchColorStop,
 	readColorStops,
 	removeColorStop,
+	sequenceMove,
+	sequencePress,
 	writeColorStops,
 } from "./sequenceValue";
 
@@ -47,7 +49,7 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 				Active={active}
 				Event={{
 					InputBegan: (rbx, input) => {
-						if (!active || input.UserInputType !== Enum.UserInputType.MouseButton1) return;
+						if (!active || !sequencePress(input.UserInputType.Name)) return;
 						const alpha = atAlpha(rbx, input.Position);
 						const hit = hitStop(
 							stops.map((stop) => stop.t),
@@ -70,7 +72,7 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 						);
 					},
 					InputChanged: (rbx, input) => {
-						if (!dragging.current || input.UserInputType !== Enum.UserInputType.MouseMovement) return;
+						if (!dragging.current || !sequenceMove(input.UserInputType.Name)) return;
 						commit(patchColorStop(stops, index, { t: atAlpha(rbx, input.Position) }));
 					},
 					InputEnded: () => {
