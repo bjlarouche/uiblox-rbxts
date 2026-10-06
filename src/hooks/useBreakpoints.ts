@@ -1,15 +1,13 @@
 import { useEffect, useState } from "@rbxts/react";
 import { breakpointName, orientationName } from "./breakpoints";
+import { observeViewport } from "./viewportObserver";
 
 export function useBreakpoints(host?: GuiObject) {
 	const [size, setSize] = useState({ width: 0, height: 0 });
 
 	useEffect(() => {
 		if (host === undefined) return;
-		const read = () => setSize({ width: host.AbsoluteSize.X, height: host.AbsoluteSize.Y });
-		read();
-		const connection = host.GetPropertyChangedSignal("AbsoluteSize").Connect(read);
-		return () => connection.Disconnect();
+		return observeViewport(host, setSize);
 	}, [host]);
 
 	return {

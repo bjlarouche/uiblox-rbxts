@@ -1,6 +1,8 @@
 export interface ComponentSpec {
 	defaultProps?: { [key: string]: unknown };
 	styleOverrides?: { [slot: string]: object };
+	variants?: { [prop: string]: { [value: string]: { [slot: string]: object } } };
+	compoundVariants?: Array<{ when: { [prop: string]: unknown }; styles: { [slot: string]: object } }>;
 }
 
 export function propsWithDefaults(

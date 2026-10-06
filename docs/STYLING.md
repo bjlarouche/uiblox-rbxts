@@ -1,6 +1,26 @@
-# Uiblox styling tokens
+# Uiblox styling
 
-Short guide for theme tokens and style helpers. Prefer tokens over magic numbers.
+Theme tokens + style helpers for Roblox Instance props. No CSS string parser.
+
+## Web → Roblox support
+
+| Web / MUI | Uiblox | Status |
+| --- | --- | --- |
+| `makeStyles` / `createStyles` | `makeStyles` / `createStyles` | yes — slot maps, theme-aware |
+| `sx` prop (CSS + tokens) | `resolveSx(theme, sx, width?)` → `{ root, padding?, corner?, gap? }` | yes — shorthands; kit `sx` prop stays raw Instance props unless you resolve |
+| `className` + `cx` | `className` / `cx` — last spread wins | yes — use `cx(className, resolveSx(…).root)` then `…sx` if raw |
+| `:hover` / `:active` / `:focus` | `_hover` / `_pressed` / `_focus` via `resolveStyle` | yes |
+| `:focus-visible` | `_focusVisible` + `focusVisible` state | yes — author sets flag (Selection + keyboard) |
+| `:disabled` / `[aria-selected]` / `:checked` | `_disabled` / `_selected` / `_checked` | yes |
+| loading / nth odd-even / first-last | `_loading` / `_odd` / `_even` / `_first` / `_last` | yes |
+| `variants` / `compoundVariants` | `applyVariants` + `theme.components.*.variants` | yes — overrides win last |
+| `theme.components` defaultProps / styleOverrides | `componentStyles` + `theme.components` | yes |
+| `@media` breakpoints | `resolveResponsive` / sx `{ phone, tablet, desktop }` + `useBreakpoints` | yes — one `observeViewport` per host |
+| spacing scale | `theme.spacing.calc(n)` (8px) | yes |
+| density | `theme.density` + `controlMetrics` | yes |
+| CSS flex/grid solver | native `Stack` / `FlexItem` / `Grid` (UIList/UIGrid/UIFlexItem) | yes — no flexbox solver |
+| nested `&:hover .child` / `::before` | — | no — pass parent state; use children |
+| CSS `transition` sugar | `playProperty` / `reducedMotion` | partial |
 
 ## Spacing
 
@@ -69,6 +89,62 @@ Families: `default` / `bold` / `semibold` / `light` / `italics` → SourceSans*.
 
 Light/dark via `LightTheme` / `DarkTheme`. See `docs/MIGRATION-0.2.md` for renames.
 
+## Recipes
+
+### sx shorthands
+
+```ts
+const { root, padding, corner, gap } = resolveSx(theme, {
+	width: { phone: 120, desktop: 240 },
+	p: 2,
+	px: 3,
+	bgcolor: "surface.paper",
+	color: "text.primary",
+	radius: theme.shape.borderRadius,
+	gap: 1,
+	typography: "body",
+	_hover: { bgcolor: "action.hover" },
+}, width);
+
+const painted = resolveStyle(root, { hover });
+// <frame {...painted}>; <uipadding {...padding}/>; <uicorner {...corner}/>;
+// list layout Padding = new UDim(0, gap)
+```
+
+Shorthands: `width`/`height`/`w`/`h`/`size`, `x`/`y`/`position`/`anchor`, `p`/`px`/`py`/`pt`…/`padding`, `gap`, `bgcolor`/`bg`/`color`/`borderColor` (palette tokens or `Color3`), `opacity`/`transparency`, `border`, `radius`, `typography`/`fontSize`/`font`, `visible`/`zIndex`. Native Instance keys pass through (and win over colliding shorthands).
+
+### Selectors + precedence
+
+```ts
+const painted = resolveStyle(classes.root, { hover, pressed, focusVisible, disabled, first, odd });
+```
+
+Order (later wins): `_first` → `_last` → `_odd` → `_even` → `_selected` → `_checked` → `_loading` → `_hover` → `_pressed` → `_focus` → `_focusVisible` → `_disabled`.
+
+Compose: `cx(slotStyles, className, resolveSx(theme, sx).root)` — last key wins. Kit components still spread `{...className}{...sx}` as raw props.
+
+### Theme component overrides
+
+```ts
+const theme = {
+	...LightTheme,
+	components: {
+		Button: {
+			defaultProps: { size: "small" },
+			variants: { color: { primary: { root: { BackgroundTransparency: 0 } } } },
+			compoundVariants: [{ when: { size: "small", color: "primary" }, styles: { root: { TextSize: 12 } } }],
+			styleOverrides: { root: { BorderSizePixel: 0 } },
+		},
+	},
+};
+```
+
+Factory → theme variants/compound → `styleOverrides` (overrides win).
+
+### Breakpoints
+
+`phone` < 600 ≤ `tablet` < 960 ≤ `desktop`. `observeViewport(host, cb)` shares one AbsoluteSize connection (not a per-frame poll). `useBreakpoints(host)` subscribes to that observer. `clearStyleCaches()` / `clearViewportObservers()` for tests / hot reload.
+
 ## controlMetrics
 
 From `controlMetrics(theme.density, size)` (px):
@@ -82,32 +158,10 @@ From `controlMetrics(theme.density, size)` (px):
 
 Icons: `theme.options.constants.iconSizes` → 16 / 24 / 32.
 
-## makeStyles / sx / resolveStyle
-
-```ts
-const useStyles = makeStyles((theme) =>
-	createStyles({
-		root: {
-			BackgroundColor3: theme.palette.surface.paper,
-			_hover: { BackgroundColor3: theme.palette.action.hover },
-			_disabled: { BackgroundTransparency: 0.5 },
-		},
-	}),
-);
-
-const classes = useStyles();
-const painted = resolveStyle(classes.root, { hover, disabled });
-// spread painted; className then sx (sx wins)
-```
-
-Selector merge order: `_first` → `_last` → `_selected` → `_checked` → `_hover` → `_pressed` → `_focus` → `_disabled` (later wins). Call `resolveStyle` before spreading. Kit components do not auto-resolve `sx` selectors yet.
-
-`componentStyles("Button", factory)` + `theme.components.Button` for overrides. `applyVariants` for prop-driven slots.
-
 ## Switch on-state
 
 When `value === true`: track uses `palette.primary.main`, thumb on the **right**. Off: `palette.action.disabled`, thumb left. Label text is independent of `value` — do not use the label to imply state.
 
 ## Checks
 
-`pnpm test` includes `density.check.mjs` (8px / type / icons) and `styles.check.mjs` (key components reference spacing/radius/typography tokens; Switch on uses primary).
+`pnpm test` includes `density.check.mjs`, `styles.check.mjs`, `resolve-style.check.mjs`, `resolve-sx.check.mjs`, `style-cache.check.mjs`, `viewport-observer.check.mjs`.
