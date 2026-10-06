@@ -10,13 +10,14 @@ export interface ListItemProps {
 	disabled?: boolean;
 	dense?: boolean;
 	divider?: boolean;
+	wrap?: boolean;
 	onActivated?: () => void;
 }
 
 function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
-	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, onActivated, className, sx, id, ref } =
+	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, wrap = false, onActivated, className, sx, id, ref } =
 		props;
-	const styles = useListItemStyles({ selected, disabled, dense });
+	const styles = useListItemStyles({ selected, disabled, dense, wrap });
 	return (
 		<SxHost
 			tag="textbutton"

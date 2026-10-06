@@ -28,4 +28,13 @@ if (!stateMatrix.some((row) => row.component === "ListItem" && row.variant === "
 	throw new Error("ListItem missing divider");
 }
 
+const { listItemLabelLayout } = await import(
+	pathToFileURL(join(root, "src/ui/packages/listItem/components/listItemLayout.ts")).href,
+);
+const wrapped = listItemLabelLayout(true);
+if (wrapped.widthScale !== 1 || wrapped.wrapped !== true) throw new Error("wrap fills the row");
+const plain = listItemLabelLayout();
+if (plain.widthScale !== 0 || plain.wrapped !== false) throw new Error("plain stays one line");
+if (listItemLabelLayout(false).wrapped !== false) throw new Error("wrap false");
+
 console.log("list item ok");
