@@ -4,6 +4,7 @@ import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
 import { commitNumber } from "ui/packages/numberInput/components/numberValue";
 import useSliderStyles, { SliderColor } from "./Slider.styles";
+import { sliderLabel } from "./sliderLabel";
 import { sliderMarkValues } from "./sliderMarks";
 import { isSliderDrag, isSliderMove, nudgeDelta, nudgeValue } from "./sliderNudge";
 
@@ -17,12 +18,14 @@ export interface SliderProps {
 	disabled?: boolean;
 	size?: ControlSize;
 	marks?: boolean | ReadonlyArray<number>;
+	format?: (value: number) => string;
 	color?: SliderColor;
 }
 
 function Slider(props: CustomizedProps<Frame, SliderProps>) {
-	const { value, onChange, onCommit, min, max, step, disabled, size, marks, color = "primary", className, sx, id, ref } = props;
-	const { root, track, fill, knob, corner, stroke, mark } = useSliderStyles({ size, color });
+	const { value, onChange, onCommit, min, max, step, disabled, size, marks, format, color = "primary", className, sx, id, ref } = props;
+	const labelText = sliderLabel(format, value);
+	const { root, track, fill, knob, corner, stroke, mark, label } = useSliderStyles({ size, color, labeled: labelText !== undefined });
 	const active = canActivate(disabled);
 	const [focused, setFocused] = useState(false);
 	const [hovering, setHovering] = useState(false);
@@ -142,6 +145,7 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 					{showFocus && <uistroke {...stroke} Thickness={1} />}
 				</frame>
 			</frame>
+			{labelText !== undefined ? <textlabel key="Value" {...label} Text={labelText} /> : undefined}
 		</SxHost>
 	);
 }
