@@ -3,6 +3,7 @@ import { CustomizedProps, useTheme } from "theme";
 import { Icons } from "ui/enums";
 import { canActivate } from "ui/packages/button/components/activation";
 import { CircularProgress } from "ui/packages/circularProgress";
+import { SxHost } from "ui/packages/host";
 import { Shadow } from "ui/packages/shadow";
 import { FabSize, fabExtended, fabIconPixels } from "./fabSize";
 import useFabStyles, { FabColor } from "./Fab.styles";
@@ -74,12 +75,14 @@ function Fab(props: CustomizedProps<TextButton, FabProps>) {
 	);
 
 	return (
-		<textbutton
+		<SxHost
+			tag="textbutton"
 			key={id || "Fab"}
-			ref={ref}
-			{...styles.root}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			base={styles.root}
+			className={className}
+			sx={sx}
+			state={{ disabled, loading, hover: hovering, focused }}
 			Active={active}
 			Selectable={active}
 			BackgroundTransparency={!active ? 0.5 : hovering || focused ? 0.15 : 0}
@@ -109,7 +112,7 @@ function Fab(props: CustomizedProps<TextButton, FabProps>) {
 			) : (
 				iconEl
 			)}
-		</textbutton>
+		</SxHost>
 	);
 }
 

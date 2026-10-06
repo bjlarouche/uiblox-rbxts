@@ -132,12 +132,25 @@ Compose: `className` then `sx` (sx wins), then explicit host props. `SxHost` tra
 <Slider value={0.4} min={0} max={1} onChange={() => {}} sx={{ width: { phone: 160, desktop: 280 } }} />
 <Alert message="Saved" sx={{ bgcolor: "success.main" }} />
 <AppBar title="Library" sx={{ bgcolor: "surface.paper" }} />
+<Chip label="Tag" sx={{ width: { phone: 72, desktop: 120 }, _selected: { bgcolor: "primary.main" } }} />
 <Stack direction="row" sx={{ gap: 2, width: { phone: 160, desktop: 320 } }}>
 	<textlabel Text="A" />
 </Stack>
 ```
 
 `resolveSx` remains for callers that paint their own host. Responsive `sx` maps follow the host width after mount (`phone` < 600 ≤ `tablet` < 960 ≤ `desktop`).
+
+### Component coverage
+
+| Group | Resolves `sx` |
+| --- | --- |
+| Layout | Box, Stack, FlexItem, Grid, Container, Paper |
+| Actions | Button, IconButton, Fab, Chip, Link, ToggleButton, ToggleButtonGroup |
+| Fields | Input, Select, Typography, FormLabel, FormHelperText |
+| Toggles | Checkbox, Switch, Slider, RadioGroup |
+| Chrome | Alert, Avatar, Badge, Breadcrumbs, Divider, Icon, Pagination, ProgressBar, AppBar, Backdrop, Rating, Sidebar, Stepper |
+
+An existing `UIPadding`, `UICorner`, or layout `Padding` / `CellPadding` still wins. Explicit host props (`Text`, `Active`, `BackgroundTransparency`, `Event`) still win, including Fab and Button transparency.
 
 ### Theme component overrides
 

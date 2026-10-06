@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { ControlSize, CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
+import { SxHost } from "ui/packages/host";
 import useChipStyles, { ChipColor } from "./Chip.styles";
 
 export interface ChipProps {
@@ -19,12 +20,14 @@ function Chip(props: CustomizedProps<TextButton, ChipProps>) {
 	const deletable = onDelete !== undefined;
 	const styles = useChipStyles({ selected, disabled, deletable, size, variant, color });
 	return (
-		<textbutton
+		<SxHost
+			tag="textbutton"
 			key={id || "Chip"}
-			ref={ref}
-			{...styles.root}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			base={styles.root}
+			className={className}
+			sx={sx}
+			state={{ disabled, selected }}
 			Text={deletable ? "" : label}
 			Event={{
 				Activated: () => {
@@ -52,7 +55,7 @@ function Chip(props: CustomizedProps<TextButton, ChipProps>) {
 					/>
 				</>
 			)}
-		</textbutton>
+		</SxHost>
 	);
 }
 
