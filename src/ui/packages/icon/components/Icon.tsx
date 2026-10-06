@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { Icons } from "ui/enums";
 import { CustomizedProps, WriteableStyle } from "theme";
+import { SxHost } from "ui/packages/host";
 import useIconStyles from "./Icon.styles";
 
 export interface IconProps {
@@ -17,11 +18,13 @@ function Icon(props: CustomizedProps<DefaultIconComponent, IconProps>) {
 	const { container } = useIconStyles(props);
 
 	return (
-		<imagelabel
+		<SxHost
+			tag="imagelabel"
 			key={id || "Icon"}
-			ref={ref}
-			{...container}
-			{...className} {...sx}
+			hostRef={ref}
+			base={container}
+			className={className}
+			sx={sx}
 			Image={tostring(icon)}
 			ImageColor3={tint ?? (container as WriteableStyle<ImageLabel>).ImageColor3}
 		/>

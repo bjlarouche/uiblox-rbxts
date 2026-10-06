@@ -62,13 +62,21 @@ const hosts = [
 	"src/ui/packages/switch/components/Switch.tsx",
 	"src/ui/packages/slider/components/Slider.tsx",
 	"src/ui/packages/radioGroup/components/RadioGroup.tsx",
+	"src/ui/packages/alert/components/Alert.tsx",
+	"src/ui/packages/avatar/components/Avatar.tsx",
+	"src/ui/packages/badge/components/Badge.tsx",
+	"src/ui/packages/divider/components/Divider.tsx",
+	"src/ui/packages/icon/components/Icon.tsx",
+	"src/ui/packages/breadcrumbs/components/Breadcrumbs.tsx",
+	"src/ui/packages/pagination/components/Pagination.tsx",
+	"src/ui/packages/progressBar/components/ProgressBar.tsx",
 ];
 for (const file of hosts) {
 	if (!readFileSync(file, "utf8").includes("<SxHost")) throw new Error(`${file} missing SxHost`);
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup"]) {
+for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress"]) {
 	if (stateMatrix.filter((row) => row.component === component && row.name.includes("-sx-")).length !== 2) {
 		throw new Error(`${component} sx matrix`);
 	}

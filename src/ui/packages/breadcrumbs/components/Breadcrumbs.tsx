@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { cx, CustomizedProps } from "theme";
 import { breadcrumbCurrent, breadcrumbVisible } from "./breadcrumbItems";
+import { SxHost } from "ui/packages/host";
 import useBreadcrumbStyles from "./Breadcrumbs.styles";
 
 export interface BreadcrumbItem {
@@ -19,7 +20,7 @@ function Breadcrumbs(props: CustomizedProps<Frame, BreadcrumbsProps>) {
 	const styles = useBreadcrumbStyles();
 	const visible = breadcrumbVisible(items, maxItems);
 	return (
-		<frame key={id || "Breadcrumbs"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Breadcrumbs"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			<uilistlayout {...styles.list} />
 			<>
 			{visible.map((entry, order) => {
@@ -44,7 +45,7 @@ function Breadcrumbs(props: CustomizedProps<Frame, BreadcrumbsProps>) {
 				);
 			})}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
+import { SxHost } from "ui/packages/host";
 import { AlertSeverity } from "./alertTone";
 import useAlertStyles from "./Alert.styles";
 
@@ -18,7 +19,7 @@ function Alert(props: CustomizedProps<Frame, AlertProps>) {
 	const dismissible = onClose !== undefined;
 	const styles = useAlertStyles({ severity, dismissible, filled });
 	return (
-		<frame key={id || "Alert"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Alert"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			<uipadding {...styles.padding} />
 			{square !== true && <uicorner {...styles.corner} />}
 			<uistroke {...styles.stroke} />
@@ -35,7 +36,7 @@ function Alert(props: CustomizedProps<Frame, AlertProps>) {
 				{title !== undefined && title !== "" && <textlabel key="Title" {...styles.title} Text={title} />}
 				<textlabel key="Message" {...styles.message} Text={message} />
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 
