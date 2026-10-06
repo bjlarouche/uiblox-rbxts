@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import useFormTextStyles from "./FormText.styles";
 
 export interface FormLabelProps {
@@ -14,7 +15,16 @@ function FormLabel(props: CustomizedProps<TextLabel, FormLabelProps>) {
 	const styles = useFormTextStyles({ hasError, disabled });
 	const caption = required === true ? `${text} *` : text;
 	return (
-		<textlabel key={id || "FormLabel"} ref={ref} {...styles.root} {...className} {...sx} Text={caption} />
+		<SxHost
+			tag="textlabel"
+			key={id || "FormLabel"}
+			hostRef={ref}
+			base={styles.root}
+			className={className}
+			sx={sx}
+			state={{ disabled }}
+			Text={caption}
+		/>
 	);
 }
 

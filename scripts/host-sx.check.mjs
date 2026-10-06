@@ -53,13 +53,18 @@ const hosts = [
 	"src/ui/packages/paper/components/Paper.tsx",
 	"src/ui/packages/button/components/Button.tsx",
 	"src/ui/packages/iconButton/components/IconButton.tsx",
+	"src/ui/packages/input/components/Input.tsx",
+	"src/ui/packages/select/components/Select.tsx",
+	"src/ui/packages/typography/components/Typography.tsx",
+	"src/ui/packages/formText/components/FormLabel.tsx",
+	"src/ui/packages/formText/components/FormHelperText.tsx",
 ];
 for (const file of hosts) {
 	if (!readFileSync(file, "utf8").includes("<SxHost")) throw new Error(`${file} missing SxHost`);
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const component of ["Box", "Stack", "Paper", "Button", "IconButton"]) {
+for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography"]) {
 	if (stateMatrix.filter((row) => row.component === component && row.name.includes("-sx-")).length !== 2) {
 		throw new Error(`${component} sx matrix`);
 	}
