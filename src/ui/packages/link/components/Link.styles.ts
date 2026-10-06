@@ -13,8 +13,7 @@ function linkColor(theme: Theme, color: LinkColor, disabled: boolean): Color3 {
 const useLinkStyles = componentStyles<{
 	color?: LinkColor;
 	disabled?: boolean;
-	showUnderline?: boolean;
-}>("Link", (theme: Theme, { color = "primary", disabled = false, showUnderline = true }) => {
+}>("Link", (theme: Theme, { color = "primary", disabled = false }) => {
 	const ink = linkColor(theme, color, disabled);
 	return createStyles({
 		root: {
@@ -25,19 +24,12 @@ const useLinkStyles = componentStyles<{
 			AutoButtonColor: false,
 			Active: !disabled,
 			Selectable: !disabled,
+			RichText: true,
 			TextColor3: ink,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.body,
 			TextXAlignment: Enum.TextXAlignment.Left,
 		} as WriteableStyle<TextButton>,
-		underline: {
-			Size: new UDim2(1, 0, 0, 1),
-			Position: new UDim2(0, 0, 1, 0),
-			AnchorPoint: new Vector2(0, 1),
-			BackgroundColor3: ink,
-			BackgroundTransparency: showUnderline ? 0 : 1,
-			BorderSizePixel: 0,
-		} as WriteableStyle<Frame>,
 	});
 });
 

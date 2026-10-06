@@ -35,7 +35,7 @@ globalThis.math = {
 	max: Math.max,
 };
 
-const { parseMarkdown, inlinesToPlain, inlinesToRichText, inlinePieces, markdownLinkPayload } = await import(
+const { parseMarkdown, inlinesToPlain, inlinesToRichText, inlineLines, inlinePieces, markdownLinkPayload } = await import(
 	"../src/ui/packages/markdown/parseMarkdown.ts",
 );
 const { htmlToMarkdown } = await import("../src/ui/packages/markdown/htmlToMarkdown.ts");
@@ -81,6 +81,15 @@ if (pieces.some((piece) => piece.kind === "word" && piece.text.includes("route")
 if (pieces.some((piece) => piece.kind !== "link" && piece.text !== undefined && String(piece.text).includes("(route)"))) {
 	throw new Error("address leaked into text");
 }
+
+const sentence = inlinePieces(parseMarkdown("Meet me by the [north gate](gate) before dusk.")[0].inlines);
+let linkAt = -1;
+for (let i = 0; i < sentence.length; i++) if (sentence[i].kind === "link") linkAt = i;
+if (linkAt <= 0 || linkAt >= sentence.length - 1) throw new Error("link not in the middle");
+const lines = inlineLines(sentence, 80, 1);
+if (lines[linkAt] !== lines[linkAt - 1] || lines[linkAt] !== lines[linkAt + 1]) throw new Error("link left the sentence");
+const tight = inlineLines(sentence, 4, 1);
+if (tight[linkAt] === tight[linkAt - 1] && tight[linkAt] === tight[linkAt + 1]) throw new Error("link never wraps");
 
 const junk = parseMarkdown("<script>alert(1)</script>\nnot html mode");
 if (junk[0].kind !== "paragraph") throw new Error("unsupported stays text");
