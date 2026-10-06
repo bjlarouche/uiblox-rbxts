@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { SxHost } from "ui/packages/host";
+import { Shadow } from "ui/packages/shadow";
 import usePaperStyles from "./Paper.styles";
 
 export type PaperElevation = "flat" | "raised" | "outlined";
@@ -16,6 +17,7 @@ function Paper(props: CustomizedProps<Frame, PaperProps>) {
 	const styles = usePaperStyles({ elevation });
 	return (
 		<SxHost key={id || "Paper"} hostRef={ref} base={styles.root} className={className} sx={sx}>
+			{elevation === "raised" && <Shadow />}
 			<uipadding {...styles.padding} />
 			{square !== true && <uicorner {...styles.corner} />}
 			{elevation === "outlined" && <uistroke {...styles.stroke} />}
