@@ -4,6 +4,19 @@ import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
 import useLinkStyles, { LinkColor, LinkUnderline } from "./Link.styles";
 
+function escapeRich(text: string) {
+	let out = text;
+	for (const [from, to] of [
+		["&", "&amp;"],
+		["<", "&lt;"],
+		[">", "&gt;"],
+	] as const) {
+		const [replaced] = out.gsub(from, to);
+		out = replaced;
+	}
+	return out;
+}
+
 export interface LinkProps {
 	text: string;
 	color?: LinkColor;
@@ -16,8 +29,9 @@ function Link(props: CustomizedProps<TextButton, LinkProps>) {
 	const { text, color = "primary", underline = "always", disabled, onActivated, className, sx, id, ref } = props;
 	const [hover, setHover] = useState(false);
 	const showUnderline = underline === "always" || (underline === "hover" && hover);
-	const styles = useLinkStyles({ color, disabled, showUnderline });
+	const styles = useLinkStyles({ color, disabled });
 	const active = canActivate(disabled);
+	const label = escapeRich(text);
 	return (
 		<SxHost
 			tag="textbutton"
@@ -27,7 +41,7 @@ function Link(props: CustomizedProps<TextButton, LinkProps>) {
 			className={className}
 			sx={sx}
 			state={{ disabled, hover }}
-			Text={text}
+			Text={showUnderline ? `<u>${label}</u>` : label}
 			Active={active}
 			Selectable={active}
 			Event={{
@@ -37,9 +51,7 @@ function Link(props: CustomizedProps<TextButton, LinkProps>) {
 				MouseEnter: () => setHover(true),
 				MouseLeave: () => setHover(false),
 			}}
-		>
-			<frame key="Underline" {...styles.underline} />
-		</SxHost>
+		/>
 	);
 }
 

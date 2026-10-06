@@ -337,3 +337,29 @@ export function inlinePieces(inlines: MdInline[]): MdPiece[] {
 	}
 	return out;
 }
+
+/** Line index of each piece. A piece wraps only when it does not fit beside the previous one. */
+export function inlineLines(pieces: MdPiece[], maxWidth: number, gap = 1): number[] {
+	const lineOf = new Array<number>();
+	let line = 0;
+	let used = 0;
+	for (const piece of pieces) {
+		if (piece.kind === "break") {
+			lineOf.push(line);
+			line += 1;
+			used = 0;
+			continue;
+		}
+		const width = piece.text.size();
+		if (used > 0 && used + gap + width > maxWidth) {
+			line += 1;
+			used = width;
+		} else if (used === 0) {
+			used = width;
+		} else {
+			used += gap + width;
+		}
+		lineOf.push(line);
+	}
+	return lineOf;
+}
