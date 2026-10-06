@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
+import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { popupPlacement } from "./placement";
 import Portal from "./Portal";
 import { portalTarget } from "./portalTarget";
@@ -14,8 +16,8 @@ export interface PopupProps {
 	children?: React.ReactNode;
 }
 
-function Popup(props: PopupProps) {
-	const { anchor, preferredHeight, preferredWidth, onDismiss, onInput, children } = props;
+function Popup(props: CustomizedProps<Frame, PopupProps>) {
+	const { anchor, preferredHeight, preferredWidth, onDismiss, onInput, children, className, sx, id, ref } = props;
 	const dismiss = useRef(onDismiss);
 	dismiss.current = onDismiss;
 	const [, bump] = useState(0);
@@ -81,19 +83,23 @@ function Popup(props: PopupProps) {
 						}}
 					/>
 				)}
-				<frame
-					key="Content"
+				<SxHost
+					tag="frame"
+					key={id || "Content"}
+					hostRef={ref}
+					base={{ BackgroundTransparency: 1 }}
+					className={className}
+					sx={sx}
 					Position={UDim2.fromOffset(place.x, place.y)}
 					AnchorPoint={new Vector2(0, place.above ? 1 : 0)}
 					Size={capped ? UDim2.fromOffset(place.width, place.height) : UDim2.fromOffset(place.width, 0)}
 					AutomaticSize={capped ? Enum.AutomaticSize.None : Enum.AutomaticSize.Y}
 					ClipsDescendants={capped}
-					BackgroundTransparency={1}
 					Active={false}
 					ZIndex={20001}
 				>
 					{children}
-				</frame>
+				</SxHost>
 			</frame>
 		</Portal>
 	);
