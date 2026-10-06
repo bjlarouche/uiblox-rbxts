@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { TextService } from "@rbxts/services";
 import { CustomizedProps, useTheme } from "theme";
+import { SxHost } from "ui/packages/host";
 import { Popup } from "ui/packages/popup";
 import useTooltipStyles from "./Tooltip.styles";
 
@@ -33,13 +34,15 @@ function Tooltip(props: CustomizedProps<Frame, TooltipProps>) {
 	useEffect(() => cancel, []);
 
 	return (
-		<frame
+		<SxHost
+			tag="frame"
 			key={id || "Tooltip"}
-			ref={ref}
-			{...styles.root}
-			{...className} {...sx}
+			hostRef={ref}
+			base={styles.root}
+			className={className}
+			sx={sx}
 			Event={{
-				MouseEnter: (rbx) => {
+				MouseEnter: (rbx: Frame) => {
 					setAnchor(rbx);
 					cancel();
 					pending.current = task.delay(delay, () => {
@@ -70,7 +73,7 @@ function Tooltip(props: CustomizedProps<Frame, TooltipProps>) {
 					</textlabel>
 				</Popup>
 			)}
-		</frame>
+		</SxHost>
 	);
 }
 

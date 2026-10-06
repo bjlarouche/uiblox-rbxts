@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "@rbxts/react";
 import { useReducedMotion } from "hooks";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { loopProperty } from "ui/packages/motion";
 import useSkeletonStyles from "./Skeleton.styles";
 import { SkeletonAnimation, skeletonLineWidth, skeletonMotion } from "./skeletonMotion";
@@ -46,20 +47,20 @@ function SkeletonBlock(
 	const side = variant === "circular" ? width : undefined;
 
 	return (
-		<frame
+		<SxHost
+			tag="frame"
 			key={id || "Skeleton"}
-			ref={ref}
-			BackgroundTransparency={1}
-			BorderSizePixel={0}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			base={{ BackgroundTransparency: 1, BorderSizePixel: 0 }}
+			className={className}
+			sx={sx}
 			Size={new UDim2(0, side ?? width, 0, side ?? height)}
 		>
 			<frame ref={fillRef} {...block} Size={new UDim2(1, 0, 1, 0)}>
 				{showGradient && <uigradient ref={gradientRef} {...highlight} />}
 				{corner !== undefined && <uicorner {...corner} />}
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 
@@ -101,11 +102,12 @@ function Skeleton(props: CustomizedProps<Frame, SkeletonProps>) {
 	const blockHeight = height * count + gap * (count - 1);
 
 	return (
-		<frame
+		<SxHost
+			tag="frame"
 			key={id || "Skeleton"}
-			ref={ref}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			className={className}
+			sx={sx}
 			Size={new UDim2(0, width, 0, blockHeight)}
 			BackgroundTransparency={1}
 			BorderSizePixel={0}
@@ -126,7 +128,7 @@ function Skeleton(props: CustomizedProps<Frame, SkeletonProps>) {
 				/>
 			))}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

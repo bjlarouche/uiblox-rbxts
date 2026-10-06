@@ -147,11 +147,12 @@ Compose: `className` then `sx` (sx wins), then explicit host props. `SxHost` tra
 | Layout | Box, Stack, FlexItem, Grid, Container, Paper |
 | Actions | Button, IconButton, Fab, Chip, Link, ToggleButton, ToggleButtonGroup |
 | Nav | Accordion, BottomNavigation, Tabs, Table |
+| Feedback | Toast, Tooltip, Skeleton, CircularProgress |
 | Fields | Input, Select, Typography, FormLabel, FormHelperText |
 | Toggles | Checkbox, Switch, Slider, RadioGroup |
 | Chrome | Alert, Avatar, Badge, Breadcrumbs, Divider, Icon, Pagination, ProgressBar, AppBar, Backdrop, Rating, Sidebar, Stepper |
 
-An existing `UIPadding`, `UICorner`, or layout `Padding` / `CellPadding` still wins. Explicit host props (`Text`, `Active`, `BackgroundTransparency`, `Event`) still win, including Fab and Button transparency.
+An existing `UIPadding`, `UICorner`, or layout `Padding` / `CellPadding` still wins. Explicit host props (`Text`, `Active`, `BackgroundTransparency`, `Event`) still win, including Fab and Button transparency. Skeleton size stays explicit, so it still wins over `sx`. CircularProgress puts size and transparency in the base, so `sx` can still override them. Toast keeps its tween frame and forwards the caller ref from the same host callback. LoadingStroke stays a raw spread: it is a `UIStroke`, and resolved `sx` is GuiObject props. Snackbar forwards `sx` to Toast. Autocomplete forwards `sx` to Select.
 
 ### Theme component overrides
 
