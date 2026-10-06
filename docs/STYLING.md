@@ -129,6 +129,7 @@ Compose: `className` then `sx` (sx wins), then explicit host props. `SxHost` tra
 <IconButton icon={Icons.Close} sx={{ p: 1 }} />
 <Input placeholder="Name" sx={{ bgcolor: "surface.input", _focus: { borderColor: "primary.main" } }} />
 <Typography text="Title" sx={{ color: "text.primary", typography: "h6" }} />
+<Slider value={0.4} min={0} max={1} onChange={() => {}} sx={{ width: { phone: 160, desktop: 280 } }} />
 <Stack direction="row" sx={{ gap: 2, width: { phone: 160, desktop: 320 } }}>
 	<textlabel Text="A" />
 </Stack>

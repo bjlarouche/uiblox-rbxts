@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "@rbxts/react";
 import { ControlSize, cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
+import { SxHost } from "ui/packages/host";
 import { commitNumber } from "ui/packages/numberInput/components/numberValue";
 import useSliderStyles, { SliderColor } from "./Slider.styles";
 import { sliderMarkValues } from "./sliderMarks";
@@ -60,17 +61,19 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 	};
 
 	return (
-		<frame
+		<SxHost
+			tag="frame"
 			key={id || "Slider"}
-			ref={ref}
-			{...root}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			base={root}
+			className={className}
+			sx={sx}
+			state={{ disabled, hover: hovering, pressed, focused }}
 			Active={active}
 			Selectable={active}
 			BackgroundTransparency={showFocus ? 0.85 : 1}
 			Event={{
-				InputBegan: (rbx, input) => {
+				InputBegan: (rbx: Frame, input: InputObject) => {
 					if (!active) return;
 					const direction = nudgeDelta(input.KeyCode.Name);
 					if (direction !== undefined) {
@@ -83,12 +86,12 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 					latest.current = value;
 					update(rbx, input.Position.X);
 				},
-				InputChanged: (rbx, input) => {
+				InputChanged: (rbx: Frame, input: InputObject) => {
 					if (dragging.current && isSliderMove(input.UserInputType.Name)) {
 						update(rbx, input.Position.X);
 					}
 				},
-				InputEnded: (_, input) => {
+				InputEnded: (_rbx: Frame, input: InputObject) => {
 					if (isSliderDrag(input.UserInputType.Name)) finish();
 				},
 				MouseEnter: () => {
@@ -139,7 +142,7 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 					{showFocus && <uistroke {...stroke} Thickness={1} />}
 				</frame>
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 

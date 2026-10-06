@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { useReducedMotion } from "hooks";
 import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
+import { SxHost } from "ui/packages/host";
 import { playProperty } from "ui/packages/motion";
 import useSwitchStyles, { SwitchColor } from "./Switch.styles";
 import {
@@ -58,11 +59,14 @@ function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
 	}, [placement.scaleX, placement.offsetX, placement.anchorX, reducedMotion]);
 
 	return (
-		<textbutton
+		<SxHost
+			tag="textbutton"
 			key={id || "Switch"}
-			ref={ref}
-			{...root}
-			{...className} {...sx}
+			hostRef={ref}
+			base={root}
+			className={className}
+			sx={sx}
+			state={{ disabled, checked: on, hover: hovering, pressed, focused }}
 			Active={active}
 			Selectable={!disabled}
 			BackgroundTransparency={focused && active ? 0.85 : 1}
@@ -109,7 +113,7 @@ function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
 					LayoutOrder={2}
 				/>
 			)}
-		</textbutton>
+		</SxHost>
 	);
 }
 
