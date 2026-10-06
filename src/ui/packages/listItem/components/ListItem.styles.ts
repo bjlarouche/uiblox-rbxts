@@ -1,8 +1,16 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { listItemLabelLayout } from "./listItemLayout";
 
-const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boolean; dense?: boolean }>("ListItem", 
-	(theme: Theme, { selected = false, disabled = false, dense = false }) => {
+const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boolean; dense?: boolean; wrap?: boolean }>(
+	"ListItem",
+	(theme: Theme, { selected = false, disabled = false, dense = false, wrap = false }) => {
 		const pad = theme.padding.calc(dense === true ? 0.5 : 1);
+		const label = listItemLabelLayout(wrap);
+		const textBox = {
+			AutomaticSize: label.wrapped ? Enum.AutomaticSize.Y : Enum.AutomaticSize.XY,
+			Size: new UDim2(label.widthScale, 0, 0, 0),
+			TextWrapped: label.wrapped,
+		};
 		return createStyles({
 			root: {
 				Size: new UDim2(1, 0, 0, 0),
@@ -27,8 +35,7 @@ const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boole
 			} as WriteableStyle<UIListLayout>,
 			primary: {
 				LayoutOrder: 1,
-				AutomaticSize: Enum.AutomaticSize.XY,
-				Size: UDim2.fromScale(0, 0),
+				...textBox,
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
@@ -38,8 +45,7 @@ const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boole
 			} as WriteableStyle<TextLabel>,
 			secondary: {
 				LayoutOrder: 2,
-				AutomaticSize: Enum.AutomaticSize.XY,
-				Size: UDim2.fromScale(0, 0),
+				...textBox,
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
