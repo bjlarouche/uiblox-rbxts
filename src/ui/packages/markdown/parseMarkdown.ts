@@ -261,7 +261,7 @@ function escapeRich(text: string): string {
 	return out;
 }
 
-/** Turn inline nodes into Roblox RichText. Links become colored label + (url). */
+/** Turn inline nodes into Roblox RichText. Links stay the label only. */
 export function inlinesToRichText(inlines: MdInline[]): string {
 	let out = "";
 	for (const part of inlines) {
@@ -276,8 +276,64 @@ export function inlinesToRichText(inlines: MdInline[]): string {
 		} else if (part.kind === "code") {
 			out = `${out}<font face="RobotoMono">${escapeRich(part.text)}</font>`;
 		} else if (part.kind === "link") {
-			out = `${out}<font color="#4C9AFF">${escapeRich(part.text)}</font> (${escapeRich(part.href)})`;
+			out = `${out}<font color="#4C9AFF"><u>${escapeRich(part.text)}</u></font>`;
 		}
+	}
+	return out;
+}
+
+export interface MarkdownLinkPayload {
+	text: string;
+	href: string;
+}
+
+/** Click payload for a link inline. Other inlines are not activatable. */
+export function markdownLinkPayload(inline: MdInline): MarkdownLinkPayload | undefined {
+	if (inline.kind !== "link" || inline.text.size() === 0) return undefined;
+	return { text: inline.text, href: inline.href };
+}
+
+export type MdPiece = { kind: "word"; text: string } | { kind: "link"; text: string; href: string } | { kind: "break" };
+
+function richWord(kind: MdInline["kind"], word: string): string {
+	const safe = escapeRich(word);
+	if (kind === "bold") return `<b>${safe}</b>`;
+	if (kind === "italic") return `<i>${safe}</i>`;
+	if (kind === "code") return `<font face="RobotoMono">${safe}</font>`;
+	return safe;
+}
+
+/** Split a line into words and link payloads so a link can take a click. */
+export function inlinePieces(inlines: MdInline[]): MdPiece[] {
+	const out: MdPiece[] = [];
+	for (const part of inlines) {
+		const link = markdownLinkPayload(part);
+		if (link !== undefined) {
+			out.push({ kind: "link", text: link.text, href: link.href });
+			continue;
+		}
+		if (part.kind === "link") continue;
+		let word = "";
+		const flush = () => {
+			if (word.size() === 0) return;
+			out.push({ kind: "word", text: richWord(part.kind, word) });
+			word = "";
+		};
+		const source = part.text;
+		for (let i = 1; i <= source.size(); i++) {
+			const ch = source.sub(i, i);
+			if (ch === " " || ch === "\t" || ch === "\r") {
+				flush();
+				continue;
+			}
+			if (ch === "\n") {
+				flush();
+				out.push({ kind: "break" });
+				continue;
+			}
+			word = `${word}${ch}`;
+		}
+		flush();
 	}
 	return out;
 }
