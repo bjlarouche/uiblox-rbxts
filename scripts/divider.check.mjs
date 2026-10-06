@@ -1,6 +1,17 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
 String.prototype.size = function size() {
 	return this.length;
 };
+
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+const styles = readFileSync(join(root, "src/ui/packages/divider/components/Divider.styles.ts"), "utf8");
+const caption = styles.match(/caption:\s*\{[\s\S]*?\}\s*as WriteableStyle<TextLabel>/)?.[0] ?? "";
+if (!/TextTruncate:\s*Enum\.TextTruncate\.AtEnd/.test(caption)) throw new Error("caption must truncate");
+if (!/AutomaticSize:\s*Enum\.AutomaticSize\.X/.test(caption)) throw new Error("caption height follows shell");
+if (!/ClipsDescendants:\s*true/.test(styles)) throw new Error("labeled shell must clip");
 
 const { dividerLabel } = await import("../src/ui/packages/divider/components/dividerLabel.ts");
 if (dividerLabel(undefined) !== undefined) throw new Error("missing label");
