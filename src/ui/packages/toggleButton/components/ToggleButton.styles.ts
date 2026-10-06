@@ -1,8 +1,15 @@
 import { ControlSize, componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
-const useToggleButtonStyles = componentStyles<{ selected?: boolean; disabled?: boolean; size?: ControlSize }>(
+export type ToggleButtonOrientation = "horizontal" | "vertical";
+
+const useToggleButtonStyles = componentStyles<{
+	selected?: boolean;
+	disabled?: boolean;
+	size?: ControlSize;
+	orientation?: ToggleButtonOrientation;
+}>(
 	"ToggleButton",
-	(theme: Theme, { selected = false, disabled = false, size = "medium" }) => {
+	(theme: Theme, { selected = false, disabled = false, size = "medium", orientation = "horizontal" }) => {
 		const height = size === "small" ? theme.spacing.calc(3) : size === "large" ? theme.spacing.calc(5) : theme.spacing.calc(4);
 		const textSize =
 			size === "small"
@@ -47,7 +54,7 @@ const useToggleButtonStyles = componentStyles<{ selected?: boolean; disabled?: b
 				BorderSizePixel: 0,
 			} as WriteableStyle<Frame>,
 			list: {
-				FillDirection: Enum.FillDirection.Horizontal,
+				FillDirection: orientation === "vertical" ? Enum.FillDirection.Vertical : Enum.FillDirection.Horizontal,
 				HorizontalAlignment: Enum.HorizontalAlignment.Left,
 				VerticalAlignment: Enum.VerticalAlignment.Center,
 				SortOrder: Enum.SortOrder.LayoutOrder,
