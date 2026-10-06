@@ -19,8 +19,7 @@ export interface ColorSequenceEditorProps {
 }
 
 function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorProps>) {
-	const { value, onChange, disabled, className,
-		sx, id, ref } = props;
+	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = useColorPickerStyles();
 	const active = canActivate(disabled);
 	const stops = readColorStops(value);
@@ -42,7 +41,7 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 			<uilistlayout {...styles.column} />
 			<frame
 				key="Bar"
-				{...styles.hue}
+				{...styles.sequenceBar}
 				LayoutOrder={1}
 				Active={active}
 				Event={{
@@ -61,11 +60,13 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 						}
 						const updated = insertColorStop(stops, alpha);
 						commit(updated);
-						setSelected(hitStop(
-							updated.map((stop) => stop.t),
-							alpha,
-							1,
-						));
+						setSelected(
+							hitStop(
+								updated.map((stop) => stop.t),
+								alpha,
+								1,
+							),
+						);
 					},
 					InputChanged: (rbx, input) => {
 						if (!dragging.current || input.UserInputType !== Enum.UserInputType.MouseMovement) return;
@@ -77,20 +78,21 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 				}}
 			>
 				<uicorner {...styles.corner} />
+				<uistroke {...styles.swatchStroke} />
 				<uigradient Color={value} />
 				<>
-				{stops.map((stop, stopIndex) => (
-					<frame
-						key={`Stop-${stopIndex}`}
-						{...styles.hueKnob}
-						BackgroundColor3={stop.color}
-						Position={UDim2.fromScale(stop.t, 0.5)}
-						ZIndex={stopIndex === index ? 2 : 1}
-					>
-						<uicorner {...styles.corner} />
-						<uistroke Thickness={stopIndex === index ? 2 : 1} Color={new Color3(1, 1, 1)} />
-					</frame>
-				))}
+					{stops.map((stop, stopIndex) => (
+						<frame
+							key={`Stop-${stopIndex}`}
+							{...styles.stop}
+							BackgroundColor3={stop.color}
+							Position={UDim2.fromScale(stop.t, 0.5)}
+							ZIndex={stopIndex === index ? 2 : 1}
+						>
+							<uicorner CornerRadius={new UDim(0, 2)} />
+							<uistroke Thickness={stopIndex === index ? 2 : 1} Color={new Color3(1, 1, 1)} />
+						</frame>
+					))}
 				</>
 			</frame>
 			<ColorPicker

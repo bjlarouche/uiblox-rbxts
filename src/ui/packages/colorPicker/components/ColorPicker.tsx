@@ -261,8 +261,7 @@ function ColorPanel(props: { value: Color3; onChange: (value: Color3) => void; d
 }
 
 function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
-	const { value, onChange, disabled, className,
-		sx, id, ref } = props;
+	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = useColorPickerStyles();
 	const { theme } = useTheme();
 	const active = canActivate(disabled);
@@ -344,13 +343,13 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 			{shown && (
 				<Popup
 					anchor={anchor}
-					preferredWidth={theme.spacing.calc(18)}
-					preferredHeight={theme.spacing.calc(20)}
+					preferredWidth={theme.spacing.calc(20)}
+					preferredHeight={theme.spacing.calc(22)}
 					onDismiss={close}
 				>
 					<frame key="Shell" {...styles.shell}>
 						<uicorner {...styles.corner} />
-						<uistroke {...styles.swatchStroke} />
+						<uistroke {...styles.shellStroke} />
 						<uipadding {...styles.shellPad} />
 						<ColorPanel value={value} disabled={disabled} onChange={onChange} />
 					</frame>
