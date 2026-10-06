@@ -146,6 +146,7 @@ Compose: `className` then `sx` (sx wins), then explicit host props. `SxHost` tra
 | --- | --- |
 | Layout | Box, Stack, FlexItem, Grid, Container, Paper |
 | Actions | Button, IconButton, Fab, Chip, Link, ToggleButton, ToggleButtonGroup |
+| Nav | Accordion, BottomNavigation, Tabs, Table |
 | Fields | Input, Select, Typography, FormLabel, FormHelperText |
 | Toggles | Checkbox, Switch, Slider, RadioGroup |
 | Chrome | Alert, Avatar, Badge, Breadcrumbs, Divider, Icon, Pagination, ProgressBar, AppBar, Backdrop, Rating, Sidebar, Stepper |

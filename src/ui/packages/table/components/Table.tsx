@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { cx, CustomizedProps } from "theme";
 import { rowSelected } from "./rowSelected";
+import { SxHost } from "ui/packages/host";
 import useTableStyles from "./Table.styles";
 
 export interface TableProps {
@@ -17,7 +18,7 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 	const width = columns.size() > 0 ? 1 / columns.size() : 1;
 
 	return (
-		<frame key={id || "Table"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Table"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			<uicorner {...styles.corner} />
 			<uilistlayout {...styles.list} />
 			<frame key="Header" {...styles.header} LayoutOrder={0}>
@@ -61,7 +62,7 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 				</textbutton>
 			))}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

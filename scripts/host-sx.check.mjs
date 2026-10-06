@@ -103,6 +103,10 @@ const hosts = [
 	"src/ui/packages/link/components/Link.tsx",
 	"src/ui/packages/toggleButton/components/ToggleButton.tsx",
 	"src/ui/packages/fab/components/Fab.tsx",
+	"src/ui/packages/accordion/components/Accordion.tsx",
+	"src/ui/packages/bottomNavigation/components/BottomNavigation.tsx",
+	"src/ui/packages/tabs/components/Tabs.tsx",
+	"src/ui/packages/table/components/Table.tsx",
 ];
 for (const file of hosts) {
 	const text = readFileSync(file, "utf8");
@@ -111,7 +115,7 @@ for (const file of hosts) {
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab"]) {
+for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table"]) {
 	if (stateMatrix.filter((row) => row.component === component && row.name.includes("-sx-")).length !== 2) {
 		throw new Error(`${component} sx matrix`);
 	}
