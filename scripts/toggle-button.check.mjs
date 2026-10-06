@@ -6,6 +6,7 @@ for (const [component, name] of [
 	["ToggleButton", "size-small"],
 	["ToggleButtonGroup", "default"],
 	["ToggleButtonGroup", "selected"],
+	["ToggleButtonGroup", "vertical"],
 ]) {
 	if (!stateMatrix.some((row) => row.component === component && row.name.includes(name))) {
 		throw new Error(`${component} missing ${name}`);
