@@ -2,8 +2,13 @@ import { readFileSync } from "node:fs";
 
 const { textBox } = await import("../src/ui/packages/text/components/textBox.ts");
 const box = textBox();
-if (box.widthScale !== 0 || box.heightScale !== 0) throw new Error("text fills parent");
+if (box.widthScale !== 0 || box.heightScale !== 0 || box.wrapped !== false) throw new Error("text fills parent");
 if (box.automatic !== "XY") throw new Error("text shrink wrap");
+const wrapped = textBox(true);
+if (wrapped.widthScale !== 1 || wrapped.heightScale !== 0 || wrapped.automatic !== "Y" || wrapped.wrapped !== true) {
+	throw new Error("text wrap");
+}
+if (textBox(false).automatic !== "XY") throw new Error("wrap off");
 
 const source = readFileSync("src/ui/packages/text/components/Text.tsx", "utf8");
 if (source.includes("new UDim2(1, 0, 1, 0)")) throw new Error("text uses fill size");
