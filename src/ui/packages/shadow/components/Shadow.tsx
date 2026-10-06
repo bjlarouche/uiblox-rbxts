@@ -4,23 +4,29 @@ import { SxHost } from "ui/packages/host";
 import useShadowStyles from "./Shadow.styles";
 
 function Shadow(props: CustomizedProps<Frame>) {
-	const { container } = useShadowStyles();
+	const { container, blob } = useShadowStyles();
 	const [parent, setParent] = useState<GuiObject | undefined>(undefined);
 	const [cornerRadius, setCornerRadius] = useState<UDim | undefined>();
+	const [blobSize, setBlobSize] = useState(UDim2.fromOffset(0, 0));
 
 	const { className, sx, id, ref } = props;
 	const defaultZIndex = (container as WriteableStyle<Frame>).ZIndex ?? 0;
 	const [zIndex, setZIndex] = useState<number>(defaultZIndex);
 
-	// Set any inherited properties
 	useEffect(() => {
 		if (!parent) return;
 
-		const cornerRadius = parent?.FindFirstChildOfClass("UICorner")?.CornerRadius;
+		const cornerRadius = parent.FindFirstChildOfClass("UICorner")?.CornerRadius;
 		setCornerRadius(cornerRadius);
+		setZIndex((parent.ZIndex ?? defaultZIndex) - 1);
+		parent.ClipsDescendants = false;
 
-		setZIndex((parent?.ZIndex ?? defaultZIndex) - 1);
-		parent.ClipsDescendants = false; // Shadow won't work if this is true
+		const sync = () => {
+			setBlobSize(UDim2.fromOffset(parent.AbsoluteSize.X, parent.AbsoluteSize.Y));
+		};
+		sync();
+		const conn = parent.GetPropertyChangedSignal("AbsoluteSize").Connect(sync);
+		return () => conn.Disconnect();
 	}, [parent]);
 
 	return (
@@ -40,7 +46,9 @@ function Shadow(props: CustomizedProps<Frame>) {
 				},
 			}}
 		>
-			{cornerRadius !== undefined && <uicorner key="Corner" CornerRadius={cornerRadius} />}
+			<frame key="Blob" {...blob} Size={blobSize} ZIndex={zIndex}>
+				{cornerRadius !== undefined && <uicorner key="Corner" CornerRadius={cornerRadius} />}
+			</frame>
 		</SxHost>
 	);
 }

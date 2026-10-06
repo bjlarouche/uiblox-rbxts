@@ -29,6 +29,12 @@ const useFabStyles = componentStyles<FabStyleProps>(
 			corner: {
 				CornerRadius: new UDim(1, 0),
 			} as WriteableStyle<UICorner>,
+			content: {
+				Size: new UDim2(0, 0, 0, diameter),
+				AutomaticSize: Enum.AutomaticSize.X,
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+			} as WriteableStyle<Frame>,
 			padding: {
 				PaddingLeft: new UDim(0, theme.padding.calc(2)),
 				PaddingRight: new UDim(0, theme.padding.calc(2.5)),

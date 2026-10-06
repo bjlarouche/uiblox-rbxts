@@ -103,12 +103,12 @@ function Fab(props: CustomizedProps<TextButton, FabProps>) {
 			<uicorner {...styles.corner} />
 			<Shadow />
 			{extended ? (
-				<>
+				<frame key="Content" {...styles.content}>
 					<uipadding {...styles.padding} />
 					<uilistlayout {...styles.row} />
 					{iconEl}
 					{!loading && <textlabel key="Label" {...styles.label} Text={label} />}
-				</>
+				</frame>
 			) : (
 				iconEl
 			)}
