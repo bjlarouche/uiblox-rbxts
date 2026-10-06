@@ -6,6 +6,13 @@ export function cframeFields() {
 	return FIELDS;
 }
 
+export function cframeAxis(field: CFrameField) {
+	if (field === "RX") return "X";
+	if (field === "RY") return "Y";
+	if (field === "RZ") return "Z";
+	return field;
+}
+
 export function nextCFrameParts(
 	x: number,
 	y: number,

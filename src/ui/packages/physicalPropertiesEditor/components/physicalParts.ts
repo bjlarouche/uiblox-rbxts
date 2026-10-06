@@ -18,6 +18,12 @@ export function physicalRows(): PhysicalField[][] {
 	];
 }
 
+export function physicalBounds(field: PhysicalField) {
+	if (field === "Density") return { min: 0.01, max: 100, step: 0.01 };
+	if (field === "Friction" || field === "Elasticity") return { min: 0, max: 1, step: 0.01 };
+	return { min: 0, max: 100, step: 0.1 };
+}
+
 export function patchPhysicalParts(
 	density: number,
 	friction: number,

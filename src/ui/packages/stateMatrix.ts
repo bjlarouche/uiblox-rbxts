@@ -128,6 +128,7 @@ function editorsRows(): StateCapture[] {
 	pushPair(out, "UDimEditor", "sx", { value: "0.5,8" });
 	pushPair(out, "CFrameEditor", "default", { value: "0,0,0" });
 	pushPair(out, "CFrameEditor", "disabled", { value: "0,0,0", disabled: true });
+	pushPair(out, "CFrameEditor", "narrow", { value: "0,0,0", width: 320 });
 	pushPair(out, "CFrameEditor", "sx", { value: "0,0,0" });
 	pushPair(out, "EnumPicker", "default", { value: "Continue", options: ["Continue", "Other"] });
 	pushPair(out, "EnumPicker", "open", { value: "Continue", options: ["Continue", "Other"], open: true });
