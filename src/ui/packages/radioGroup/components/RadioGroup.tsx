@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { ControlSize, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
+import { SxHost } from "ui/packages/host";
 import useRadioGroupStyles from "./RadioGroup.styles";
 
 export interface ChoiceOption<T> {
@@ -24,7 +25,7 @@ function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 	const { root, list, option, optionRow, ring, dot, stroke, corner, label } = useRadioGroupStyles({ size, row });
 
 	return (
-		<frame key={id || "RadioGroup"} ref={ref} {...root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "RadioGroup"} hostRef={ref} base={root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...list} />
 			<>
 			{options.map((choice, index) => {
@@ -58,7 +59,7 @@ function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 				);
 			})}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

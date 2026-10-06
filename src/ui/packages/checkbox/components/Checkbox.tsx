@@ -1,6 +1,7 @@
 import React, { useState } from "@rbxts/react";
 import { ControlSize, cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
+import { SxHost } from "ui/packages/host";
 import useCheckboxStyles from "./Checkbox.styles";
 import {
 	checkboxBoxTransparency,
@@ -34,11 +35,14 @@ function Checkbox(props: CustomizedProps<TextButton, CheckboxProps>) {
 	const strokeTransparency = checkboxStrokeTransparency(filled, disabled === true, pointer);
 
 	return (
-		<textbutton
+		<SxHost
+			tag="textbutton"
 			key={id || "Checkbox"}
-			ref={ref}
-			{...root}
-			{...className} {...sx}
+			hostRef={ref}
+			base={root}
+			className={className}
+			sx={sx}
+			state={{ disabled, checked: filled, hover: hovering, pressed, focused }}
 			Active={active}
 			Selectable={!disabled}
 			BackgroundTransparency={focused && active ? 0.85 : 1}
@@ -88,7 +92,7 @@ function Checkbox(props: CustomizedProps<TextButton, CheckboxProps>) {
 					LayoutOrder={2}
 				/>
 			)}
-		</textbutton>
+		</SxHost>
 	);
 }
 
