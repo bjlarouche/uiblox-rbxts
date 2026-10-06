@@ -39,10 +39,13 @@ function collapseSpace(value: string): string {
 			gap = true;
 			continue;
 		}
-		if (gap && out.size() > 0) out = `${out} `;
-		gap = false;
+		if (gap) {
+			out = `${out} `;
+			gap = false;
+		}
 		out = `${out}${ch}`;
 	}
+	if (gap) out = `${out} `;
 	return out;
 }
 
