@@ -1,4 +1,5 @@
 import React from "@rbxts/react";
+import { CustomizedProps } from "theme";
 import { Paper, PaperElevation } from "ui/packages/paper";
 import useCardStyles from "./Card.styles";
 
@@ -11,11 +12,11 @@ export interface CardProps {
 	children?: React.ReactNode;
 }
 
-function Card(props: CardProps) {
-	const { title, subtitle, elevation = "flat", square, actions, children } = props;
+function Card(props: CustomizedProps<Frame, CardProps>) {
+	const { title, subtitle, elevation = "flat", square, actions, children, className, sx, id, ref } = props;
 	const styles = useCardStyles();
 	return (
-		<Paper elevation={elevation} square={square}>
+		<Paper elevation={elevation} square={square} className={className} sx={sx} id={id} ref={ref}>
 			<frame key="Column" {...styles.column}>
 				<uilistlayout {...styles.list} />
 				{title !== undefined && (
