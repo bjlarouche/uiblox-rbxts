@@ -1,10 +1,10 @@
 import { Common, componentStyles, createStyles, Theme, WriteableStyle } from "theme";
-import { imageListCols, imageListGap, imageListItemSize } from "./imageListLayout";
+import { imageListCell, imageListCols, imageListGap } from "./imageListLayout";
 
-const useImageListStyles = componentStyles<{ cols?: number; gap?: number; itemSize?: number }>(
+const useImageListStyles = componentStyles<{ cols?: number; gap?: number; itemSize?: number; aspect?: number }>(
 	"ImageList",
-	(theme: Theme, { cols, gap, itemSize }) => {
-		const size = imageListItemSize(itemSize);
+	(theme: Theme, { cols, gap, itemSize, aspect }) => {
+		const cell = imageListCell(itemSize, aspect);
 		const pad = theme.spacing.calc(imageListGap(gap));
 		const bar = theme.spacing.calc(2.5);
 		return createStyles({
@@ -15,7 +15,7 @@ const useImageListStyles = componentStyles<{ cols?: number; gap?: number; itemSi
 				BorderSizePixel: 0,
 			} as WriteableStyle<Frame>,
 			grid: {
-				CellSize: UDim2.fromOffset(size, size),
+				CellSize: UDim2.fromOffset(cell.width, cell.height),
 				CellPadding: UDim2.fromOffset(pad, pad),
 				FillDirection: Enum.FillDirection.Horizontal,
 				FillDirectionMaxCells: imageListCols(cols),
@@ -25,12 +25,17 @@ const useImageListStyles = componentStyles<{ cols?: number; gap?: number; itemSi
 				VerticalAlignment: Enum.VerticalAlignment.Top,
 			} as WriteableStyle<UIGridLayout>,
 			tile: {
-				Size: UDim2.fromOffset(size, size),
+				Size: UDim2.fromOffset(cell.width, cell.height),
 				BackgroundColor3: theme.palette.surface.input,
 				BorderSizePixel: 0,
 				AutoButtonColor: false,
 				ClipsDescendants: true,
 			} as WriteableStyle<ImageButton>,
+			selected: {
+				Color: theme.palette.primary.main,
+				Thickness: 2,
+				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+			} as WriteableStyle<UIStroke>,
 			corner: {
 				CornerRadius: new UDim(0, theme.shape.borderRadius),
 			} as WriteableStyle<UICorner>,

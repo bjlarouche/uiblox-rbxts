@@ -1,12 +1,19 @@
-globalThis.math = { floor: Math.floor, huge: Infinity };
+globalThis.math = { floor: Math.floor, max: Math.max, huge: Infinity };
 
-const { imageListCols, imageListGap, imageListItemSize } = await import(
+const { imageListAspect, imageListCell, imageListCols, imageListGap, imageListItemSize, imageListSelected } = await import(
 	"../src/ui/packages/imageList/components/imageListLayout.ts"
 );
 if (imageListCols() !== 3 || imageListCols(0) !== 3 || imageListCols(4) !== 4) throw new Error("cols");
 if (imageListGap() !== 1 || imageListGap(-1) !== 1 || imageListGap(2) !== 2) throw new Error("gap");
 if (imageListItemSize() !== 96 || imageListItemSize(0) !== 96 || imageListItemSize(120) !== 120) {
 	throw new Error("itemSize");
+}
+if (imageListAspect() !== 1 || imageListAspect(0) !== 1 || imageListAspect(16 / 9) !== 16 / 9) throw new Error("aspect");
+const wide = imageListCell(160, 4 / 3);
+if (wide.width !== 160 || wide.height !== 120) throw new Error("cell");
+if (imageListCell().width !== 96 || imageListCell().height !== 96) throw new Error("square cell");
+if (!imageListSelected([0, 2], 2) || imageListSelected([0, 2], 1) || imageListSelected(undefined, 0)) {
+	throw new Error("selected");
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
