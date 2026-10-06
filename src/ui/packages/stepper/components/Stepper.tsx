@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { cx, CustomizedProps } from "theme";
 import { stepState } from "./stepState";
+import { SxHost } from "ui/packages/host";
 import useStepperStyles from "./Stepper.styles";
 
 export interface StepperProps {
@@ -13,7 +14,7 @@ function Stepper(props: CustomizedProps<Frame, StepperProps>) {
 	const { steps, activeStep, orientation = "horizontal", className, sx, id, ref } = props;
 	const styles = useStepperStyles({ orientation });
 	return (
-		<frame key={id || "Stepper"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Stepper"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			<uilistlayout {...styles.list} />
 			<>
 			{steps.map((label, index) => {
@@ -32,7 +33,7 @@ function Stepper(props: CustomizedProps<Frame, StepperProps>) {
 				);
 			})}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

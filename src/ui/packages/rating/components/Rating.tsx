@@ -2,6 +2,7 @@ import React from "@rbxts/react";
 import { ControlSize, CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
 import { canActivate } from "ui/packages/button/components/activation";
+import { SxHost } from "ui/packages/host";
 import useRatingStyles from "./Rating.styles";
 
 export interface RatingProps {
@@ -20,7 +21,7 @@ function Rating(props: CustomizedProps<Frame, RatingProps>) {
 	const stars: number[] = [];
 	for (let i = 1; i <= max; i++) stars.push(i);
 	return (
-		<frame key={id || "Rating"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Rating"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.list} />
 			<>
 			{stars.map((n) => (
@@ -39,7 +40,7 @@ function Rating(props: CustomizedProps<Frame, RatingProps>) {
 				/>
 			))}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 
