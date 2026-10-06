@@ -9,6 +9,8 @@ const KEYED: { [kind: string]: boolean } = {
 	BrickColor: true,
 };
 
+const caches: Array<Map<object, Map<string, defined>>> = [];
+
 export function styleDepsKey(props: object | undefined): string {
 	if (props === undefined) return "";
 	const parts: string[] = [];
@@ -32,6 +34,7 @@ export function styleDepsKey(props: object | undefined): string {
 
 export function createStyleCache<T extends defined>() {
 	const byTheme = new Map<object, Map<string, T>>();
+	caches.push(byTheme as Map<object, Map<string, defined>>);
 	return (theme: object, key: string, create: () => T): T => {
 		let bucket = byTheme.get(theme);
 		if (bucket === undefined) {
@@ -44,4 +47,9 @@ export function createStyleCache<T extends defined>() {
 		bucket.set(key, value);
 		return value;
 	};
+}
+
+/** Drop all makeStyles memo buckets (theme hot-reload / tests). */
+export function clearStyleCaches() {
+	for (const cache of caches) cache.clear();
 }

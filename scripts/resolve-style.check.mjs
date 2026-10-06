@@ -14,6 +14,10 @@ const style = {
 	_checked: { Text: "On" },
 	_first: { LayoutOrder: 0 },
 	_last: { LayoutOrder: 99 },
+	_odd: { Text: "Odd" },
+	_even: { Text: "Even" },
+	_loading: { Text: "Wait" },
+	_focusVisible: { Text: "Ring" },
 	_disabled: { Text: "Off", BackgroundTransparency: 0.5 },
 };
 
@@ -39,6 +43,18 @@ if (first.LayoutOrder !== 0) throw new Error("first");
 const last = resolveStyle(style, { last: true });
 if (last.LayoutOrder !== 99) throw new Error("last");
 
+const odd = resolveStyle(style, { odd: true });
+if (odd.Text !== "Odd") throw new Error("odd");
+
+const even = resolveStyle(style, { even: true });
+if (even.Text !== "Even") throw new Error("even");
+
+const loading = resolveStyle(style, { loading: true });
+if (loading.Text !== "Wait") throw new Error("loading");
+
+const focusVisible = resolveStyle(style, { focusVisible: true });
+if (focusVisible.Text !== "Ring") throw new Error("focusVisible");
+
 const ends = resolveStyle(style, { first: true, last: true });
 if (ends.LayoutOrder !== 99) throw new Error("last wins first");
 
@@ -47,7 +63,10 @@ if (hoverOverFirst.BackgroundTransparency !== 0.1 || hoverOverFirst.LayoutOrder 
 	throw new Error("hover beats first");
 }
 
-const disabled = resolveStyle(style, { hover: true, pressed: true, focused: true, disabled: true });
+const focusVisibleOverFocus = resolveStyle(style, { focused: true, focusVisible: true });
+if (focusVisibleOverFocus.Text !== "Ring") throw new Error("focusVisible beats focus");
+
+const disabled = resolveStyle(style, { hover: true, pressed: true, focused: true, focusVisible: true, loading: true, disabled: true });
 if (disabled.Text !== "Off" || disabled.BackgroundTransparency !== 0.5) throw new Error("disabled wins");
 
 const viaSlots = interactionStyle(

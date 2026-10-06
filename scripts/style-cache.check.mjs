@@ -2,7 +2,9 @@ globalThis.typeOf = (value) => (typeof value === "object" && value !== null ? "t
 globalThis.pairs = (record) => Object.keys(record).map((key) => [key, record[key]]);
 globalThis.tostring = (value) => String(value);
 
-const { createStyleCache, styleDepsKey } = await import("../src/theme/styles/utilities/styleCache.ts");
+const { clearStyleCaches, createStyleCache, styleDepsKey } = await import(
+	"../src/theme/styles/utilities/styleCache.ts"
+);
 
 if (styleDepsKey(undefined) !== styleDepsKey({})) throw new Error("empty deps");
 if (styleDepsKey({ size: "small", onClick: () => {} }) !== "onClick=*\0size=small") {
@@ -35,5 +37,12 @@ const changed = read(light, "size=large", () => {
 	return { n: builds };
 });
 if (changed === first || builds !== 3) throw new Error("deps split");
+
+clearStyleCaches();
+const afterClear = read(light, "size=small", () => {
+	builds += 1;
+	return { n: builds };
+});
+if (afterClear === first || builds !== 4) throw new Error("clearStyleCaches");
 
 console.log("style cache ok");

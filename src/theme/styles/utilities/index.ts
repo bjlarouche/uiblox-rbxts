@@ -4,6 +4,8 @@ export { default as classNames, cx } from "./classNames";
 export { applyVariants, CompoundVariant } from "./variants";
 export { default as componentStyles } from "./componentStyles";
 export { resolveResponsive, Responsive } from "../../../hooks/breakpoints";
+export { clearStyleCaches, createStyleCache, styleDepsKey } from "./styleCache";
+export { resolveSx, resolvePaletteToken, PaletteToken, ResolvedSx, SxColor, SxInput } from "./resolveSx";
 export {
 	interactionStyle,
 	InteractionSlots,
