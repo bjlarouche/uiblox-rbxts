@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import useBackdropStyles from "./Backdrop.styles";
 
 export interface BackdropProps {
@@ -14,18 +15,19 @@ function Backdrop(props: CustomizedProps<TextButton, BackdropProps>) {
 	const styles = useBackdropStyles({ invisible });
 	if (open !== true) return undefined;
 	return (
-		<textbutton
+		<SxHost
+			tag="textbutton"
 			key={id || "Backdrop"}
-			ref={ref}
-			{...styles.root}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			base={styles.root}
+			className={className}
+			sx={sx}
 			Event={{
 				Activated: () => onClick?.(),
 			}}
 		>
 			{children}
-		</textbutton>
+		</SxHost>
 	);
 }
 

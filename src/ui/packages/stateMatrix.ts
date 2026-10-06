@@ -320,6 +320,7 @@ function chromeRows(): StateCapture[] {
 		...pair("Stepper", "middle", { value: 1 }),
 		...pair("Stepper", "last", { value: 2 }),
 		...pair("Stepper", "vertical", { value: 1, variant: "vertical" }),
+		...pair("Stepper", "sx", { value: 1, variant: "sx" }),
 		...pair("Accordion", "closed", { open: false }),
 		...pair("Accordion", "open", { open: true }),
 		...pair("Accordion", "disabled", { open: false, disabled: true }),
@@ -353,6 +354,7 @@ function chromeRows(): StateCapture[] {
 		...pair("AppBar", "flat", { text: "Storyblox", variant: "flat" }),
 		...pair("AppBar", "raised", { text: "Storyblox", variant: "raised" }),
 		...pair("AppBar", "primary", { text: "Storyblox", variant: "primary" }),
+		...pair("AppBar", "sx", { text: "Storyblox", variant: "sx" }),
 		...pair("BottomNavigation", "default", { value: "Home", options: ["Home", "Search", "Profile"] }),
 	];
 }
@@ -385,6 +387,7 @@ function miscRows(): StateCapture[] {
 		...pair("Rating", "disabled", { value: 4, disabled: true }),
 		...pair("Rating", "size-small", { value: 3, size: "small" }),
 		...pair("Rating", "readonly", { value: 3 }),
+		...pair("Rating", "sx", { value: 3, variant: "sx" }),
 		...pair("Stack", "column", { variant: "column" }),
 		...pair("Stack", "row", { variant: "row" }),
 		...pair("Stack", "spaced", { variant: "column", size: "large" }),
@@ -414,6 +417,8 @@ function miscRows(): StateCapture[] {
 		...pair("Backdrop", "default"),
 		...pair("Backdrop", "invisible", { variant: "invisible" }),
 		...pair("Backdrop", "closed", { open: false }),
+		...pair("Backdrop", "sx", { variant: "sx" }),
+		...pair("Sidebar", "sx", { variant: "sx" }),
 		...pair("Divider", "horizontal", { variant: "horizontal" }),
 		...pair("Divider", "vertical", { variant: "vertical" }),
 		...pair("Divider", "label", { text: "Or" }),
