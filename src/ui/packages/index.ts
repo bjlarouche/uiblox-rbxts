@@ -23,6 +23,7 @@ export * from "./fontEditor";
 export * from "./loadingStroke";
 export * from "./numberInput";
 export * from "./numberRangeEditor";
+export * from "./dateRange";
 export * from "./rectEditor";
 export * from "./rayEditor";
 export * from "./physicalPropertiesEditor";
