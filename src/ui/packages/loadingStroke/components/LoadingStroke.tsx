@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "@rbxts/react";
 import { CustomizedProps, useTheme } from "theme";
 import { loopProperty } from "ui/packages/motion";
+import { LoadingStrokeStyle } from "./loadingStrokeSx";
 
 export interface LoadingStrokeProps {
 	animating?: boolean;
@@ -8,7 +9,10 @@ export interface LoadingStrokeProps {
 	thickness?: number;
 }
 
-function LoadingStroke(props: CustomizedProps<UIStroke, LoadingStrokeProps>) {
+function LoadingStroke(props: Omit<CustomizedProps<UIStroke, LoadingStrokeProps>, "sx" | "className"> & {
+	className?: LoadingStrokeStyle;
+	sx?: LoadingStrokeStyle;
+}) {
 	const { animating = false, color, thickness = 2, className, sx, children, id, ref } = props;
 	const { theme } = useTheme();
 	const gradientRef = useRef<UIGradient>();
