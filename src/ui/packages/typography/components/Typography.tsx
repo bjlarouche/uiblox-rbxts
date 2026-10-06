@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { FontFamilyVariant, FontSizeVariant } from "theme/interfaces/typography";
+import { SxHost } from "ui/packages/host";
 import { TypographyAlignment } from "../types/TypographyAlignment";
 import { TypographyColor } from "../types/TypographyColor";
 import { TypographyDisplay } from "../types/TypographyDisplay";
@@ -26,9 +27,15 @@ function Typography<T extends DefaultTypographyComponent>(props: CustomizedProps
 	const { root, variantToken } = useTypographyStyles(props);
 
 	return (
-		<textlabel key={id || "Typography"} ref={ref as React.Ref<TextLabel>} {...root} Text={text} {...className} {...variantToken} {...sx}>
+		<SxHost
+			tag="textlabel"
+			key={id || "Typography"}
+			hostRef={ref}
+			base={{ ...root, Text: text, ...className, ...variantToken }}
+			sx={sx}
+		>
 			{children}
-		</textlabel>
+		</SxHost>
 	);
 }
 

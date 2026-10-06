@@ -4,6 +4,7 @@ import { canActivate } from "ui/packages/button/components/activation";
 import { spinnerPixels } from "ui/packages/button/components/buttonLook";
 import { CircularProgress } from "ui/packages/circularProgress";
 import { Divider } from "ui/packages/divider";
+import { SxHost } from "ui/packages/host";
 import { Orientations } from "ui/enums";
 import { InputColor, InputMargin, InputVariant } from "../types";
 import useInputStyles from "./Input.styles";
@@ -93,7 +94,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const showCorner = rounded;
 
 	return (
-		<frame key={id || "Input"} ref={ref} {...root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Input"} hostRef={ref} base={root} className={className} sx={sx} state={{ disabled, loading, focused }}>
 			<frame key="Margin" {...margin}>
 				<frame key="Shell" {...shell}>
 					{showStroke && <uistroke {...stroke} />}
@@ -180,7 +181,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 					/>
 				)}
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 

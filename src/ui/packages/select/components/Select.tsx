@@ -6,6 +6,7 @@ import { canActivate } from "ui/packages/button/components/activation";
 import { spinnerPixels } from "ui/packages/button/components/buttonLook";
 import { CircularProgress } from "ui/packages/circularProgress";
 import { Input } from "ui/packages/input";
+import { SxHost } from "ui/packages/host";
 import { Popup } from "ui/packages/popup";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import { Shadow } from "ui/packages/shadow";
@@ -160,7 +161,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	}, [loading, open]);
 
 	return (
-		<frame key={id || "Select"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Select"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled, loading }}>
 			<textbutton
 				key="Trigger"
 				ref={setAnchor}
@@ -282,7 +283,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 					</frame>
 				</Popup>
 			)}
-		</frame>
+		</SxHost>
 	);
 }
 
