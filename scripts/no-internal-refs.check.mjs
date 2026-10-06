@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { extname } from "node:path";
 
 const root = process.cwd();
+// PR text is scanned via --pr in CI.
 const SKIP_EXTS = new Set([
 	".png",
 	".jpg",
