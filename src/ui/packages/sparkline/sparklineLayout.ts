@@ -85,3 +85,39 @@ export function sparklineArea(values: number[], width: number, height: number, p
 	}
 	return bars;
 }
+
+/** Nearest sample from a local x. Undefined when the trace cannot be hit. */
+export function sparklineIndex(localX: number, count: number, width: number, pad = 4) {
+	if (count < 1 || width <= pad * 2) return undefined;
+	const span = width - pad * 2;
+	let along = (localX - pad) / span;
+	if (along < 0) along = 0;
+	if (along > 1) along = 1;
+	if (count === 1) return 0;
+	const index = math.floor(along * (count - 1) + 0.5);
+	if (index < 0) return 0;
+	if (index > count - 1) return count - 1;
+	return index;
+}
+
+/** Calls onPick with the nearest sample. Does nothing when the callback is absent. */
+export function sparklinePick(
+	localX: number,
+	count: number,
+	width: number,
+	onPick?: (index: number) => void,
+	pad = 4,
+) {
+	if (onPick === undefined) return undefined;
+	const index = sparklineIndex(localX, count, width, pad);
+	if (index === undefined) return undefined;
+	onPick(index);
+	return index;
+}
+
+/** Point for a sample, used to mark the trace. */
+export function sparklinePoint(values: number[], index: number, width: number, height: number, pad = 4) {
+	const laid = sparklinePoints(values, width, height, pad);
+	if (laid === undefined || index < 0 || index >= laid.points.size()) return undefined;
+	return laid.points[index];
+}

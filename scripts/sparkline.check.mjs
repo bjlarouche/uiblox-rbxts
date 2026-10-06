@@ -12,7 +12,7 @@ globalThis.math = {
 	deg: (value) => (value * 180) / Math.PI,
 };
 
-const { sparklineArea, sparklineLayout } = await import("../src/ui/packages/sparkline/sparklineLayout.ts");
+const { sparklineArea, sparklineIndex, sparklineLayout, sparklinePick } = await import("../src/ui/packages/sparkline/sparklineLayout.ts");
 
 if (sparklineLayout([], 120, 36).length !== 0) throw new Error("empty");
 if (sparklineLayout([4], 120, 36).length !== 0) throw new Error("single");
@@ -40,5 +40,27 @@ for (const bar of area) {
 }
 if (area[area.length - 1].height <= area[0].height) throw new Error("area rises");
 if (rise[0].height !== undefined) throw new Error("line stays a line");
+
+const count = 5;
+const width = 100;
+const pad = 4;
+const first = pad;
+const middle = pad + (width - pad * 2) / 2;
+const last = width - pad;
+const expect = [
+	[first, 0],
+	[middle, 2],
+	[last, count - 1],
+];
+for (const pair of expect) {
+	const localX = pair[0];
+	const sample = pair[1];
+	let picked;
+	if (sparklineIndex(localX, count, width) !== sample) throw new Error("sample " + sample);
+	if (sparklinePick(localX, count, width, (index) => { picked = index; }) !== sample || picked !== sample) {
+		throw new Error("pick " + sample);
+	}
+}
+if (sparklinePick(first, count, width) !== undefined) throw new Error("missing pick");
 
 console.log("sparkline ok");

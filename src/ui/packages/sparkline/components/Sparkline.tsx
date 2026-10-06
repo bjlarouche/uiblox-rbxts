@@ -1,7 +1,7 @@
-import React from "@rbxts/react";
+import React, { useRef } from "@rbxts/react";
 import { CustomizedProps, useTheme } from "theme";
 import { SxHost } from "ui/packages/host";
-import { sparklineArea, sparklineLayout } from "../sparklineLayout";
+import { sparklineArea, sparklineLayout, sparklinePick, sparklinePoint } from "../sparklineLayout";
 
 export interface SparklineProps {
 	values: number[];
@@ -9,20 +9,50 @@ export interface SparklineProps {
 	height?: number;
 	color?: Color3;
 	area?: boolean;
+	mark?: number;
+	onPick?: (index: number) => void;
 }
 
 function Sparkline(props: CustomizedProps<Frame, SparklineProps>) {
-	const { values, width = 120, height = 36, color, area, className, sx, id, ref } = props;
+	const { values, width = 120, height = 36, color, area, mark, onPick, className, sx, id, ref } = props;
 	const { theme } = useTheme();
+	const host = useRef<Frame>();
 	const segments = sparklineLayout(values, width, height);
 	const bars = area === true ? sparklineArea(values, width, height) : [];
+	const marked = mark !== undefined ? sparklinePoint(values, mark, width, height) : undefined;
 	const stroke = color ?? theme.palette.primary.main;
 
 	return (
 		<SxHost
 			tag="frame"
 			key={id || "Sparkline"}
-			hostRef={ref}
+			hostRef={(instance: Frame | undefined) => {
+				host.current = instance;
+				if (ref === undefined) return;
+				if (typeIs(ref, "function")) {
+					ref(instance as Frame);
+					return;
+				}
+				(ref as { current?: Frame }).current = instance;
+			}}
+			Active={onPick !== undefined}
+			Event={
+				onPick === undefined
+					? undefined
+					: {
+							InputBegan: (input: InputObject) => {
+								const frame = host.current;
+								if (frame === undefined) return;
+								if (
+									input.UserInputType !== Enum.UserInputType.MouseButton1 &&
+									input.UserInputType !== Enum.UserInputType.Touch
+								) {
+									return;
+								}
+								sparklinePick(input.Position.X - frame.AbsolutePosition.X, values.size(), width, onPick);
+							},
+						}
+			}
 			base={{
 				Size: UDim2.fromOffset(width, height),
 				BackgroundTransparency: 1,
@@ -44,6 +74,19 @@ function Sparkline(props: CustomizedProps<Frame, SparklineProps>) {
 					/>
 				),
 			)}
+			{marked !== undefined ? (
+				<frame
+					key="Mark"
+					AnchorPoint={new Vector2(0.5, 0.5)}
+					Position={UDim2.fromOffset(marked.x, marked.y)}
+					Size={UDim2.fromOffset(8, 8)}
+					BackgroundColor3={stroke}
+					BorderSizePixel={0}
+					ZIndex={3}
+				>
+					<uicorner CornerRadius={new UDim(1, 0)} />
+				</frame>
+			) : undefined}
 			{segments.map((segment, index) => (
 				<frame
 					key={`s-${index}`}
