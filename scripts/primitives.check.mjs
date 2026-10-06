@@ -189,7 +189,7 @@ globalThis.UDim2 = class UDim2 {
 		this.Y = new UDim(yScale, yOffset);
 	}
 };
-const { commitNumber, parseNumberDraft } = await import(
+const { commitNumber, parseNumberDraft, stepNumber } = await import(
 	pathToFileURL(join(root, "src/ui/packages/numberInput/components/numberValue.ts")).href
 );
 for (const draft of ["", "-", ".", "-.", "1e", "abc"]) {
@@ -203,6 +203,11 @@ if (parseNumberDraft("8", 0, 10, 5) !== 10) throw new Error("rounds up to step")
 if (parseNumberDraft("6", 1, 11, 5) !== 6) throw new Error("step anchors at min");
 if (commitNumber(Number.NaN) !== undefined) throw new Error("NaN never commits");
 if (commitNumber(Infinity) !== undefined) throw new Error("inf never commits");
+if (stepNumber(1, 1, 1, 5, 1) !== 2 || stepNumber(3, -1, 1, 5, 1) !== 2) throw new Error("step moves by one");
+if (stepNumber(5, 1, 1, 5, 1) !== undefined || stepNumber(1, -1, 1, 5, 1) !== undefined) throw new Error("step stops at the ends");
+if (!readFileSync(join(root, "src/ui/packages/numberInput/components/NumberInput.tsx"), "utf8").includes("stepper")) {
+	throw new Error("number input stepper");
+}
 const { formatNumber } = await import(
 	pathToFileURL(join(root, "src/ui/packages/numberInput/components/numberValue.ts")).href
 );

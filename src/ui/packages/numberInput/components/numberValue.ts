@@ -14,6 +14,14 @@ export function parseNumberDraft(text: string, min?: number, max?: number, step?
 	return commitNumber(tonumber(text), min, max, step);
 }
 
+/** One step up or down. Undefined when the value would not change. */
+export function stepNumber(value: number, direction: number, min?: number, max?: number, step?: number) {
+	const size = step !== undefined && step > 0 ? step : 1;
+	const landed = commitNumber(value + direction * size, min, max, step);
+	if (landed === undefined || landed === value) return undefined;
+	return landed;
+}
+
 export function formatNumber(value: number, places = 4): string {
 	if (value !== value || value === math.huge || value === -math.huge) return tostring(value);
 	const scale = 10 ** places;
