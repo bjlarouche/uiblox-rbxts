@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { CustomizedProps, useTheme } from "theme";
 import { Button } from "ui/packages/button";
+import { SxHost } from "ui/packages/host";
 import { IconButton } from "ui/packages/iconButton";
 import { Icons } from "ui/enums";
 import { ToggleButtonGroup } from "ui/packages/toggleButton";
@@ -84,7 +85,7 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 	const previewNode = preview !== undefined ? preview(value) : <Markdown value={value} />;
 
 	return (
-		<frame key={id || "MarkdownEditor"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "MarkdownEditor"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			<uicorner {...styles.corner} />
 			<uistroke {...styles.stroke} />
 			<uilistlayout {...styles.layout} />
@@ -222,7 +223,7 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 					</scrollingframe>
 				)}
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 

@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { Divider } from "ui/packages/divider";
+import { SxHost } from "ui/packages/host";
 import { Orientations } from "ui/enums";
 import { FontSizeVariant } from "theme/interfaces/typography";
 import { inlinesToRichText, MdBlock, MdInline, parseMarkdown } from "../parseMarkdown";
@@ -114,10 +115,10 @@ function Markdown(props: CustomizedProps<Frame, MarkdownProps>) {
 	const styles = useMarkdownStyles();
 	const blocks = parseMarkdown(value);
 	return (
-		<frame key={id || "Markdown"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Markdown"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			<uilistlayout {...styles.layout} />
 			{blocks.map((block, index) => renderBlock(block, index, styles))}
-		</frame>
+		</SxHost>
 	);
 }
 
