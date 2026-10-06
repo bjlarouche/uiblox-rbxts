@@ -4,6 +4,7 @@ import { CustomizedProps, useTheme } from "theme";
 import { SxHost } from "ui/packages/host";
 import { Popup } from "ui/packages/popup";
 import useTooltipStyles from "./Tooltip.styles";
+import { pointerInside } from "./tooltipPointer";
 
 export interface TooltipProps {
 	text: string;
@@ -50,7 +51,8 @@ function Tooltip(props: CustomizedProps<Frame, TooltipProps>) {
 						setShown(true);
 					});
 				},
-				MouseLeave: () => {
+				MouseLeave: (rbx: Frame, x: number, y: number) => {
+					if (pointerInside(rbx.AbsolutePosition.X, rbx.AbsolutePosition.Y, rbx.AbsoluteSize.X, rbx.AbsoluteSize.Y, x, y)) return;
 					cancel();
 					setShown(false);
 				},
