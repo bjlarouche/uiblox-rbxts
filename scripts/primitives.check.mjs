@@ -28,6 +28,18 @@ if (inputInsets(false, true, 12, 4).right !== 20) throw new Error("end adornment
 if (inputInsets(true, true, 12, 4).left !== 20 || inputInsets(true, true, 12, 4).right !== 20) {
 	throw new Error("both adornments inset both sides");
 }
+globalThis.math = {
+	max: Math.max,
+	floor: Math.floor,
+	clamp: (value, min, max) => Math.min(max, Math.max(min, value)),
+};
+const { multilineHeight } = await import(
+	pathToFileURL(join(root, "src/ui/packages/input/components/multilineHeight.ts")).href
+);
+if (multilineHeight(10, 16, 2, 5, 8) !== 48) throw new Error("multiline minimum");
+if (multilineHeight(54, 16, 2, 5, 8) !== 70) throw new Error("multiline content");
+if (multilineHeight(200, 16, 2, 5, 8) !== 96) throw new Error("multiline maximum");
+if (multilineHeight(10, 16, 4, 2, 8) !== 80) throw new Error("multiline row bounds");
 if (canActivate(true, false)) throw new Error("disabled must not activate");
 if (canActivate(false, true)) throw new Error("loading must not activate");
 if (!canActivate(false, false)) throw new Error("enabled control must activate");
