@@ -131,9 +131,16 @@ const SHORTHAND: { [key: string]: true } = {
 	visible: true,
 	zIndex: true,
 	z: true,
+	gradient: true,
 };
 
 export type SxColor = PaletteToken | Color3;
+
+/** Evenly spaced color stops on a UIGradient child. */
+export interface SxGradient {
+	colors: SxColor[];
+	rotation?: number;
+}
 
 /** CSS-like shorthands + pass-through Instance props. No CSS string parser. */
 export type SxInput = {
@@ -172,6 +179,7 @@ export type SxInput = {
 	visible?: Responsive<boolean>;
 	zIndex?: Responsive<number>;
 	z?: Responsive<number>;
+	gradient?: Responsive<SxGradient>;
 	_hover?: SxInput;
 	_pressed?: SxInput;
 	_focus?: SxInput;
@@ -197,6 +205,7 @@ export interface ResolvedSx {
 	};
 	corner?: { CornerRadius: UDim };
 	gap?: number;
+	gradient?: { Color: ColorSequence; Rotation: number };
 }
 
 function pick<T>(value: Responsive<T> | undefined, width?: number): T | undefined {
@@ -383,6 +392,16 @@ export function resolveSx(theme: SxTheme, sx?: SxInput, width?: number): Resolve
 	const zIndex = pick(sx.zIndex ?? sx.z, width);
 	if (zIndex !== undefined) root.ZIndex = zIndex;
 
+	const gradientVal = pick(sx.gradient, width);
+	let gradient: ResolvedSx["gradient"];
+	if (gradientVal !== undefined && gradientVal.colors.size() > 0) {
+		const stops = gradientVal.colors.map((token) => resolvePaletteToken(theme.palette, token));
+		const last = math.max(stops.size() - 1, 1);
+		const keypoints = stops.map((color, index) => new ColorSequenceKeypoint(stops.size() === 1 ? 0 : index / last, color));
+		if (stops.size() === 1) keypoints.push(new ColorSequenceKeypoint(1, stops[0]));
+		gradient = { Color: new ColorSequence(keypoints), Rotation: gradientVal.rotation ?? 0 };
+	}
+
 	for (const [key, raw] of pairs(sx as object)) {
 		const name = key as string;
 		if (SHORTHAND[name] === true) continue;
@@ -407,5 +426,6 @@ export function resolveSx(theme: SxTheme, sx?: SxInput, width?: number): Resolve
 		resolved.corner = { CornerRadius: new UDim(0, radius) };
 	}
 	if (gap !== undefined) resolved.gap = gap;
+	if (gradient !== undefined) resolved.gradient = gradient;
 	return resolved;
 }
