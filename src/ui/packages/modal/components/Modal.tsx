@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { GuiService, UserInputService } from "@rbxts/services";
+import { CustomizedProps, WriteableStyle } from "theme";
+import { SxHost } from "ui/packages/host";
 import { Portal, portalTarget } from "ui/packages/popup";
 import { isDismissInput } from "./dismissInput";
 import { isFocusable, pickFocus } from "./focusTrap";
@@ -12,8 +14,8 @@ export interface ModalProps {
 	children?: React.ReactNode;
 }
 
-function Modal(props: ModalProps) {
-	const { host, open, onClose, children } = props;
+function Modal(props: CustomizedProps<Frame, ModalProps>) {
+	const { host, open, onClose, children, className, sx, id, ref } = props;
 	const styles = useModalStyles();
 	const close = useRef(onClose);
 	const surface = useRef<Frame>();
@@ -52,6 +54,7 @@ function Modal(props: ModalProps) {
 		};
 	}, [open, layer]);
 
+	const surfaceStyle = styles.surface as WriteableStyle<Frame>;
 	return (
 		<>
 			<frame
@@ -71,11 +74,29 @@ function Modal(props: ModalProps) {
 								Activated: () => close.current(),
 							}}
 						/>
-						<frame key="Surface" ref={surface} {...styles.surface}>
+						<SxHost
+							tag="frame"
+							key={id || "Surface"}
+							hostRef={(instance: Frame | undefined) => {
+								surface.current = instance;
+								if (ref === undefined) return;
+								if (typeIs(ref, "function")) {
+									ref(instance as Frame);
+									return;
+								}
+								(ref as { current?: Frame }).current = instance;
+							}}
+							base={surfaceStyle}
+							className={className}
+							sx={sx}
+							AnchorPoint={surfaceStyle.AnchorPoint}
+							Position={surfaceStyle.Position}
+							ZIndex={surfaceStyle.ZIndex}
+						>
 							<uipadding {...styles.padding} />
 							<uicorner {...styles.corner} />
 							{children}
-						</frame>
+						</SxHost>
 					</frame>
 				</Portal>
 			)}

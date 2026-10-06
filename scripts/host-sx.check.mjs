@@ -139,6 +139,10 @@ const hosts = [
 	"src/ui/packages/listItem/components/ListItem.tsx",
 	"src/ui/packages/virtualList/components/EmptyListHint.tsx",
 	"src/ui/packages/shadow/components/Shadow.tsx",
+	"src/ui/packages/popup/components/Popup.tsx",
+	"src/ui/packages/modal/components/Modal.tsx",
+	"src/ui/packages/drawer/components/Drawer.tsx",
+	"src/ui/packages/dialog/components/Dialog.tsx",
 ];
 for (const file of hosts) {
 	const text = readFileSync(file, "utf8");
@@ -147,7 +151,7 @@ for (const file of hosts) {
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table", "Toast", "Tooltip", "Skeleton", "CircularProgress", "ImageList", "List", "Preloader", "SpeedDial", "SplitPane", "TreeView", "VirtualList", "Markdown", "MarkdownEditor", "AssetField", "BrickColorPicker", "CFrameEditor", "ColorPicker", "ColorSequenceEditor", "NumberSequenceEditor", "FontEditor", "GradientEditor", "NumberRangeEditor", "PhysicalPropertiesEditor", "RayEditor", "RectEditor", "UDimEditor", "VectorEditor", "EnumPicker", "Menu", "ListItem", "EmptyListHint", "Shadow", "Card"]) {
+for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table", "Toast", "Tooltip", "Skeleton", "CircularProgress", "ImageList", "List", "Preloader", "SpeedDial", "SplitPane", "TreeView", "VirtualList", "Markdown", "MarkdownEditor", "AssetField", "BrickColorPicker", "CFrameEditor", "ColorPicker", "ColorSequenceEditor", "NumberSequenceEditor", "FontEditor", "GradientEditor", "NumberRangeEditor", "PhysicalPropertiesEditor", "RayEditor", "RectEditor", "UDimEditor", "VectorEditor", "EnumPicker", "Menu", "ListItem", "EmptyListHint", "Shadow", "Card", "Popup", "Modal", "Drawer", "Dialog"]) {
 	if (stateMatrix.filter((row) => row.component === component && row.name.includes("-sx-")).length !== 2) {
 		throw new Error(`${component} sx matrix`);
 	}
@@ -179,13 +183,7 @@ const card = readFileSync("src/ui/packages/card/components/Card.tsx", "utf8");
 const paper = readFileSync("src/ui/packages/paper/components/Paper.tsx", "utf8");
 if (!card.includes("sx={sx}") || !paper.includes("<SxHost")) throw new Error("card paper sx");
 
-const guiRootExceptions = new Set([
-	"src/ui/packages/loadingStroke/components/LoadingStroke.tsx",
-	"src/ui/packages/popup/components/Popup.tsx",
-	"src/ui/packages/modal/components/Modal.tsx",
-	"src/ui/packages/drawer/components/Drawer.tsx",
-	"src/ui/packages/dialog/components/Dialog.tsx",
-]);
+const guiRootExceptions = new Set(["src/ui/packages/loadingStroke/components/LoadingStroke.tsx"]);
 const guiTag = /<(frame|scrollingframe|textbutton|textbox|imagebutton|textlabel|imagelabel|canvasgroup|viewportframe)\b/;
 function walkTsx(dir, out = []) {
 	for (const name of readdirSync(dir)) {
