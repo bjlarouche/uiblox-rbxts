@@ -1,7 +1,7 @@
 import React from "@rbxts/react";
 import { ControlSize, CustomizedProps } from "theme";
 import { Input } from "ui/packages/input";
-import { parseNumberDraft } from "./numberValue";
+import { formatNumber, parseNumberDraft } from "./numberValue";
 
 export interface NumberInputProps {
 	value: number;
@@ -9,6 +9,7 @@ export interface NumberInputProps {
 	min?: number;
 	max?: number;
 	step?: number;
+	places?: number;
 	disabled?: boolean;
 	readOnly?: boolean;
 	loading?: boolean;
@@ -19,7 +20,7 @@ export interface NumberInputProps {
 }
 
 function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
-	const { value, onChange, min, max, step, disabled, readOnly, loading, placeholder, width, size, reducedMotion, className, sx, id, ref } =
+	const { value, onChange, min, max, step, places, disabled, readOnly, loading, placeholder, width, size, reducedMotion, className, sx, id, ref } =
 		props;
 
 	return (
@@ -28,7 +29,7 @@ function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
 			ref={ref}
 			className={className}
 			sx={sx}
-			text={tostring(value)}
+			text={places !== undefined ? formatNumber(value, places) : tostring(value)}
 			placeholder={placeholder}
 			width={width}
 			disabled={disabled}
@@ -38,7 +39,9 @@ function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
 			reducedMotion={reducedMotion}
 			onTextChanged={(text) => {
 				const committed = parseNumberDraft(text, min, max, step);
-				if (committed !== undefined && committed !== value) onChange(committed);
+				if (committed === undefined) return;
+				if (places !== undefined && formatNumber(committed, places) === formatNumber(value, places)) return;
+				if (committed !== value) onChange(committed);
 			}}
 		/>
 	);

@@ -3,7 +3,7 @@ import { CustomizedProps } from "theme";
 import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import usePhysicalPropertiesEditorStyles from "./PhysicalPropertiesEditor.styles";
-import { PhysicalField, patchPhysicalParts, physicalFields } from "./physicalParts";
+import { PhysicalField, patchPhysicalParts, physicalCaption, physicalRows } from "./physicalParts";
 
 export interface PhysicalPropertiesEditorProps {
 	value: PhysicalProperties;
@@ -14,7 +14,13 @@ export interface PhysicalPropertiesEditorProps {
 function PhysicalPropertiesEditor(props: CustomizedProps<Frame, PhysicalPropertiesEditorProps>) {
 	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = usePhysicalPropertiesEditorStyles();
-	const amounts = [value.Density, value.Friction, value.Elasticity, value.FrictionWeight, value.ElasticityWeight];
+	const amounts: { [key: string]: number } = {
+		Density: value.Density,
+		Friction: value.Friction,
+		Elasticity: value.Elasticity,
+		FrictionWeight: value.FrictionWeight,
+		ElasticityWeight: value.ElasticityWeight,
+	};
 
 	const commit = (field: PhysicalField, amount: number) => {
 		const parts = patchPhysicalParts(
@@ -33,20 +39,28 @@ function PhysicalPropertiesEditor(props: CustomizedProps<Frame, PhysicalProperti
 		<SxHost tag="frame" key={id || "PhysicalPropertiesEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.wrap} />
 			<>
-			{physicalFields().map((field, index) => (
-				<frame key={field} {...styles.axis} LayoutOrder={index + 1}>
-					<uilistlayout {...styles.row} />
-					<textlabel {...styles.label} Text={field} />
-					<frame {...styles.field}>
-						<NumberInput
-							value={amounts[index]}
-							disabled={disabled}
-							width={new UDim(1, 0)}
-							onChange={(amount) => commit(field, amount)}
-						/>
+				{physicalRows().map((row, rowIndex) => (
+					<frame key={`Row-${rowIndex}`} {...styles.row} LayoutOrder={rowIndex + 1}>
+						<uilistlayout {...styles.pair} />
+						<>
+							{row.map((field, index) => (
+								<frame key={field} {...styles.cell} LayoutOrder={index + 1}>
+									<uilistlayout {...styles.stack} />
+									<textlabel {...styles.label} Text={physicalCaption(field)} LayoutOrder={1} />
+									<frame {...styles.field} LayoutOrder={2}>
+										<NumberInput
+											value={amounts[field]}
+											places={4}
+											disabled={disabled}
+											width={new UDim(1, 0)}
+											onChange={(amount) => commit(field, amount)}
+										/>
+									</frame>
+								</frame>
+							))}
+						</>
 					</frame>
-				</frame>
-			))}
+				))}
 			</>
 		</SxHost>
 	);
