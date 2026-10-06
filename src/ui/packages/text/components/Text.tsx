@@ -1,0 +1,35 @@
+import React from "@rbxts/react";
+import { CustomizedProps, useTheme } from "theme";
+import { SxHost } from "ui/packages/host";
+import { textBox } from "./textBox";
+
+export interface TextProps {
+	text?: string;
+}
+
+function Text(props: CustomizedProps<TextLabel, TextProps>) {
+	const { text = "", className, sx, id, ref } = props;
+	const { theme } = useTheme();
+	const box = textBox();
+	return (
+		<SxHost
+			tag="textlabel"
+			key={id || "Text"}
+			hostRef={ref}
+			base={{
+				Text: text,
+				Size: new UDim2(box.widthScale, 0, box.heightScale, 0),
+				AutomaticSize: Enum.AutomaticSize.XY,
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				Font: theme.typography.fontFamilies.default,
+				TextSize: theme.typography.fontSizes.body,
+				TextColor3: theme.palette.text.primary,
+				...className,
+			}}
+			sx={sx}
+		/>
+	);
+}
+
+export default Text;

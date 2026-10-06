@@ -17,6 +17,7 @@ export * from "./sidebar";
 export * from "./toast";
 export * from "./treeView";
 export * from "./typography";
+export * from "./text";
 export * from "./button";
 export * from "./checkbox";
 export * from "./colorPicker";
