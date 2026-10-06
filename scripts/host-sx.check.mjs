@@ -1,0 +1,66 @@
+import { readFileSync } from "node:fs";
+
+globalThis.typeOf = (value) => {
+	if (value instanceof globalThis.UDim) return "UDim";
+	if (value instanceof globalThis.UDim2) return "UDim2";
+	if (typeof value === "object" && value !== null) return "table";
+	return typeof value;
+};
+globalThis.typeIs = (value, typeName) => {
+	if (typeName === "string") return typeof value === "string";
+	if (typeName === "number") return typeof value === "number";
+	return false;
+};
+globalThis.pairs = (record) => Object.keys(record).map((key) => [key, record[key]]);
+globalThis.string = { lower: (value) => String(value).toLowerCase() };
+globalThis.math = { huge: Infinity };
+globalThis.UDim = class UDim {
+	constructor(scale = 0, offset = 0) {
+		this.Scale = scale;
+		this.Offset = offset;
+	}
+};
+globalThis.UDim2 = class UDim2 {
+	constructor(xScale = 0, xOffset = 0, yScale = 0, yOffset = 0) {
+		this.X = new UDim(xScale, xOffset);
+		this.Y = new UDim(yScale, yOffset);
+	}
+};
+
+const { hostRest, layoutGapPatch, sxUsesBreakpoints } = await import("../src/ui/packages/host/hostRules.ts");
+
+const keep = layoutGapPatch("uilistlayout", { Padding: new UDim(0, 4) }, 16);
+if (keep !== undefined) throw new Error("explicit list padding wins");
+const fill = layoutGapPatch("uilistlayout", {}, 16);
+if (fill?.Padding?.Offset !== 16) throw new Error("gap fills empty list");
+const gridKeep = layoutGapPatch("uigridlayout", { CellPadding: new UDim2(0, 2, 0, 2) }, 8);
+if (gridKeep !== undefined) throw new Error("explicit cell padding wins");
+const gridFill = layoutGapPatch("uigridlayout", {}, 8);
+if (gridFill?.CellPadding?.X?.Offset !== 8) throw new Error("gap fills empty grid");
+
+if (sxUsesBreakpoints({ width: 10 })) throw new Error("plain width");
+if (!sxUsesBreakpoints({ width: { phone: 80, desktop: 200 } })) throw new Error("responsive width");
+
+const rest = hostRest({ tag: "frame", sx: { p: 1 }, Text: "Go", children: "x" });
+if (rest.Text !== "Go" || rest.sx !== undefined || rest.children !== undefined) throw new Error("rest strips host keys");
+
+const hosts = [
+	"src/ui/packages/layout/components/Box.tsx",
+	"src/ui/packages/layout/components/Stack.tsx",
+	"src/ui/packages/layout/components/FlexItem.tsx",
+	"src/ui/packages/layout/components/Grid.tsx",
+	"src/ui/packages/layout/components/Container.tsx",
+	"src/ui/packages/paper/components/Paper.tsx",
+];
+for (const file of hosts) {
+	if (!readFileSync(file, "utf8").includes("<SxHost")) throw new Error(`${file} missing SxHost`);
+}
+
+const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
+for (const component of ["Box", "Stack", "Paper"]) {
+	if (stateMatrix.filter((row) => row.component === component && row.name.includes("-sx-")).length !== 2) {
+		throw new Error(`${component} sx matrix`);
+	}
+}
+
+console.log("host sx ok");

@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { FlexItemAlign } from "./flexItemMode";
 import useFlexItemStyles from "./FlexItem.styles";
 
@@ -15,10 +16,10 @@ function FlexItem(props: CustomizedProps<Frame, FlexItemProps>) {
 	const { grow, shrink, fill, alignSelf, children, className, sx, id, ref } = props;
 	const styles = useFlexItemStyles({ grow, shrink, fill, alignSelf });
 	return (
-		<frame key={id || "FlexItem"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost key={id || "FlexItem"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			<uiflexitem {...styles.flex} />
 			{children}
-		</frame>
+		</SxHost>
 	);
 }
 
