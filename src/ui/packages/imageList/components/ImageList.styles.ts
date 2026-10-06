@@ -1,4 +1,4 @@
-import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
+import { Common, componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 import { imageListCols, imageListGap, imageListItemSize } from "./imageListLayout";
 
 const useImageListStyles = componentStyles<{ cols?: number; gap?: number; itemSize?: number }>(
@@ -43,12 +43,12 @@ const useImageListStyles = componentStyles<{ cols?: number; gap?: number; itemSi
 			title: {
 				Size: new UDim2(1, 0, 0, bar),
 				Position: new UDim2(0, 0, 1, -bar),
-				BackgroundColor3: theme.palette.surface.overlay,
-				BackgroundTransparency: 0.25,
+				BackgroundColor3: theme.palette.backdrop,
+				BackgroundTransparency: 0.35,
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
 				TextSize: theme.typography.fontSizes.caption,
-				TextColor3: theme.palette.text.inverse,
+				TextColor3: Common.White,
 				TextXAlignment: Enum.TextXAlignment.Left,
 				TextTruncate: Enum.TextTruncate.AtEnd,
 				ZIndex: 2,

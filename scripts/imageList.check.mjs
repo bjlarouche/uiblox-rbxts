@@ -15,6 +15,14 @@ const tileBlock = styles.match(/tile:\s*\{[\s\S]*?\}\s*as WriteableStyle<ImageBu
 if (tileBlock === undefined) throw new Error("missing tile style");
 if (/\bText\s*:/.test(tileBlock)) throw new Error("ImageButton tile must not set Text");
 
+const titleBlock = styles.match(/title:\s*\{[\s\S]*?\}\s*as WriteableStyle<TextLabel>/)?.[0];
+if (titleBlock === undefined) throw new Error("missing title style");
+if (!titleBlock.includes("theme.palette.backdrop")) throw new Error("title scrim must use palette.backdrop");
+if (!titleBlock.includes("Common.White")) throw new Error("title text must stay white on media");
+if (titleBlock.includes("surface.overlay") || titleBlock.includes("text.inverse")) {
+	throw new Error("title must not use theme surface/text over imagery");
+}
+
 const component = readFileSync(join(root, "src/ui/packages/imageList/components/ImageList.tsx"), "utf8");
 if (!/<>\s*\n\s*\{items\.map/.test(component) && !/<>\s*\{items\.map/.test(component)) {
 	throw new Error("ImageList items.map must be wrapped in a fragment");
