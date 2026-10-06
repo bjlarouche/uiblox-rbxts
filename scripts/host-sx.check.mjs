@@ -135,6 +135,7 @@ const hosts = [
 	"src/ui/packages/rectEditor/components/RectEditor.tsx",
 	"src/ui/packages/udimEditor/components/UDimEditor.tsx",
 	"src/ui/packages/vectorEditor/components/VectorEditor.tsx",
+	"src/ui/packages/menu/components/Menu.tsx",
 ];
 for (const file of hosts) {
 	const text = readFileSync(file, "utf8");
@@ -143,7 +144,7 @@ for (const file of hosts) {
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table", "Toast", "Tooltip", "Skeleton", "CircularProgress", "ImageList", "List", "Preloader", "SpeedDial", "SplitPane", "TreeView", "VirtualList", "Markdown", "MarkdownEditor", "AssetField", "BrickColorPicker", "CFrameEditor", "ColorPicker", "ColorSequenceEditor", "NumberSequenceEditor", "FontEditor", "GradientEditor", "NumberRangeEditor", "PhysicalPropertiesEditor", "RayEditor", "RectEditor", "UDimEditor", "VectorEditor", "EnumPicker"]) {
+for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table", "Toast", "Tooltip", "Skeleton", "CircularProgress", "ImageList", "List", "Preloader", "SpeedDial", "SplitPane", "TreeView", "VirtualList", "Markdown", "MarkdownEditor", "AssetField", "BrickColorPicker", "CFrameEditor", "ColorPicker", "ColorSequenceEditor", "NumberSequenceEditor", "FontEditor", "GradientEditor", "NumberRangeEditor", "PhysicalPropertiesEditor", "RayEditor", "RectEditor", "UDimEditor", "VectorEditor", "EnumPicker", "Menu"]) {
 	if (stateMatrix.filter((row) => row.component === component && row.name.includes("-sx-")).length !== 2) {
 		throw new Error(`${component} sx matrix`);
 	}

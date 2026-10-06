@@ -1,4 +1,6 @@
 import React from "@rbxts/react";
+import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { ListItem } from "ui/packages/listItem";
 import { Popup } from "ui/packages/popup";
 import { EmptyListHint } from "ui/packages/virtualList";
@@ -25,8 +27,8 @@ export interface MenuProps {
 	selected?: string;
 }
 
-function Menu(props: MenuProps) {
-	const { anchor, open, items, onSelect, onClose, emptyText, empty, dense, selected } = props;
+function Menu(props: CustomizedProps<Frame, MenuProps>) {
+	const { anchor, open, items, onSelect, onClose, emptyText, empty, dense, selected, className, sx, id, ref } = props;
 	const styles = useMenuStyles();
 	if (!open) return undefined;
 	const vacant = items.size() === 0;
@@ -34,7 +36,7 @@ function Menu(props: MenuProps) {
 	const height = vacant ? row : items.size() * row;
 	return (
 		<Popup anchor={anchor} preferredHeight={height} onDismiss={onClose}>
-			<frame key="Surface" {...styles.surface}>
+			<SxHost tag="frame" key={id || "Surface"} hostRef={ref} base={styles.surface} className={className} sx={sx}>
 				<uicorner {...styles.corner} />
 				<uistroke {...styles.stroke} />
 				<uilistlayout {...styles.list} />
@@ -58,7 +60,7 @@ function Menu(props: MenuProps) {
 							))}
 						</>
 					)}
-			</frame>
+			</SxHost>
 		</Popup>
 	);
 }

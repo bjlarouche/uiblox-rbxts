@@ -481,6 +481,7 @@ function miscRows(): StateCapture[] {
 		...pair("Menu", "empty", { open: true, options: [] }),
 		...pair("Menu", "dense", { open: true, variant: "dense" }),
 		...pair("Menu", "selected", { open: true, selected: "a" }),
+		...pair("Menu", "sx", { open: true }),
 		...pair("Markdown", "default", { text: "# Title\n\nHello **world**" }),
 		...pair("Markdown", "empty", { text: "" }),
 		...pair("Markdown", "sx", { text: "# Title" }),
