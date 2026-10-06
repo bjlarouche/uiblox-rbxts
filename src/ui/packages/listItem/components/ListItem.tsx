@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { SxHost } from "ui/packages/host";
+import { listItemCopyInset } from "./listItemLayout";
 import useListItemStyles from "./ListItem.styles";
 
 export interface ListItemProps {
@@ -11,13 +12,23 @@ export interface ListItemProps {
 	dense?: boolean;
 	divider?: boolean;
 	wrap?: boolean;
+	leading?: React.ReactNode;
 	onActivated?: () => void;
 }
 
 function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
-	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, wrap = false, onActivated, className, sx, id, ref } =
+	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, wrap = false, leading, onActivated, className, sx, id, ref } =
 		props;
 	const styles = useListItemStyles({ selected, disabled, dense, wrap });
+	const inset = listItemCopyInset(leading !== undefined);
+	const copy = (
+		<>
+			<textlabel key="Primary" {...styles.primary} Text={text} />
+			{secondary !== undefined && secondary.size() > 0 ? (
+				<textlabel key="Secondary" {...styles.secondary} Text={secondary} />
+			) : undefined}
+		</>
+	);
 	return (
 		<SxHost
 			tag="textbutton"
@@ -39,10 +50,32 @@ function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
 		>
 			<uipadding {...styles.padding} />
 			<uilistlayout {...styles.list} />
-			<textlabel key="Primary" {...styles.primary} Text={text} />
-			{secondary !== undefined && secondary.size() > 0 ? (
-				<textlabel key="Secondary" {...styles.secondary} Text={secondary} />
-			) : undefined}
+			{inset > 0 ? (
+				<frame key="Body" Size={new UDim2(1, 0, 0, 0)} AutomaticSize={Enum.AutomaticSize.Y} BackgroundTransparency={1} BorderSizePixel={0}>
+					<uilistlayout
+						FillDirection={Enum.FillDirection.Horizontal}
+						VerticalAlignment={Enum.VerticalAlignment.Center}
+						Padding={new UDim(0, 8)}
+						SortOrder={Enum.SortOrder.LayoutOrder}
+					/>
+					<frame key="Lead" LayoutOrder={0} Size={UDim2.fromOffset(inset, inset)} BackgroundTransparency={1} BorderSizePixel={0}>
+						{leading}
+					</frame>
+					<frame
+						key="Copy"
+						LayoutOrder={1}
+						Size={new UDim2(1, -(inset + 8), 0, 0)}
+						AutomaticSize={Enum.AutomaticSize.Y}
+						BackgroundTransparency={1}
+						BorderSizePixel={0}
+					>
+						<uilistlayout {...styles.list} />
+						{copy}
+					</frame>
+				</frame>
+			) : (
+				copy
+			)}
 			{divider === true ? <frame key="Divider" {...styles.divider} /> : undefined}
 		</SxHost>
 	);
