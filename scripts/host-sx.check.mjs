@@ -44,6 +44,30 @@ if (!sxUsesBreakpoints({ width: { phone: 80, desktop: 200 } })) throw new Error(
 const rest = hostRest({ tag: "frame", sx: { p: 1 }, Text: "Go", children: "x" });
 if (rest.Text !== "Go" || rest.sx !== undefined || rest.children !== undefined) throw new Error("rest strips host keys");
 
+const { resolveSx } = await import("../src/theme/styles/utilities/resolveSx.ts");
+const { resolveStyle } = await import("../src/theme/styles/utilities/resolveStyle.ts");
+const theme = {
+	spacing: { calc: (n) => 8 * n },
+	palette: {},
+	typography: { fontFamilies: {}, variants: {} },
+};
+const narrow = resolveSx(
+	theme,
+	{
+		width: { phone: 80, desktop: 200 },
+		_hover: { BackgroundTransparency: 0.2 },
+		_disabled: { BackgroundTransparency: 0.8 },
+	},
+	400,
+);
+if (narrow.root.Size?.X?.Offset !== 80) throw new Error("phone width");
+const wide = resolveSx(theme, { width: { phone: 80, desktop: 200 } }, 1000);
+if (wide.root.Size?.X?.Offset !== 200) throw new Error("desktop width");
+const hovered = resolveStyle(narrow.root, { hover: true });
+if (hovered.BackgroundTransparency !== 0.2) throw new Error("hover selector");
+const locked = resolveStyle(narrow.root, { hover: true, disabled: true });
+if (locked.BackgroundTransparency !== 0.8) throw new Error("disabled selector");
+
 const hosts = [
 	"src/ui/packages/layout/components/Box.tsx",
 	"src/ui/packages/layout/components/Stack.tsx",
@@ -75,13 +99,19 @@ const hosts = [
 	"src/ui/packages/stepper/components/Stepper.tsx",
 	"src/ui/packages/sidebar/components/Sidebar.tsx",
 	"src/ui/packages/rating/components/Rating.tsx",
+	"src/ui/packages/chip/components/Chip.tsx",
+	"src/ui/packages/link/components/Link.tsx",
+	"src/ui/packages/toggleButton/components/ToggleButton.tsx",
+	"src/ui/packages/fab/components/Fab.tsx",
 ];
 for (const file of hosts) {
-	if (!readFileSync(file, "utf8").includes("<SxHost")) throw new Error(`${file} missing SxHost`);
+	const text = readFileSync(file, "utf8");
+	if (!text.includes("<SxHost")) throw new Error(`${file} missing SxHost`);
+	if (text.includes("{...sx}")) throw new Error(`${file} still spreads sx`);
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar"]) {
+for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab"]) {
 	if (stateMatrix.filter((row) => row.component === component && row.name.includes("-sx-")).length !== 2) {
 		throw new Error(`${component} sx matrix`);
 	}

@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { ControlSize, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
+import { SxHost } from "ui/packages/host";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import useToggleButtonStyles, { ToggleButtonOrientation } from "./ToggleButton.styles";
 
@@ -17,12 +18,14 @@ function ToggleButton(props: CustomizedProps<TextButton, ToggleButtonProps>) {
 	const styles = useToggleButtonStyles({ selected, disabled, size });
 	const active = canActivate(disabled);
 	return (
-		<textbutton
+		<SxHost
+			tag="textbutton"
 			key={id || "ToggleButton"}
-			ref={ref}
-			{...styles.root}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			base={styles.root}
+			className={className}
+			sx={sx}
+			state={{ disabled, selected }}
 			Text={label}
 			Active={active}
 			Selectable={active}
@@ -35,7 +38,7 @@ function ToggleButton(props: CustomizedProps<TextButton, ToggleButtonProps>) {
 			<uipadding {...styles.padding} />
 			<uicorner {...styles.corner} />
 			<uistroke {...styles.stroke} />
-		</textbutton>
+		</SxHost>
 	);
 }
 
@@ -52,7 +55,7 @@ export function ToggleButtonGroup<T>(props: CustomizedProps<Frame, ToggleButtonG
 	const { value, options, onChange, disabled, size, orientation, className, sx, id, ref } = props;
 	const styles = useToggleButtonStyles({ size, orientation });
 	return (
-		<frame key={id || "ToggleButtonGroup"} ref={ref} {...styles.group} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "ToggleButtonGroup"} hostRef={ref} base={styles.group} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.list} />
 			<>
 			{options.map((choice, index) => (
@@ -69,7 +72,7 @@ export function ToggleButtonGroup<T>(props: CustomizedProps<Frame, ToggleButtonG
 				/>
 			))}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

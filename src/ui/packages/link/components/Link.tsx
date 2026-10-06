@@ -1,6 +1,7 @@
 import React, { useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
+import { SxHost } from "ui/packages/host";
 import useLinkStyles, { LinkColor, LinkUnderline } from "./Link.styles";
 
 export interface LinkProps {
@@ -18,12 +19,14 @@ function Link(props: CustomizedProps<TextButton, LinkProps>) {
 	const styles = useLinkStyles({ color, disabled, showUnderline });
 	const active = canActivate(disabled);
 	return (
-		<textbutton
+		<SxHost
+			tag="textbutton"
 			key={id || "Link"}
-			ref={ref}
-			{...styles.root}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			base={styles.root}
+			className={className}
+			sx={sx}
+			state={{ disabled, hover }}
 			Text={text}
 			Active={active}
 			Selectable={active}
@@ -36,7 +39,7 @@ function Link(props: CustomizedProps<TextButton, LinkProps>) {
 			}}
 		>
 			<frame key="Underline" {...styles.underline} />
-		</textbutton>
+		</SxHost>
 	);
 }
 
