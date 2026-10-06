@@ -1,9 +1,9 @@
 import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { cx, CustomizedProps } from "theme";
 import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import useCFrameEditorStyles from "./CFrameEditor.styles";
-import { CFrameField, nextCFrameParts } from "./cframeValue";
+import { cframeAxis, CFrameField, nextCFrameParts } from "./cframeValue";
 
 export interface CFrameEditorProps {
 	value: CFrame;
@@ -40,11 +40,22 @@ function CFrameEditor(props: CustomizedProps<Frame, CFrameEditorProps>) {
 					{fields.map((field, index) => (
 						<frame key={field} {...styles.axis} LayoutOrder={index + 1}>
 							<uilistlayout {...styles.row} />
-							<textlabel {...styles.label} Text={field} />
+							<textlabel
+								{...cx<TextLabel>(
+									styles.label,
+									cframeAxis(field) === "X"
+										? styles.labelX
+										: cframeAxis(field) === "Y"
+											? styles.labelY
+											: styles.labelZ,
+								)}
+								Text={cframeAxis(field)}
+							/>
 							<frame {...styles.field}>
 								<NumberInput
 									value={amounts[offset + index]}
 									disabled={disabled}
+									size="small"
 									width={new UDim(1, 0)}
 									onChange={(amount) => commit(field, amount)}
 								/>
@@ -60,7 +71,7 @@ function CFrameEditor(props: CustomizedProps<Frame, CFrameEditorProps>) {
 		<SxHost tag="frame" key={id || "CFrameEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.wrap} />
 			{group("Position", POSITION, 1, 0)}
-			{group("Orientation", ORIENTATION, 2, 3)}
+			{group("Rotation (degrees)", ORIENTATION, 2, 3)}
 		</SxHost>
 	);
 }

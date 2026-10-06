@@ -3,7 +3,7 @@ import { CustomizedProps } from "theme";
 import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import usePhysicalPropertiesEditorStyles from "./PhysicalPropertiesEditor.styles";
-import { PhysicalField, patchPhysicalParts, physicalCaption, physicalRows } from "./physicalParts";
+import { PhysicalField, patchPhysicalParts, physicalBounds, physicalCaption, physicalRows } from "./physicalParts";
 
 export interface PhysicalPropertiesEditorProps {
 	value: PhysicalProperties;
@@ -50,8 +50,12 @@ function PhysicalPropertiesEditor(props: CustomizedProps<Frame, PhysicalProperti
 									<frame {...styles.field} LayoutOrder={2}>
 										<NumberInput
 											value={amounts[field]}
+											min={physicalBounds(field).min}
+											max={physicalBounds(field).max}
+											step={physicalBounds(field).step}
 											places={4}
 											disabled={disabled}
+											size="small"
 											width={new UDim(1, 0)}
 											onChange={(amount) => commit(field, amount)}
 										/>

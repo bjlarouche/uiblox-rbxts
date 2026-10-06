@@ -1,4 +1,4 @@
-const { patchPhysicalParts, physicalCaption, physicalFields, physicalRows } = await import(
+const { patchPhysicalParts, physicalBounds, physicalCaption, physicalFields, physicalRows } = await import(
 	"../src/ui/packages/physicalPropertiesEditor/components/physicalParts.ts"
 );
 if (physicalFields().join(",") !== "Density,Friction,Elasticity,FrictionWeight,ElasticityWeight") {
@@ -9,6 +9,9 @@ if (physicalCaption("FrictionWeight") !== "Friction wt" || physicalCaption("Elas
 }
 if (physicalRows().map((row) => row.join("+")).join("|") !== "Density+Friction|Elasticity+FrictionWeight|ElasticityWeight") {
 	throw new Error("rows");
+}
+if (physicalBounds("Density").min !== 0.01 || physicalBounds("Friction").max !== 1 || physicalBounds("ElasticityWeight").max !== 100) {
+	throw new Error("bounds");
 }
 const parts = patchPhysicalParts(1, 2, 3, 4, 5, "Friction", 9);
 if (parts.join(",") !== "1,9,3,4,5") throw new Error("patch");

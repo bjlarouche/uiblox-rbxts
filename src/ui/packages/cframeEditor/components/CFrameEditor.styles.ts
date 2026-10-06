@@ -43,10 +43,19 @@ const useCFrameEditorStyles = componentStyles("CFrameEditor", (theme: Theme) =>
 		label: {
 			Size: new UDim2(0, theme.spacing.calc(2.5), 1, 0),
 			BackgroundTransparency: 1,
-			Font: theme.typography.fontFamilies.default,
+			Font: theme.typography.fontFamilies.semibold,
 			TextSize: theme.typography.fontSizes.button,
 			TextColor3: theme.palette.text.secondary,
 			TextXAlignment: Enum.TextXAlignment.Left,
+		} as WriteableStyle<TextLabel>,
+		labelX: {
+			TextColor3: theme.palette.status.error.main,
+		} as WriteableStyle<TextLabel>,
+		labelY: {
+			TextColor3: theme.palette.status.success.main,
+		} as WriteableStyle<TextLabel>,
+		labelZ: {
+			TextColor3: theme.palette.status.info.main,
 		} as WriteableStyle<TextLabel>,
 		field: {
 			Size: new UDim2(1, -theme.spacing.calc(2.5), 1, 0),
