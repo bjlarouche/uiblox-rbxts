@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import { writeUDim, writeUDim2 } from "ui/packages/vectorEditor/components/vectorValue";
 import useUDimEditorStyles from "./UDimEditor.styles";
@@ -27,7 +28,7 @@ function UDimEditor(props: CustomizedProps<Frame, UDimEditorProps>) {
 	);
 
 	return (
-		<frame key={id || "UDimEditor"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "UDimEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.column} />
 			{isUDim2 ? (
 				<frame key="Axes" Size={new UDim2(1, 0, 0, 0)} AutomaticSize={Enum.AutomaticSize.Y} BackgroundTransparency={1} LayoutOrder={1}>
@@ -50,7 +51,7 @@ function UDimEditor(props: CustomizedProps<Frame, UDimEditorProps>) {
 					{field("O", "O", (value as UDim).Offset, (amount) => onChange(writeUDim(value as UDim, "Offset", amount)), 2)}
 				</frame>
 			)}
-		</frame>
+		</SxHost>
 	);
 }
 

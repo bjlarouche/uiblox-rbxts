@@ -150,11 +150,12 @@ Compose: `className` then `sx` (sx wins), then explicit host props. `SxHost` tra
 | Feedback | Toast, Tooltip, Skeleton, CircularProgress |
 | Lists | ImageList, List, Preloader, SpeedDial, SplitPane, TreeView, VirtualList |
 | Markdown | Markdown, MarkdownEditor |
+| Editors | AssetField, BrickColorPicker, CFrameEditor, ColorPicker, ColorSequenceEditor, NumberSequenceEditor, FontEditor, GradientEditor, NumberRangeEditor, PhysicalPropertiesEditor, RayEditor, RectEditor, UDimEditor, VectorEditor, EnumPicker, NumberInput |
 | Fields | Input, Select, Typography, FormLabel, FormHelperText |
 | Toggles | Checkbox, Switch, Slider, RadioGroup |
 | Chrome | Alert, Avatar, Badge, Breadcrumbs, Divider, Icon, Pagination, ProgressBar, AppBar, Backdrop, Rating, Sidebar, Stepper |
 
-An existing `UIPadding`, `UICorner`, or layout `Padding` / `CellPadding` still wins. Explicit host props (`Text`, `Active`, `BackgroundTransparency`, `Event`) still win, including Fab and Button transparency. Skeleton size stays explicit, so it still wins over `sx`. CircularProgress puts size and transparency in the base, so `sx` can still override them. Toast keeps its tween frame and forwards the caller ref from the same host callback. LoadingStroke stays a raw spread: it is a `UIStroke`, and resolved `sx` is GuiObject props. Snackbar forwards `sx` to Toast. Autocomplete forwards `sx` to Select. VirtualList keeps its scroll frame for measurement and forwards the caller ref. `CanvasSize` stays explicit, so it still wins over `sx`. List padding and ImageList cell padding stay on those layout instances. The datatype editors and pickers still spread `sx` directly. Menu has no `sx`.
+An existing `UIPadding`, `UICorner`, or layout `Padding` / `CellPadding` still wins. Explicit host props (`Text`, `Active`, `BackgroundTransparency`, `Event`) still win, including Fab and Button transparency. Skeleton size stays explicit, so it still wins over `sx`. CircularProgress puts size and transparency in the base, so `sx` can still override them. Toast keeps its tween frame and forwards the caller ref from the same host callback. LoadingStroke stays a raw spread: it is a `UIStroke`, and resolved `sx` is GuiObject props. Snackbar forwards `sx` to Toast. Autocomplete forwards `sx` to Select. VirtualList keeps its scroll frame for measurement and forwards the caller ref. `CanvasSize` stays explicit, so it still wins over `sx`. List padding and ImageList cell padding stay on those layout instances. EnumPicker and NumberInput forward `sx` to Select and Input. Menu has no `sx`.
 
 ### Theme component overrides
 

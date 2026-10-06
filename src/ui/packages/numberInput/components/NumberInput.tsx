@@ -19,7 +19,7 @@ export interface NumberInputProps {
 }
 
 function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
-	const { value, onChange, min, max, step, disabled, readOnly, loading, placeholder, width, size, reducedMotion, className, id, ref } =
+	const { value, onChange, min, max, step, disabled, readOnly, loading, placeholder, width, size, reducedMotion, className, sx, id, ref } =
 		props;
 
 	return (
@@ -27,6 +27,7 @@ function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
 			id={id || "NumberInput"}
 			ref={ref}
 			className={className}
+			sx={sx}
 			text={tostring(value)}
 			placeholder={placeholder}
 			width={width}

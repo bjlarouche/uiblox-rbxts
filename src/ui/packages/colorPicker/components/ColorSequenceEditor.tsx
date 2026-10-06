@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { canActivate } from "ui/packages/button/components/activation";
 import ColorPicker from "./ColorPicker";
 import useColorPickerStyles from "./ColorPicker.styles";
@@ -37,7 +38,7 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 	};
 
 	return (
-		<frame key={id || "ColorSequenceEditor"} ref={ref} {...styles.root} {...className} {...sx} Selectable={false}>
+		<SxHost tag="frame" key={id || "ColorSequenceEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }} Selectable={false}>
 			<uilistlayout {...styles.column} />
 			<frame
 				key="Bar"
@@ -116,7 +117,7 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 					}}
 				/>
 			)}
-		</frame>
+		</SxHost>
 	);
 }
 

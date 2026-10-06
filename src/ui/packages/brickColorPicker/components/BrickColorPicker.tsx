@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "@rbxts/react";
 import { cx, CustomizedProps, useTheme } from "theme";
+import { SxHost } from "ui/packages/host";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Input } from "ui/packages/input";
 import { Popup } from "ui/packages/popup";
@@ -39,7 +40,7 @@ function BrickColorPicker(props: CustomizedProps<Frame, BrickColorPickerProps>) 
 	};
 
 	return (
-		<frame key={id || "BrickColorPicker"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "BrickColorPicker"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<textbutton
 				key="Trigger"
 				ref={setAnchor}
@@ -121,7 +122,7 @@ function BrickColorPicker(props: CustomizedProps<Frame, BrickColorPickerProps>) 
 					</frame>
 				</Popup>
 			)}
-		</frame>
+		</SxHost>
 	);
 }
 

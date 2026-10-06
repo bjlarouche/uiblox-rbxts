@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { ColorSequenceEditor, NumberSequenceEditor } from "ui/packages/colorPicker";
 import { NumberInput } from "ui/packages/numberInput";
 import { Switch } from "ui/packages/switch";
@@ -20,7 +21,7 @@ function GradientEditor(props: CustomizedProps<Frame, GradientEditorProps>) {
 	const styles = useGradientEditorStyles();
 
 	return (
-		<frame key={id || "GradientEditor"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "GradientEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.column} />
 			<frame key="Color" {...styles.block} LayoutOrder={1}>
 				<uilistlayout {...styles.column} />
@@ -72,7 +73,7 @@ function GradientEditor(props: CustomizedProps<Frame, GradientEditorProps>) {
 					onChange={(enabled) => onChange(patchGradientEnabled(value, enabled))}
 				/>
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 

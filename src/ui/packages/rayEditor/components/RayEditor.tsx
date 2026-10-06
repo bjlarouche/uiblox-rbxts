@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { VectorEditor } from "ui/packages/vectorEditor";
 import useRayEditorStyles from "./RayEditor.styles";
 
@@ -14,7 +15,7 @@ function RayEditor(props: CustomizedProps<Frame, RayEditorProps>) {
 	const styles = useRayEditorStyles();
 
 	return (
-		<frame key={id || "RayEditor"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "RayEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.column} />
 			<frame key="Origin" {...styles.row} LayoutOrder={1}>
 				<uilistlayout {...styles.column} />
@@ -34,7 +35,7 @@ function RayEditor(props: CustomizedProps<Frame, RayEditorProps>) {
 					onChange={(direction) => onChange(new Ray(value.Origin, direction as Vector3))}
 				/>
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { UserInputService } from "@rbxts/services";
 import { CustomizedProps, useTheme } from "theme";
+import { SxHost } from "ui/packages/host";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Input } from "ui/packages/input";
 import { NumberInput } from "ui/packages/numberInput";
@@ -290,7 +291,7 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 	}, [shown, value]);
 
 	return (
-		<frame key={id || "ColorPicker"} ref={ref} {...styles.field} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "ColorPicker"} hostRef={ref} base={styles.field} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.rowLayout} />
 			<textbutton
 				key="Swatch"
@@ -355,7 +356,7 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 					</frame>
 				</Popup>
 			)}
-		</frame>
+		</SxHost>
 	);
 }
 
