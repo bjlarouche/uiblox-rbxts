@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { Orientations } from "ui/enums";
+import { SxHost } from "ui/packages/host";
 import { dividerLabel } from "./dividerLabel";
 import useDividerStyles from "./Divider.styles";
 
@@ -25,16 +26,25 @@ function Divider<T extends DefaultDividerComponent>(props: CustomizedProps<T, Di
 	const label = dividerLabel(text);
 	if (label !== undefined && orientation !== Orientations.Vertical) {
 		return (
-			<frame key={id || "Divider"} ref={ref as React.Ref<Frame>} {...shell} {...className} {...sx}>
+			<SxHost tag="frame" key={id || "Divider"} hostRef={ref} base={shell} className={className} sx={sx}>
 				<frame key="Line" {...line} />
 				<textlabel key="Label" {...caption} Text={label}>
 					<uipadding {...captionPad} />
 				</textlabel>
-			</frame>
+			</SxHost>
 		);
 	}
 
-	return <frame key={id || "Divider"} ref={ref as React.Ref<Frame>} {...root} BorderSizePixel={0} {...className} {...sx} />;
+	return (
+		<SxHost
+			tag="frame"
+			key={id || "Divider"}
+			hostRef={ref}
+			base={{ ...root, BorderSizePixel: 0 }}
+			className={className}
+			sx={sx}
+		/>
+	);
 }
 
 export default Divider;

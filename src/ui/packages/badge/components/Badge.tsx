@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { badgeText } from "./badgeValue";
+import { SxHost } from "ui/packages/host";
 import useBadgeStyles, { BadgeColor } from "./Badge.styles";
 
 export interface BadgeProps {
@@ -18,7 +19,7 @@ function Badge(props: CustomizedProps<Frame, BadgeProps>) {
 	const isDot = variant === "dot";
 	const shown = !invisible && (isDot || count > 0);
 	return (
-		<frame key={id || "Badge"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Badge"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			{children}
 			{shown && (
 				<textlabel key="Count" {...styles.badge} Text={isDot ? "" : badgeText(count, max)}>
@@ -26,7 +27,7 @@ function Badge(props: CustomizedProps<Frame, BadgeProps>) {
 					<uicorner {...styles.corner} />
 				</textlabel>
 			)}
-		</frame>
+		</SxHost>
 	);
 }
 

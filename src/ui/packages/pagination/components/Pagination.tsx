@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { ControlSize, cx, CustomizedProps } from "theme";
 import { pageRange } from "./pageRange";
+import { SxHost } from "ui/packages/host";
 import usePaginationStyles, { PaginationVariant } from "./Pagination.styles";
 
 export interface PaginationProps {
@@ -19,7 +20,7 @@ function Pagination(props: CustomizedProps<Frame, PaginationProps>) {
 	const styles = usePaginationStyles({ size, variant });
 	const tokens = pageRange(count, page, siblingCount, boundaryCount);
 	return (
-		<frame key={id || "Pagination"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "Pagination"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.list} />
 			<>
 			{tokens.map((item, index) =>
@@ -41,7 +42,7 @@ function Pagination(props: CustomizedProps<Frame, PaginationProps>) {
 				),
 			)}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

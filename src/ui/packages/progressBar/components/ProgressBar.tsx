@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "@rbxts/react";
 import { useReducedMotion } from "hooks";
 import { CustomizedProps, useTheme } from "theme";
 import { loopProperty, progressSpin, progressUnit } from "ui/packages/motion";
+import { SxHost } from "ui/packages/host";
 import useProgressBarStyles from "./ProgressBar.styles";
 
 export interface ProgressBarProps {
@@ -35,7 +36,7 @@ function ProgressBar(props: CustomizedProps<Frame, ProgressBarProps>) {
 	}, [motion, unit]);
 
 	return (
-		<frame key={id || "ProgressBar"} ref={ref} {...container} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "ProgressBar"} hostRef={ref} base={container} className={className} sx={sx} state={{ disabled }}>
 			<frame key="Bar" {...outer}>
 				<uicorner key="Corner" {...corner} />
 				<uistroke {...stroke} />
@@ -52,7 +53,7 @@ function ProgressBar(props: CustomizedProps<Frame, ProgressBarProps>) {
 					</frame>
 				</frame>
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 
