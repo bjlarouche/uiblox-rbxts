@@ -2,13 +2,35 @@
 
 # uiblox-rbxts
 
+> This package is a work in progress.
+
 UI library and theming for roblox-ts projects.
+
+## Background
+
+Roblox has their own internal design system, coined "uiblox-web", that it uses for its new
+web-facing products. This system offers reusable components, implemented in
+React Typescript, that are derived from material UI (MUI). As well, it offers a
+common theme/pallete for consistent UI/UX.
+
+Anyone is able to view their design system as
+[UIBlox-Web](https://uiblox.roblox.com). You can see that they leverage
+[Storybook](https://storybook.js.org), a UI component explorer for frontend
+developers, to render component previews.
+
+Design systems all help engineers cut down on implementation time and ensure
+consitent UX across products.
 
 ## Overview
 
-Uiblox is a roblox-ts UI kit: semantic themes, `makeStyles` / `createStyles`, and typed React components for Studio and games. Public APIs aim for familiar Material UI–style capability (props and behavior), implemented independently for Roblox Instances, input modes, and performance.
+So what is uiblox-rbxts? Simply put, its my stab at a design system that mimics
+uiblox-web for games written using roblox-ts.
 
-Main exports from `@rbxts/uiblox`:
+UIBlox-rbxts aims to provide extensible components that can be reusable by
+anyone who installs this npm package. It also offers a theme and styling system
+that aids UI/UX consistentency.
+
+How does it do this? Well, there are two main exports from this package:
 
 -   @rbxts/uiblox -> theme
     -   An extensible Theme type + default Dark (default) and Light themes
@@ -24,47 +46,11 @@ Main exports from `@rbxts/uiblox`:
 
 ### Installation
 
-```
-npm install @rbxts/uiblox
-```
+Install the package to get started.
 
-## Quickstart
+`npm install @rbxts/uiblox`
 
-1. Wrap your app (or a subtree) in `ThemeProvider` with `DarkTheme` or `LightTheme`.
-2. Build styles with `makeStyles` / `createStyles` (or `componentStyles`) and spread them onto Instances.
-3. For hover/press/focus/disabled (and list `_first` / `_last`), put `_hover`-style keys on the style table and call `resolveStyle(style, state)` before spreading.
-4. Use packaged components from `@rbxts/uiblox` (`Button`, `Input`, `Select`, …).
-5. Preview components in [Storyblox](https://github.com/bjlarouche/storyblox) with `*.stories` modules.
-
-Token reference (spacing, density, typography, shape, palette, `resolveStyle`): [docs/STYLING.md](docs/STYLING.md).
-
-```tsx
-import React from "@rbxts/react";
-import { Button, DarkTheme, ThemeProvider } from "@rbxts/uiblox";
-
-export function App() {
-	return (
-		<ThemeProvider theme={DarkTheme}>
-			<Button text="Continue" onLeftClick={() => {}} />
-		</ThemeProvider>
-	);
-}
-```
-
-## Parity checklist
-
-Capability parity, not pixel parity. For each public component, expect:
-
-- [ ] Typed controlled props where interaction needs state
-- [ ] Theme tokens (light/dark) via `ThemeProvider`
-- [ ] Style slots / variants through the styling helpers
-- [ ] Disabled / loading / error when the control type warrants it
-- [ ] Mouse, touch, and gamepad-friendly activation where interactive
-- [ ] Cleanup and focused unit checks in-repo
-- [ ] `stateMatrix` rows for visual capture planning
-- [ ] A Storyblox story (dev fixtures OK)
-
-Skipped on purpose: browser-only addons (MDX, iframes, hosted visual-review clouds).
+Spacing, density, and sx notes are in [docs/STYLING.md](docs/STYLING.md).
 
 ## Example
 
@@ -210,74 +196,6 @@ const useMyComponentStyles = makeStyles<MyComponentProps>((theme: Theme, props: 
 
 export default useMyComponentStyles;
 ```
-
-### Style precedence
-
-Components spread their own styles first, then `className`, then the props that
-carry state. Later always wins:
-
-1. Component styles from the theme
-2. `className` (merge several with `cx(a, condition && b)`; later args win, falsy
-   args are skipped)
-3. State props the component owns: `Active`, `Selectable`, `Text`, and the
-   value-driven sizes/positions of Slider, SplitPane, and so on
-
-So `className` can restyle anything except a control's state. Pass `disabled`
-instead of overriding `Active`.
-
-### Controls
-
-Inputs are controlled: `{ value, onChange, disabled? }`. They call `onChange`
-only when the value actually changes, and never while disabled.
-
-| Component | Value | Notes |
-| --- | --- | --- |
-| Checkbox | `boolean` | `mixed` shows indeterminate; activating commits `true` |
-| Switch | `boolean` | |
-| RadioGroup / Select / Tabs | `T` from `options: { label, value: T, disabled? }[]` | compared by identity; disabled options are skipped |
-| NumberInput | `number` | commits on focus lost or Enter; clamps to `min`/`max`, snaps to `step` |
-| Slider | `number` | `onChange` while dragging, `onCommit` on release |
-| SplitPane | first pane size (px) | display clamps to `min`/`max`; Escape cancels a drag |
-| Input | `text` | `onInput` while typing, `onTextChanged` on commit |
-
-Select and Tooltip render through `Popup`, which portals into the nearest
-`LayerCollector` so clipping parents do not cut them off. The popup follows its
-anchor when that anchor moves or resizes, and Select closes if the anchor leaves
-the layer. Select handles Up, Down, Enter, and Escape while it is open or
-selected, including when the pointer is not over it.
-
-### Loading
-
-`Skeleton` covers a block that is still loading. `variant` is `text`,
-`rectangular`, `rounded`, or `circular`. `width` and `height` are pixels.
-`lines` and `gap` stack text rows. `SkeletonText` is the text variant.
-`animation` is `pulse`, `shimmer`, or `false`. `reducedMotion` holds the block
-still. A later theme preference can set that prop for you.
-
-`CircularProgress` spins while `value` is omitted. A `value` from 0 to 1 draws
-an arc and stops the spin. `size`, `thickness`, and `color` restyle the ring.
-`LinearProgress` is the existing `ProgressBar`: pass `value` from 0 to 1 or
-`progress` from 0 to 100. `indeterminate` slides the bar. `disabled` and
-`reducedMotion` stop the motion and fade the fill.
-
-`Button` and `IconButton` take `loading`. The control ignores clicks, hover,
-and focus while loading, and its size stays put. `loadingLabel` replaces the
-caption. `loadingPosition` is `start`, `center`, or `end`. `reducedMotion`
-keeps the spinner still.
-
-### State captures
-
-`stateMatrix` is the gallery list for Storyblox. Each row is one shot: `theme`
-(`Dark` or `Light`), `width`, and `pointer` (`rest`, `hover`, `press`, or
-`focus`). Rows are built in small helper functions and concatenated so the
-compiled Luau chunk stays under the 200-local register limit. `open` means the
-Select list is showing. `options` and `disabledOption` build RadioGroup, Select,
-and Tabs. `selected` and `filter` are TreeView. `value`, `text`, `disabled`,
-`loading`, `mixed`, `hasError`, and `placeholder` are that control's props.
-`variant`, `animation` (`pulse`, `shimmer`, or `false`), `reducedMotion`, and
-`indeterminate` cover skeleton and progress shots. Those shots stay still when
-`animation` is `false` or `reducedMotion` is set. Hover, press, and focus rows
-are only there when the control actually changes.
 
 ### Client
 

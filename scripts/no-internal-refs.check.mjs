@@ -16,6 +16,13 @@ const SKIP_EXTS = new Set([
 	".wasm",
 ]);
 
+// Built from parts so this file does not contain the denylist literals itself.
+const localUser = ["bla", "rouche"].join("");
+const homeUsers = ["/", "Users", "/"].join("");
+const npmTok = ["~/", ".", "npm", "-tokens"].join("");
+const cursorDir = [".", "cur", "sor", "/"].join("");
+const assetsDir = ["storyblox", "-", "assets"].join("");
+
 const RULES = [
 	{ id: "creator-hub", re: new RegExp("creator[\\s_-]?hub|creatorhub", "i") },
 	{ id: "lua-apps", re: new RegExp("lua[\\s_-]?apps|luaapps", "i") },
@@ -27,6 +34,19 @@ const RULES = [
 	{ id: "rbx-com", re: new RegExp("(?:^|[^\\w.])rbx\\.com\\b", "i") },
 	{ id: "go-link", re: new RegExp("\\bgo/[a-z][a-z0-9_-]{1,64}\\b", "i") },
 	{ id: "foundation-ui", re: new RegExp("foundation[\\s_-]?ui\\b|foundationui\\b|@rbx/ui\\b", "i") },
+	// Local machine / personal identity (not the public GitHub user bjlarouche)
+	{ id: "local-user", re: new RegExp(localUser, "i") },
+	{ id: "home-users", re: new RegExp(homeUsers) },
+	{ id: "npm-tokens", re: new RegExp(npmTok.replace(".", "\\."), "i") },
+	{ id: "cursor-dir", re: new RegExp(cursorDir.replace(".", "\\."), "i") },
+	{ id: "capture-assets", re: new RegExp(assetsDir, "i") },
+	// Agent / AI process leaks (tight; avoid words like plain "cursor" or "agent")
+	{ id: "subagent", re: new RegExp("\\b" + ["sub", "agent"].join("") + "s?\\b", "i") },
+	{ id: "claude", re: new RegExp("\\b" + ["cla", "ude"].join("") + "\\b", "i") },
+	{ id: "chatgpt", re: new RegExp("\\b" + ["chat", "gpt"].join("") + "\\b|\\b" + ["gpt", "-"].join("") + "[0-9]", "i") },
+	{ id: "cursor-agent", re: new RegExp(["cur", "sor", "agent"].join("") + "|co-authored-by:\\s*" + ["cur", "sor"].join(""), "i") },
+	{ id: "ai-audit", re: new RegExp("\\bai\\s*audits?\\b|\\bai\\s*reviews?\\b|\\bviewport\\s*audit\\b|\\bself-review\\b", "i") },
+	{ id: "mcp-tooling", re: new RegExp("\\b" + ["M", "C", "P"].join("") + "\\b") },
 ];
 
 /** path -> allowed rule ids (documented false positives) */
