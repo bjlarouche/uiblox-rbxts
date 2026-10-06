@@ -70,6 +70,7 @@ const md = htmlToMarkdown(
 );
 if (!md.includes("# Title")) throw new Error("html h1");
 if (!md.includes("**world**")) throw new Error("html strong");
+if (!md.includes("Hello **world** and *friends*.")) throw new Error("html spaces");
 if (!md.includes("*friends*")) throw new Error("html em");
 if (!md.includes("- One")) throw new Error("html ul");
 if (!md.includes("```")) throw new Error("html pre");
