@@ -38,7 +38,7 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 	return createStyles({
 		container: {
 			Size: new UDim2(0, theme.spacing.calc(20), 0, theme.spacing.calc(4)),
-			Position: INACTIVE_POSITION,
+			Position: ACTIVE_POSITION,
 			BackgroundColor3: toastColors.background,
 			AnchorPoint: new Vector2(0.5, 1),
 			BorderSizePixel: 0,
