@@ -2,7 +2,7 @@ import React from "@rbxts/react";
 import { ControlSize, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { ChoiceOption } from "ui/packages/radioGroup";
-import useToggleButtonStyles from "./ToggleButton.styles";
+import useToggleButtonStyles, { ToggleButtonOrientation } from "./ToggleButton.styles";
 
 export interface ToggleButtonProps {
 	label: string;
@@ -45,11 +45,12 @@ export interface ToggleButtonGroupProps<T> {
 	onChange: (value: T) => void;
 	disabled?: boolean;
 	size?: ControlSize;
+	orientation?: ToggleButtonOrientation;
 }
 
 export function ToggleButtonGroup<T>(props: CustomizedProps<Frame, ToggleButtonGroupProps<T>>) {
-	const { value, options, onChange, disabled, size, className, sx, id, ref } = props;
-	const styles = useToggleButtonStyles({ size });
+	const { value, options, onChange, disabled, size, orientation, className, sx, id, ref } = props;
+	const styles = useToggleButtonStyles({ size, orientation });
 	return (
 		<frame key={id || "ToggleButtonGroup"} ref={ref} {...styles.group} {...className} {...sx}>
 			<uilistlayout {...styles.list} />

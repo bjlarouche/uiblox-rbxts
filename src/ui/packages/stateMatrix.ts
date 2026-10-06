@@ -361,6 +361,7 @@ function miscRows(): StateCapture[] {
 		...pair("ToggleButton", "size-small", { size: "small" }),
 		...pair("ToggleButtonGroup", "default", { value: "Left", options: ["Left", "Center", "Right"] }),
 		...pair("ToggleButtonGroup", "selected", { value: "Center", options: ["Left", "Center", "Right"] }),
+		...pair("ToggleButtonGroup", "vertical", { value: "Center", options: ["Left", "Center", "Right"], variant: "vertical" }),
 		...pair("Link", "default", { text: "Open docs" }),
 		...pair("Link", "hover-underline", { text: "Open docs", variant: "hover", pointer: "hover" }),
 		...pair("Link", "disabled", { text: "Open docs", disabled: true }),
