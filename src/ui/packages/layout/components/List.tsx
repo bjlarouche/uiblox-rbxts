@@ -1,6 +1,7 @@
 
 import React from "@rbxts/react";
 import { componentStyles, Theme, createStyles, WriteableStyle, CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 
 export interface ListProps {
 	padding?: UDim;
@@ -63,10 +64,10 @@ function List(props: CustomizedProps<Frame, ListProps>) {
 	});
 
 	return (
-		<frame key={id || 'List'} ref={ref} {...baseList} {...className} {...sx}>
+		<SxHost tag="frame" key={id || 'List'} hostRef={ref} base={baseList} className={className} sx={sx}>
 			<uilistlayout key="ListLayout" {...baseLayout} />
 			{children}
-		</frame>
+		</SxHost>
 	);
 }
 

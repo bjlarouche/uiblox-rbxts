@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { imageListTitle } from "./imageListLayout";
 import useImageListStyles from "./ImageList.styles";
 
@@ -20,7 +21,7 @@ function ImageList(props: CustomizedProps<Frame, ImageListProps>) {
 	const { items, cols, gap, itemSize, onItemActivated, className, sx, id, ref } = props;
 	const styles = useImageListStyles({ cols, gap, itemSize });
 	return (
-		<frame key={id || "ImageList"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "ImageList"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			<uigridlayout {...styles.grid} />
 			<>
 				{items.map((item, index) => {
@@ -45,7 +46,7 @@ function ImageList(props: CustomizedProps<Frame, ImageListProps>) {
 					);
 				})}
 			</>
-		</frame>
+		</SxHost>
 	);
 }
 

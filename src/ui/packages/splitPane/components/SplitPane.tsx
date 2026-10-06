@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
+import { SxHost } from "ui/packages/host";
 import useSplitPaneStyles from "./SplitPane.styles";
 import { splitHitTransparency, splitMarkTransparency, splitPointer, splitRuleTransparency } from "./splitLook";
 import { clampSplit, splitBoxDims, splitRuleDims, toUDim2 } from "./splitSize";
@@ -51,7 +52,7 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 	}, [body, vertical]);
 
 	return (
-		<frame key={id || "SplitPane"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "SplitPane"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<frame key="Body" ref={setBody} {...styles.body}>
 				<frame key="First" {...styles.pane} Size={along(size)}>
 					{first}
@@ -130,7 +131,7 @@ function SplitPane(props: CustomizedProps<Frame, SplitPaneProps>) {
 					/>
 				)}
 			</frame>
-		</frame>
+		</SxHost>
 	);
 }
 

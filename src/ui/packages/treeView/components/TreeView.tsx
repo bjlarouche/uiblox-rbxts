@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "@rbxts/react";
 import { cx, CustomizedProps, useTheme, WriteableStyle } from "theme";
+import { SxHost } from "ui/packages/host";
 import { Icon } from "ui/packages/icon";
 import { Typography } from "ui/packages/typography";
 import { VirtualList, VirtualListHandle } from "ui/packages/virtualList";
@@ -165,7 +166,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 	};
 
 	return (
-		<frame key={id || "TreeView"} ref={ref} {...root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "TreeView"} hostRef={ref} base={root} className={className} sx={sx}>
 			<Typography
 				className={{ Text: tree.title, ...header } as WriteableStyle<TextLabel>}
 				color={"textSecondary"}
@@ -182,7 +183,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 				className={list}
 				renderItem={(entry) => renderRow(entry)}
 			/>
-		</frame>
+		</SxHost>
 	);
 }
 

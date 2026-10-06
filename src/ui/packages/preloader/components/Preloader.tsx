@@ -1,6 +1,7 @@
 import React, { useState, useMemo, ComponentType, useEffect } from "@rbxts/react";
 import { useAsyncEffect, useDeferState } from "@rbxts/pretty-react-hooks";
 import { ContentProvider } from "@rbxts/services";
+import { SxHost } from "ui/packages/host";
 import { ProgressBar } from "ui/packages/progressBar";
 import { CustomizedProps } from "theme";
 import usePreloaderStyles from "./Preloader.styles";
@@ -99,7 +100,7 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 			{loaded ? (
 				{ children }
 			) : (
-				<frame key={id || "Preloader"} ref={ref} {...container} {...className} {...sx}>
+				<SxHost tag="frame" key={id || "Preloader"} hostRef={ref} base={container} className={className} sx={sx}>
 					{Adornment !== undefined && <Adornment progress={percentage} />}
 
 					{icon !== undefined && <imagelabel {...logo} />}
@@ -113,7 +114,7 @@ function Preloader(props: CustomizedProps<Frame, PreloaderProps>) {
 							<ProgressBar className={progressBar} progress={percentage} />
 						</>
 					)}
-				</frame>
+				</SxHost>
 			)}
 		</>
 	);

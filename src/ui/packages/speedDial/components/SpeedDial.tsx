@@ -2,6 +2,7 @@ import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
 import { Fab } from "ui/packages/fab";
+import { SxHost } from "ui/packages/host";
 import useSpeedDialStyles, { SpeedDialDirection } from "./SpeedDial.styles";
 
 export interface SpeedDialAction {
@@ -39,7 +40,7 @@ function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
 	const mainOrder = mainFirst ? 0 : 1000;
 	const actionBase = mainFirst ? 1 : 0;
 	return (
-		<frame key={id || "SpeedDial"} ref={ref} {...styles.root} {...className} {...sx}>
+		<SxHost tag="frame" key={id || "SpeedDial"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			<uilistlayout {...styles.list} />
 			{open && (
 				<>
@@ -65,7 +66,7 @@ function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
 				onClick={() => onOpenChange(!open)}
 				className={{ LayoutOrder: mainOrder }}
 			/>
-		</frame>
+		</SxHost>
 	);
 }
 

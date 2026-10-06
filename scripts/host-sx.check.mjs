@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 
 globalThis.typeOf = (value) => {
 	if (value instanceof globalThis.UDim) return "UDim";
@@ -111,6 +112,13 @@ const hosts = [
 	"src/ui/packages/tooltip/components/Tooltip.tsx",
 	"src/ui/packages/skeleton/components/Skeleton.tsx",
 	"src/ui/packages/circularProgress/components/CircularProgress.tsx",
+	"src/ui/packages/imageList/components/ImageList.tsx",
+	"src/ui/packages/layout/components/List.tsx",
+	"src/ui/packages/preloader/components/Preloader.tsx",
+	"src/ui/packages/speedDial/components/SpeedDial.tsx",
+	"src/ui/packages/splitPane/components/SplitPane.tsx",
+	"src/ui/packages/treeView/components/TreeView.tsx",
+	"src/ui/packages/virtualList/components/VirtualList.tsx",
 ];
 for (const file of hosts) {
 	const text = readFileSync(file, "utf8");
@@ -119,7 +127,7 @@ for (const file of hosts) {
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table", "Toast", "Tooltip", "Skeleton", "CircularProgress"]) {
+for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table", "Toast", "Tooltip", "Skeleton", "CircularProgress", "ImageList", "List", "Preloader", "SpeedDial", "SplitPane", "TreeView", "VirtualList"]) {
 	if (stateMatrix.filter((row) => row.component === component && row.name.includes("-sx-")).length !== 2) {
 		throw new Error(`${component} sx matrix`);
 	}
@@ -138,5 +146,37 @@ if (!autocomplete.includes("sx={sx}") || !select.includes("<SxHost") || !select.
 }
 const stroke = readFileSync("src/ui/packages/loadingStroke/components/LoadingStroke.tsx", "utf8");
 if (!stroke.includes("<uistroke") || !stroke.includes("{...sx}")) throw new Error("loading stroke host");
+
+const rawSxAllowed = new Set([
+	"src/ui/packages/loadingStroke/components/LoadingStroke.tsx",
+	"src/ui/packages/markdown/components/Markdown.tsx",
+	"src/ui/packages/markdown/components/MarkdownEditor.tsx",
+	"src/ui/packages/assetField/components/AssetField.tsx",
+	"src/ui/packages/brickColorPicker/components/BrickColorPicker.tsx",
+	"src/ui/packages/cframeEditor/components/CFrameEditor.tsx",
+	"src/ui/packages/colorPicker/components/ColorPicker.tsx",
+	"src/ui/packages/colorPicker/components/ColorSequenceEditor.tsx",
+	"src/ui/packages/colorPicker/components/NumberSequenceEditor.tsx",
+	"src/ui/packages/fontEditor/components/FontEditor.tsx",
+	"src/ui/packages/gradientEditor/components/GradientEditor.tsx",
+	"src/ui/packages/numberRangeEditor/components/NumberRangeEditor.tsx",
+	"src/ui/packages/physicalPropertiesEditor/components/PhysicalPropertiesEditor.tsx",
+	"src/ui/packages/rayEditor/components/RayEditor.tsx",
+	"src/ui/packages/rectEditor/components/RectEditor.tsx",
+	"src/ui/packages/udimEditor/components/UDimEditor.tsx",
+	"src/ui/packages/vectorEditor/components/VectorEditor.tsx",
+]);
+function walkTsx(dir, out = []) {
+	for (const name of readdirSync(dir)) {
+		const path = join(dir, name);
+		if (statSync(path).isDirectory()) walkTsx(path, out);
+		else if (name.endsWith(".tsx")) out.push(path);
+	}
+	return out;
+}
+for (const file of walkTsx("src/ui/packages")) {
+	if (!readFileSync(file, "utf8").includes("{...sx}")) continue;
+	if (!rawSxAllowed.has(file)) throw new Error(`${file} still spreads sx`);
+}
 
 console.log("host sx ok");

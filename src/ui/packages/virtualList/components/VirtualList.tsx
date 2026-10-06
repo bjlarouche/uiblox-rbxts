@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { useDragScroll } from "ui/packages/scroll";
 import useVirtualListStyles from "./VirtualList.styles";
 import {
@@ -129,20 +130,22 @@ function VirtualList<T>(props: CustomizedProps<ScrollingFrame, VirtualListProps<
 	}
 
 	return (
-		<scrollingframe
+		<SxHost
+			tag="scrollingframe"
 			key={id || "VirtualList"}
-			ref={(rbx) => {
+			hostRef={(rbx: ScrollingFrame | undefined) => {
 				setFrame(rbx);
-				if (typeIs(ref, "function")) ref(rbx);
+				if (typeIs(ref, "function")) ref(rbx as ScrollingFrame);
 				else if (ref) (ref as React.MutableRefObject<ScrollingFrame | undefined>).current = rbx;
 			}}
-			{...styles.root}
-			{...className} {...sx}
+			base={styles.root}
+			className={className}
+			sx={sx}
 			CanvasSize={UDim2.fromOffset(0, canvasHeight)}
 		>
 			{count === 0 ? empty : rows}
 			{children}
-		</scrollingframe>
+		</SxHost>
 	);
 }
 
