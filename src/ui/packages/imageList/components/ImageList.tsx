@@ -1,13 +1,14 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { SxHost } from "ui/packages/host";
-import { imageListSelected, imageListTitle } from "./imageListLayout";
+import { imageListCell, imageListItemAspect, imageListSelected, imageListTitle } from "./imageListLayout";
 import useImageListStyles from "./ImageList.styles";
 
 export interface ImageListItem {
 	src: string;
 	title?: string;
 	color?: Color3;
+	aspect?: number;
 }
 
 export interface ImageListProps {
@@ -25,15 +26,17 @@ function ImageList(props: CustomizedProps<Frame, ImageListProps>) {
 	const styles = useImageListStyles({ cols, gap, itemSize, aspect });
 	return (
 		<SxHost tag="frame" key={id || "ImageList"} hostRef={ref} base={styles.root} className={className} sx={sx}>
-			<uigridlayout {...styles.grid} />
+			<uilistlayout {...styles.flow} />
 			<>
 				{items.map((item, index) => {
 					const title = imageListTitle(item.title);
 					const picked = imageListSelected(selected, index);
+					const cell = imageListCell(itemSize, imageListItemAspect(item.aspect, aspect));
 					return (
 						<imagebutton
 							key={`Tile-${index}`}
 							{...styles.tile}
+							Size={UDim2.fromOffset(cell.width, cell.height)}
 							{...(item.color !== undefined ? { BackgroundColor3: item.color } : {})}
 							LayoutOrder={index}
 							Event={{

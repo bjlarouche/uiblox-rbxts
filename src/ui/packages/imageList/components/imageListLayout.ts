@@ -18,6 +18,12 @@ export function imageListAspect(aspect?: number) {
 	return aspect;
 }
 
+/** Item ratio wins. The list ratio is used when the item does not set one. */
+export function imageListItemAspect(item?: number, list?: number) {
+	if (item !== undefined && item > 0) return item;
+	return imageListAspect(list);
+}
+
 export function imageListCell(itemSize?: number, aspect?: number) {
 	const width = imageListItemSize(itemSize);
 	const height = math.max(1, math.floor(width / imageListAspect(aspect)));
