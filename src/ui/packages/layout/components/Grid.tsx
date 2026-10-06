@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { componentStyles, Theme, createStyles, WriteableStyle, CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import { GridCorner, gridCornerKey, gridMaxCells } from "./gridProps";
 
 export interface GridProps {
@@ -87,10 +88,10 @@ function Grid(props: CustomizedProps<Frame, GridProps>) {
 	});
 
 	return (
-		<frame key={id || "Grid"} ref={ref} {...baseGrid} {...className} {...sx}>
+		<SxHost key={id || "Grid"} hostRef={ref} base={baseGrid} className={className} sx={sx}>
 			<uigridlayout key="GridLayout" {...baseLayout} />
 			{children}
-		</frame>
+		</SxHost>
 	);
 }
 

@@ -7,7 +7,7 @@ Theme tokens + style helpers for Roblox Instance props. No CSS string parser.
 | Web / MUI | Uiblox | Status |
 | --- | --- | --- |
 | `makeStyles` / `createStyles` | `makeStyles` / `createStyles` | yes — slot maps, theme-aware |
-| `sx` prop (CSS + tokens) | `resolveSx(theme, sx, width?)` → `{ root, padding?, corner?, gap? }` | yes — shorthands; kit `sx` prop stays raw Instance props unless you resolve |
+| `sx` prop (CSS + tokens) | `sx` on `SxHost` (Box, Paper, Stack, FlexItem, Grid, Container, …) | yes — shorthands resolve on the host; raw Instance keys still pass through |
 | `className` + `cx` | `className` / `cx` — last spread wins | yes — use `cx(className, resolveSx(…).root)` then `…sx` if raw |
 | `:hover` / `:active` / `:focus` | `_hover` / `_pressed` / `_focus` via `resolveStyle` | yes |
 | `:focus-visible` | `_focusVisible` + `focusVisible` state | yes — author sets flag (Selection + keyboard) |
@@ -121,7 +121,16 @@ const painted = resolveStyle(classes.root, { hover, pressed, focusVisible, disab
 
 Order (later wins): `_first` → `_last` → `_odd` → `_even` → `_selected` → `_checked` → `_loading` → `_hover` → `_pressed` → `_focus` → `_focusVisible` → `_disabled`.
 
-Compose: `cx(slotStyles, className, resolveSx(theme, sx).root)` — last key wins. Kit components still spread `{...className}{...sx}` as raw props.
+Compose: `className` then `sx` (sx wins), then explicit host props. `SxHost` tracks hover, press, and focus and runs `resolveStyle` unless `state` overrides a flag. `_disabled` follows `state.disabled`. An existing `UIPadding`, `UICorner`, or layout `Padding` / `CellPadding` child wins over sx `p` / `radius` / `gap`.
+
+```tsx
+<Box sx={{ p: 2, bgcolor: "surface.paper", radius: 4 }} />
+<Stack direction="row" sx={{ gap: 2, width: { phone: 160, desktop: 320 } }}>
+	<textlabel Text="A" />
+</Stack>
+```
+
+`resolveSx` remains for callers that paint their own host. Responsive `sx` maps follow the host width after mount (`phone` < 600 ≤ `tablet` < 960 ≤ `desktop`).
 
 ### Theme component overrides
 
