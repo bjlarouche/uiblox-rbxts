@@ -1,19 +1,21 @@
 import React from "@rbxts/react";
 import { CustomizedProps, useTheme } from "theme";
 import { SxHost } from "ui/packages/host";
-import { sparklineLayout } from "../sparklineLayout";
+import { sparklineArea, sparklineLayout } from "../sparklineLayout";
 
 export interface SparklineProps {
 	values: number[];
 	width?: number;
 	height?: number;
 	color?: Color3;
+	area?: boolean;
 }
 
 function Sparkline(props: CustomizedProps<Frame, SparklineProps>) {
-	const { values, width = 120, height = 36, color, className, sx, id, ref } = props;
+	const { values, width = 120, height = 36, color, area, className, sx, id, ref } = props;
 	const { theme } = useTheme();
 	const segments = sparklineLayout(values, width, height);
+	const bars = area === true ? sparklineArea(values, width, height) : [];
 	const stroke = color ?? theme.palette.primary.main;
 
 	return (
@@ -30,6 +32,18 @@ function Sparkline(props: CustomizedProps<Frame, SparklineProps>) {
 			className={className}
 			sx={sx}
 		>
+			{bars.map((bar, index) =>
+				bar.height < 1 ? undefined : (
+					<frame
+						key={`a-${index}`}
+						Position={UDim2.fromOffset(bar.x, bar.y)}
+						Size={UDim2.fromOffset(math.max(bar.width, 1), bar.height)}
+						BackgroundColor3={stroke}
+						BackgroundTransparency={0.62}
+						BorderSizePixel={0}
+					/>
+				),
+			)}
 			{segments.map((segment, index) => (
 				<frame
 					key={`s-${index}`}
