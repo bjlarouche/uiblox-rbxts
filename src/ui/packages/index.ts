@@ -18,6 +18,7 @@ export * from "./toast";
 export * from "./treeView";
 export * from "./typography";
 export * from "./text";
+export * from "./weekGrid";
 export * from "./button";
 export * from "./checkbox";
 export * from "./colorPicker";
