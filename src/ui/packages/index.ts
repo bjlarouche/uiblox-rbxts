@@ -1,4 +1,5 @@
 export * from "./circularProgress";
+export * from "./cover";
 export * from "./skeleton";
 export * from "./divider";
 export * from "./errorBoundary";
