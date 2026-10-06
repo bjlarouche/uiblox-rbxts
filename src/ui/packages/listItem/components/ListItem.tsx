@@ -1,4 +1,6 @@
 import React from "@rbxts/react";
+import { CustomizedProps } from "theme";
+import { SxHost } from "ui/packages/host";
 import useListItemStyles from "./ListItem.styles";
 
 export interface ListItemProps {
@@ -11,13 +13,23 @@ export interface ListItemProps {
 	onActivated?: () => void;
 }
 
-function ListItem(props: ListItemProps) {
-	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, onActivated } = props;
+function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
+	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, onActivated, className, sx, id, ref } =
+		props;
 	const styles = useListItemStyles({ selected, disabled, dense });
 	return (
-		<textbutton
-			key="ListItem"
-			{...styles.root}
+		<SxHost
+			tag="textbutton"
+			key={id || "ListItem"}
+			hostRef={ref}
+			base={styles.root}
+			className={className}
+			sx={sx}
+			state={{ disabled, selected }}
+			Text=""
+			Active={!disabled}
+			Selectable={!disabled}
+			AutoButtonColor={false}
 			Event={{
 				Activated: () => {
 					if (!disabled && onActivated !== undefined) onActivated();
@@ -31,7 +43,7 @@ function ListItem(props: ListItemProps) {
 				<textlabel key="Secondary" {...styles.secondary} Text={secondary} />
 			) : undefined}
 			{divider === true ? <frame key="Divider" {...styles.divider} /> : undefined}
-		</textbutton>
+		</SxHost>
 	);
 }
 

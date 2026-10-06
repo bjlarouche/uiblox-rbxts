@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
-import { useTheme } from "theme";
+import { CustomizedProps, useTheme } from "theme";
+import { SxHost } from "ui/packages/host";
 import useEmptyListHintStyles from "./EmptyListHint.styles";
 
 export interface EmptyListHintProps {
@@ -7,11 +8,21 @@ export interface EmptyListHintProps {
 	height?: number;
 }
 
-function EmptyListHint(props: EmptyListHintProps) {
-	const { text, height } = props;
+function EmptyListHint(props: CustomizedProps<TextLabel, EmptyListHintProps>) {
+	const { text, height, className, sx, id, ref } = props;
 	const { theme } = useTheme();
 	const styles = useEmptyListHintStyles({ height: height ?? theme.spacing.calc(4) });
-	return <textlabel key="EmptyListHint" {...styles.root} Text={text} />;
+	return (
+		<SxHost
+			tag="textlabel"
+			key={id || "EmptyListHint"}
+			hostRef={ref}
+			base={styles.root}
+			className={className}
+			sx={sx}
+			Text={text}
+		/>
+	);
 }
 
 export default EmptyListHint;
