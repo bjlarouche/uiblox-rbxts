@@ -107,6 +107,10 @@ const hosts = [
 	"src/ui/packages/bottomNavigation/components/BottomNavigation.tsx",
 	"src/ui/packages/tabs/components/Tabs.tsx",
 	"src/ui/packages/table/components/Table.tsx",
+	"src/ui/packages/toast/components/Toast.tsx",
+	"src/ui/packages/tooltip/components/Tooltip.tsx",
+	"src/ui/packages/skeleton/components/Skeleton.tsx",
+	"src/ui/packages/circularProgress/components/CircularProgress.tsx",
 ];
 for (const file of hosts) {
 	const text = readFileSync(file, "utf8");
@@ -115,10 +119,24 @@ for (const file of hosts) {
 }
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
-for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table"]) {
+for (const component of ["Box", "Stack", "Paper", "Button", "IconButton", "Input", "Select", "FormLabel", "FormHelperText", "Typography", "Checkbox", "Switch", "Slider", "RadioGroup", "Alert", "Avatar", "Badge", "Divider", "Icon", "Breadcrumbs", "Pagination", "LinearProgress", "Stepper", "AppBar", "Rating", "Backdrop", "Sidebar", "Chip", "Link", "ToggleButton", "ToggleButtonGroup", "Fab", "Accordion", "BottomNavigation", "Tabs", "Table", "Toast", "Tooltip", "Skeleton", "CircularProgress"]) {
 	if (stateMatrix.filter((row) => row.component === component && row.name.includes("-sx-")).length !== 2) {
 		throw new Error(`${component} sx matrix`);
 	}
 }
+
+const snackbar = readFileSync("src/ui/packages/snackbar/components/Snackbar.tsx", "utf8");
+const toast = readFileSync("src/ui/packages/toast/components/Toast.tsx", "utf8");
+if (!snackbar.includes("sx={sx}") || !toast.includes("<SxHost") || !toast.includes("frameRef.current")) {
+	throw new Error("snackbar toast sx");
+}
+const autocomplete = readFileSync("src/ui/packages/autocomplete/components/Autocomplete.tsx", "utf8");
+const select = readFileSync("src/ui/packages/select/components/Select.tsx", "utf8");
+const input = readFileSync("src/ui/packages/input/components/Input.tsx", "utf8");
+if (!autocomplete.includes("sx={sx}") || !select.includes("<SxHost") || !select.includes("sx={sx}") || !input.includes("<SxHost")) {
+	throw new Error("autocomplete select sx");
+}
+const stroke = readFileSync("src/ui/packages/loadingStroke/components/LoadingStroke.tsx", "utf8");
+if (!stroke.includes("<uistroke") || !stroke.includes("{...sx}")) throw new Error("loading stroke host");
 
 console.log("host sx ok");

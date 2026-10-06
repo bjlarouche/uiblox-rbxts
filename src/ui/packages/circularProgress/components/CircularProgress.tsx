@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "@rbxts/react";
 import { useReducedMotion } from "hooks";
 import { CustomizedProps, useTheme } from "theme";
+import { SxHost } from "ui/packages/host";
 import { arcKeys, loopProperty, progressSpin, spinArcKeys } from "ui/packages/motion";
 
 export interface CircularProgressProps {
@@ -38,21 +39,25 @@ function CircularProgress(props: CustomizedProps<Frame, CircularProgressProps>) 
 	}, [motion]);
 
 	return (
-		<frame
+		<SxHost
+			tag="frame"
 			key={id || "CircularProgress"}
-			ref={ref}
-			Size={new UDim2(0, size, 0, size)}
-			BackgroundTransparency={1}
-			BorderSizePixel={0}
-			{...className}
-			{...sx}
+			hostRef={ref}
+			base={{
+				Size: new UDim2(0, size, 0, size),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+			}}
+			className={className}
+			sx={sx}
+			state={{ disabled }}
 		>
 			<uicorner CornerRadius={new UDim(1, 0)} />
 			<uistroke Color={tint} Thickness={thickness} Transparency={disabled ? 0.85 : 0.82} />
 			<uistroke Color={tint} Thickness={thickness} Transparency={disabled ? 0.55 : 0}>
 				<uigradient ref={gradientRef} Rotation={-90} Transparency={transparency} Color={new ColorSequence(tint)} />
 			</uistroke>
-		</frame>
+		</SxHost>
 	);
 }
 
