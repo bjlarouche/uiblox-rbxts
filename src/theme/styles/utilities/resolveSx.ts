@@ -57,7 +57,7 @@ export function resolvePaletteToken(palette: object, token: PaletteToken | Color
 }
 
 /** Matches `hooks/breakpoints` thresholds. Kept local so Node style checks need no path aliases. */
-export type Responsive<T> = T | { phone?: T; tablet?: T; desktop?: T };
+type Responsive<T> = T | { phone?: T; tablet?: T; desktop?: T };
 function resolveResponsive<T>(value: Responsive<T> | undefined, width: number): T | undefined {
 	if (value === undefined || typeOf(value) !== "table") return value as T | undefined;
 	const record = value as { phone?: T; tablet?: T; desktop?: T };

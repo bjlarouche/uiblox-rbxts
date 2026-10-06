@@ -143,7 +143,7 @@ Factory → theme variants/compound → `styleOverrides` (overrides win).
 
 ### Breakpoints
 
-`phone` < 600 ≤ `tablet` < 960 ≤ `desktop`. `observeViewport(host, cb)` shares one connection; `useBreakpoints(host)` only re-renders when name/orientation changes. `clearStyleCaches()` / `clearViewportObservers()` for tests / hot reload.
+`phone` < 600 ≤ `tablet` < 960 ≤ `desktop`. `observeViewport(host, cb)` shares one AbsoluteSize connection (not a per-frame poll). `useBreakpoints(host)` subscribes to that observer. `clearStyleCaches()` / `clearViewportObservers()` for tests / hot reload.
 
 ## controlMetrics
 

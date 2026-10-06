@@ -7,17 +7,7 @@ export function useBreakpoints(host?: GuiObject) {
 
 	useEffect(() => {
 		if (host === undefined) return;
-		return observeViewport(host, (next) => {
-			setSize((prev) => {
-				if (
-					breakpointName(prev.width) === breakpointName(next.width) &&
-					orientationName(prev.width, prev.height) === orientationName(next.width, next.height)
-				) {
-					return prev;
-				}
-				return next;
-			});
-		});
+		return observeViewport(host, setSize);
 	}, [host]);
 
 	return {
