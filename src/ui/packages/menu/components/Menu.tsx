@@ -40,20 +40,24 @@ function Menu(props: MenuProps) {
 				<uilistlayout {...styles.list} />
 				{vacant
 					? (empty ?? <EmptyListHint text={emptyText ?? "No options"} height={row} />)
-					: items.map((item) => (
-							<ListItem
-								key={item.id}
-								text={item.text}
-								disabled={item.disabled}
-								dense={dense}
-								selected={item.id === selected}
-								onActivated={() => {
-									if (item.disabled === true) return;
-									onSelect(item.id);
-									onClose();
-								}}
-							/>
-						))}
+					: (
+						<>
+							{items.map((item) => (
+								<ListItem
+									key={item.id}
+									text={item.text}
+									disabled={item.disabled}
+									dense={dense}
+									selected={item.id === selected}
+									onActivated={() => {
+										if (item.disabled === true) return;
+										onSelect(item.id);
+										onClose();
+									}}
+								/>
+							))}
+						</>
+					)}
 			</frame>
 		</Popup>
 	);
