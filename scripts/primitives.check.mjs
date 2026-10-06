@@ -270,6 +270,8 @@ const {
 	removeColorStop,
 	removeNumberStop,
 	sampleColor,
+	sequenceMove,
+	sequencePress,
 	writeColorStops,
 	writeNumberStops,
 } = await import(pathToFileURL(join(root, "src/ui/packages/colorPicker/components/sequenceValue.ts")).href);
@@ -291,6 +293,8 @@ const written = writeColorStops(stops);
 if (readColorStops(written).length !== 2) throw new Error("color sequence roundtrip");
 if (hitStop([0, 0.5, 1], 0.52, 0.04) !== 1) throw new Error("hit stop");
 if (hitStop([0, 1], 0.4, 0.04) !== -1) throw new Error("miss stop");
+if (!sequencePress("Touch") || !sequencePress("MouseButton1") || sequencePress("MouseMovement")) throw new Error("sequence press");
+if (!sequenceMove("Touch") || !sequenceMove("MouseMovement") || sequenceMove("MouseButton1")) throw new Error("sequence move");
 const numbers = [
 	{ t: 0, value: 0, envelope: 0 },
 	{ t: 1, value: 1, envelope: 0 },

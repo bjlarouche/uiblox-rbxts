@@ -20,6 +20,11 @@ globalThis.typeIs = (value, typeName) => {
 globalThis.pairs = (record) => Object.keys(record).map((key) => [key, record[key]]);
 globalThis.tostring = (value) => String(value);
 globalThis.math = { huge: Infinity };
+globalThis.NumberSequence = class NumberSequence {
+	constructor(value) {
+		this.Keypoints = value;
+	}
+};
 globalThis.Color3 = class Color3 {
 	constructor(r = 0, g = 0, b = 0) {
 		this.R = r;
@@ -54,6 +59,7 @@ globalThis.ColorSequence = class ColorSequence {
 	}
 };
 globalThis.math.max = Math.max;
+globalThis.math.clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 Array.prototype.size = function size() {
 	return this.length;
 };
@@ -148,6 +154,21 @@ const shaded = resolveSx(theme, { gradient: { colors: ["primary.main", "surface.
 const stops = shaded.gradient?.Color.Keypoints ?? [];
 if (stops.length !== 3 || stops[0].Value !== primary || stops[1].Time !== 0.5 || stops[2].Value !== hover) throw new Error("gradient stops");
 if (shaded.gradient.Rotation !== 90 || shaded.root.gradient !== undefined) throw new Error("gradient rotation/root");
+const placed = resolveSx(theme, {
+	gradient: {
+		colors: [primary, hover, paper],
+		times: [0, 0.2, 1],
+		rotation: 40,
+		transparency: 0.25,
+		offset: new Vector2(0.1, -0.2),
+	},
+});
+const placedStops = placed.gradient.Color.Keypoints;
+if (placedStops.length !== 3 || placedStops[1].Time !== 0.2 || placed.gradient.Rotation !== 40) throw new Error("gradient time");
+if (placed.gradient.Transparency.Keypoints !== 0.25 || placed.gradient.Offset.X !== 0.1) throw new Error("gradient transparency");
+const sequence = new NumberSequence([0, 1]);
+const passed = resolveSx(theme, { gradient: { colors: [primary, paper], transparency: sequence } });
+if (passed.gradient.Transparency !== sequence) throw new Error("gradient sequence");
 const solid = resolveSx(theme, { gradient: { colors: ["surface.paper"] } });
 if (solid.gradient.Color.Keypoints.length !== 2 || solid.gradient.Color.Keypoints[1].Time !== 1) throw new Error("single stop gradient");
 const phoneShade = resolveSx(theme, { gradient: { phone: { colors: [hover] }, desktop: { colors: [paper] } } }, 400);

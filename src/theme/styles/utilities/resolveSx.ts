@@ -136,10 +136,13 @@ const SHORTHAND: { [key: string]: true } = {
 
 export type SxColor = PaletteToken | Color3;
 
-/** Evenly spaced color stops on a UIGradient child. */
+/** Color stops on a UIGradient child. Times default to even spacing. */
 export interface SxGradient {
 	colors: SxColor[];
 	rotation?: number;
+	times?: number[];
+	transparency?: number | NumberSequence;
+	offset?: Vector2;
 }
 
 /** CSS-like shorthands + pass-through Instance props. No CSS string parser. */
@@ -205,7 +208,13 @@ export interface ResolvedSx {
 	};
 	corner?: { CornerRadius: UDim };
 	gap?: number;
-	gradient?: { Color: ColorSequence; Rotation: number };
+	gradient?: { Color: ColorSequence; Rotation: number; Transparency?: NumberSequence; Offset?: Vector2 };
+}
+
+function gradientTransparency(value: number | NumberSequence | undefined) {
+	if (value === undefined) return undefined;
+	if (typeIs(value, "number")) return new NumberSequence(value);
+	return value;
 }
 
 function pick<T>(value: Responsive<T> | undefined, width?: number): T | undefined {
@@ -396,10 +405,27 @@ export function resolveSx(theme: SxTheme, sx?: SxInput, width?: number): Resolve
 	let gradient: ResolvedSx["gradient"];
 	if (gradientVal !== undefined && gradientVal.colors.size() > 0) {
 		const stops = gradientVal.colors.map((token) => resolvePaletteToken(theme.palette, token));
-		const last = math.max(stops.size() - 1, 1);
-		const keypoints = stops.map((color, index) => new ColorSequenceKeypoint(stops.size() === 1 ? 0 : index / last, color));
-		if (stops.size() === 1) keypoints.push(new ColorSequenceKeypoint(1, stops[0]));
+		const count = stops.size();
+		const last = math.max(count - 1, 1);
+		const times = gradientVal.times;
+		const keypoints = new Array<ColorSequenceKeypoint>();
+		let previous = 0;
+		for (let index = 0; index < count; index++) {
+			let time = count === 1 ? 0 : index / last;
+			if (times !== undefined && count > 1 && times[index] !== undefined) {
+				if (index === 0) time = 0;
+				else if (index === count - 1) time = 1;
+				else time = math.clamp(times[index], previous, 1);
+			}
+			if (time < previous) time = previous;
+			previous = time;
+			keypoints.push(new ColorSequenceKeypoint(time, stops[index]));
+		}
+		if (count === 1) keypoints.push(new ColorSequenceKeypoint(1, stops[0]));
+		const transparency = gradientTransparency(gradientVal.transparency);
 		gradient = { Color: new ColorSequence(keypoints), Rotation: gradientVal.rotation ?? 0 };
+		if (transparency !== undefined) gradient.Transparency = transparency;
+		if (gradientVal.offset !== undefined) gradient.Offset = gradientVal.offset;
 	}
 
 	for (const [key, raw] of pairs(sx as object)) {

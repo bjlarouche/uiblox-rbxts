@@ -30,6 +30,8 @@ export {
 	removeNumberStop,
 	sampleColor,
 	sampleNumber,
+	sequenceMove,
+	sequencePress,
 	writeColorStops,
 	writeNumberStops,
 } from "./components/sequenceValue";
