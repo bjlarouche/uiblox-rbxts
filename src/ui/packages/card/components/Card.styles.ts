@@ -1,10 +1,12 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
+import { cardColumnWidth } from "./cardWidth";
 
-const useCardStyles = componentStyles("Card", (theme: Theme) =>
-	createStyles({
+const useCardStyles = componentStyles<{ fullWidth?: boolean }>("Card", (theme: Theme, { fullWidth = false }) => {
+	const width = cardColumnWidth(fullWidth, theme.padding.calc(32));
+	return createStyles({
 		column: {
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromOffset(theme.padding.calc(32), 0),
+			AutomaticSize: fullWidth ? Enum.AutomaticSize.Y : Enum.AutomaticSize.XY,
+			Size: new UDim2(width.scale, width.offset, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -15,8 +17,9 @@ const useCardStyles = componentStyles("Card", (theme: Theme) =>
 		} as WriteableStyle<UIListLayout>,
 		title: {
 			LayoutOrder: 1,
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: fullWidth ? Enum.AutomaticSize.Y : Enum.AutomaticSize.XY,
+			Size: fullWidth ? new UDim2(1, 0, 0, 0) : UDim2.fromScale(0, 0),
+			TextWrapped: fullWidth,
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			Font: theme.typography.fontFamilies.default,
@@ -26,8 +29,9 @@ const useCardStyles = componentStyles("Card", (theme: Theme) =>
 		} as WriteableStyle<TextLabel>,
 		subtitle: {
 			LayoutOrder: 2,
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: fullWidth ? Enum.AutomaticSize.Y : Enum.AutomaticSize.XY,
+			Size: fullWidth ? new UDim2(1, 0, 0, 0) : UDim2.fromScale(0, 0),
+			TextWrapped: fullWidth,
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			Font: theme.typography.fontFamilies.default,
@@ -55,7 +59,7 @@ const useCardStyles = componentStyles("Card", (theme: Theme) =>
 			Padding: new UDim(0, theme.padding.calc(1)),
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
-	}),
-);
+	});
+});
 
 export default useCardStyles;

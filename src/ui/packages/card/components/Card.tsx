@@ -9,14 +9,16 @@ export interface CardProps {
 	elevation?: PaperElevation;
 	square?: boolean;
 	actions?: React.ReactNode;
+	fullWidth?: boolean;
 	children?: React.ReactNode;
 }
 
 function Card(props: CustomizedProps<Frame, CardProps>) {
-	const { title, subtitle, elevation = "flat", square, actions, children, className, sx, id, ref } = props;
-	const styles = useCardStyles();
+	const { title, subtitle, elevation = "flat", square, actions, fullWidth, children, className, sx, id, ref } = props;
+	const styles = useCardStyles({ fullWidth });
+	const paperSx = fullWidth === true ? { Size: new UDim2(1, 0, 0, 0), AutomaticSize: Enum.AutomaticSize.Y, ...sx } : sx;
 	return (
-		<Paper elevation={elevation} square={square} className={className} sx={sx} id={id} ref={ref}>
+		<Paper elevation={elevation} square={square} className={className} sx={paperSx} id={id} ref={ref}>
 			<frame key="Column" {...styles.column}>
 				<uilistlayout {...styles.list} />
 				{title !== undefined && (
