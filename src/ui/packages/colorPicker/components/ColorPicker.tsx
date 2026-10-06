@@ -23,8 +23,6 @@ export interface ColorPickerProps {
 	value: Color3;
 	onChange: (value: Color3) => void;
 	disabled?: boolean;
-	/** Render the HSV panel below the field instead of a popup. */
-	inline?: boolean;
 }
 
 const HUE_STOPS = [
@@ -263,7 +261,7 @@ function ColorPanel(props: { value: Color3; onChange: (value: Color3) => void; d
 }
 
 function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
-	const { value, onChange, disabled, inline, className, sx, id, ref } = props;
+	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = useColorPickerStyles();
 	const { theme } = useTheme();
 	const active = canActivate(disabled);
@@ -271,7 +269,7 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 	const [open, setOpen] = useState(false);
 	const [hexDraft, setHexDraft] = useState(colorToHex(value));
 	const [hexFault, setHexFault] = useState(false);
-	const shown = !inline && open && active;
+	const shown = open && active;
 
 	useEffect(() => {
 		setHexDraft(colorToHex(value));
@@ -292,75 +290,56 @@ function ColorPicker(props: CustomizedProps<Frame, ColorPickerProps>) {
 	}, [shown, value]);
 
 	return (
-		<frame
-			key={id || "ColorPicker"}
-			ref={ref}
-			{...styles.field}
-			{...className}
-			{...sx}
-			Size={new UDim2(1, 0, 0, inline ? 0 : theme.spacing.calc(3))}
-			AutomaticSize={inline ? Enum.AutomaticSize.Y : Enum.AutomaticSize.None}
-		>
-			<uilistlayout {...styles.column} />
-			<frame key="Trigger" {...styles.row} LayoutOrder={1}>
-				<uilistlayout {...styles.rowLayout} />
-				<textbutton
-					key="Swatch"
-					ref={setAnchor}
-					{...styles.swatchButton}
-					BackgroundColor3={value}
-					LayoutOrder={1}
-					Active={active}
-					Selectable={active}
-					Event={{
-						Activated: () => {
-							if (!active || inline) return;
-							if (shown) close();
-							else setOpen(true);
-						},
+		<frame key={id || "ColorPicker"} ref={ref} {...styles.field} {...className} {...sx}>
+			<uilistlayout {...styles.rowLayout} />
+			<textbutton
+				key="Swatch"
+				ref={setAnchor}
+				{...styles.swatchButton}
+				BackgroundColor3={value}
+				LayoutOrder={1}
+				Active={active}
+				Selectable={active}
+				Event={{
+					Activated: () => {
+						if (!active) return;
+						if (shown) close();
+						else setOpen(true);
+					},
+				}}
+			>
+				<uicorner {...styles.corner} />
+				<uistroke {...styles.swatchStroke} />
+			</textbutton>
+			<frame key="Value" {...styles.value} LayoutOrder={2}>
+				<Input
+					text={hexDraft}
+					placeholder={colorBytes(value)}
+					disabled={disabled}
+					hasError={hexFault}
+					width={new UDim(1, 0)}
+					onInput={(text) => {
+						setHexDraft(text);
+						const parsed = parseHex(text);
+						if (parsed === undefined) {
+							setHexFault(text.size() > 0);
+							return;
+						}
+						setHexFault(false);
+						onChange(parsed);
 					}}
-				>
-					<uicorner {...styles.corner} />
-					<uistroke {...styles.swatchStroke} />
-				</textbutton>
-				<frame key="Value" {...styles.value} LayoutOrder={2}>
-					<Input
-						text={hexDraft}
-						placeholder={colorBytes(value)}
-						disabled={disabled}
-						hasError={hexFault}
-						width={new UDim(1, 0)}
-						onInput={(text) => {
-							setHexDraft(text);
-							const parsed = parseHex(text);
-							if (parsed === undefined) {
-								setHexFault(text.size() > 0);
-								return;
-							}
+					onTextChanged={(text) => {
+						const parsed = parseHex(text);
+						if (parsed === undefined) {
 							setHexFault(false);
-							onChange(parsed);
-						}}
-						onTextChanged={(text) => {
-							const parsed = parseHex(text);
-							if (parsed === undefined) {
-								setHexFault(false);
-								setHexDraft(colorToHex(value));
-								return;
-							}
-							setHexFault(false);
-							onChange(parsed);
-						}}
-					/>
-				</frame>
+							setHexDraft(colorToHex(value));
+							return;
+						}
+						setHexFault(false);
+						onChange(parsed);
+					}}
+				/>
 			</frame>
-			{inline && (
-				<frame key="Inline" {...styles.shell} Size={new UDim2(1, 0, 0, 0)} AutomaticSize={Enum.AutomaticSize.Y} LayoutOrder={2}>
-					<uicorner {...styles.corner} />
-					<uistroke {...styles.shellStroke} />
-					<uipadding {...styles.shellPad} />
-					<ColorPanel value={value} disabled={disabled} onChange={onChange} />
-				</frame>
-			)}
 			{shown && (
 				<Popup
 					anchor={anchor}
