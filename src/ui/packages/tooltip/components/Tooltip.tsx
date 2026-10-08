@@ -4,15 +4,17 @@ import { CustomizedProps, useTheme } from "theme";
 import { SxHost } from "ui/packages/host";
 import { Popup } from "ui/packages/popup";
 import useTooltipStyles from "./Tooltip.styles";
+import { tooltipBox } from "./tooltipBox";
 import { pointerInside } from "./tooltipPointer";
 
 export interface TooltipProps {
 	text: string;
+	title?: string;
 	delay?: number;
 }
 
 function Tooltip(props: CustomizedProps<Frame, TooltipProps>) {
-	const { text, delay = 0.4, children, className,
+	const { text, title, delay = 0.4, children, className,
 		sx, id, ref } = props;
 	const styles = useTooltipStyles();
 	const { theme } = useTheme();
@@ -20,9 +22,14 @@ function Tooltip(props: CustomizedProps<Frame, TooltipProps>) {
 	const padY = theme.padding.default;
 	const textSize = theme.typography.fontSizes.caption ?? theme.typography.fontSizes.body ?? 14;
 	const font = theme.typography.fontFamilies.default ?? Enum.Font.SourceSans;
-	const textBounds = TextService.GetTextSize(text, textSize, font, new Vector2(theme.spacing.calc(24), 10000));
-	const tipWidth = textBounds.X + padX * 2;
-	const tipHeight = textBounds.Y + padY * 2;
+	const heading = title ?? "";
+	const limit = new Vector2(theme.spacing.calc(24), 10000);
+	const textBounds = TextService.GetTextSize(text, textSize, font, limit);
+	const titleFont = theme.typography.fontFamilies.semibold ?? font;
+	const titleBounds = heading !== "" ? TextService.GetTextSize(heading, textSize, titleFont, limit) : undefined;
+	const box = tooltipBox(textBounds.X, textBounds.Y, titleBounds?.X ?? 0, titleBounds?.Y ?? 0, padX, padY, heading !== "" ? padY : 0);
+	const tipWidth = box.width;
+	const tipHeight = box.height;
 	const [anchor, setAnchor] = useState<Frame>();
 	const [shown, setShown] = useState(false);
 	const pending = useRef<thread>();
@@ -59,20 +66,31 @@ function Tooltip(props: CustomizedProps<Frame, TooltipProps>) {
 			}}
 		>
 			{children}
-			{shown && text !== "" && (
+			{shown && (text !== "" || heading !== "") && (
 				<Popup anchor={anchor} preferredWidth={tipWidth} preferredHeight={tipHeight}>
-					<textlabel
-						key="Tip"
-						{...styles.label}
-						Text={text}
-						Size={UDim2.fromScale(1, 1)}
-						AutomaticSize={Enum.AutomaticSize.None}
-						TextWrapped={true}
-					>
-						<uipadding {...styles.padding} />
-						<uicorner {...styles.corner} />
-						<uistroke {...styles.stroke} />
-					</textlabel>
+					{heading === "" ? (
+						<textlabel
+							key="Tip"
+							{...styles.label}
+							Text={text}
+							Size={UDim2.fromScale(1, 1)}
+							AutomaticSize={Enum.AutomaticSize.None}
+							TextWrapped={true}
+						>
+							<uipadding {...styles.padding} />
+							<uicorner {...styles.corner} />
+							<uistroke {...styles.stroke} />
+						</textlabel>
+					) : (
+						<frame key="Tip" {...styles.shell}>
+							<uipadding {...styles.padding} />
+							<uicorner {...styles.corner} />
+							<uistroke {...styles.stroke} />
+							<uilistlayout {...styles.stack} />
+							<textlabel key="Title" {...styles.title} Text={heading} LayoutOrder={0} />
+							{text !== "" && <textlabel key="Body" {...styles.body} Text={text} LayoutOrder={1} />}
+						</frame>
+					)}
 				</Popup>
 			)}
 		</SxHost>
