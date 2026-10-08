@@ -8,6 +8,12 @@ export interface BreadcrumbSlice {
 	ellipsis?: boolean;
 }
 
+/** True when a middle gap is shown. A max of one item has no gap to open. */
+export function breadcrumbHasGap(count: number, maxItems?: number) {
+	if (maxItems === undefined || maxItems <= 1) return false;
+	return count > maxItems;
+}
+
 /** Collapse middle items when over maxItems (keep ends). */
 export function breadcrumbVisible<T extends { label: string }>(items: T[], maxItems?: number): BreadcrumbSlice[] {
 	const count = items.size();

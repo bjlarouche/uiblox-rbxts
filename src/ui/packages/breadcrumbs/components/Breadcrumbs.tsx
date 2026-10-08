@@ -1,6 +1,6 @@
-import React from "@rbxts/react";
+import React, { useState } from "@rbxts/react";
 import { cx, CustomizedProps } from "theme";
-import { breadcrumbCurrent, breadcrumbVisible } from "./breadcrumbItems";
+import { breadcrumbCurrent, breadcrumbHasGap, breadcrumbVisible } from "./breadcrumbItems";
 import { SxHost } from "ui/packages/host";
 import useBreadcrumbStyles from "./Breadcrumbs.styles";
 
@@ -18,10 +18,12 @@ export interface BreadcrumbsProps {
 function Breadcrumbs(props: CustomizedProps<Frame, BreadcrumbsProps>) {
 	const { items, separator = "/", maxItems, className, sx, id, ref } = props;
 	const styles = useBreadcrumbStyles();
-	const visible = breadcrumbVisible(items, maxItems);
+	const [opened, setOpened] = useState(false);
+	const gap = breadcrumbHasGap(items.size(), maxItems);
+	const visible = breadcrumbVisible(items, opened || !gap ? undefined : maxItems);
 	return (
-		<SxHost tag="frame" key={id || "Breadcrumbs"} hostRef={ref} base={styles.root} className={className} sx={sx}>
-			<uilistlayout {...styles.list} />
+		<SxHost tag="frame" key={id || "Breadcrumbs"} hostRef={ref} base={opened ? styles.opened : styles.root} className={className} sx={sx}>
+			<uilistlayout {...styles.list} Wraps={opened} />
 			<>
 			{visible.map((entry, order) => {
 				const current = !entry.ellipsis && breadcrumbCurrent(entry.index, items.size());
@@ -30,7 +32,12 @@ function Breadcrumbs(props: CustomizedProps<Frame, BreadcrumbsProps>) {
 					<React.Fragment key={`${entry.label}-${order}`}>
 						{order > 0 && <textlabel {...styles.separator} Text={separator} LayoutOrder={order * 2} />}
 						{entry.ellipsis ? (
-							<textlabel {...styles.separator} Text="…" LayoutOrder={order * 2 + 1} />
+							<textbutton
+								{...styles.item}
+								Text="…"
+								LayoutOrder={order * 2 + 1}
+								Event={{ Activated: () => setOpened(true) }}
+							/>
 						) : (
 							<textbutton
 								{...cx<TextButton>(styles.item, current && styles.current)}
