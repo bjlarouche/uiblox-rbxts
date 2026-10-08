@@ -41,6 +41,23 @@ const useAppBarStyles = componentStyles<{ elevation?: AppBarElevation; color?: A
 				TextYAlignment: Enum.TextYAlignment.Center,
 				TextTruncate: Enum.TextTruncate.AtEnd,
 			} as WriteableStyle<TextLabel>,
+			titles: {
+				LayoutOrder: 1,
+				AutomaticSize: hasActions ? Enum.AutomaticSize.XY : Enum.AutomaticSize.Y,
+				Size: hasActions ? UDim2.fromScale(0, 0) : new UDim2(1, 0, 1, 0),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+			} as WriteableStyle<Frame>,
+			subtitle: {
+				AutomaticSize: Enum.AutomaticSize.XY,
+				Size: UDim2.fromScale(0, 0),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				Font: theme.typography.fontFamilies.default,
+				TextSize: theme.typography.fontSizes.caption ?? theme.typography.fontSizes.body,
+				TextColor3: color === "primary" ? theme.palette.primary.on : theme.palette.text.secondary,
+				TextXAlignment: Enum.TextXAlignment.Left,
+			} as WriteableStyle<TextLabel>,
 			actions: {
 				LayoutOrder: 2,
 				AutomaticSize: Enum.AutomaticSize.X,
