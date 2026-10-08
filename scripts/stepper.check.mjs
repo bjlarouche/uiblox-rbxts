@@ -1,4 +1,6 @@
-const { stepState } = await import("../src/ui/packages/stepper/components/stepState.ts");
+const { stepPress, stepState } = await import("../src/ui/packages/stepper/components/stepState.ts");
+if (stepPress(0, 2) !== 0 || stepPress(2, 2) !== 2) throw new Error("reached step");
+if (stepPress(3, 2) !== undefined || stepPress(-1, 2) !== undefined) throw new Error("later step");
 if (stepState(0, 2) !== "complete" || stepState(2, 2) !== "active" || stepState(3, 2) !== "pending") {
 	throw new Error("step state");
 }
