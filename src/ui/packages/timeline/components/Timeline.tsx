@@ -29,6 +29,7 @@ function Timeline(props: CustomizedProps<Frame, TimelineProps>) {
 					const caption = item.caption;
 					return (
 						<frame key={`${item.title}-${index}`} {...styles.item} LayoutOrder={index}>
+							<uilistlayout {...styles.row} />
 							<frame {...styles.rail}>
 								{timelineRail(index, count) ? <frame {...styles.line} /> : undefined}
 								<frame {...cx(styles.dot, mark)}>

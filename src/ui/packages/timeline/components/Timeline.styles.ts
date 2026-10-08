@@ -21,8 +21,15 @@ const useTimelineStyles = componentStyles("Timeline", (theme: Theme) => {
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
+		row: {
+			FillDirection: Enum.FillDirection.Horizontal,
+			SortOrder: Enum.SortOrder.LayoutOrder,
+			ItemLineAlignment: Enum.ItemLineAlignment.Stretch,
+			Padding: new UDim(0, theme.spacing.calc(1)),
+		} as WriteableStyle<UIListLayout>,
 		rail: {
-			Size: new UDim2(0, rail, 1, 0),
+			Size: UDim2.fromOffset(rail, 0),
+			LayoutOrder: 0,
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -46,7 +53,7 @@ const useTimelineStyles = componentStyles("Timeline", (theme: Theme) => {
 			ZIndex: 1,
 		} as WriteableStyle<Frame>,
 		body: {
-			Position: UDim2.fromOffset(theme.spacing.calc(3), 0),
+			LayoutOrder: 1,
 			AutomaticSize: Enum.AutomaticSize.XY,
 			Size: UDim2.fromScale(0, 0),
 			BackgroundTransparency: 1,
