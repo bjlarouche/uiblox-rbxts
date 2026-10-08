@@ -2,6 +2,7 @@ import React from "@rbxts/react";
 import { ControlSize, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
+import { radioHint } from "./radioHint";
 import useRadioGroupStyles from "./RadioGroup.styles";
 
 export interface ChoiceOption<T> {
@@ -11,9 +12,13 @@ export interface ChoiceOption<T> {
 	group?: string;
 }
 
+export interface RadioOption<T> extends ChoiceOption<T> {
+	hint?: string;
+}
+
 export interface RadioGroupProps<T> {
 	value: T;
-	options: ChoiceOption<T>[];
+	options: RadioOption<T>[];
 	onChange: (value: T) => void;
 	disabled?: boolean;
 	size?: ControlSize;
@@ -22,7 +27,7 @@ export interface RadioGroupProps<T> {
 
 function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 	const { value, options, onChange, disabled, size, row, className, sx, id, ref } = props;
-	const { root, list, option, optionRow, ring, dot, stroke, corner, label } = useRadioGroupStyles({ size, row });
+	const { root, list, option, optionRow, ring, dot, stroke, corner, label, hint, notes } = useRadioGroupStyles({ size, row });
 
 	return (
 		<SxHost tag="frame" key={id || "RadioGroup"} hostRef={ref} base={root} className={className} sx={sx} state={{ disabled }}>
@@ -31,6 +36,7 @@ function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 			{options.map((choice, index) => {
 				const active = canActivate(disabled || choice.disabled);
 				const fade = active ? 0 : 0.5;
+				const note = radioHint(choice.hint);
 				return (
 					<textbutton
 						key={`${choice.label}-${index}`}
@@ -54,7 +60,15 @@ function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 								</frame>
 							)}
 						</frame>
-						<textlabel {...label} Text={choice.label} TextTransparency={fade} LayoutOrder={2} />
+						{note === undefined ? (
+							<textlabel {...label} Text={choice.label} TextTransparency={fade} LayoutOrder={2} />
+						) : (
+							<frame {...notes} LayoutOrder={2}>
+								<uilistlayout FillDirection={Enum.FillDirection.Vertical} SortOrder={Enum.SortOrder.LayoutOrder} Padding={new UDim(0, 0)} />
+								<textlabel {...label} Text={choice.label} TextTransparency={fade} LayoutOrder={1} />
+								<textlabel {...hint} Text={note} TextTransparency={fade} LayoutOrder={2} />
+							</frame>
+						)}
 					</textbutton>
 				);
 			})}
