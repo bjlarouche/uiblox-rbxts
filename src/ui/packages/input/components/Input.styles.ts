@@ -1,4 +1,4 @@
-import { controlMetrics, createStyles, componentStyles, WriteableStyle } from "theme";
+import { controlMetrics, createStyles, componentStyles, focusRing, WriteableStyle } from "theme";
 import { InputProps } from "./Input";
 import { inputInsets } from "./inputInsets";
 import { multilineHeight } from "./multilineHeight";
@@ -36,7 +36,6 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean; content
 			? multilineHeight(contentHeight, metrics.font, minRows, maxRows, verticalPad)
 			: metrics.height + (variant === "standard" ? 0 : verticalPad);
 		const accent = color === "primary" ? theme.palette.primary.main : theme.palette.text.primary;
-		const focusAccent = hasError ? theme.palette.status.error.main : theme.palette.focus;
 
 		const makeRootStyles = () => {
 			const defaultStyles: WriteableStyle<Frame> = {};
@@ -182,10 +181,11 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean; content
 				CornerRadius: new UDim(0, theme.shape.borderRadius),
 			} as WriteableStyle<UICorner>,
 			stroke: {
-				Color: hasError ? theme.palette.status.error.main : focused ? focusAccent : accent,
+				Color: hasError ? theme.palette.status.error.main : accent,
 				Transparency: focused || hasError ? 0 : 0.45,
-				Thickness: focused ? 1.5 : 1,
+				Thickness: 1,
 				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+				...(focused ? focusRing(hasError ? theme.palette.status.error.main : theme.palette.focus) : {}),
 			} as WriteableStyle<UIStroke>,
 		});
 	},
