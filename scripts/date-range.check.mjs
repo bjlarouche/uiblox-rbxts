@@ -2,12 +2,16 @@ globalThis.math = { abs: Math.abs, floor: Math.floor, min: Math.min, max: Math.m
 
 const {
 	dateStamp,
+	dayIndex,
 	daysInMonth,
 	formatSpan,
 	nightsBetween,
 	orderSpan,
 	shiftMonth,
+	shiftDay,
+	stampFromIndex,
 	weekday,
+	weekStamps,
 } = await import("../src/ui/packages/dateRange/dateRangeValue.ts");
 
 if (daysInMonth(2026, 2) !== 28) throw new Error("common february");
@@ -29,5 +33,11 @@ if (nightsBetween(20261028, 20261102) !== 5) throw new Error("cross month nights
 if (nightsBetween(20261008, 20261005) !== 3) throw new Error("reverse nights");
 if (formatSpan({}) !== "Choose dates") throw new Error("empty span");
 if (formatSpan({ start: 20261005, finish: 20261008 }) !== "Oct 5 – Oct 8") throw new Error("span label");
+if (stampFromIndex(dayIndex(20261006)) !== 20261006) throw new Error("stamp round trip");
+if (shiftDay(20261031, 1) !== 20261101) throw new Error("next day");
+const week = weekStamps(20261006);
+if (week.length !== 7 || week[0] !== 20261004 || week[6] !== 20261010) throw new Error("week bounds");
+if (!week.includes(20261006)) throw new Error("week contains the day");
+if (weekStamps(20261004)[0] !== week[0] || weekStamps(20261010)[0] !== week[0]) throw new Error("same week");
 
 console.log("date range ok");
