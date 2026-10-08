@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "@rbxts/react";
 import { useReducedMotion } from "hooks";
-import { CustomizedProps, useTheme, WriteableStyle } from "theme";
+import { controlMetrics, CustomizedProps, useTheme, WriteableStyle } from "theme";
+import { Icons } from "ui/enums";
 import { SxHost } from "ui/packages/host";
 import { CircularProgress } from "ui/packages/circularProgress";
 import { LoadingStroke } from "ui/packages/loadingStroke";
 import { ButtonSize, ButtonColor, ButtonVariant } from "../types";
 import { canActivate } from "./activation";
-import { buttonFace, LoadingPosition, spinnerPixels, spinnerPlace } from "./buttonLook";
+import { buttonFace, buttonIcon, LoadingPosition, spinnerPixels, spinnerPlace } from "./buttonLook";
 import useButtonStyles from "./Button.styles";
 
 export type DefaultButtonComponent = TextButton;
@@ -17,10 +18,7 @@ export interface ButtonProps {
 	color?: ButtonColor;
 	fullWidth?: boolean;
 	variant?: ButtonVariant;
-	// startIcon: Icons;
-	// showStartIcon?: boolean;
-	// endIcon: Icons;
-	// showEndIcon?: boolean;
+	icon?: Icons;
 	disabled?: boolean;
 	loading?: boolean;
 	loadingLabel?: string;
@@ -43,6 +41,7 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 	const {
 		text = "",
 		variant = "contained",
+		icon,
 		disabled = false,
 		loading = false,
 		loadingLabel,
@@ -68,6 +67,9 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 
 	const { root, font, corner, stroke } = useButtonStyles(props);
 	const { theme } = useTheme();
+	const metrics = controlMetrics(theme.density, props.size);
+	const glyph = buttonIcon(icon, loading);
+	const grow = glyph !== undefined && props.fullWidth !== true;
 	const reducedMotion = useReducedMotion(reducedProp);
 	const [hovering, setHovering] = useState(false);
 	const [focused, setFocused] = useState(false);
@@ -104,8 +106,11 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 			Active={active}
 			AutoButtonColor={active}
 			Selectable={active}
-			Text={face.text}
-			{...(face.hideText ? { TextTransparency: 1 } : {})}
+			Text={glyph !== undefined ? "" : face.text}
+			{...(glyph !== undefined ? {} : face.hideText ? { TextTransparency: 1 } : {})}
+			{...(grow
+				? { AutomaticSize: Enum.AutomaticSize.X, Size: new UDim2(0, 0, 0, metrics.buttonHeight) }
+				: {})}
 			BackgroundTransparency={
 				pressed
 					? 0.75
@@ -161,6 +166,43 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 						ZIndex: 10001,
 					}}
 				/>
+			)}
+			{glyph !== undefined && (
+				<>
+					<uipadding
+						PaddingLeft={new UDim(0, theme.padding.calc(2))}
+						PaddingRight={new UDim(0, theme.padding.calc(2))}
+					/>
+					<uilistlayout
+						FillDirection={Enum.FillDirection.Horizontal}
+						VerticalAlignment={Enum.VerticalAlignment.Center}
+						HorizontalAlignment={Enum.HorizontalAlignment.Center}
+						SortOrder={Enum.SortOrder.LayoutOrder}
+						Padding={new UDim(0, theme.padding.calc(1))}
+					/>
+					<imagelabel
+						key="Icon"
+						LayoutOrder={1}
+						BackgroundTransparency={1}
+						BorderSizePixel={0}
+						ScaleType={Enum.ScaleType.Fit}
+						Image={glyph}
+						ImageColor3={spinnerColor}
+						Size={UDim2.fromOffset(metrics.icon, metrics.icon)}
+					/>
+					<textlabel
+						key="Label"
+						LayoutOrder={2}
+						BackgroundTransparency={1}
+						BorderSizePixel={0}
+						AutomaticSize={Enum.AutomaticSize.XY}
+						Size={UDim2.fromScale(0, 0)}
+						Font={theme.typography.fontFamilies.default}
+						TextSize={metrics.font}
+						TextColor3={spinnerColor}
+						Text={face.text}
+					/>
+				</>
 			)}
 			{children}
 		</SxHost>

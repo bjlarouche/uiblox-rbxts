@@ -13,6 +13,13 @@ export function spinnerPlace(position: LoadingPosition = "center") {
 	return { xScale: 0.5, xOffset: 0, anchorX: 0.5 };
 }
 
+/** An empty glyph stays off the button. Loading keeps the spinner path. */
+export function buttonIcon(icon?: string, loading?: boolean) {
+	if (loading === true) return undefined;
+	if (icon === undefined || icon === "") return undefined;
+	return icon;
+}
+
 export function spinnerPixels(size?: "small" | "medium" | "large") {
 	if (size === "large") return 16;
 	if (size === "medium") return 14;
