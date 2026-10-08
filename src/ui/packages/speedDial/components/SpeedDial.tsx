@@ -4,9 +4,11 @@ import { Icons } from "ui/enums";
 import { Fab } from "ui/packages/fab";
 import { SxHost } from "ui/packages/host";
 import useSpeedDialStyles, { SpeedDialDirection } from "./SpeedDial.styles";
+import { speedDialLabel, speedDialLabelFirst } from "./speedDialLabel";
 
 export interface SpeedDialAction {
 	icon: Icons;
+	label?: string;
 	disabled?: boolean;
 	onClick?: () => void;
 }
@@ -35,7 +37,9 @@ function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
 		id,
 		ref,
 	} = props;
-	const styles = useSpeedDialStyles({ direction });
+	const labeled = actions.some((action) => speedDialLabel(action.label) !== undefined);
+	const styles = useSpeedDialStyles({ direction, labeled });
+	const labelFirst = speedDialLabelFirst(direction);
 	const mainFirst = direction === "down" || direction === "right";
 	const mainOrder = mainFirst ? 0 : 1000;
 	const actionBase = mainFirst ? 1 : 0;
@@ -44,19 +48,34 @@ function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
 			<uilistlayout {...styles.list} />
 			{open && (
 				<>
-				{actions.map((action, index) => (
-					<Fab
-						key={`Action-${index}`}
-						icon={action.icon}
-						size="small"
-						disabled={disabled === true || action.disabled === true}
-						onClick={() => {
-							action.onClick?.();
-							onOpenChange(false);
-						}}
-						className={{ LayoutOrder: actionBase + index }}
-					/>
-				))}
+				{actions.map((action, index) => {
+					const name = speedDialLabel(action.label);
+					const order = actionBase + index;
+					const button = (
+						<Fab
+							key={name === undefined ? `Action-${index}` : "Action"}
+							icon={action.icon}
+							size="small"
+							disabled={disabled === true || action.disabled === true}
+							onClick={() => {
+								action.onClick?.();
+								onOpenChange(false);
+							}}
+							className={{ LayoutOrder: name === undefined ? order : labelFirst ? 2 : 1 }}
+						/>
+					);
+					if (name === undefined) return button;
+					return (
+						<frame key={`Action-${index}`} {...styles.action} LayoutOrder={order}>
+							<uilistlayout {...styles.actionRow} />
+							<textlabel key="Label" {...styles.actionLabel} Text={name} LayoutOrder={labelFirst ? 1 : 2}>
+								<uipadding {...styles.actionPad} />
+								<uicorner {...styles.actionCorner} />
+							</textlabel>
+							{button}
+						</frame>
+					);
+				})}
 				</>
 			)}
 			<Fab
