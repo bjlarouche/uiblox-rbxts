@@ -21,6 +21,7 @@ export * from "./typography";
 export * from "./text";
 export * from "./weekGrid";
 export * from "./button";
+export * from "./buttonGroup";
 export * from "./copyButton";
 export * from "./checkbox";
 export * from "./colorPicker";
