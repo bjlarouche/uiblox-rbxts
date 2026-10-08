@@ -1,11 +1,23 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { listItemInk, ListItemTone } from "./listItemInk";
 import { listItemLabelLayout } from "./listItemLayout";
 
-const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boolean; dense?: boolean; wrap?: boolean }>(
-	"ListItem",
-	(theme: Theme, { selected = false, disabled = false, dense = false, wrap = false }) => {
+const useListItemStyles = componentStyles<{
+	selected?: boolean;
+	disabled?: boolean;
+	dense?: boolean;
+	wrap?: boolean;
+	tone?: ListItemTone;
+}>("ListItem", (theme: Theme, { selected = false, disabled = false, dense = false, wrap = false, tone }) => {
 		const pad = theme.padding.calc(dense === true ? 0.5 : 1);
 		const label = listItemLabelLayout(wrap);
+		const ink = listItemInk(tone, disabled);
+		const primaryColor =
+			ink === "error"
+				? theme.palette.status.error.main
+				: ink === "disabled"
+					? theme.palette.text.disabled
+					: theme.palette.text.primary;
 		const textBox = {
 			AutomaticSize: label.wrapped ? Enum.AutomaticSize.Y : Enum.AutomaticSize.XY,
 			Size: new UDim2(label.widthScale, 0, 0, 0),
@@ -40,7 +52,7 @@ const useListItemStyles = componentStyles<{ selected?: boolean; disabled?: boole
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
 				TextSize: dense === true ? theme.typography.fontSizes.caption : theme.typography.fontSizes.body,
-				TextColor3: disabled ? theme.palette.text.disabled : theme.palette.text.primary,
+				TextColor3: primaryColor,
 				TextXAlignment: Enum.TextXAlignment.Left,
 			} as WriteableStyle<TextLabel>,
 			secondary: {

@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { SxHost } from "ui/packages/host";
+import { ListItemTone } from "./listItemInk";
 import { listItemCopyInset } from "./listItemLayout";
 import useListItemStyles from "./ListItem.styles";
 
@@ -12,14 +13,15 @@ export interface ListItemProps {
 	dense?: boolean;
 	divider?: boolean;
 	wrap?: boolean;
+	tone?: ListItemTone;
 	leading?: React.ReactNode;
 	onActivated?: () => void;
 }
 
 function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
-	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, wrap = false, leading, onActivated, className, sx, id, ref } =
+	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, wrap = false, tone, leading, onActivated, className, sx, id, ref } =
 		props;
-	const styles = useListItemStyles({ selected, disabled, dense, wrap });
+	const styles = useListItemStyles({ selected, disabled, dense, wrap, tone });
 	const inset = listItemCopyInset(leading !== undefined);
 	const copy = (
 		<>
