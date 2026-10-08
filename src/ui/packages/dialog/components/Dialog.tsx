@@ -40,9 +40,6 @@ function Dialog(props: CustomizedProps<Frame, DialogProps>) {
 	const column = fill
 		? { ...styles.column, AutomaticSize: Enum.AutomaticSize.Y, Size: UDim2.fromOffset(width, 0) }
 		: styles.column;
-	const titleStyle = fill
-		? { ...styles.title, TextWrapped: true, AutomaticSize: Enum.AutomaticSize.Y, Size: new UDim2(1, 0, 0, 0) }
-		: styles.title;
 
 	return (
 		<>
@@ -57,7 +54,7 @@ function Dialog(props: CustomizedProps<Frame, DialogProps>) {
 					sx={sx}
 				>
 					<uilistlayout {...styles.columnList} />
-					{hasTitle && <textlabel key="Title" {...titleStyle} Text={title} />}
+					{hasTitle && <textlabel key="Title" {...styles.title} Text={title} />}
 					<frame key="Body" {...styles.body}>
 						{children}
 					</frame>
