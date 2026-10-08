@@ -6,3 +6,9 @@ export function stepState(index: number, activeStep: number, errorStep?: number)
 	if (index === activeStep) return "active";
 	return "pending";
 }
+
+/** Completed and current steps can be pressed. A later step cannot. */
+export function stepPress(index: number, activeStep: number) {
+	if (index < 0 || index > activeStep) return undefined;
+	return index;
+}
