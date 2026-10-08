@@ -4,10 +4,15 @@ import { canActivate } from "ui/packages/button/components/activation";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import { SxHost } from "ui/packages/host";
 import useBottomNavigationStyles from "./BottomNavigation.styles";
+import { navBadge } from "./navBadge";
+
+export interface BottomNavOption<T> extends ChoiceOption<T> {
+	badge?: number;
+}
 
 export interface BottomNavigationProps<T> {
 	value: T;
-	options: ChoiceOption<T>[];
+	options: BottomNavOption<T>[];
 	onChange: (value: T) => void;
 	disabled?: boolean;
 	showLabels?: boolean;
@@ -25,6 +30,7 @@ function BottomNavigation<T>(props: CustomizedProps<Frame, BottomNavigationProps
 			{options.map((choice, index) => {
 				const active = canActivate(disabled || choice.disabled);
 				const selected = choice.value === value;
+				const mark = navBadge(choice.badge);
 				return (
 					<textbutton
 						key={`${choice.label}-${index}`}
@@ -41,6 +47,12 @@ function BottomNavigation<T>(props: CustomizedProps<Frame, BottomNavigationProps
 						}}
 					>
 						{selected && <frame key="Indicator" {...styles.indicator} />}
+						{mark !== undefined && (
+							<textlabel key="Badge" {...styles.badge} Text={mark}>
+								<uipadding {...styles.badgePad} />
+								<uicorner {...styles.badgeCorner} />
+							</textlabel>
+						)}
 					</textbutton>
 				);
 			})}
