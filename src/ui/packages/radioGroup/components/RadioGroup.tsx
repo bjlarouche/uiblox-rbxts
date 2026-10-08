@@ -1,4 +1,4 @@
-import React from "@rbxts/react";
+import React, { useState } from "@rbxts/react";
 import { ControlSize, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
@@ -27,7 +27,8 @@ export interface RadioGroupProps<T> {
 
 function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 	const { value, options, onChange, disabled, size, row, className, sx, id, ref } = props;
-	const { root, list, option, optionRow, ring, dot, stroke, corner, label, hint, notes } = useRadioGroupStyles({ size, row });
+	const { root, list, option, optionRow, ring, dot, stroke, focus, corner, label, hint, notes } = useRadioGroupStyles({ size, row });
+	const [focused, setFocused] = useState<number | undefined>(undefined);
 
 	return (
 		<SxHost tag="frame" key={id || "RadioGroup"} hostRef={ref} base={root} className={className} sx={sx} state={{ disabled }}>
@@ -48,12 +49,18 @@ function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 							Activated: () => {
 								if (active && choice.value !== value) onChange(choice.value);
 							},
+							SelectionGained: () => {
+								if (active) setFocused(index);
+							},
+							SelectionLost: () => {
+								setFocused((current) => (current === index ? undefined : current));
+							},
 						}}
 					>
 						<uilistlayout {...optionRow} />
 						<frame {...ring} LayoutOrder={1}>
 							<uicorner {...corner} />
-							<uistroke {...stroke} Transparency={fade} />
+							<uistroke {...(focused === index ? focus : stroke)} Transparency={fade} />
 							{choice.value === value && (
 								<frame {...dot} BackgroundTransparency={fade}>
 									<uicorner {...corner} />

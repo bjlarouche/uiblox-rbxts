@@ -1,4 +1,4 @@
-import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, componentStyles, focusRing, Theme, WriteableStyle } from "theme";
 
 export interface RadioGroupStyleProps {
 	size?: ControlSize;
@@ -49,6 +49,7 @@ const useRadioGroupStyles = componentStyles<RadioGroupStyleProps>("RadioGroup", 
 			Color: theme.palette.text.primary,
 			Thickness: 1,
 		} as WriteableStyle<UIStroke>,
+		focus: focusRing(theme.palette.focus) as WriteableStyle<UIStroke>,
 		corner: {
 			CornerRadius: new UDim(1, 0),
 		} as WriteableStyle<UICorner>,
