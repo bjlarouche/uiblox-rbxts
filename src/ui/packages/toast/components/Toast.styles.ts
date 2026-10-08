@@ -2,8 +2,9 @@ import { createStyles, Theme, componentStyles, DEFAULT_THEME, WriteableStyle } f
 import { Icons } from "ui/enums";
 import ToastVariants from "../enums/ToastVariants";
 import { ToastProps } from "./Toast";
+import { toastPlace } from "./toastPlace";
 
-const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { variant = ToastVariants.default, action }) => {
+const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { variant = ToastVariants.default, action, edge }) => {
 	const getToastColors = (): { background: Color3; content: Color3 } => {
 		switch (variant) {
 			case ToastVariants.success:
@@ -32,15 +33,16 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 	const toastColors = getToastColors();
 	const hasAction = action !== undefined && action.size() > 0;
 	const actionSlot = hasAction ? theme.spacing.calc(8) : 0;
-	const ACTIVE_POSITION = new UDim2(0.5, 0, 1, -DEFAULT_THEME.padding.calc(2));
-	const INACTIVE_POSITION = new UDim2(0.5, 0, 1, DEFAULT_THEME.spacing.calc(20) + DEFAULT_THEME.padding.calc(2));
+	const place = toastPlace(edge, DEFAULT_THEME.padding.calc(2), DEFAULT_THEME.spacing.calc(20) + DEFAULT_THEME.padding.calc(2));
+	const ACTIVE_POSITION = new UDim2(0.5, 0, place.activeY, place.activeOffset);
+	const INACTIVE_POSITION = new UDim2(0.5, 0, place.idleY, place.idleOffset);
 
 	return createStyles({
 		container: {
 			Size: new UDim2(0, theme.spacing.calc(20), 0, theme.spacing.calc(4)),
 			Position: ACTIVE_POSITION,
 			BackgroundColor3: toastColors.background,
-			AnchorPoint: new Vector2(0.5, 1),
+			AnchorPoint: new Vector2(0.5, place.anchorY),
 			BorderSizePixel: 0,
 			ZIndex: 50000,
 		} as WriteableStyle<Frame>,
