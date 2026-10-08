@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { GuiService, UserInputService } from "@rbxts/services";
+import { GuiService, TextService, UserInputService } from "@rbxts/services";
 import { useReducedMotion } from "hooks";
 import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
@@ -19,6 +19,7 @@ import { groupRows, rowForOption } from "./selectGroups";
 import { shouldHandleSelectKey } from "./selectKey";
 import { includesChoice, selectionLabel } from "./selectMulti";
 import { typeaheadChoice } from "./selectTypeahead";
+import { selectWidth } from "./selectWidth";
 import { stepChoice } from "./stepChoice";
 
 export interface SelectProps<T> {
@@ -44,7 +45,8 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const reducedMotion = useReducedMotion(reducedProp);
 	const styles = useSelectStyles({ size });
 	const { theme } = useTheme();
-	const row = controlMetrics(theme.density, size).height;
+	const metrics = controlMetrics(theme.density, size);
+	const row = metrics.height;
 	const active = canActivate(disabled, loading);
 	const [anchor, setAnchor] = useState<TextButton>();
 	const [open, setOpen] = useState(defaultOpen === true && !loading);
@@ -62,6 +64,25 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const rows = groupRows(filtered);
 	const listHeight = rows.size() === 0 ? row : math.min(rows.size() * row, theme.spacing.calc(16));
 	const menuHeight = listHeight + (search ? row : 0);
+	const font = theme.typography.fontFamilies.default ?? Enum.Font.SourceSans;
+	const textSize = metrics.font;
+	let widest = 0;
+	for (const line of rows) {
+		const shown =
+			line.kind === "header"
+				? line.label
+				: optionLabel(
+						line.label,
+						values !== undefined
+							? includesChoice(values, filtered[line.optionIndex].value)
+							: filtered[line.optionIndex].value === value,
+					);
+		const bounds = TextService.GetTextSize(shown, textSize, font, new Vector2(10000, 100));
+		if (bounds.X > widest) widest = bounds.X;
+	}
+	const pad = theme.padding.calc(1.5) * 2;
+	const floor = anchor !== undefined ? anchor.AbsoluteSize.X : 0;
+	const popupWidth = rows.size() === 0 ? 0 : selectWidth(widest, pad, floor);
 	const emptyHint =
 		empty ?? (
 			<EmptyListHint
@@ -205,7 +226,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 				)}
 			</textbutton>
 			{shown && (
-				<Popup anchor={anchor} preferredHeight={menuHeight} onDismiss={close} onInput={(input) => onKey(input, true)}>
+				<Popup anchor={anchor} preferredHeight={menuHeight} preferredWidth={popupWidth} onDismiss={close} onInput={(input) => onKey(input, true)}>
 					<frame key="Menu" {...styles.menu}>
 						<Shadow />
 						<uicorner {...styles.corner} />

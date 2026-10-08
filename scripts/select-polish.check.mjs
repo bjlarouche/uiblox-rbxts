@@ -1,4 +1,8 @@
 const { optionLabel } = await import("../src/ui/packages/select/components/optionLabel.ts");
+const { selectWidth } = await import("../src/ui/packages/select/components/selectWidth.ts");
+if (selectWidth(200, 12, 96) !== 212) throw new Error("long select grows");
+if (selectWidth(40, 12, 96) !== 96) throw new Error("wide select stays");
+if (selectWidth(200, 12, 0) !== 212) throw new Error("unmeasured select grows");
 if (optionLabel("Go", true) !== "✓ Go" || optionLabel("Go", false) !== "Go") {
 	throw new Error("option label");
 }
