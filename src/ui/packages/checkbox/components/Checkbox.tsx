@@ -23,7 +23,7 @@ export interface CheckboxProps {
 function Checkbox(props: CustomizedProps<TextButton, CheckboxProps>) {
 	const { value, onChange, disabled, mixed, label, size, className,
 		sx, id, ref } = props;
-	const { root, row, box, mark, label: labelStyle, stroke, corner, fill, activeStroke, idleStroke } =
+	const { root, row, box, mark, label: labelStyle, stroke, corner, fill, activeStroke, idleStroke, focus } =
 		useCheckboxStyles({ size });
 	const [hovering, setHovering] = useState(false);
 	const [pressed, setPressed] = useState(false);
@@ -74,7 +74,7 @@ function Checkbox(props: CustomizedProps<TextButton, CheckboxProps>) {
 				<uistroke
 					{...cx<UIStroke>(
 						stroke,
-						filled || pointer === "focus" || pointer === "press" ? activeStroke : idleStroke,
+						pointer === "focus" ? focus : filled || pointer === "press" ? activeStroke : idleStroke,
 						{ Transparency: strokeTransparency },
 					)}
 				/>
