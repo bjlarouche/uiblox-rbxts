@@ -63,7 +63,7 @@ function Dialog(props: CustomizedProps<Frame, DialogProps>) {
 					</frame>
 					{hasActions && (
 						<frame key="Actions" {...styles.actions}>
-							<uilistlayout {...styles.actionList} Wraps={fill} />
+							<uilistlayout {...styles.actionList} />
 							{actions}
 						</frame>
 					)}
