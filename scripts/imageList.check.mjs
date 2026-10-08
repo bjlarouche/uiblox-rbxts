@@ -28,10 +28,13 @@ if (!/<>\s*\n\s*\{items\.map/.test(component) && !/<>\s*\{items\.map/.test(compo
 	throw new Error("ImageList items.map must be wrapped in a fragment");
 }
 
-const { imageListTitle } = await import("../src/ui/packages/imageList/components/imageListLayout.ts");
+const { imageListTitle, imageListTitleWrap } = await import("../src/ui/packages/imageList/components/imageListLayout.ts");
 if (imageListTitle(undefined) !== undefined) throw new Error("missing title");
 if (imageListTitle("") !== undefined) throw new Error("empty title");
 if (imageListTitle("Cove") !== "Cove") throw new Error("title");
+if (imageListTitleWrap(200, 88) !== true) throw new Error("long tile title wraps");
+if (imageListTitleWrap(40, 88) !== false) throw new Error("short tile title stays");
+if (imageListTitleWrap(200, 0) !== false) throw new Error("unmeasured tile title");
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
 for (const name of ["titled", "untitled"]) {
