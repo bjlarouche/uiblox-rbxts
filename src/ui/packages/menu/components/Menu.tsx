@@ -1,17 +1,19 @@
 import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { CustomizedProps, useTheme } from "theme";
+import { Icons } from "ui/enums";
 import { SxHost } from "ui/packages/host";
+import { Icon } from "ui/packages/icon";
 import { ListItem } from "ui/packages/listItem";
+import { listItemInk } from "ui/packages/listItem/components/listItemInk";
 import { Popup } from "ui/packages/popup";
 import { EmptyListHint } from "ui/packages/virtualList";
+import { menuIcon, menuRow } from "./menuIcon";
 import useMenuStyles from "./Menu.styles";
-
-const ROW = 28;
-const ROW_DENSE = 22;
 
 export interface MenuItem {
 	id: string;
 	text: string;
+	icon?: Icons;
 	disabled?: boolean;
 	tone?: "danger";
 }
@@ -30,11 +32,13 @@ export interface MenuProps {
 
 function Menu(props: CustomizedProps<Frame, MenuProps>) {
 	const { anchor, open, items, onSelect, onClose, emptyText, empty, dense, selected, className, sx, id, ref } = props;
+	const { theme } = useTheme();
 	const styles = useMenuStyles();
 	if (!open) return undefined;
 	const vacant = items.size() === 0;
-	const row = dense === true ? ROW_DENSE : ROW;
-	const height = vacant ? row : items.size() * row;
+	const icons = items.some((item) => menuIcon(item.icon) !== undefined);
+	const row = menuRow(dense, icons);
+	const height = vacant ? menuRow(dense) : items.size() * row;
 	return (
 		<Popup anchor={anchor} preferredHeight={height} onDismiss={onClose}>
 			<SxHost tag="frame" key={id || "Surface"} hostRef={ref} base={styles.surface} className={className} sx={sx}>
@@ -45,21 +49,32 @@ function Menu(props: CustomizedProps<Frame, MenuProps>) {
 					? (empty ?? <EmptyListHint text={emptyText ?? "No options"} height={row} />)
 					: (
 						<>
-							{items.map((item) => (
-								<ListItem
-									key={item.id}
-									text={item.text}
-									disabled={item.disabled}
-									tone={item.tone}
-									dense={dense}
-									selected={item.id === selected}
-									onActivated={() => {
-										if (item.disabled === true) return;
-										onSelect(item.id);
-										onClose();
-									}}
-								/>
-							))}
+							{items.map((item) => {
+								const glyph = menuIcon(item.icon);
+								const ink = listItemInk(item.tone, item.disabled);
+								const tint =
+									ink === "error"
+										? theme.palette.status.error.main
+										: ink === "disabled"
+											? theme.palette.text.disabled
+											: theme.palette.text.primary;
+								return (
+									<ListItem
+										key={item.id}
+										text={item.text}
+										disabled={item.disabled}
+										tone={item.tone}
+										dense={dense}
+										selected={item.id === selected}
+										leading={glyph !== undefined ? <Icon icon={glyph as Icons} size="sm" tint={tint} /> : undefined}
+										onActivated={() => {
+											if (item.disabled === true) return;
+											onSelect(item.id);
+											onClose();
+										}}
+									/>
+								);
+							})}
 						</>
 					)}
 			</SxHost>

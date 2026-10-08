@@ -2,6 +2,12 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
+const { menuIcon, menuRow } = await import(pathToFileURL(join(root, "src/ui/packages/menu/components/menuIcon.ts")).href);
+if (menuIcon() !== undefined || menuIcon("") !== undefined) throw new Error("empty menu icon");
+if (menuIcon("Save") !== "Save") throw new Error("menu icon");
+if (menuRow() !== 28 || menuRow(true) !== 22) throw new Error("menu row");
+if (menuRow(false, true) !== 48 || menuRow(true, true) !== 44) throw new Error("icon row");
+
 const { stateMatrix } = await import(pathToFileURL(join(root, "src/ui/packages/stateMatrix.ts")).href);
 const { listItemInk } = await import(pathToFileURL(join(root, "src/ui/packages/listItem/components/listItemInk.ts")).href);
 
