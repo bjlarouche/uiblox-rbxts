@@ -11,3 +11,9 @@ export function dialogActionWrap(fixed: number, button: number, count: number, g
 	if (count < 2 || fixed <= 0) return false;
 	return button * count + gap * (count - 1) > fixed;
 }
+
+/** A title wider than the column wraps. A short title stays one line. */
+export function dialogTitleWrap(textWidth: number, column: number) {
+	if (column <= 0) return false;
+	return textWidth > column;
+}
