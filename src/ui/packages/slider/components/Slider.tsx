@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "@rbxts/react";
-import { ControlSize, cx, CustomizedProps } from "theme";
+import { TextService } from "@rbxts/services";
+import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
 import { commitNumber } from "ui/packages/numberInput/components/numberValue";
 import useSliderStyles, { SliderColor } from "./Slider.styles";
-import { sliderLabel } from "./sliderLabel";
+import { sliderLabel, sliderSlot } from "./sliderLabel";
 import { sliderMarkValues } from "./sliderMarks";
 import { isSliderDrag, isSliderMove, nudgeDelta, nudgeValue } from "./sliderNudge";
 
@@ -25,6 +26,14 @@ export interface SliderProps {
 function Slider(props: CustomizedProps<Frame, SliderProps>) {
 	const { value, onChange, onCommit, min, max, step, disabled, size, marks, format, color = "primary", className, sx, id, ref } = props;
 	const labelText = sliderLabel(format, value);
+	const { theme } = useTheme();
+	const metrics = controlMetrics(theme.density, size);
+	const caption = theme.typography.variants.caption;
+	const font = theme.typography.fontFamilies[caption.family] ?? Enum.Font.SourceSans;
+	const slot =
+		labelText === undefined
+			? 0
+			: sliderSlot(TextService.GetTextSize(labelText, caption.size, font, new Vector2(10000, 100)).X, 52, 4);
 	const { root, track, fill, knob, corner, stroke, mark, label } = useSliderStyles({ size, color, labeled: labelText !== undefined });
 	const active = canActivate(disabled);
 	const [focused, setFocused] = useState(false);
@@ -110,9 +119,13 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 		>
 			<frame
 				key="Track"
-				{...cx<Frame>(track, {
-					BackgroundTransparency: faded ? 0.55 : hovering && active ? 0.2 : 0.35,
-				})}
+				{...cx<Frame>(
+					track,
+					{
+						BackgroundTransparency: faded ? 0.55 : hovering && active ? 0.2 : 0.35,
+					},
+					labelText !== undefined && { Size: new UDim2(1, -(slot + 4), 0, metrics.sliderTrack) },
+				)}
 			>
 				<uicorner {...corner} />
 				{showFocus && <uistroke {...stroke} />}
@@ -145,7 +158,7 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 					{showFocus && <uistroke {...stroke} Thickness={1} />}
 				</frame>
 			</frame>
-			{labelText !== undefined ? <textlabel key="Value" {...label} Text={labelText} /> : undefined}
+			{labelText !== undefined ? <textlabel key="Value" {...label} Size={new UDim2(0, slot, 1, 0)} Text={labelText} /> : undefined}
 		</SxHost>
 	);
 }
