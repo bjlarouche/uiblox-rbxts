@@ -7,8 +7,10 @@ import {
 	daysInMonth,
 	formatStamp,
 	orderSpan,
+	shiftDay,
 	shiftMonth,
 	weekday,
+	weekStamps,
 } from "../dateRangeValue";
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -20,6 +22,9 @@ export interface DateRangePickerProps {
 	value: DateSpan;
 	onChange: (value: DateSpan) => void;
 	onMonthChange: (year: number, month: number) => void;
+	view?: "month" | "week";
+	anchor?: number;
+	onAnchorChange?: (stamp: number) => void;
 }
 
 function covers(stamp: number, value: DateSpan) {
@@ -31,7 +36,10 @@ function covers(stamp: number, value: DateSpan) {
 }
 
 function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
-	const { year, month, value, onChange, onMonthChange, className, sx, id, ref } = props;
+	const { year, month, value, onChange, onMonthChange, view, anchor, onAnchorChange, className, sx, id, ref } = props;
+	const weekMode = view === "week";
+	const anchorStamp = anchor ?? dateStamp(year, month, 1);
+	const week = weekMode ? weekStamps(anchorStamp) : [];
 	const { theme } = useTheme();
 	const lead = weekday(year, month, 1);
 	const count = daysInMonth(year, month);
@@ -46,9 +54,17 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 		else onChange(orderSpan(value.start, stamp));
 	};
 	const move = (delta: number) => {
+		if (weekMode) {
+			const moved = shiftDay(anchorStamp, delta * 7);
+			onAnchorChange?.(moved);
+			onMonthChange(math.floor(moved / 10000), math.floor(moved / 100) % 100);
+			return;
+		}
 		const shifted = shiftMonth(year, month, delta);
 		onMonthChange(shifted.year, shifted.month);
 	};
+	const title =
+		weekMode && week.size() === 7 ? `${formatStamp(week[0])} – ${formatStamp(week[6])}` : `${MONTHS[month - 1] ?? ""} ${year}`;
 
 	return (
 		<SxHost
@@ -73,8 +89,8 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 			<uilistlayout FillDirection={Enum.FillDirection.Vertical} Padding={new UDim(0, 8)} SortOrder={Enum.SortOrder.LayoutOrder} />
 			<frame Size={new UDim2(1, 0, 0, 28)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={0}>
 				<textbutton
-					Text="Prev"
-					Size={UDim2.fromOffset(56, 28)}
+					Text={weekMode ? "Earlier" : "Prev"}
+					Size={UDim2.fromOffset(weekMode ? 72 : 56, 28)}
 					BackgroundTransparency={1}
 					BorderSizePixel={0}
 					TextColor3={theme.palette.text.secondary}
@@ -83,10 +99,10 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 					Event={{ Activated: () => move(-1) }}
 				/>
 				<textlabel
-					Text={`${MONTHS[month - 1] ?? ""} ${year}`}
+					Text={title}
 					AnchorPoint={new Vector2(0.5, 0)}
 					Position={UDim2.fromScale(0.5, 0)}
-					Size={UDim2.fromOffset(140, 28)}
+					Size={UDim2.fromOffset(weekMode ? 200 : 140, 28)}
 					BackgroundTransparency={1}
 					BorderSizePixel={0}
 					TextColor3={theme.palette.text.primary}
@@ -94,10 +110,10 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 					TextSize={theme.typography.fontSizes.body}
 				/>
 				<textbutton
-					Text="Next"
+					Text={weekMode ? "Later" : "Next"}
 					AnchorPoint={new Vector2(1, 0)}
 					Position={UDim2.fromScale(1, 0)}
-					Size={UDim2.fromOffset(56, 28)}
+					Size={UDim2.fromOffset(weekMode ? 72 : 56, 28)}
 					BackgroundTransparency={1}
 					BorderSizePixel={0}
 					TextColor3={theme.palette.text.secondary}
@@ -117,6 +133,38 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 				TextSize={theme.typography.fontSizes.caption}
 				LayoutOrder={1}
 			/>
+			{weekMode ? (
+				<frame Size={new UDim2(1, 0, 0, 56)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
+					<uilistlayout
+						FillDirection={Enum.FillDirection.Horizontal}
+						Padding={new UDim(0, 4)}
+						SortOrder={Enum.SortOrder.LayoutOrder}
+					/>
+					{week.map((stamp, index) => {
+						const chosen = covers(stamp, value);
+						const endpoint = stamp === value.start || stamp === value.finish;
+						return (
+							<textbutton
+								key={`week-${stamp}`}
+								Text={`${WEEKDAYS[index] ?? ""}\n${stamp % 100}`}
+								LayoutOrder={index}
+								Size={new UDim2(1 / 7, -4, 1, 0)}
+								BackgroundColor3={chosen ? theme.palette.primary.main : theme.palette.surface.input}
+								BackgroundTransparency={chosen && !endpoint ? 0.55 : 0}
+								BorderSizePixel={0}
+								TextColor3={endpoint ? theme.palette.primary.on : theme.palette.text.primary}
+								Font={theme.typography.fontFamilies.default}
+								TextSize={theme.typography.fontSizes.caption}
+								TextWrapped={true}
+								AutoButtonColor={false}
+								Event={{ Activated: () => pick(stamp) }}
+							>
+								<uicorner CornerRadius={new UDim(0, 4)} />
+							</textbutton>
+						);
+					})}
+				</frame>
+			) : (
 			<frame Size={new UDim2(1, 0, 0, 248)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
 				<uigridlayout
 					CellSize={UDim2.fromOffset(36, 28)}
@@ -169,6 +217,7 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 					);
 				})}
 			</frame>
+			)}
 		</SxHost>
 	);
 }

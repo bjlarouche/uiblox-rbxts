@@ -74,3 +74,34 @@ export function formatSpan(value: DateSpan) {
 	if (value.finish === undefined) return formatStamp(value.start);
 	return `${formatStamp(value.start)} – ${formatStamp(value.finish)}`;
 }
+
+/** Inverse of dayIndex. Day 1 is 1 Jan of year 1. */
+export function stampFromIndex(index: number) {
+	let left = index;
+	let year = 1;
+	while (left > (isLeapYear(year) ? 366 : 365)) {
+		left -= isLeapYear(year) ? 366 : 365;
+		year += 1;
+	}
+	let month = 1;
+	while (month < 12 && left > daysInMonth(year, month)) {
+		left -= daysInMonth(year, month);
+		month += 1;
+	}
+	return dateStamp(year, month, left);
+}
+
+export function shiftDay(stamp: number, delta: number) {
+	return stampFromIndex(dayIndex(stamp) + delta);
+}
+
+/** Seven stamps, Sunday through Saturday, containing the day. */
+export function weekStamps(stamp: number) {
+	const year = math.floor(stamp / 10000);
+	const month = math.floor(stamp / 100) % 100;
+	const day = stamp % 100;
+	const origin = dayIndex(stamp) - weekday(year, month, day);
+	const week = new Array<number>();
+	for (let offset = 0; offset < 7; offset++) week.push(stampFromIndex(origin + offset));
+	return week;
+}

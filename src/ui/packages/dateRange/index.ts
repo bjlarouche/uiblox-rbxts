@@ -10,6 +10,9 @@ export {
 	isLeapYear,
 	nightsBetween,
 	orderSpan,
+	shiftDay,
 	shiftMonth,
+	stampFromIndex,
 	weekday,
+	weekStamps,
 } from "./dateRangeValue";
