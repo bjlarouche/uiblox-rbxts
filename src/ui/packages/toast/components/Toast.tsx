@@ -15,6 +15,7 @@ export interface ToastProps {
 	toggledAt?: number;
 	action?: string;
 	onAction?: () => void;
+	edge?: "top" | "bottom";
 }
 
 const TWEEN_DURATION = 0.5;

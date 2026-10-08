@@ -12,10 +12,11 @@ export interface SnackbarProps {
 	open?: boolean;
 	action?: string;
 	onAction?: () => void;
+	edge?: "top" | "bottom";
 }
 
 function Snackbar(props: CustomizedProps<Frame, SnackbarProps>) {
-	const { message, onDismiss, duration, variant, open = true, action, onAction, className, sx, id, ref } = props;
+	const { message, onDismiss, duration, variant, open = true, action, onAction, edge, className, sx, id, ref } = props;
 	if (!open) return undefined;
 	return (
 		<Toast
@@ -25,6 +26,7 @@ function Snackbar(props: CustomizedProps<Frame, SnackbarProps>) {
 			variant={variant}
 			action={snackbarActionLabel(action)}
 			onAction={onAction}
+			edge={edge}
 			className={className}
 			sx={sx}
 			id={id || "Snackbar"}
