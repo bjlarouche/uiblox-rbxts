@@ -34,6 +34,23 @@ const useAccordionStyles = componentStyles<{ open?: boolean; disabled?: boolean 
 			TextTransparency: disabled === true ? 0.5 : 0,
 			TextXAlignment: Enum.TextXAlignment.Left,
 		} as WriteableStyle<TextLabel>,
+		copy: {
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, -theme.spacing.calc(4), 0, 0),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
+		note: {
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, 0, 0, 0),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+			Font: theme.typography.fontFamilies.default,
+			TextSize: theme.typography.fontSizes.caption ?? theme.typography.fontSizes.body,
+			TextColor3: theme.palette.text.secondary,
+			TextTransparency: disabled === true ? 0.5 : 0,
+			TextXAlignment: Enum.TextXAlignment.Left,
+		} as WriteableStyle<TextLabel>,
 		icon: {
 			Size: UDim2.fromOffset(theme.options.constants.iconSizes.small, theme.options.constants.iconSizes.small),
 			Position: new UDim2(1, -theme.padding.calc(1.5), 0.5, 0),
