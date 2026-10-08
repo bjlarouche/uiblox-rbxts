@@ -60,6 +60,20 @@ const useRadioGroupStyles = componentStyles<RadioGroupStyleProps>("RadioGroup", 
 			Font: theme.typography.fontFamilies.default,
 			TextSize: metrics.font,
 		} as WriteableStyle<TextLabel>,
+		hint: {
+			AutomaticSize: Enum.AutomaticSize.XY,
+			Size: UDim2.fromScale(0, 0),
+			BackgroundTransparency: 1,
+			TextColor3: theme.palette.text.secondary,
+			Font: theme.typography.fontFamilies.default,
+			TextSize: theme.typography.fontSizes.caption ?? metrics.font,
+		} as WriteableStyle<TextLabel>,
+		notes: {
+			AutomaticSize: Enum.AutomaticSize.XY,
+			Size: UDim2.fromScale(0, 0),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
 	});
 });
 
