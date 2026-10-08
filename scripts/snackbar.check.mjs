@@ -12,11 +12,14 @@ const container = toastStyles.match(/container:\s*\{[\s\S]*?\}\s*as WriteableSty
 if (!/Position:\s*ACTIVE_POSITION/.test(container)) throw new Error("toast must mount at active inset");
 if (/Position:\s*INACTIVE_POSITION/.test(container)) throw new Error("toast must not mount below the canvas");
 
-const { toastPlace } = await import("../src/ui/packages/toast/components/toastPlace.ts");
+const { toastPlace, toastWrap } = await import("../src/ui/packages/toast/components/toastPlace.ts");
 const bottom = toastPlace(undefined, 8, 40);
 if (bottom.anchorY !== 1 || bottom.activeOffset !== -8 || bottom.idleOffset !== 40) throw new Error("bottom toast");
 const top = toastPlace("top", 8, 40);
 if (top.anchorY !== 0 || top.activeOffset !== 8 || top.idleOffset !== -40) throw new Error("top toast");
+if (toastWrap(200, 144) !== true) throw new Error("long toast wraps");
+if (toastWrap(100, 144) !== false) throw new Error("short toast stays");
+if (toastWrap(200, 0) !== false) throw new Error("unmeasured toast");
 
 const { snackbarActionLabel } = await import("../src/ui/packages/snackbar/components/snackbarAction.ts");
 if (snackbarActionLabel(undefined) !== undefined) throw new Error("missing action");

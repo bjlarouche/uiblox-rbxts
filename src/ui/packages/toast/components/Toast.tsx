@@ -1,11 +1,13 @@
 import { BoatTween } from "@rbxts/boat-tween";
 import React, { useEffect, useRef } from "@rbxts/react";
-import { CustomizedProps, DEFAULT_THEME, WriteableStyle } from "theme";
+import { TextService } from "@rbxts/services";
+import { CustomizedProps, DEFAULT_THEME, useTheme, WriteableStyle } from "theme";
 import { Directions } from "ui/enums";
 import { SxHost } from "ui/packages/host";
 import { Shadow } from "ui/packages/shadow";
 import ToastVariants from "../enums/ToastVariants";
 import useToastStyles from "./Toast.styles";
+import { toastWrap } from "./toastPlace";
 
 export interface ToastProps {
 	text: string;
@@ -24,7 +26,29 @@ function Toast(props: CustomizedProps<Frame, ToastProps>) {
 	const { text, onDismiss, duration = 4, action, onAction, className,
 		sx, id, ref } = props;
 	const { container, label, close, action: actionStyle, activePosition, inActivePosition } = useToastStyles(props);
+	const { theme } = useTheme();
 	const frameRef = useRef<Frame>();
+	const font = theme.typography.fontFamilies.default ?? Enum.Font.SourceSans;
+	const textSize = theme.typography.fontSizes.body ?? 14;
+	const actionSlot = action !== undefined && action.size() > 0 ? theme.spacing.calc(8) : 0;
+	const box = theme.spacing.calc(20) - theme.padding.calc(4) - actionSlot;
+	const bounds = TextService.GetTextSize(text, textSize, font, new Vector2(10000, 100));
+	const wrap = toastWrap(bounds.X, box);
+	const pad = theme.padding.calc(2);
+	const boxStyle = wrap ? { ...container, AutomaticSize: Enum.AutomaticSize.Y } : container;
+	const labelStyle = wrap
+		? {
+				...label,
+				TextWrapped: true,
+				TextTruncate: Enum.TextTruncate.None,
+				AutomaticSize: Enum.AutomaticSize.Y,
+				Size: new UDim2(1, -(theme.padding.calc(4) + actionSlot), 0, 0),
+				AnchorPoint: new Vector2(0, 0),
+				Position: new UDim2(0, pad, 0, pad),
+				TextXAlignment: Enum.TextXAlignment.Left,
+				TextYAlignment: Enum.TextYAlignment.Top,
+			}
+		: label;
 
 	const tween = (direction: Directions) => {
 		const frame = frameRef.current;
@@ -77,14 +101,15 @@ function Toast(props: CustomizedProps<Frame, ToastProps>) {
 				}
 				(ref as { current?: Frame }).current = instance;
 			}}
-			base={container}
+			base={boxStyle}
 			className={className}
 			sx={sx}
 		>
 			<uicorner  key="Corner"  CornerRadius={new UDim(0, DEFAULT_THEME.shape.borderRadius)} />
 			<Shadow />
+			{wrap && <uipadding PaddingBottom={new UDim(0, pad)} />}
 
-			<textlabel key="Label" {...label} Text={text} />
+			<textlabel key="Label" {...labelStyle} Text={text} />
 			{action !== undefined && action.size() > 0 && (
 				<textbutton
 					key="Action"
