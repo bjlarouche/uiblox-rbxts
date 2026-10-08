@@ -1,4 +1,4 @@
-import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, componentStyles, focusRing, Theme, WriteableStyle } from "theme";
 
 export type SwitchColor = "primary" | "accent";
 
@@ -52,11 +52,7 @@ const useSwitchStyles = componentStyles<SwitchStyleProps>("Switch", (theme: Them
 		corner: {
 			CornerRadius: new UDim(theme.shape.pillScale, 0),
 		} as WriteableStyle<UICorner>,
-		stroke: {
-			Color: theme.palette.focus,
-			Thickness: 2,
-			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
-		} as WriteableStyle<UIStroke>,
+		stroke: focusRing(theme.palette.focus) as WriteableStyle<UIStroke>,
 	});
 });
 
