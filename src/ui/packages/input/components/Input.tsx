@@ -184,6 +184,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 				{variant === "standard" && (
 					<Divider
 						padding={0}
+						weight={focused ? 2 : undefined}
 						orientation={Orientations.Horizontal}
 						className={cx(divider, hasError && errorColorFrame)}
 					/>
