@@ -40,6 +40,7 @@ export * from "./vectorEditor";
 export * from "./cframeEditor";
 export * from "./enumPicker";
 export * from "./popup";
+export * from "./popover";
 export * from "./modal";
 export * from "./backdrop";
 export * from "./dialog";
