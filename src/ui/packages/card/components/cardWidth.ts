@@ -14,3 +14,9 @@ export function cardTitleWrap(textWidth: number, column: number) {
 	if (column <= 0) return false;
 	return textWidth > column;
 }
+
+/** Two small actions are wider than the fixed column, so the row wraps. */
+export function cardActionWrap(column: number, button: number, count: number, gap = 0) {
+	if (count < 2 || column <= 0) return false;
+	return button * count + gap * (count - 1) > column;
+}
