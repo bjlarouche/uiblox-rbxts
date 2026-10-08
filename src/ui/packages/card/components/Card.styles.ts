@@ -58,6 +58,7 @@ const useCardStyles = componentStyles<{ fullWidth?: boolean }>("Card", (theme: T
 			HorizontalAlignment: Enum.HorizontalAlignment.Right,
 			Padding: new UDim(0, theme.padding.calc(1)),
 			SortOrder: Enum.SortOrder.LayoutOrder,
+			Wraps: true,
 		} as WriteableStyle<UIListLayout>,
 	});
 });
