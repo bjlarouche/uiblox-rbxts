@@ -155,7 +155,7 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 					Position={UDim2.fromScale(ratio, 0.5)}
 				>
 					<uicorner {...corner} />
-					{showFocus && <uistroke {...stroke} Thickness={1} />}
+					{showFocus && <uistroke {...stroke} />}
 				</frame>
 			</frame>
 			{labelText !== undefined ? <textlabel key="Value" {...label} Size={new UDim2(0, slot, 1, 0)} Text={labelText} /> : undefined}

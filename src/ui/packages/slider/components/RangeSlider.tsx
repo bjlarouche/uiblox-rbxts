@@ -129,11 +129,11 @@ function RangeSlider(props: CustomizedProps<Frame, RangeSliderProps>) {
 				</frame>
 				<frame key="Low" {...knobLook(ratios.low, "low")}>
 					<uicorner {...styles.corner} />
-					{showFocus && thumb.current === "low" && <uistroke {...styles.stroke} Thickness={1} />}
+					{showFocus && thumb.current === "low" && <uistroke {...styles.stroke} />}
 				</frame>
 				<frame key="High" {...knobLook(ratios.high, "high")}>
 					<uicorner {...styles.corner} />
-					{showFocus && thumb.current === "high" && <uistroke {...styles.stroke} Thickness={1} />}
+					{showFocus && thumb.current === "high" && <uistroke {...styles.stroke} />}
 				</frame>
 			</frame>
 		</SxHost>
