@@ -13,6 +13,7 @@ export interface MenuItem {
 	id: string;
 	text: string;
 	disabled?: boolean;
+	tone?: "danger";
 }
 
 export interface MenuProps {
@@ -49,6 +50,7 @@ function Menu(props: CustomizedProps<Frame, MenuProps>) {
 									key={item.id}
 									text={item.text}
 									disabled={item.disabled}
+									tone={item.tone}
 									dense={dense}
 									selected={item.id === selected}
 									onActivated={() => {
