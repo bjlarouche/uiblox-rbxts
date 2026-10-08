@@ -57,6 +57,7 @@ export * from "./pagination";
 export * from "./stepper";
 export * from "./timeline";
 export * from "./accordion";
+export * from "./collapse";
 export * from "./snackbar";
 export * from "./table";
 export * from "./autocomplete";

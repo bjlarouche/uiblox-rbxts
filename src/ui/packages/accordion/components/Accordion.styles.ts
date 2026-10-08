@@ -1,6 +1,6 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
-const useAccordionStyles = componentStyles<{ open?: boolean; disabled?: boolean }>("Accordion", (theme: Theme, { open = false, disabled }) =>
+const useAccordionStyles = componentStyles<{ open?: boolean; disabled?: boolean }>("Accordion", (theme: Theme, { disabled }) =>
 	createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.Y,
@@ -73,7 +73,6 @@ const useAccordionStyles = componentStyles<{ open?: boolean; disabled?: boolean 
 			Size: new UDim2(1, 0, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
-			Visible: open,
 		} as WriteableStyle<Frame>,
 		corner: {
 			CornerRadius: new UDim(0, theme.shape.borderRadius),
