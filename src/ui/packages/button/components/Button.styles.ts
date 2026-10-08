@@ -1,4 +1,4 @@
-import { controlMetrics, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, createStyles, componentStyles, focusRing, Theme, WriteableStyle } from "theme";
 import { ButtonProps } from "./Button";
 
 const makeRootStyles = (theme: Theme, { size, color, fullWidth, variant }: ButtonProps) => {
@@ -71,6 +71,7 @@ const useButtonStyles = componentStyles<ButtonProps>("Button",
 				Transparency: 0,
 				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 			} as WriteableStyle<UIStroke>,
+			focus: focusRing(theme.palette.focus) as WriteableStyle<UIStroke>,
 		});
 	},
 );

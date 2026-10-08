@@ -65,7 +65,7 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 		ref,
 	} = props;
 
-	const { root, font, corner, stroke } = useButtonStyles(props);
+	const { root, font, corner, stroke, focus } = useButtonStyles(props);
 	const { theme } = useTheme();
 	const metrics = controlMetrics(theme.density, props.size);
 	const glyph = buttonIcon(icon, loading);
@@ -151,7 +151,8 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 				},
 			}}
 		>
-			{variant === "outlined" && !busy && <uistroke {...stroke} />}
+			{!busy && focused && <uistroke {...focus} />}
+			{!busy && !focused && variant === "outlined" && <uistroke {...stroke} />}
 			{busy && <LoadingStroke animating={busy && !reducedMotion} color={spinnerColor} />}
 			{rounded && <uicorner {...corner} />}
 			{loading && (
