@@ -1,4 +1,4 @@
-import { controlMetrics, ControlSize, createStyles, componentStyles, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, componentStyles, focusRing, WriteableStyle } from "theme";
 
 export interface CheckboxStyleProps {
 	size?: ControlSize;
@@ -60,6 +60,7 @@ const useCheckboxStyles = componentStyles<CheckboxStyleProps>("Checkbox", (theme
 		idleStroke: {
 			Color: theme.palette.text.secondary,
 		} as WriteableStyle<UIStroke>,
+		focus: focusRing(theme.palette.focus) as WriteableStyle<UIStroke>,
 	});
 });
 
