@@ -41,6 +41,26 @@ const useBottomNavigationStyles = componentStyles<{ showLabels?: boolean }>(
 				BackgroundColor3: theme.palette.primary.main,
 				BorderSizePixel: 0,
 			} as WriteableStyle<Frame>,
+			badge: {
+				AnchorPoint: new Vector2(1, 0),
+				Position: new UDim2(1, -4, 0, 2),
+				AutomaticSize: Enum.AutomaticSize.X,
+				Size: UDim2.fromOffset(0, theme.spacing.calc(2)),
+				BackgroundColor3: theme.palette.status.error.main,
+				BorderSizePixel: 0,
+				Font: theme.typography.fontFamilies.default,
+				TextSize: theme.typography.fontSizes.caption,
+				TextColor3: theme.palette.text.inverse,
+				TextXAlignment: Enum.TextXAlignment.Center,
+				ZIndex: 2,
+			} as WriteableStyle<TextLabel>,
+			badgePad: {
+				PaddingLeft: new UDim(0, theme.padding.calc(0.5)),
+				PaddingRight: new UDim(0, theme.padding.calc(0.5)),
+			} as WriteableStyle<UIPadding>,
+			badgeCorner: {
+				CornerRadius: new UDim(0, theme.spacing.calc(1)),
+			} as WriteableStyle<UICorner>,
 		}),
 );
 
