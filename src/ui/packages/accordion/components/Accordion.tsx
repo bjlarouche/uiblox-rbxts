@@ -2,6 +2,7 @@ import React, { useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
 import { SxHost } from "ui/packages/host";
+import { Collapse } from "ui/packages/collapse";
 import { accordionNote } from "./accordionNote";
 import { accordionGlyph, accordionOpen } from "./accordionOpen";
 import useAccordionStyles from "./Accordion.styles";
@@ -52,10 +53,10 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 					Image={accordionGlyph(open) === "expanded" ? Icons.Expanded : Icons.Collapsed}
 				/>
 			</textbutton>
-			<frame key="Body" {...styles.body}>
+			<Collapse key="Body" open={open} className={styles.body}>
 				<uipadding {...styles.padding} />
 				{children}
-			</frame>
+			</Collapse>
 		</SxHost>
 	);
 }
