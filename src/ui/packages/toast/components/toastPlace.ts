@@ -15,3 +15,9 @@ export function toastPlace(edge: ToastEdge | undefined, inset: number, hidden: n
 	}
 	return { anchorY: 1, activeY: 1, activeOffset: -inset, idleY: 1, idleOffset: hidden };
 }
+
+/** A line wider than the toast wraps. A short line stays one row. */
+export function toastWrap(textWidth: number, box: number) {
+	if (box <= 0) return false;
+	return textWidth > box;
+}
