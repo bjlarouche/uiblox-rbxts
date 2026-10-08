@@ -1,4 +1,4 @@
-import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, componentStyles, focusRing, Theme, WriteableStyle } from "theme";
 
 export interface SelectStyleProps {
 	size?: ControlSize;
@@ -90,11 +90,7 @@ const useSelectStyles = componentStyles<SelectStyleProps>("Select", (theme: Them
 			Color: theme.palette.border,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
-		focusStroke: {
-			Color: theme.palette.focus,
-			Thickness: 2,
-			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
-		} as WriteableStyle<UIStroke>,
+		focusStroke: focusRing(theme.palette.focus) as WriteableStyle<UIStroke>,
 	});
 });
 
