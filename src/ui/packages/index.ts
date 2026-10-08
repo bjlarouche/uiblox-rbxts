@@ -56,6 +56,7 @@ export * from "./gradientEditor";
 export * from "./drawer";
 export * from "./breadcrumbs";
 export * from "./pagination";
+export * from "./pager";
 export * from "./stepper";
 export * from "./timeline";
 export * from "./accordion";
