@@ -95,7 +95,7 @@ if (spin[0].transparency !== 1 || spin[spin.length - 1].transparency !== 1) {
 }
 if (!spin.some((key) => key.transparency === 0)) throw new Error("spin arc has an opaque head");
 
-const { buttonFace, spinnerPlace, spinnerPixels, iconSpinnerPixels } = await import(
+const { buttonFace, buttonIcon, spinnerPlace, spinnerPixels, iconSpinnerPixels } = await import(
 	pathToFileURL(join(root, "src/ui/packages/button/components/buttonLook.ts")).href
 );
 if (!buttonFace("Save", true).hideText) throw new Error("loading hides the caption");
@@ -105,6 +105,10 @@ if (buttonFace("Save", true, "Saving").text !== "Saving" || buttonFace("Save", t
 if (buttonFace("Save", false).text !== "Save" || buttonFace("Save", false).hideText) {
 	throw new Error("idle caption stays");
 }
+if (buttonIcon() !== undefined || buttonIcon("") !== undefined || buttonIcon("Save", true) !== undefined) {
+	throw new Error("empty button icon");
+}
+if (buttonIcon("Save") !== "Save") throw new Error("button icon");
 if (spinnerPlace("start").xOffset !== 8 || spinnerPlace("end").xScale !== 1 || spinnerPlace("center").xScale !== 0.5) {
 	throw new Error("spinner place");
 }
