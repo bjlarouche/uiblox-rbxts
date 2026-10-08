@@ -174,7 +174,7 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean; content
 			} as WriteableStyle<TextLabel>,
 			divider: {
 				Position: new UDim2(0, 0, 0, fieldHeight),
-				BackgroundColor3: accent,
+				BackgroundColor3: focused ? theme.palette.focus : accent,
 				ZIndex: 11000,
 			} as WriteableStyle<Frame>,
 			corner: {
