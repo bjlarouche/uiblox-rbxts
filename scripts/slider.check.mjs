@@ -13,7 +13,7 @@ import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
 const { sliderMarkValues } = await import(pathToFileURL(join(root, "src/ui/packages/slider/components/sliderMarks.ts")).href);
-const { sliderLabel } = await import(pathToFileURL(join(root, "src/ui/packages/slider/components/sliderLabel.ts")).href);
+const { sliderLabel, sliderSlot } = await import(pathToFileURL(join(root, "src/ui/packages/slider/components/sliderLabel.ts")).href);
 const { stateMatrix } = await import(pathToFileURL(join(root, "src/ui/packages/stateMatrix.ts")).href);
 
 if (sliderMarkValues(0, 100, 25, undefined).length !== 0) throw new Error("marks off");
@@ -32,6 +32,9 @@ if (sliderLabel(undefined, 64) !== undefined) throw new Error("format off");
 if (sliderLabel(() => "", 64) !== undefined) throw new Error("format blank");
 if (sliderLabel(clock, 64) !== "1:04") throw new Error("format time");
 if (sliderLabel(clock, 0) !== "0:00") throw new Error("format zero");
+if (sliderSlot(80, 52, 4) !== 84) throw new Error("long slider slot");
+if (sliderSlot(20, 52, 4) !== 52) throw new Error("short slider slot");
+if (sliderSlot(80, 0, 4) !== 84) throw new Error("unmeasured slider slot");
 
 if (!stateMatrix.some((row) => row.component === "Slider" && row.name.includes("marks"))) {
 	throw new Error("Slider missing marks matrix");
