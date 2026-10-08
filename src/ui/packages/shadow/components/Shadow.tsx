@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "@rbxts/react";
+import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { CustomizedProps, WriteableStyle } from "theme";
 import { SxHost } from "ui/packages/host";
 import useShadowStyles from "./Shadow.styles";
@@ -8,6 +8,7 @@ function Shadow(props: CustomizedProps<Frame>) {
 	const [parent, setParent] = useState<GuiObject | undefined>(undefined);
 	const [cornerRadius, setCornerRadius] = useState<UDim | undefined>();
 	const [blobSize, setBlobSize] = useState(UDim2.fromOffset(0, 0));
+	const blobRef = useRef<Frame>();
 
 	const { className, sx, id, ref } = props;
 	const defaultZIndex = (container as WriteableStyle<Frame>).ZIndex ?? 0;
@@ -22,7 +23,23 @@ function Shadow(props: CustomizedProps<Frame>) {
 		parent.ClipsDescendants = false;
 
 		const sync = () => {
-			setBlobSize(UDim2.fromOffset(parent.AbsoluteSize.X, parent.AbsoluteSize.Y));
+			const blob = blobRef.current;
+			const auto = parent.AutomaticSize;
+			let size = parent.AbsoluteSize;
+			if (blob && auto !== Enum.AutomaticSize.None) {
+				let extent = blob.AbsolutePosition;
+				for (const child of parent.GetChildren()) {
+					if (child !== blob.Parent && child.IsA("GuiObject")) {
+						extent = extent.Max(child.AbsolutePosition.add(child.AbsoluteSize));
+					}
+				}
+				const room = extent.sub(blob.AbsolutePosition);
+				size = new Vector2(
+					auto === Enum.AutomaticSize.Y ? size.X : room.X,
+					auto === Enum.AutomaticSize.X ? size.Y : room.Y,
+				);
+			}
+			setBlobSize(UDim2.fromOffset(size.X, size.Y));
 		};
 		sync();
 		const conn = parent.GetPropertyChangedSignal("AbsoluteSize").Connect(sync);
@@ -46,7 +63,7 @@ function Shadow(props: CustomizedProps<Frame>) {
 				},
 			}}
 		>
-			<frame key="Blob" {...blob} Size={blobSize} ZIndex={zIndex}>
+			<frame key="Blob" ref={blobRef} {...blob} Size={blobSize} ZIndex={zIndex}>
 				{cornerRadius !== undefined && <uicorner key="Corner" CornerRadius={cornerRadius} />}
 			</frame>
 		</SxHost>
