@@ -34,6 +34,9 @@ const shadowSource = readFileSync(join(root, "src/ui/packages/shadow/components/
 if (!shadowSource.includes('key="Blob"') || !shadowSource.includes("AbsoluteSize")) {
 	throw new Error("shadow blob syncs to parent");
 }
+if (!shadowSource.includes("<scrollingframe") || !shadowSource.includes("ClipsDescendants={false}")) {
+	throw new Error("shadow blob sits outside autosize");
+}
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
 for (const name of ["default", "extended", "extended-narrow", "small", "medium", "large", "disabled", "loading", "accent"]) {
