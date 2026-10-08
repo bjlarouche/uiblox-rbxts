@@ -1,3 +1,7 @@
+const { alertAction } = await import("../src/ui/packages/alert/components/alertAction.ts");
+if (alertAction() !== undefined || alertAction("") !== undefined) throw new Error("empty action");
+if (alertAction("Retry") !== "Retry") throw new Error("action");
+
 const { alertSeverity } = await import("../src/ui/packages/alert/components/alertTone.ts");
 if (alertSeverity() !== "info" || alertSeverity("error") !== "error") throw new Error("severity default");
 

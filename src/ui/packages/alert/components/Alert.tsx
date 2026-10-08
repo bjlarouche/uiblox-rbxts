@@ -2,6 +2,7 @@ import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
 import { SxHost } from "ui/packages/host";
+import { alertAction } from "./alertAction";
 import { AlertSeverity } from "./alertTone";
 import useAlertStyles from "./Alert.styles";
 
@@ -10,13 +11,16 @@ export interface AlertProps {
 	title?: string;
 	message: string;
 	onClose?: () => void;
+	action?: string;
+	onAction?: () => void;
 	filled?: boolean;
 	square?: boolean;
 }
 
 function Alert(props: CustomizedProps<Frame, AlertProps>) {
-	const { severity, title, message, onClose, filled, square, className, sx, id, ref } = props;
+	const { severity, title, message, onClose, action, onAction, filled, square, className, sx, id, ref } = props;
 	const dismissible = onClose !== undefined;
+	const label = alertAction(action);
 	const styles = useAlertStyles({ severity, dismissible, filled });
 	return (
 		<SxHost tag="frame" key={id || "Alert"} hostRef={ref} base={styles.root} className={className} sx={sx}>
@@ -35,6 +39,18 @@ function Alert(props: CustomizedProps<Frame, AlertProps>) {
 				<uilistlayout {...styles.layout} />
 				{title !== undefined && title !== "" && <textlabel key="Title" {...styles.title} Text={title} />}
 				<textlabel key="Message" {...styles.message} Text={message} />
+				{label !== undefined && (
+					<textbutton
+						key="Action"
+						{...styles.action}
+						Text={label}
+						Event={{
+							Activated: () => {
+								if (onAction) onAction();
+							},
+						}}
+					/>
+				)}
 			</frame>
 		</SxHost>
 	);
