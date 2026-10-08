@@ -1,3 +1,7 @@
+const { accordionNote } = await import("../src/ui/packages/accordion/components/accordionNote.ts");
+if (accordionNote() !== undefined || accordionNote("") !== undefined) throw new Error("empty note");
+if (accordionNote("two sacks") !== "two sacks") throw new Error("note");
+
 const { accordionGlyph, accordionOpen } = await import("../src/ui/packages/accordion/components/accordionOpen.ts");
 if (accordionOpen(true, undefined) !== true) throw new Error("uncontrolled open");
 if (accordionOpen(false, true) !== true) throw new Error("controlled wins");

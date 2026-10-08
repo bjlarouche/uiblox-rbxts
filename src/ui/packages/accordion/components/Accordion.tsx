@@ -2,11 +2,13 @@ import React, { useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
 import { Icons } from "ui/enums";
 import { SxHost } from "ui/packages/host";
+import { accordionNote } from "./accordionNote";
 import { accordionGlyph, accordionOpen } from "./accordionOpen";
 import useAccordionStyles from "./Accordion.styles";
 
 export interface AccordionProps {
 	title: string;
+	note?: string;
 	open?: boolean;
 	defaultOpen?: boolean;
 	disabled?: boolean;
@@ -16,9 +18,10 @@ export interface AccordionProps {
 }
 
 function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
-	const { title, open: controlled, defaultOpen, disabled, square, onChange, children, className, sx, id, ref } = props;
+	const { title, note, open: controlled, defaultOpen, disabled, square, onChange, children, className, sx, id, ref } = props;
 	const [localOpen, setLocalOpen] = useState(defaultOpen === true);
 	const open = accordionOpen(localOpen, controlled);
+	const summary = accordionNote(note);
 	const styles = useAccordionStyles({ open, disabled });
 
 	const toggle = () => {
@@ -34,7 +37,15 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 			<uilistlayout {...styles.list} />
 			<textbutton key="Header" {...styles.header} Event={{ Activated: toggle }}>
 				<uipadding {...styles.padding} />
-				<textlabel key="Title" {...styles.title} Text={title} />
+				{summary === undefined ? (
+					<textlabel key="Title" {...styles.title} Text={title} />
+				) : (
+					<frame key="Copy" {...styles.copy}>
+						<uilistlayout FillDirection={Enum.FillDirection.Vertical} SortOrder={Enum.SortOrder.LayoutOrder} Padding={new UDim(0, 0)} />
+						<textlabel key="Title" {...styles.title} Size={new UDim2(1, 0, 0, 0)} Text={title} LayoutOrder={1} />
+						<textlabel key="Note" {...styles.note} Text={summary} LayoutOrder={2} />
+					</frame>
+				)}
 				<imagelabel
 					key="Icon"
 					{...styles.icon}
