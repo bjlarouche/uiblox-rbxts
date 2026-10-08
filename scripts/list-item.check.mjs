@@ -28,7 +28,7 @@ if (!stateMatrix.some((row) => row.component === "ListItem" && row.variant === "
 	throw new Error("ListItem missing divider");
 }
 
-const { listItemLabelLayout, listItemCopyInset } = await import(
+const { listItemLabelLayout, listItemCopyInset, listItemTrailInset, listItemRowInset } = await import(
 	pathToFileURL(join(root, "src/ui/packages/listItem/components/listItemLayout.ts")).href,
 );
 const wrapped = listItemLabelLayout(true);
@@ -38,5 +38,9 @@ if (plain.widthScale !== 0 || plain.wrapped !== false) throw new Error("plain st
 if (listItemLabelLayout(false).wrapped !== false) throw new Error("wrap false");
 if (listItemCopyInset(true) !== 40) throw new Error("leading inset");
 if (listItemCopyInset() !== 0 || listItemCopyInset(false) !== 0) throw new Error("no leading inset");
+if (listItemTrailInset() !== 0 || listItemTrailInset(false) !== 0 || listItemTrailInset(true) !== 48) throw new Error("trail inset");
+if (listItemRowInset(true) !== 48 || listItemRowInset(false, true) !== 56 || listItemRowInset(true, true) !== 104) {
+	throw new Error("row inset");
+}
 
 console.log("list item ok");
