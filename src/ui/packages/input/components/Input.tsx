@@ -8,6 +8,7 @@ import { SxHost } from "ui/packages/host";
 import { Orientations } from "ui/enums";
 import { InputColor, InputMargin, InputVariant } from "../types";
 import useInputStyles from "./Input.styles";
+import { clampText } from "./clampText";
 import { syncInputDraft } from "./inputDraft";
 
 export type DefaultInputComponent = Frame;
@@ -30,6 +31,7 @@ export interface InputProps {
 	multiline?: boolean;
 	minRows?: number;
 	maxRows?: number;
+	maxLength?: number;
 	reducedMotion?: boolean;
 	startAdornment?: React.Element;
 	endAdornment?: React.Element;
@@ -64,6 +66,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		rounded = true,
 		size,
 		multiline = false,
+		maxLength,
 		reducedMotion,
 		startAdornment,
 		endAdornment,
@@ -92,8 +95,8 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 		useInputStyles({ ...props, focused, contentHeight });
 
 	useEffect(() => {
-		setDraft((current) => syncInputDraft(focusedRef.current, text, current));
-	}, [text]);
+		setDraft((current) => clampText(syncInputDraft(focusedRef.current, text, current), maxLength));
+	}, [text, maxLength]);
 
 	const showStroke = variant === "outlined" || variant === "filled";
 	const showCorner = rounded;
@@ -123,8 +126,13 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 						Change={{
 							Text: (rbx) => {
 								if (!editable) return;
-								setDraft(rbx.Text);
-								if (focusedRef.current && onInput) onInput(rbx.Text);
+								const capped = clampText(rbx.Text, maxLength);
+								if (rbx.Text !== capped) {
+									rbx.Text = capped;
+									return;
+								}
+								setDraft(capped);
+								if (focusedRef.current && onInput) onInput(capped);
 							},
 							TextBounds: (rbx) => {
 								if (multiline) setContentHeight(rbx.TextBounds.Y);
@@ -141,17 +149,17 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 							ReturnPressedFromOnScreenKeyboard: (rbx) => {
 								if (!editable || multiline || entered.current || !onEnterPressed) return;
 								entered.current = true;
-								onEnterPressed(rbx.Text);
+								onEnterPressed(clampText(rbx.Text, maxLength));
 							},
 							FocusLost: (rbx, enterPressed) => {
 								focusedRef.current = false;
 								setFocused(false);
-								const committed = rbx.Text;
+								const committed = clampText(rbx.Text, maxLength);
 								if (editable && onTextChanged) onTextChanged(committed);
 								if (editable && !multiline && enterPressed && !entered.current && onEnterPressed) onEnterPressed(committed);
 								entered.current = false;
 								if (onBlur) onBlur();
-								setDraft(text ?? "");
+								setDraft(clampText(text ?? "", maxLength));
 							},
 						}}
 					/>
