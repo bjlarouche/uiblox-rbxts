@@ -4,7 +4,7 @@ import { CustomizedProps, WriteableStyle } from "theme";
 import { SxHost } from "ui/packages/host";
 import { isDismissInput } from "ui/packages/modal/components/dismissInput";
 import { Portal, portalTarget } from "ui/packages/popup";
-import { drawerAnchor, DrawerEdge } from "./drawerPlacement";
+import { drawerAnchor, drawerBox, DrawerEdge } from "./drawerPlacement";
 import useDrawerStyles from "./Drawer.styles";
 
 export interface DrawerProps {
@@ -12,12 +12,13 @@ export interface DrawerProps {
 	open: boolean;
 	edge?: DrawerEdge;
 	width?: number;
+	height?: number;
 	onClose: () => void;
 	children?: React.ReactNode;
 }
 
 function Drawer(props: CustomizedProps<Frame, DrawerProps>) {
-	const { host, open, edge = "left", width, onClose, children, className, sx, id, ref } = props;
+	const { host, open, edge = "left", width, height, onClose, children, className, sx, id, ref } = props;
 	const styles = useDrawerStyles({ width });
 	const close = useRef(onClose);
 	const anchor = useRef<Frame>();
@@ -37,6 +38,7 @@ function Drawer(props: CustomizedProps<Frame, DrawerProps>) {
 	}, [open, layer]);
 
 	const placement = drawerAnchor(edge);
+	const sheet = edge === "bottom" ? drawerBox(edge, height ?? 0) : undefined;
 	const panelStyle = styles.panel as WriteableStyle<Frame>;
 	return (
 		<>
@@ -62,8 +64,13 @@ function Drawer(props: CustomizedProps<Frame, DrawerProps>) {
 							base={panelStyle}
 							className={className}
 							sx={sx}
-							AnchorPoint={new Vector2(placement, 0)}
-							Position={UDim2.fromScale(placement, 0)}
+							AnchorPoint={new Vector2(sheet !== undefined ? sheet.anchorX : placement, sheet !== undefined ? sheet.anchorY : 0)}
+							Position={UDim2.fromScale(sheet !== undefined ? sheet.posX : placement, sheet !== undefined ? sheet.posY : 0)}
+							Size={
+								sheet !== undefined
+									? new UDim2(sheet.sizeX, sheet.sizeXO, sheet.sizeY, sheet.sizeYO)
+									: undefined
+							}
 							ZIndex={panelStyle.ZIndex}
 						>
 							<uipadding {...styles.padding} />
