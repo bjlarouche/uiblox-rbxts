@@ -2,6 +2,7 @@ import React from "@rbxts/react";
 import { cx, CustomizedProps, WriteableStyle } from "theme";
 import { SxHost } from "ui/packages/host";
 import { rowSelected } from "./rowSelected";
+import { sortedRowOrder } from "./tableSort";
 import {
 	canSort,
 	columnSizes,
@@ -45,6 +46,7 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 	const styles = useTableStyles({ dense });
 	const resolved = columns.map((column) => resolveColumn(column));
 	const sizes = columnSizes(resolved);
+	const order = sortedRowOrder(rows, sortColumn, sortDirection);
 
 	return (
 		<SxHost tag="frame" key={id || "Table"} hostRef={ref} base={styles.root} className={className} sx={sx}>
@@ -98,50 +100,53 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 				</>
 			</frame>
 			<>
-				{rows.map((cells, rowIndex) => (
-					<textbutton
-						key={`r-${rowIndex}`}
-						{...cx<TextButton>(styles.row, rowSelected(rowIndex, selected) && styles.selected)}
-						LayoutOrder={rowIndex + 1}
-						Event={{
-							Activated: () => onRowActivated?.(rowIndex),
-						}}
-					>
-						<uipadding {...styles.padding} />
-						<uilistlayout {...styles.cells} />
-						<>
-							{resolved.map((column, colIndex) => {
-								const size = sizes[colIndex];
-								const box = new UDim2(size.scale, size.offset, 0, 0);
-								const value = cells[colIndex];
-								if (isTextCell(value)) {
+				{order.map((rowIndex, place) => {
+					const cells = rows[rowIndex];
+					return (
+						<textbutton
+							key={`r-${rowIndex}`}
+							{...cx<TextButton>(styles.row, rowSelected(rowIndex, selected) && styles.selected)}
+							LayoutOrder={place + 1}
+							Event={{
+								Activated: () => onRowActivated?.(rowIndex),
+							}}
+						>
+							<uipadding {...styles.padding} />
+							<uilistlayout {...styles.cells} />
+							<>
+								{resolved.map((column, colIndex) => {
+									const size = sizes[colIndex];
+									const box = new UDim2(size.scale, size.offset, 0, 0);
+									const value = cells[colIndex];
+									if (isTextCell(value)) {
+										return (
+											<textlabel
+												key={`c-${rowIndex}-${colIndex}`}
+												{...styles.cell}
+												Text={(value as string | undefined) ?? ""}
+												Size={box}
+												TextXAlignment={textAlign(column.align)}
+												LayoutOrder={colIndex}
+											/>
+										);
+									}
 									return (
-										<textlabel
+										<frame
 											key={`c-${rowIndex}-${colIndex}`}
-											{...styles.cell}
-											Text={(value as string | undefined) ?? ""}
 											Size={box}
-											TextXAlignment={textAlign(column.align)}
+											AutomaticSize={Enum.AutomaticSize.Y}
+											BackgroundTransparency={1}
+											BorderSizePixel={0}
 											LayoutOrder={colIndex}
-										/>
+										>
+											{value}
+										</frame>
 									);
-								}
-								return (
-									<frame
-										key={`c-${rowIndex}-${colIndex}`}
-										Size={box}
-										AutomaticSize={Enum.AutomaticSize.Y}
-										BackgroundTransparency={1}
-										BorderSizePixel={0}
-										LayoutOrder={colIndex}
-									>
-										{value}
-									</frame>
-								);
-							})}
-						</>
-					</textbutton>
-				))}
+								})}
+							</>
+						</textbutton>
+					);
+				})}
 			</>
 		</SxHost>
 	);
