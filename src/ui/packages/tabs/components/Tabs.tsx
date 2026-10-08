@@ -1,9 +1,10 @@
-import React from "@rbxts/react";
+import React, { useEffect, useRef } from "@rbxts/react";
 import { cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { ChoiceOption } from "ui/packages/radioGroup";
 import { stepChoice } from "ui/packages/select/components/stepChoice";
 import { SxHost } from "ui/packages/host";
+import { tabScroll } from "./tabScroll";
 import { TabsOrientation, tabsIsVertical } from "./tabsOrientation";
 import useTabsStyles from "./Tabs.styles";
 
@@ -20,6 +21,8 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 	const { value, options, onChange, disabled, orientation, centered, className, sx, id, ref } = props;
 	const styles = useTabsStyles({ orientation, centered });
 	const vertical = tabsIsVertical(orientation);
+	const frame = useRef<ScrollingFrame>();
+	const tabs = useRef<TextButton[]>([]);
 
 	const choose = (index: number) => {
 		const choice = options[index];
@@ -27,6 +30,30 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 			onChange(choice.value);
 		}
 	};
+
+	useEffect(() => {
+		let alive = true;
+		const reveal = () => {
+			if (!alive) return;
+			const host = frame.current;
+			if (host === undefined) return;
+			const index = options.findIndex((option) => option.value === value);
+			const tab = tabs.current[index];
+			if (tab === undefined) return;
+			const current = vertical ? host.CanvasPosition.Y : host.CanvasPosition.X;
+			const origin = vertical ? host.AbsolutePosition.Y : host.AbsolutePosition.X;
+			const start = vertical ? tab.AbsolutePosition.Y : tab.AbsolutePosition.X;
+			const size = vertical ? tab.AbsoluteSize.Y : tab.AbsoluteSize.X;
+			const view = vertical ? host.AbsoluteSize.Y : host.AbsoluteSize.X;
+			const scrolled = tabScroll(current, start - (origin - current), size, view);
+			if (scrolled === current) return;
+			host.CanvasPosition = vertical ? new Vector2(host.CanvasPosition.X, scrolled) : new Vector2(scrolled, host.CanvasPosition.Y);
+		};
+		task.defer(reveal);
+		return () => {
+			alive = false;
+		};
+	}, [value, options, vertical]);
 
 	const onKey = (_: GuiObject, input: InputObject) => {
 		const index = options.findIndex((option) => option.value === value);
@@ -37,7 +64,20 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 	};
 
 	return (
-		<SxHost tag="scrollingframe" key={id || "Tabs"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
+		<SxHost
+			tag="scrollingframe"
+			key={id || "Tabs"}
+			hostRef={(instance) => {
+				frame.current = instance as ScrollingFrame | undefined;
+				if (ref === undefined) return;
+				if (typeIs(ref, "function")) (ref as (value: ScrollingFrame | undefined) => void)(instance as ScrollingFrame);
+				else (ref as { current?: ScrollingFrame }).current = instance as ScrollingFrame;
+			}}
+			base={styles.root}
+			className={className}
+			sx={sx}
+			state={{ disabled }}
+		>
 			<uilistlayout {...styles.list} />
 			<>
 			{options.map((choice, index) => {
@@ -49,6 +89,9 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 						{...cx<TextButton>(styles.tab, selected && styles.selected, !active && styles.disabledTab)}
 						Text={choice.label}
 						LayoutOrder={index}
+						ref={(rbx) => {
+							if (rbx !== undefined) tabs.current[index] = rbx;
+						}}
 						Active={active}
 						Selectable={active}
 						Event={{ Activated: () => choose(index), InputBegan: onKey }}
