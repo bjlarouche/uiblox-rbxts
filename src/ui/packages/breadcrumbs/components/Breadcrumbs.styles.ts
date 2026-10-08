@@ -8,6 +8,12 @@ const useBreadcrumbStyles = componentStyles("Breadcrumbs", (theme: Theme) =>
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
+		opened: {
+			Size: new UDim2(1, 0, 0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
 		list: {
 			FillDirection: Enum.FillDirection.Horizontal,
 			VerticalAlignment: Enum.VerticalAlignment.Center,

@@ -3,7 +3,7 @@ Array.prototype.size = function size() {
 	return this.length;
 };
 
-const { breadcrumbCurrent, breadcrumbVisible } = await import(
+const { breadcrumbCurrent, breadcrumbHasGap, breadcrumbVisible } = await import(
 	"../src/ui/packages/breadcrumbs/components/breadcrumbItems.ts"
 );
 if (breadcrumbCurrent(0, 0) || breadcrumbCurrent(0, 2) || !breadcrumbCurrent(1, 2)) {
@@ -18,6 +18,8 @@ const collapsed = breadcrumbVisible(
 if (collapsed.size() !== 3 || collapsed[1].ellipsis !== true || collapsed[2].label !== "E") {
 	throw new Error("collapsed");
 }
+if (breadcrumbHasGap(5, 3) !== true || breadcrumbHasGap(3, 3) !== false) throw new Error("gap");
+if (breadcrumbHasGap(5) !== false || breadcrumbHasGap(5, 1) !== false) throw new Error("no gap");
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
 for (const name of ["single", "trail", "collapsed", "custom-separator"]) {
