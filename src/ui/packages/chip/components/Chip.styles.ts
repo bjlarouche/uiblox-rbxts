@@ -1,6 +1,7 @@
 import { componentStyles, ControlSize, controlMetrics, createStyles, Theme, WriteableStyle } from "theme";
+import { ChipColor, chipTone } from "./chipTone";
 
-export type ChipColor = "default" | "primary";
+export type { ChipColor };
 
 const useChipStyles = componentStyles<{
 	selected?: boolean;
@@ -14,21 +15,30 @@ const useChipStyles = componentStyles<{
 	const padY = size === "small" ? 0.25 : size === "large" ? 0.75 : 0.5;
 	const padX = size === "small" ? 1 : size === "large" ? 2 : 1.5;
 	const deletePx = metrics.icon;
-	const primary = color === "primary";
+	const tone = chipTone(color);
+	const status =
+		tone === "success"
+			? theme.palette.status.success
+			: tone === "error"
+				? theme.palette.status.error
+				: tone === "primary"
+					? theme.palette.primary
+					: undefined;
+	const filledTone = status !== undefined && variant !== "outlined";
 	const ink = disabled
 		? theme.palette.text.disabled
-		: primary
-			? variant === "outlined"
-				? theme.palette.primary.main
-				: theme.palette.primary.on
-			: theme.palette.text.primary;
+		: status === undefined
+			? theme.palette.text.primary
+			: variant === "outlined"
+				? status.main
+				: status.on;
 	return createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.XY,
 			Size: UDim2.fromScale(0, 0),
 			BackgroundColor3:
-				primary && variant !== "outlined"
-					? theme.palette.primary.main
+				filledTone && status !== undefined
+					? status.main
 					: selected
 						? theme.palette.action.selected
 						: theme.palette.surface.input,
@@ -51,9 +61,9 @@ const useChipStyles = componentStyles<{
 			CornerRadius: new UDim(theme.shape.pillScale, 0),
 		} as WriteableStyle<UICorner>,
 		stroke: {
-			Color: primary ? theme.palette.primary.main : theme.palette.border,
+			Color: status !== undefined ? status.main : theme.palette.border,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
-			Transparency: variant === "outlined" ? (disabled ? 0.5 : 0) : primary || selected ? 1 : 0,
+			Transparency: variant === "outlined" ? (disabled ? 0.5 : 0) : tone !== "default" || selected ? 1 : 0,
 		} as WriteableStyle<UIStroke>,
 		row: {
 			FillDirection: Enum.FillDirection.Horizontal,
@@ -76,7 +86,11 @@ const useChipStyles = componentStyles<{
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			AutoButtonColor: false,
-			ImageColor3: disabled ? theme.palette.text.disabled : primary && variant !== "outlined" ? theme.palette.primary.on : theme.palette.text.secondary,
+			ImageColor3: disabled
+				? theme.palette.text.disabled
+				: filledTone && status !== undefined
+					? status.on
+					: theme.palette.text.secondary,
 			LayoutOrder: 2,
 		} as WriteableStyle<ImageButton>,
 	});
