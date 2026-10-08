@@ -64,6 +64,17 @@ const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?:
 			TextWrapped: true,
 			LayoutOrder: 2,
 		} as WriteableStyle<TextLabel>,
+		action: {
+			AutomaticSize: Enum.AutomaticSize.XY,
+			Size: UDim2.fromScale(0, 0),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+			Font: theme.typography.fontFamilies.default,
+			TextSize: theme.typography.fontSizes.body,
+			TextColor3: filled === true ? tone.on : tone.main,
+			AutoButtonColor: false,
+			LayoutOrder: 3,
+		} as WriteableStyle<TextButton>,
 		close: {
 			Size: UDim2.fromOffset(closeSize, closeSize),
 			Position: new UDim2(1, 0, 0, 0),
