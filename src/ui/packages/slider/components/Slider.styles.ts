@@ -1,4 +1,4 @@
-import { controlMetrics, ControlSize, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { controlMetrics, ControlSize, createStyles, componentStyles, focusRing, Theme, WriteableStyle } from "theme";
 
 export type SliderColor = "primary" | "accent";
 
@@ -39,11 +39,7 @@ const useSliderStyles = componentStyles<SliderStyleProps>("Slider", (theme: Them
 		corner: {
 			CornerRadius: new UDim(1, 0),
 		} as WriteableStyle<UICorner>,
-		stroke: {
-			Color: theme.palette.focus,
-			Thickness: 2,
-			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
-		} as WriteableStyle<UIStroke>,
+		stroke: focusRing(theme.palette.focus) as WriteableStyle<UIStroke>,
 		label: {
 			Size: new UDim2(0, 52, 1, 0),
 			Position: UDim2.fromScale(1, 0.5),

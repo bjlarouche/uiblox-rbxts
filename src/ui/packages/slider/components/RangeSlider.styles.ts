@@ -1,4 +1,4 @@
-import { componentStyles, controlMetrics, ControlSize, createStyles, Theme, WriteableStyle } from "theme";
+import { componentStyles, controlMetrics, ControlSize, createStyles, focusRing, Theme, WriteableStyle } from "theme";
 import { SliderColor } from "./Slider.styles";
 
 const useRangeSliderStyles = componentStyles<{ size?: ControlSize; color?: SliderColor }>(
@@ -32,11 +32,7 @@ const useRangeSliderStyles = componentStyles<{ size?: ControlSize; color?: Slide
 			corner: {
 				CornerRadius: new UDim(1, 0),
 			} as WriteableStyle<UICorner>,
-			stroke: {
-				Color: theme.palette.focus,
-				Thickness: 2,
-				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
-			} as WriteableStyle<UIStroke>,
+			stroke: focusRing(theme.palette.focus) as WriteableStyle<UIStroke>,
 		});
 	},
 );
