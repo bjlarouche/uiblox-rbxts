@@ -6,10 +6,12 @@ import { textBox } from "./textBox";
 export interface TextProps {
 	text?: string;
 	wrap?: boolean;
+	richText?: boolean;
+	fontFace?: Font;
 }
 
 function Text(props: CustomizedProps<TextLabel, TextProps>) {
-	const { text = "", wrap, className, sx, id, ref } = props;
+	const { text = "", wrap, richText, fontFace, className, sx, id, ref } = props;
 	const { theme } = useTheme();
 	const box = textBox(wrap);
 	return (
@@ -30,6 +32,8 @@ function Text(props: CustomizedProps<TextLabel, TextProps>) {
 				LineHeight: theme.typography.variants.body.leading,
 				TextYAlignment: Enum.TextYAlignment.Top,
 				TextColor3: theme.palette.text.primary,
+				RichText: richText === true,
+				...(fontFace !== undefined ? { FontFace: fontFace } : {}),
 				...className,
 			}}
 			sx={sx}

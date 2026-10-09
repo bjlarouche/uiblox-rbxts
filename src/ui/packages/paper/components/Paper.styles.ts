@@ -12,7 +12,7 @@ const usePaperStyles = componentStyles<{ elevation?: "flat" | "raised" | "outlin
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		stroke: {
-			Color: theme.palette.border,
+			Color: elevation === "outlined" ? theme.palette.border : theme.palette.divider,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 			Thickness: 1,
 			Transparency: 0,

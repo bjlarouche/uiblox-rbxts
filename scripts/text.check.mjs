@@ -14,6 +14,11 @@ const source = readFileSync("src/ui/packages/text/components/Text.tsx", "utf8");
 if (source.includes("new UDim2(1, 0, 1, 0)")) throw new Error("text uses fill size");
 if (!source.includes("variants.body.leading")) throw new Error("text leading");
 if (!source.includes("TextYAlignment.Top")) throw new Error("text top align");
+if (!source.includes("RichText: richText === true") || !source.includes("FontFace: fontFace")) throw new Error("text rich text");
+const typographyView = readFileSync("src/ui/packages/typography/components/Typography.tsx", "utf8");
+if (!typographyView.includes("RichText: richText === true") || !typographyView.includes("FontFace: fontFace")) {
+	throw new Error("typography rich text");
+}
 const typography = readFileSync("src/ui/packages/typography/components/Typography.styles.ts", "utf8");
 if (!typography.includes("new UDim2(1, 0, 1, 0)")) throw new Error("typography fill moved");
 if (typography.includes("ZIndex = 10000")) throw new Error("typography stacks over siblings");

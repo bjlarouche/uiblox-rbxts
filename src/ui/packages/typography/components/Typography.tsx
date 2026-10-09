@@ -18,10 +18,12 @@ export interface TypographyProps {
 	align?: TypographyAlignment;
 	noWrap?: boolean;
 	lineClamp?: boolean;
+	richText?: boolean;
+	fontFace?: Font;
 }
 
 function Typography<T extends DefaultTypographyComponent>(props: CustomizedProps<T, TypographyProps>) {
-	const { text = "", className,
+	const { text = "", richText, fontFace, className,
 		sx, children, id, ref } = props;
 
 	const { root, variantToken } = useTypographyStyles(props);
@@ -31,7 +33,14 @@ function Typography<T extends DefaultTypographyComponent>(props: CustomizedProps
 			tag="textlabel"
 			key={id || "Typography"}
 			hostRef={ref}
-			base={{ ...root, Text: text, ...className, ...variantToken }}
+			base={{
+				...root,
+				Text: text,
+				RichText: richText === true,
+				...className,
+				...variantToken,
+				...(fontFace !== undefined ? { FontFace: fontFace } : {}),
+			}}
 			sx={sx}
 		>
 			{children}

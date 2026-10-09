@@ -42,6 +42,7 @@ function StepButton(props: { text: string; order: number; enabled: boolean; exte
 			}}
 		>
 			<uicorner CornerRadius={new UDim(0, theme.shape.borderRadius)} />
+			<uistroke Color={theme.palette.border} Thickness={1} ApplyStrokeMode={Enum.ApplyStrokeMode.Border} />
 		</textbutton>
 	);
 }

@@ -23,7 +23,7 @@ function Paper(props: CustomizedProps<Frame, PaperProps>) {
 				{children}
 			</frame>
 			{square !== true && <uicorner {...styles.corner} />}
-			{elevation === "outlined" && <uistroke {...styles.stroke} />}
+			{elevation !== "raised" && <uistroke {...styles.stroke} />}
 		</SxHost>
 	);
 }
