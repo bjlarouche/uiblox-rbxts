@@ -27,11 +27,7 @@ const useToggleButtonStyles = componentStyles<{
 				AutoButtonColor: false,
 				Active: !disabled,
 				Selectable: !disabled,
-				TextColor3: disabled
-					? theme.palette.text.disabled
-					: selected
-						? theme.palette.primary.main
-						: theme.palette.text.primary,
+				TextColor3: selected ? theme.palette.primary.main : theme.palette.text.primary,
 				Font: theme.typography.fontFamilies.default,
 				TextSize: textSize,
 			} as WriteableStyle<TextButton>,

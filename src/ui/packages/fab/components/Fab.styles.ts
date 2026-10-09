@@ -1,4 +1,4 @@
-import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
+import { componentStyles, controlFade, createStyles, Theme, WriteableStyle } from "theme";
 import { FabSize, fabPixels } from "./fabSize";
 
 export type FabColor = "primary" | "accent";
@@ -20,7 +20,7 @@ const useFabStyles = componentStyles<FabStyleProps>(
 				Size: extended === true ? new UDim2(0, 0, 0, diameter) : UDim2.fromOffset(diameter, diameter),
 				AutomaticSize: extended === true ? Enum.AutomaticSize.X : Enum.AutomaticSize.None,
 				BackgroundColor3: tone.main,
-				BackgroundTransparency: disabled ? 0.5 : 0,
+				BackgroundTransparency: disabled ? controlFade : 0,
 				BorderSizePixel: 0,
 				AutoButtonColor: false,
 				Text: "",
@@ -52,7 +52,7 @@ const useFabStyles = componentStyles<FabStyleProps>(
 				BorderSizePixel: 0,
 				ScaleType: Enum.ScaleType.Fit,
 				ImageColor3: tone.on,
-				ImageTransparency: disabled ? 0.5 : 0,
+				ImageTransparency: 0,
 				LayoutOrder: 1,
 			} as WriteableStyle<ImageLabel>,
 			label: {
@@ -63,7 +63,7 @@ const useFabStyles = componentStyles<FabStyleProps>(
 				Font: theme.typography.fontFamilies.default,
 				TextSize: theme.typography.fontSizes.body,
 				TextColor3: tone.on,
-				TextTransparency: disabled ? 0.5 : 0,
+				TextTransparency: 0,
 				LayoutOrder: 2,
 			} as WriteableStyle<TextLabel>,
 		});
