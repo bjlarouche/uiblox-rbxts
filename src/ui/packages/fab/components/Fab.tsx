@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "@rbxts/react";
-import { CustomizedProps, useTheme } from "theme";
+import { controlFade, CustomizedProps, focusRing, useTheme } from "theme";
 import { Icons } from "ui/enums";
 import { canActivate } from "ui/packages/button/components/activation";
 import { CircularProgress } from "ui/packages/circularProgress";
@@ -38,6 +38,7 @@ function Fab(props: CustomizedProps<TextButton, FabProps>) {
 	const extended = fabExtended(label);
 	const styles = useFabStyles({ size, color, disabled: !active, extended });
 	const { theme } = useTheme();
+	const tone = color === "accent" ? theme.palette.accent : theme.palette.primary;
 	const [hovering, setHovering] = useState(false);
 	const [focused, setFocused] = useState(false);
 	const iconPx = fabIconPixels(size);
@@ -85,7 +86,8 @@ function Fab(props: CustomizedProps<TextButton, FabProps>) {
 			state={{ disabled, loading, hover: hovering, focused }}
 			Active={active}
 			Selectable={active}
-			BackgroundTransparency={!active ? 0.5 : hovering || focused ? 0.15 : 0}
+			BackgroundColor3={active && hovering ? tone.hover : tone.main}
+			BackgroundTransparency={disabled === true ? controlFade : 0}
 			Event={{
 				Activated: () => {
 					if (active && onClick) onClick();
@@ -101,6 +103,7 @@ function Fab(props: CustomizedProps<TextButton, FabProps>) {
 			}}
 		>
 			<uicorner {...styles.corner} />
+			{focused && active ? <uistroke {...focusRing(theme.palette.focus)} /> : undefined}
 			<Shadow />
 			{extended ? (
 				<frame key="Content" {...styles.content}>

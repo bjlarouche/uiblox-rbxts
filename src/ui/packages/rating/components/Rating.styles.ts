@@ -26,7 +26,7 @@ const useRatingStyles = componentStyles<{ disabled?: boolean; size?: ControlSize
 				AutoButtonColor: false,
 				Active: !disabled,
 				Selectable: !disabled,
-				ImageColor3: disabled ? theme.palette.text.disabled : theme.palette.primary.main,
+				ImageColor3: theme.palette.primary.main,
 			} as WriteableStyle<ImageButton>,
 		});
 	},

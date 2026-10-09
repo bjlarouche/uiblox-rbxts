@@ -24,6 +24,10 @@ const fabSource = readFileSync(join(root, "src/ui/packages/fab/components/Fab.ts
 if (!fabSource.includes('key="Content"') || !fabSource.includes("<Shadow />")) {
 	throw new Error("fab content wraps list away from shadow");
 }
+if (!fabSource.includes("focusRing")) throw new Error("fab focus should be a ring");
+if (!fabSource.includes("tone.hover")) throw new Error("fab hover should be the tone hover");
+if (fabSource.includes("0.15")) throw new Error("fab hover is not a focus wash");
+if (!fabStyles.includes("ImageTransparency: 0")) throw new Error("fab glyph should stay readable when disabled");
 
 const shadowStyles = readFileSync(join(root, "src/ui/packages/shadow/components/Shadow.styles.ts"), "utf8");
 if (shadowStyles.includes("new UDim2(1,")) throw new Error("shadow size must not use scale+offset");

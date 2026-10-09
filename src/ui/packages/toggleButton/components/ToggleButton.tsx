@@ -1,5 +1,5 @@
-import React from "@rbxts/react";
-import { ControlSize, CustomizedProps } from "theme";
+import React, { useState } from "@rbxts/react";
+import { ControlSize, controlFade, CustomizedProps, focusRing, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
 import { ChoiceOption } from "ui/packages/radioGroup";
@@ -16,7 +16,11 @@ export interface ToggleButtonProps {
 function ToggleButton(props: CustomizedProps<TextButton, ToggleButtonProps>) {
 	const { label, selected, disabled, size = "medium", onActivated, className, sx, id, ref } = props;
 	const styles = useToggleButtonStyles({ selected, disabled, size });
+	const { theme } = useTheme();
 	const active = canActivate(disabled);
+	const [hovering, setHovering] = useState(false);
+	const [focused, setFocused] = useState(false);
+	const face = selected === true ? theme.palette.action.selected : hovering && active ? theme.palette.action.hover : theme.palette.surface.input;
 	return (
 		<SxHost
 			tag="textbutton"
@@ -25,19 +29,29 @@ function ToggleButton(props: CustomizedProps<TextButton, ToggleButtonProps>) {
 			base={styles.root}
 			className={className}
 			sx={sx}
-			state={{ disabled, selected }}
+			state={{ disabled, selected, hover: hovering, focused }}
 			Text={label}
 			Active={active}
 			Selectable={active}
+			BackgroundColor3={face}
+			BackgroundTransparency={disabled === true ? controlFade : 0}
 			Event={{
 				Activated: () => {
 					if (active) onActivated?.();
 				},
+				MouseEnter: () => {
+					if (active) setHovering(true);
+				},
+				MouseLeave: () => setHovering(false),
+				SelectionGained: () => {
+					if (active) setFocused(true);
+				},
+				SelectionLost: () => setFocused(false),
 			}}
 		>
 			<uipadding {...styles.padding} />
 			<uicorner {...styles.corner} />
-			<uistroke {...styles.stroke} />
+			{focused && active ? <uistroke {...focusRing(theme.palette.focus)} /> : <uistroke {...styles.stroke} />}
 		</SxHost>
 	);
 }
