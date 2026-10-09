@@ -3,21 +3,26 @@ import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 const useTimelineStyles = componentStyles("Timeline", (theme: Theme) => {
 	const dot = theme.spacing.calc(1.5);
 	const rail = theme.spacing.calc(2);
+	const pad = theme.padding.calc(1);
 	return createStyles({
 		root: {
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, 0, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
+		inset: {
+			PaddingLeft: new UDim(0, pad),
+			PaddingRight: new UDim(0, pad),
+		} as WriteableStyle<UIPadding>,
 		list: {
 			FillDirection: Enum.FillDirection.Vertical,
 			SortOrder: Enum.SortOrder.LayoutOrder,
 			Padding: new UDim(0, 0),
 		} as WriteableStyle<UIListLayout>,
 		item: {
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, -pad * 2, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -54,8 +59,8 @@ const useTimelineStyles = componentStyles("Timeline", (theme: Theme) => {
 		} as WriteableStyle<Frame>,
 		body: {
 			LayoutOrder: 1,
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, -(rail + theme.spacing.calc(1)), 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -68,24 +73,28 @@ const useTimelineStyles = componentStyles("Timeline", (theme: Theme) => {
 			Padding: new UDim(0, theme.padding.calc(0.5)),
 		} as WriteableStyle<UIListLayout>,
 		title: {
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, 0, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.body,
 			TextColor3: theme.palette.text.primary,
 			TextXAlignment: Enum.TextXAlignment.Left,
+			TextTruncate: Enum.TextTruncate.AtEnd,
+			TextWrapped: false,
 		} as WriteableStyle<TextLabel>,
 		caption: {
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, 0, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.caption,
 			TextColor3: theme.palette.text.secondary,
 			TextXAlignment: Enum.TextXAlignment.Left,
+			TextTruncate: Enum.TextTruncate.AtEnd,
+			TextWrapped: false,
 		} as WriteableStyle<TextLabel>,
 	});
 });
