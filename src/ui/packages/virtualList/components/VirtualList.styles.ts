@@ -17,6 +17,7 @@ const useVirtualListStyles = componentStyles("VirtualList", () =>
 			Size: new UDim2(1, 0, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
+			ClipsDescendants: true,
 		} as WriteableStyle<Frame>,
 	}),
 );

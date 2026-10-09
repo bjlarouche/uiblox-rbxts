@@ -701,6 +701,8 @@ const keys = [];
 for (let index = mid.start; index <= mid.end; index++) keys.push(`row-${index}`);
 if (keys[0] !== "row-8" || keys[keys.length - 1] !== "row-20") throw new Error("stable keys follow item indices");
 if (itemOffset(10, 24) !== 240) throw new Error("item offset is index times height");
+const virtualStyles = readFileSync(join(root, "src/ui/packages/virtualList/components/VirtualList.styles.ts"), "utf8");
+if (!virtualStyles.includes("ClipsDescendants: true")) throw new Error("virtual row stays in its slot");
 const deepSelected = deepRows.findIndex((row) => row.path === "Package/Story2500");
 const deepWindow = visibleWindow(ensureVisibleScroll(0, 400, deepSelected, deepRows.length, 24, "nearest"), 400, deepRows.length, 24, 2);
 if (deepWindow.end - deepWindow.start + 1 > 40) throw new Error("deep tree only mounts a window of rows");

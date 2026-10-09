@@ -2,7 +2,17 @@ import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
 const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 	const gap = theme.density === "compact" ? theme.padding.calc(1) : theme.spacing.calc(1);
+	const pad = theme.padding.calc(2);
+	const span = new UDim2(1, -pad * 2, 0, 0);
+	const codeInset = theme.padding.calc(1.5) * 2;
+	const quoteInset = theme.padding.calc(2) + theme.padding.calc(1);
 	return createStyles({
+		inset: {
+			PaddingTop: new UDim(0, pad),
+			PaddingBottom: new UDim(0, pad),
+			PaddingLeft: new UDim(0, pad),
+			PaddingRight: new UDim(0, pad),
+		} as WriteableStyle<UIPadding>,
 		root: {
 			AutomaticSize: Enum.AutomaticSize.Y,
 			Size: new UDim2(1, 0, 0, 0),
@@ -18,7 +28,7 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 		} as WriteableStyle<UIListLayout>,
 		block: {
 			AutomaticSize: Enum.AutomaticSize.Y,
-			Size: new UDim2(1, 0, 0, 0),
+			Size: span,
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -37,7 +47,7 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 		} as WriteableStyle<TextLabel>,
 		code: {
 			AutomaticSize: Enum.AutomaticSize.Y,
-			Size: new UDim2(1, 0, 0, 0),
+			Size: span,
 			BackgroundColor3: theme.palette.surface.paper,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -49,7 +59,7 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 		} as WriteableStyle<UIPadding>,
 		codeText: {
 			AutomaticSize: Enum.AutomaticSize.Y,
-			Size: new UDim2(1, 0, 0, 0),
+			Size: new UDim2(1, -codeInset, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			Font: Enum.Font.RobotoMono,
@@ -61,7 +71,7 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 		} as WriteableStyle<TextLabel>,
 		quote: {
 			AutomaticSize: Enum.AutomaticSize.Y,
-			Size: new UDim2(1, 0, 0, 0),
+			Size: span,
 			BackgroundColor3: theme.palette.surface.paper,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
@@ -85,6 +95,12 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 		flow: {
 			AutomaticSize: Enum.AutomaticSize.Y,
 			Size: new UDim2(1, 0, 0, 0),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
+		quoteFlow: {
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(1, -quoteInset, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,

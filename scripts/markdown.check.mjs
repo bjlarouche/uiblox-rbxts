@@ -146,4 +146,15 @@ for (const name of ["split", "edit", "preview", "density-compact"]) {
 	}
 }
 
+const { readFileSync } = await import("node:fs");
+const markdown = readFileSync("src/ui/packages/markdown/components/Markdown.tsx", "utf8");
+const markdownStyles = readFileSync("src/ui/packages/markdown/components/Markdown.styles.ts", "utf8");
+if (markdown.includes("#4C9AFF") || readFileSync("src/ui/packages/markdown/parseMarkdown.ts", "utf8").includes("#4C9AFF")) {
+	throw new Error("link color is not a fixed blue");
+}
+if (!markdown.includes('color="primary"')) throw new Error("markdown links use the primary color");
+if (!markdownStyles.includes("TextWrapped: true") || !markdown.includes("styles.inset")) {
+	throw new Error("markdown body wraps inside the padding");
+}
+
 console.log("markdown ok");
