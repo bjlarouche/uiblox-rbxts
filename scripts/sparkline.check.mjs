@@ -63,4 +63,20 @@ for (const pair of expect) {
 }
 if (sparklinePick(first, count, width) !== undefined) throw new Error("missing pick");
 
+const inset = 6;
+const boxed = [0, 10, 1, 9];
+for (const segment of sparklineLayout(boxed, 80, 28, inset)) {
+	if (segment.x < inset || segment.y < inset || segment.x > 80 - inset || segment.y > 28 - inset) {
+		throw new Error("line leaves the box");
+	}
+}
+for (const bar of sparklineArea(boxed, 80, 28, inset)) {
+	if (bar.x < 0 || bar.y < 0 || bar.x + bar.width > 80 + 0.01 || bar.y + bar.height > 28 + 0.01) {
+		throw new Error("area leaves the box");
+	}
+}
+const { readFileSync } = await import("node:fs");
+const spark = readFileSync("src/ui/packages/sparkline/components/Sparkline.tsx", "utf8");
+if (!spark.includes("inset") || !spark.includes("ClipsDescendants: true")) throw new Error("sparkline stays in its box");
+
 console.log("sparkline ok");

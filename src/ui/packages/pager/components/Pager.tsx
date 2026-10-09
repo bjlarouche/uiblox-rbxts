@@ -38,7 +38,9 @@ function Pager(props: CustomizedProps<Frame, PagerProps>) {
 						},
 					}}
 				/>
-				<textlabel key="Count" {...styles.label} Text={pagerLabel(index, count)} LayoutOrder={1} />
+				<textlabel key="Count" {...styles.label} Text={pagerLabel(index, count)} LayoutOrder={1}>
+					<uisizeconstraint {...styles.labelCap} />
+				</textlabel>
 				<textbutton
 					key="Next"
 					{...styles.button}

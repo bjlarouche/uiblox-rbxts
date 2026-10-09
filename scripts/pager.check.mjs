@@ -15,5 +15,6 @@ const styles = readFileSync("src/ui/packages/pager/components/Pager.styles.ts", 
 const view = readFileSync("src/ui/packages/pager/components/Pager.tsx", "utf8");
 if (!styles.includes('"Pager"')) throw new Error("override name");
 if (!view.includes("<SxHost")) throw new Error("sx host");
+if (!styles.includes("TextTruncate") || !view.includes("labelCap")) throw new Error("pager label truncates");
 
 console.log("pager ok");
