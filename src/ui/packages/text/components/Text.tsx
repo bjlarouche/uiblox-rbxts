@@ -22,6 +22,7 @@ function Text(props: CustomizedProps<TextLabel, TextProps>) {
 				Size: new UDim2(box.widthScale, 0, box.heightScale, 0),
 				AutomaticSize: box.automatic === "Y" ? Enum.AutomaticSize.Y : Enum.AutomaticSize.XY,
 				TextWrapped: box.wrapped,
+				TextXAlignment: Enum.TextXAlignment.Left,
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
