@@ -1,3 +1,13 @@
+export type ListItemFill = "clear" | "hover" | "pressed" | "selected";
+
+export function listItemFill(input: { disabled: boolean; selected: boolean; hover: boolean; down: boolean }): ListItemFill {
+	if (input.disabled) return "clear";
+	if (input.down) return "pressed";
+	if (input.hover) return "hover";
+	if (input.selected) return "selected";
+	return "clear";
+}
+
 export interface ListItemLabelLayout {
 	widthScale: number;
 	wrapped: boolean;

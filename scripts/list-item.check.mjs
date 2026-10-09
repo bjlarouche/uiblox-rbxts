@@ -28,7 +28,7 @@ if (!stateMatrix.some((row) => row.component === "ListItem" && row.variant === "
 	throw new Error("ListItem missing divider");
 }
 
-const { listItemLabelLayout, listItemCopyInset, listItemTrailInset, listItemRowInset } = await import(
+const { listItemLabelLayout, listItemCopyInset, listItemTrailInset, listItemRowInset, listItemFill } = await import(
 	pathToFileURL(join(root, "src/ui/packages/listItem/components/listItemLayout.ts")).href,
 );
 const wrapped = listItemLabelLayout(true);
@@ -42,5 +42,12 @@ if (listItemTrailInset() !== 0 || listItemTrailInset(false) !== 0 || listItemTra
 if (listItemRowInset(true) !== 48 || listItemRowInset(false, true) !== 56 || listItemRowInset(true, true) !== 104) {
 	throw new Error("row inset");
 }
+
+const rest = { disabled: false, selected: false, hover: false, down: false };
+if (listItemFill(rest) !== "clear") throw new Error("rest row");
+if (listItemFill({ ...rest, selected: true }) !== "selected") throw new Error("selected row");
+if (listItemFill({ ...rest, selected: true, hover: true }) !== "hover") throw new Error("hover covers selected");
+if (listItemFill({ ...rest, hover: true, down: true }) !== "pressed") throw new Error("press covers hover");
+if (listItemFill({ disabled: true, selected: true, hover: true, down: true }) !== "clear") throw new Error("disabled row");
 
 console.log("list item ok");
