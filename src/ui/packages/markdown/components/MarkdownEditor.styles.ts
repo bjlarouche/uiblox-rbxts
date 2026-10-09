@@ -83,7 +83,7 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 				TextYAlignment: Enum.TextYAlignment.Top,
 				TextWrapped: true,
 				Font: Enum.Font.RobotoMono,
-				TextSize: theme.typography.fontSizes.caption ?? theme.typography.fontSizes.body,
+				TextSize: theme.typography.fontSizes.body,
 				TextColor3: theme.palette.text.primary,
 				PlaceholderColor3: theme.palette.text.secondary,
 			} as WriteableStyle<TextBox>,
