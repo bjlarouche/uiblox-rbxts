@@ -28,12 +28,9 @@ function Alert(props: CustomizedProps<Frame, AlertProps>) {
 			{square !== true && <uicorner {...styles.corner} />}
 			<uistroke {...styles.stroke} />
 			{dismissible && (
-				<imagebutton
-					key="Close"
-					{...styles.close}
-					Image={tostring(Icons.Close)}
-					Event={{ Activated: () => onClose() }}
-				/>
+				<imagebutton key="Close" {...styles.close} Event={{ Activated: () => onClose() }}>
+					<imagelabel key="Glyph" {...styles.closeGlyph} Image={tostring(Icons.Close)} />
+				</imagebutton>
 			)}
 			<frame key="Body" {...styles.body}>
 				<uilistlayout {...styles.layout} />
