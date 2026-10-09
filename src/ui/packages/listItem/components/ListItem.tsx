@@ -1,8 +1,8 @@
-import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import React, { useEffect, useState } from "@rbxts/react";
+import { CustomizedProps, useTheme } from "theme";
 import { SxHost } from "ui/packages/host";
 import { ListItemTone } from "./listItemInk";
-import { listItemCopyInset, listItemRowInset, listItemTrailInset } from "./listItemLayout";
+import { listItemCopyInset, listItemFill, listItemRowInset, listItemTrailInset } from "./listItemLayout";
 import useListItemStyles from "./ListItem.styles";
 
 export interface ListItemProps {
@@ -23,7 +23,19 @@ function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
 	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, wrap = false, tone, leading, trailing, onActivated, className, sx, id, ref } =
 		props;
 	const styles = useListItemStyles({ selected, disabled, dense, wrap, tone });
+	const { theme } = useTheme();
+	const [hovering, setHovering] = useState(false);
+	const [down, setDown] = useState(false);
+	const face = listItemFill({ disabled, selected, hover: hovering && !disabled, down: down && !disabled });
+	const fill =
+		face === "pressed" ? theme.palette.action.pressed : face === "hover" ? theme.palette.action.hover : theme.palette.action.selected;
 	const lead = listItemCopyInset(leading !== undefined);
+
+	useEffect(() => {
+		if (!disabled) return;
+		setHovering(false);
+		setDown(false);
+	}, [disabled]);
 	const trail = listItemTrailInset(trailing !== undefined);
 	const rowInset = listItemRowInset(leading !== undefined, trailing !== undefined);
 	const copy = (
@@ -39,10 +51,14 @@ function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
 			tag="textbutton"
 			key={id || "ListItem"}
 			hostRef={ref}
-			base={styles.root}
+			base={{
+				...styles.root,
+				BackgroundColor3: fill,
+				BackgroundTransparency: face === "clear" ? 1 : 0,
+			}}
 			className={className}
 			sx={sx}
-			state={{ disabled, selected }}
+			state={{ disabled, selected, hover: hovering, pressed: down }}
 			Text=""
 			Active={!disabled}
 			Selectable={!disabled}
@@ -51,6 +67,17 @@ function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
 				Activated: () => {
 					if (!disabled && onActivated !== undefined) onActivated();
 				},
+				MouseEnter: () => {
+					if (!disabled) setHovering(true);
+				},
+				MouseLeave: () => {
+					setHovering(false);
+					setDown(false);
+				},
+				MouseButton1Down: () => {
+					if (!disabled) setDown(true);
+				},
+				MouseButton1Up: () => setDown(false),
 			}}
 		>
 			<uipadding {...styles.padding} />
