@@ -145,6 +145,14 @@ for (const name of ["split", "edit", "preview", "density-compact"]) {
 		throw new Error(`MarkdownEditor missing ${name}`);
 	}
 }
+const editorStyles = (await import("node:fs")).readFileSync(
+	"src/ui/packages/markdown/components/MarkdownEditor.styles.ts",
+	"utf8",
+);
+const editorBlock = editorStyles.match(/editor:\s*\{[\s\S]*?\}\s*as WriteableStyle<TextBox>/)?.[0];
+if (editorBlock === undefined || !editorBlock.includes("fontSizes.body") || editorBlock.includes("fontSizes.caption")) {
+	throw new Error("editor text matches the body size");
+}
 
 const { readFileSync } = await import("node:fs");
 const markdown = readFileSync("src/ui/packages/markdown/components/Markdown.tsx", "utf8");
