@@ -45,15 +45,17 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 			const start = vertical ? tab.AbsolutePosition.Y : tab.AbsolutePosition.X;
 			const size = vertical ? tab.AbsoluteSize.Y : tab.AbsoluteSize.X;
 			const view = vertical ? host.AbsoluteSize.Y : host.AbsoluteSize.X;
+			if (view <= 0) return;
 			const scrolled = tabScroll(current, start - (origin - current), size, view);
-			if (scrolled === current) return;
+			if (math.abs(scrolled - current) < 1) return;
 			host.CanvasPosition = vertical ? new Vector2(host.CanvasPosition.X, scrolled) : new Vector2(scrolled, host.CanvasPosition.Y);
 		};
-		task.defer(reveal);
+		// Next frame. A deferred scroll write runs inside this effect flush and re-enters render.
+		task.delay(0, reveal);
 		return () => {
 			alive = false;
 		};
-	}, [value, options, vertical]);
+	}, [value, vertical, options.size()]);
 
 	const onKey = (_: GuiObject, input: InputObject) => {
 		const index = options.findIndex((option) => option.value === value);
