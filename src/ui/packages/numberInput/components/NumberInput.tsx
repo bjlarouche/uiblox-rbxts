@@ -1,5 +1,5 @@
 import React from "@rbxts/react";
-import { ControlSize, CustomizedProps, useTheme } from "theme";
+import { controlMetrics, ControlSize, CustomizedProps, useTheme } from "theme";
 import { Input } from "ui/packages/input";
 import { formatNumber, parseNumberDraft, stepNumber } from "./numberValue";
 
@@ -20,18 +20,18 @@ export interface NumberInputProps {
 	stepper?: boolean;
 }
 
-function StepButton(props: { text: string; order: number; enabled: boolean; onClick: () => void }) {
+function StepButton(props: { text: string; order: number; enabled: boolean; extent: number; font: number; onClick: () => void }) {
 	const { theme } = useTheme();
 	return (
 		<textbutton
 			LayoutOrder={props.order}
-			Size={UDim2.fromOffset(28, 28)}
+			Size={UDim2.fromOffset(props.extent, props.extent)}
 			BackgroundColor3={theme.palette.surface.paper}
 			BackgroundTransparency={props.enabled ? 0 : 0.45}
 			BorderSizePixel={0}
 			Text={props.text}
 			Font={theme.typography.fontFamilies.default}
-			TextSize={theme.typography.fontSizes.body}
+			TextSize={props.font}
 			TextColor3={props.enabled ? theme.palette.text.primary : theme.palette.text.secondary}
 			AutoButtonColor={props.enabled}
 			Active={props.enabled}
@@ -49,6 +49,7 @@ function StepButton(props: { text: string; order: number; enabled: boolean; onCl
 function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
 	const { value, onChange, min, max, step, places, disabled, readOnly, loading, placeholder, width, size, reducedMotion, stepper, className, sx, id, ref } =
 		props;
+	const { theme } = useTheme();
 	const locked = disabled === true || readOnly === true;
 	const field = (
 		<Input
@@ -73,6 +74,9 @@ function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
 		/>
 	);
 	if (stepper !== true) return field;
+	const metrics = controlMetrics(theme.density, size);
+	const extent = metrics.height;
+	const stepFont = metrics.font;
 	const down = stepNumber(value, -1, min, max, step);
 	const up = stepNumber(value, 1, min, max, step);
 	return (
@@ -83,11 +87,11 @@ function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 				SortOrder={Enum.SortOrder.LayoutOrder}
 			/>
-			<StepButton text="-" order={0} enabled={!locked && down !== undefined} onClick={() => down !== undefined && onChange(down)} />
+			<StepButton text="-" order={0} extent={extent} font={stepFont} enabled={!locked && down !== undefined} onClick={() => down !== undefined && onChange(down)} />
 			<frame LayoutOrder={1} Size={UDim2.fromScale(0, 0)} AutomaticSize={Enum.AutomaticSize.XY} BackgroundTransparency={1} BorderSizePixel={0}>
 				{field}
 			</frame>
-			<StepButton text="+" order={2} enabled={!locked && up !== undefined} onClick={() => up !== undefined && onChange(up)} />
+			<StepButton text="+" order={2} extent={extent} font={stepFont} enabled={!locked && up !== undefined} onClick={() => up !== undefined && onChange(up)} />
 		</frame>
 	);
 }
