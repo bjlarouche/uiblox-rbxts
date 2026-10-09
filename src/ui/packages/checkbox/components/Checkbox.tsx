@@ -1,5 +1,5 @@
 import React, { useState } from "@rbxts/react";
-import { ControlSize, cx, CustomizedProps } from "theme";
+import { controlFade, ControlSize, cx, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
 import useCheckboxStyles from "./Checkbox.styles";
@@ -45,7 +45,6 @@ function Checkbox(props: CustomizedProps<TextButton, CheckboxProps>) {
 			state={{ disabled, checked: filled, hover: hovering, pressed, focused }}
 			Active={active}
 			Selectable={!disabled}
-			BackgroundTransparency={focused && active ? 0.85 : 1}
 			Event={{
 				MouseButton1Click: () => {
 					if (active) onChange(nextChecked(value, mixed));
@@ -81,14 +80,14 @@ function Checkbox(props: CustomizedProps<TextButton, CheckboxProps>) {
 				<textlabel
 					{...mark}
 					Text={checkboxMark(value, mixed)}
-					TextTransparency={disabled === true ? 0.45 : 0}
+					TextTransparency={disabled === true ? controlFade : 0}
 				/>
 			</frame>
 			{label !== undefined && (
 				<textlabel
 					{...labelStyle}
 					Text={label}
-					TextTransparency={disabled === true ? 0.5 : 0}
+					TextTransparency={disabled === true ? controlFade : 0}
 					LayoutOrder={2}
 				/>
 			)}

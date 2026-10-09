@@ -1,5 +1,5 @@
 import React, { useState } from "@rbxts/react";
-import { ControlSize, CustomizedProps } from "theme";
+import { controlFade, ControlSize, CustomizedProps } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
 import { radioHint } from "./radioHint";
@@ -36,7 +36,7 @@ function RadioGroup<T>(props: CustomizedProps<Frame, RadioGroupProps<T>>) {
 			<>
 			{options.map((choice, index) => {
 				const active = canActivate(disabled || choice.disabled);
-				const fade = active ? 0 : 0.5;
+				const fade = active ? 0 : controlFade;
 				const note = radioHint(choice.hint);
 				return (
 					<textbutton

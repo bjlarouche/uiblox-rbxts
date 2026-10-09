@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { useReducedMotion } from "hooks";
-import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
+import { controlFade, controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
 import { playProperty } from "ui/packages/motion";
@@ -69,7 +69,6 @@ function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
 			state={{ disabled, checked: on, hover: hovering, pressed, focused }}
 			Active={active}
 			Selectable={!disabled}
-			BackgroundTransparency={focused && active ? 0.85 : 1}
 			Event={{
 				MouseButton1Click: () => {
 					if (active) onChange(!value);
@@ -109,7 +108,7 @@ function Switch(props: CustomizedProps<TextButton, SwitchProps>) {
 				<textlabel
 					{...labelStyle}
 					Text={label}
-					TextTransparency={disabled === true ? 0.5 : 0}
+					TextTransparency={disabled === true ? controlFade : 0}
 					LayoutOrder={2}
 				/>
 			)}

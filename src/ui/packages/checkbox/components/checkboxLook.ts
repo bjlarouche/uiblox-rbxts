@@ -13,7 +13,7 @@ export function checkboxPointer(hovering: boolean, pressed: boolean, focused: bo
 }
 
 export function checkboxBoxTransparency(filled: boolean, disabled: boolean, pointer: CheckboxPointer) {
-	if (filled) return disabled ? 0.55 : 0;
+	if (filled) return disabled ? 0.5 : 0;
 	if (disabled) return 1;
 	if (pointer === "press") return 0.7;
 	if (pointer === "hover" || pointer === "focus") return 0.85;
@@ -21,7 +21,7 @@ export function checkboxBoxTransparency(filled: boolean, disabled: boolean, poin
 }
 
 export function checkboxStrokeTransparency(filled: boolean, disabled: boolean, pointer: CheckboxPointer) {
-	if (disabled) return 0.55;
+	if (disabled) return 0.5;
 	if (pointer === "focus" || pointer === "press") return 0;
 	if (pointer === "hover") return 0.2;
 	return filled ? 0.25 : 0.45;

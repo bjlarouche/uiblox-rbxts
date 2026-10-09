@@ -370,6 +370,7 @@ if (nextChecked(true) !== false) throw new Error("checked toggles off");
 if (nextChecked(true, true) !== true) throw new Error("mixed commits checked");
 if (nextChecked(false, true) !== true) throw new Error("mixed commits checked");
 
+const { controlFade } = await import(pathToFileURL(join(root, "src/theme/styles/utilities/focusRing.ts")).href);
 const {
 	checkboxMark,
 	checkboxPointer,
@@ -384,9 +385,9 @@ if (checkboxPointer(true, false, true) !== "focus") throw new Error("focus wins 
 if (checkboxPointer(true, false, false) !== "hover") throw new Error("hover when active");
 if (checkboxBoxTransparency(false, false, "rest") !== 1) throw new Error("unchecked rest is hollow");
 if (checkboxBoxTransparency(true, false, "rest") !== 0) throw new Error("checked rest is solid");
-if (checkboxBoxTransparency(true, true, "rest") !== 0.55) throw new Error("disabled checked fades");
+if (checkboxBoxTransparency(true, true, "rest") !== controlFade) throw new Error("disabled checked fades");
 if (checkboxBoxTransparency(false, false, "hover") !== 0.85) throw new Error("unchecked hover tints");
-if (checkboxStrokeTransparency(false, true, "rest") !== 0.55) throw new Error("disabled stroke fades");
+if (checkboxStrokeTransparency(false, true, "rest") !== controlFade) throw new Error("disabled stroke fades");
 if (checkboxStrokeTransparency(false, false, "focus") !== 0) throw new Error("focus stroke is solid");
 
 const {
@@ -401,8 +402,10 @@ if (switchPointer(true, false, true) !== "focus") throw new Error("switch focus 
 if (switchPointer(true, false, false) !== "hover") throw new Error("switch hover");
 if (switchTrackTransparency(true, false, "rest") !== 0) throw new Error("on track solid");
 if (switchTrackTransparency(false, false, "rest") !== 0.35) throw new Error("off track muted");
-if (switchTrackTransparency(true, true, "rest") !== 0.55) throw new Error("disabled on fades");
-if (switchThumbTransparency(true) !== 0.35) throw new Error("disabled thumb fades");
+if (switchTrackTransparency(true, true, "rest") !== controlFade) throw new Error("disabled on fades");
+if (switchTrackTransparency(false, true, "rest") !== controlFade) throw new Error("disabled off fades");
+if (switchThumbTransparency(true) !== controlFade) throw new Error("disabled thumb fades");
+if (switchStrokeTransparency(false, "hover") !== 1) throw new Error("hover is not the focus ring");
 if (switchStrokeTransparency(false, "focus") !== 0) throw new Error("focus stroke solid");
 if (switchStrokeTransparency(true, "focus") !== 1) throw new Error("disabled stroke hidden");
 const onThumb = switchThumbPlacement(true, 3);

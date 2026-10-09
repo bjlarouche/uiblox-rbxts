@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "@rbxts/react";
-import { ControlSize, CustomizedProps, cx } from "theme";
+import { controlFade, ControlSize, CustomizedProps, cx } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
 import { commitNumber } from "ui/packages/numberInput/components/numberValue";
@@ -73,7 +73,7 @@ function RangeSlider(props: CustomizedProps<Frame, RangeSliderProps>) {
 	const knobLook = (ratio: number, which: RangeThumb) =>
 		cx<Frame>(styles.knob, {
 			Position: UDim2.fromScale(ratio, 0.5),
-			BackgroundTransparency: faded ? 0.45 : 0,
+			BackgroundTransparency: faded ? controlFade : 0,
 			ZIndex: which === thumb.current ? 3 : 2,
 		});
 
@@ -88,7 +88,6 @@ function RangeSlider(props: CustomizedProps<Frame, RangeSliderProps>) {
 			state={{ disabled, pressed, focused }}
 			Active={active}
 			Selectable={active}
-			BackgroundTransparency={showFocus ? 0.85 : 1}
 			Event={{
 				InputBegan: (rbx: Frame, input: InputObject) => {
 					if (!active) return;
@@ -115,14 +114,14 @@ function RangeSlider(props: CustomizedProps<Frame, RangeSliderProps>) {
 				SelectionLost: () => setFocused(false),
 			}}
 		>
-			<frame key="Track" {...styles.track} BackgroundTransparency={faded ? 0.55 : 0.35}>
+			<frame key="Track" {...styles.track} BackgroundTransparency={faded ? controlFade : 0.35}>
 				<uicorner {...styles.corner} />
 				<frame
 					key="Fill"
 					{...cx<Frame>(styles.fill, {
 						Position: UDim2.fromScale(ratios.low, 0),
 						Size: UDim2.fromScale(ratios.high - ratios.low, 1),
-						BackgroundTransparency: faded ? 0.55 : pressed ? 0.1 : 0,
+						BackgroundTransparency: faded ? controlFade : pressed ? 0.1 : 0,
 					})}
 				>
 					<uicorner {...styles.corner} />

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "@rbxts/react";
 import { TextService } from "@rbxts/services";
-import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
+import { controlFade, controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
 import { commitNumber } from "ui/packages/numberInput/components/numberValue";
@@ -83,7 +83,6 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 			state={{ disabled, hover: hovering, pressed, focused }}
 			Active={active}
 			Selectable={active}
-			BackgroundTransparency={showFocus ? 0.85 : 1}
 			Event={{
 				InputBegan: (rbx: Frame, input: InputObject) => {
 					if (!active) return;
@@ -122,13 +121,12 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 				{...cx<Frame>(
 					track,
 					{
-						BackgroundTransparency: faded ? 0.55 : hovering && active ? 0.2 : 0.35,
+						BackgroundTransparency: faded ? controlFade : hovering && active ? 0.2 : 0.35,
 					},
 					labelText !== undefined && { Size: new UDim2(1, -(slot + 4), 0, metrics.sliderTrack) },
 				)}
 			>
 				<uicorner {...corner} />
-				{showFocus && <uistroke {...stroke} />}
 				<>
 					{markValues.map((markValue, index) => {
 						const markRatio = span > 0 ? (markValue - min) / span : 0;
@@ -137,28 +135,30 @@ function Slider(props: CustomizedProps<Frame, SliderProps>) {
 								key={`Mark-${index}`}
 								{...mark}
 								Position={UDim2.fromScale(markRatio, 0.5)}
-								BackgroundTransparency={faded ? 0.7 : 0.35}
+								BackgroundTransparency={faded ? controlFade : 0.35}
 							/>
 						);
 					})}
 				</>
 				<frame
 					key="Fill"
-					{...cx<Frame>(fill, { BackgroundTransparency: faded ? 0.55 : pressed ? 0.1 : 0 })}
+					{...cx<Frame>(fill, { BackgroundTransparency: faded ? controlFade : pressed ? 0.1 : 0 })}
 					Size={UDim2.fromScale(ratio, 1)}
 				>
 					<uicorner {...corner} />
 				</frame>
 				<frame
 					key="Knob"
-					{...cx<Frame>(knob, { BackgroundTransparency: faded ? 0.45 : 0 })}
+					{...cx<Frame>(knob, { BackgroundTransparency: faded ? controlFade : 0 })}
 					Position={UDim2.fromScale(ratio, 0.5)}
 				>
 					<uicorner {...corner} />
 					{showFocus && <uistroke {...stroke} />}
 				</frame>
 			</frame>
-			{labelText !== undefined ? <textlabel key="Value" {...label} Size={new UDim2(0, slot, 1, 0)} Text={labelText} /> : undefined}
+			{labelText !== undefined ? (
+				<textlabel key="Value" {...label} Size={new UDim2(0, slot, 1, 0)} Text={labelText} TextTransparency={faded ? controlFade : 0} />
+			) : undefined}
 		</SxHost>
 	);
 }
