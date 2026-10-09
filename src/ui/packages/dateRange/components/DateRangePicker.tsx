@@ -175,7 +175,7 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 			) : (
 			<frame Size={new UDim2(1, -pad * 2, 0, row * 7 + pad * 6)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
 				<uigridlayout
-					CellSize={UDim2.fromOffset(36, row)}
+					CellSize={new UDim2(1 / 7, -pad, 0, row)}
 					CellPadding={UDim2.fromOffset(pad, pad)}
 					FillDirectionMaxCells={7}
 					SortOrder={Enum.SortOrder.LayoutOrder}
