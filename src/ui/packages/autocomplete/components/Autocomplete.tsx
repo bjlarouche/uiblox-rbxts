@@ -21,6 +21,8 @@ function Autocomplete<T>(props: CustomizedProps<Frame, AutocompleteProps<T>>) {
 		empty,
 		reducedMotion,
 		size,
+		hasError,
+		helperText,
 		className,
 		sx,
 		id,
@@ -42,6 +44,8 @@ function Autocomplete<T>(props: CustomizedProps<Frame, AutocompleteProps<T>>) {
 			empty={empty}
 			reducedMotion={reducedMotion}
 			size={size}
+			hasError={hasError}
+			helperText={helperText}
 			className={className}
 			sx={sx}
 			id={id || "Autocomplete"}
