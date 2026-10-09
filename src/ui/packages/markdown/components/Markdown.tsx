@@ -1,10 +1,10 @@
 import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { CustomizedProps, useTheme } from "theme";
 import { Divider } from "ui/packages/divider";
 import { SxHost } from "ui/packages/host";
 import { Link } from "ui/packages/link";
 import { Orientations } from "ui/enums";
-import { FontSizeVariant } from "theme/interfaces/typography";
+import { FontSizeOptions, FontSizeVariant } from "theme/interfaces/typography";
 import { inlinePieces, inlinesToRichText, markdownLinkPayload, MarkdownLinkPayload, MdBlock, MdInline, parseMarkdown } from "../parseMarkdown";
 import useMarkdownStyles from "./Markdown.styles";
 
@@ -22,13 +22,14 @@ function headingVariant(level: number): FontSizeVariant {
 	return "h6";
 }
 
-function textSizeFor(variant?: FontSizeVariant): number {
-	if (variant === "h1") return 28;
-	if (variant === "h2") return 22;
-	if (variant === "h3") return 18;
-	if (variant === "h4") return 16;
-	if (variant === "h5" || variant === "h6") return 14;
-	return 14;
+function textSizeFor(sizes: FontSizeOptions, variant?: FontSizeVariant) {
+	if (variant === "h1") return sizes.h1;
+	if (variant === "h2") return sizes.h2;
+	if (variant === "h3") return sizes.h3;
+	if (variant === "h4") return sizes.h4;
+	if (variant === "h5") return sizes.h5;
+	if (variant === "h6") return sizes.h6;
+	return sizes.body;
 }
 
 function richLabel(
@@ -38,6 +39,7 @@ function richLabel(
 	variant?: FontSizeVariant,
 	order?: number,
 	size?: UDim2,
+	sizes?: FontSizeOptions,
 ) {
 	const text = inlinesToRichText(inlines);
 	return (
@@ -47,7 +49,7 @@ function richLabel(
 			{...(size !== undefined ? { Size: size } : {})}
 			LayoutOrder={order}
 			Text={text}
-			TextSize={textSizeFor(variant)}
+			TextSize={textSizeFor(sizes ?? {}, variant)}
 			Font={variant !== undefined && variant !== "body" ? Enum.Font.SourceSansBold : Enum.Font.SourceSans}
 		/>
 	);
@@ -67,14 +69,15 @@ function inlineFlow(
 	variant: FontSizeVariant | undefined,
 	order: number | undefined,
 	onLink?: (payload: MarkdownLinkPayload) => void,
+	sizes?: FontSizeOptions,
 	flow = styles.flow,
 ) {
 	if (!inlineHasLink(inlines)) {
 		const span = flow !== styles.flow ? (flow as unknown as { Size: UDim2 }).Size : undefined;
-		return richLabel(key, styles, inlines, variant, order, span);
+		return richLabel(key, styles, inlines, variant, order, span, sizes);
 	}
 	const pieces = inlinePieces(inlines);
-	const textSize = textSizeFor(variant);
+	const textSize = textSizeFor(sizes ?? {}, variant);
 	const font = variant !== undefined && variant !== "body" ? Enum.Font.SourceSansBold : Enum.Font.SourceSans;
 	return (
 		<frame key={key} {...flow} LayoutOrder={order}>
@@ -123,19 +126,20 @@ function renderBlock(
 	block: MdBlock,
 	index: number,
 	styles: ReturnType<typeof useMarkdownStyles>,
+	sizes: FontSizeOptions,
 	onLink?: (payload: MarkdownLinkPayload) => void,
 ) {
 	if (block.kind === "heading") {
 		return (
 			<frame key={`h-${index}`} {...styles.block} LayoutOrder={index}>
-				{inlineFlow("Text", styles, block.inlines, headingVariant(block.level), undefined, onLink)}
+				{inlineFlow("Text", styles, block.inlines, headingVariant(block.level), undefined, onLink, sizes)}
 			</frame>
 		);
 	}
 	if (block.kind === "paragraph") {
 		return (
 			<frame key={`p-${index}`} {...styles.block} LayoutOrder={index}>
-				{inlineFlow("Text", styles, block.inlines, "body", undefined, onLink)}
+				{inlineFlow("Text", styles, block.inlines, "body", undefined, onLink, sizes)}
 			</frame>
 		);
 	}
@@ -164,7 +168,7 @@ function renderBlock(
 				<uicorner CornerRadius={new UDim(0, 4)} />
 				<frame key="Bar" {...styles.quoteBar} />
 				<uipadding {...styles.quotePad} />
-				{inlineFlow("Text", styles, block.inlines, "body", undefined, onLink, styles.quoteFlow)}
+				{inlineFlow("Text", styles, block.inlines, "body", undefined, onLink, sizes, styles.quoteFlow)}
 			</frame>
 		);
 	}
@@ -182,7 +186,7 @@ function renderBlock(
 					const labeled: MdInline[] = [{ kind: "text", text: prefix }, ...item];
 					return (
 						<frame key={`li-${itemIndex}`} {...styles.listItem} LayoutOrder={itemIndex}>
-							{inlineFlow("Text", styles, labeled, "body", undefined, onLink)}
+							{inlineFlow("Text", styles, labeled, "body", undefined, onLink, sizes)}
 						</frame>
 					);
 				})}
@@ -195,12 +199,13 @@ function renderBlock(
 function Markdown(props: CustomizedProps<Frame, MarkdownProps>) {
 	const { value = "", onLink, className, sx, id, ref } = props;
 	const styles = useMarkdownStyles();
+	const { theme } = useTheme();
 	const blocks = parseMarkdown(value);
 	return (
 		<SxHost tag="frame" key={id || "Markdown"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			<uipadding {...styles.inset} />
 			<uilistlayout {...styles.layout} />
-			{blocks.map((block, index) => renderBlock(block, index, styles, onLink))}
+			{blocks.map((block, index) => renderBlock(block, index, styles, theme.typography.fontSizes, onLink))}
 		</SxHost>
 	);
 }

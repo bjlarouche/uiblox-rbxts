@@ -156,5 +156,8 @@ if (!markdown.includes('color="primary"')) throw new Error("markdown links use t
 if (!markdownStyles.includes("TextWrapped: true") || !markdown.includes("styles.inset")) {
 	throw new Error("markdown body wraps inside the padding");
 }
+if (markdown.includes("return 28") || !markdown.includes("sizes.h1") || !markdown.includes("SourceSansBold")) {
+	throw new Error("headings use the theme scale");
+}
 
 console.log("markdown ok");
