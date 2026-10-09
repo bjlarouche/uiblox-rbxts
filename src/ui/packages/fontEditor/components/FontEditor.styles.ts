@@ -1,5 +1,5 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
-import { editorPad, editorText } from "ui/packages/editorFace";
+import { editorPad, editorRowHeight, editorText } from "ui/packages/editorFace";
 
 const useFontEditorStyles = componentStyles("FontEditor", (theme: Theme) =>
 	createStyles({
@@ -25,7 +25,7 @@ const useFontEditorStyles = componentStyles("FontEditor", (theme: Theme) =>
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		fill: {
-			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
+			Size: new UDim2(1, 0, 0, editorRowHeight(theme)),
 		} as WriteableStyle<Frame>,
 		preview: {
 			Size: new UDim2(1, 0, 0, theme.spacing.calc(3)),

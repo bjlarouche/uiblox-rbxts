@@ -1,6 +1,6 @@
 import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
-import { useEditorHover } from "ui/packages/editorFace";
+import { CustomizedProps, useTheme } from "theme";
+import { editorRowHeight, useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import useVectorEditorStyles from "./VectorEditor.styles";
@@ -16,7 +16,9 @@ export interface VectorEditorProps {
 function VectorEditor(props: CustomizedProps<Frame, VectorEditorProps>) {
 	const { value, onChange, disabled, className,
 		sx, id, ref } = props;
+	const { theme } = useTheme();
 	const styles = useVectorEditorStyles();
+	const row = editorRowHeight(theme);
 	const hover = useEditorHover(disabled);
 	const isVector3 = typeOf(value) === "Vector3";
 	const axes = props.axes ?? (isVector3 ? (["X", "Y", "Z"] as AxisKey[]) : (["X", "Y"] as AxisKey[]));
@@ -26,7 +28,7 @@ function VectorEditor(props: CustomizedProps<Frame, VectorEditorProps>) {
 			<uilistlayout {...styles.row} />
 			<>
 			{axes.map((axis, index) => (
-				<frame key={axis} {...styles.axis} Size={new UDim2(1 / axes.size(), 0, 0, 32)} LayoutOrder={index + 1}>
+				<frame key={axis} {...styles.axis} Size={new UDim2(1 / axes.size(), 0, 0, row)} LayoutOrder={index + 1}>
 					<uilistlayout {...styles.row} />
 					<textlabel {...styles.label} Text={axis} />
 					<frame {...styles.field}>

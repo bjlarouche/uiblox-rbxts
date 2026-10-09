@@ -1,5 +1,5 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
-import { editorPad, editorText } from "ui/packages/editorFace";
+import { editorPad, editorRowHeight, editorText } from "ui/packages/editorFace";
 
 const useUDimEditorStyles = componentStyles("UDimEditor", (theme: Theme) =>
 	createStyles({
@@ -21,11 +21,11 @@ const useUDimEditorStyles = componentStyles("UDimEditor", (theme: Theme) =>
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		axis: {
-			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
+			Size: new UDim2(1, 0, 0, editorRowHeight(theme)),
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		field: {
-			Size: new UDim2(0.5, -editorPad(theme), 0, theme.spacing.calc(2)),
+			Size: new UDim2(0.5, -editorPad(theme), 0, editorRowHeight(theme)),
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		label: {
