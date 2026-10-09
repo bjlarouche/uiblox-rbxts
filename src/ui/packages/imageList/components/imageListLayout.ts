@@ -42,9 +42,3 @@ export function imageListTitle(title?: string) {
 	if (title === undefined || title.size() === 0) return undefined;
 	return title;
 }
-
-/** A title wider than the tile wraps. A short title stays one line. */
-export function imageListTitleWrap(textWidth: number, box: number) {
-	if (box <= 0) return false;
-	return textWidth > box;
-}

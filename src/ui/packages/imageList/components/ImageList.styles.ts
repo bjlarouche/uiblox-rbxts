@@ -56,6 +56,7 @@ const useImageListStyles = componentStyles<{ cols?: number; gap?: number; itemSi
 				TextColor3: Common.White,
 				TextXAlignment: Enum.TextXAlignment.Left,
 				TextTruncate: Enum.TextTruncate.AtEnd,
+				TextWrapped: false,
 				ZIndex: 2,
 			} as WriteableStyle<TextLabel>,
 			titlePad: {
