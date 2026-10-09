@@ -24,3 +24,15 @@ export function drawerBox(edge: DrawerEdge, span: number): DrawerBox {
 	const side = drawerAnchor(edge);
 	return { anchorX: side, anchorY: 0, posX: side, posY: 0, sizeX: 0, sizeXO: size, sizeY: 1, sizeYO: 0 };
 }
+
+/** Keep the panel on its edge and leave the scrim visible. */
+export function drawerFit(edge: DrawerEdge, span: number, limit: number): DrawerBox {
+	const box = drawerBox(edge, span);
+	const room = limit > 0 ? limit : 0;
+	if (edge === "bottom") {
+		const size = room > 0 && box.sizeYO > room ? room : box.sizeYO;
+		return { ...box, sizeYO: size };
+	}
+	const size = room > 0 && box.sizeXO > room ? room : box.sizeXO;
+	return { ...box, sizeXO: size };
+}

@@ -1,7 +1,8 @@
 import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
-const useDrawerStyles = componentStyles<{ width?: number }>("Drawer", (theme: Theme, { width }) =>
-	createStyles({
+const useDrawerStyles = componentStyles<{ width?: number }>("Drawer", (theme: Theme, { width }) => {
+	const heading = theme.typography.variants.h6;
+	return createStyles({
 		root: {
 			Size: UDim2.fromScale(1, 1),
 			BackgroundTransparency: 1,
@@ -23,13 +24,20 @@ const useDrawerStyles = componentStyles<{ width?: number }>("Drawer", (theme: Th
 			BorderSizePixel: 0,
 			ZIndex: 30001,
 		} as WriteableStyle<Frame>,
-		padding: {
-			PaddingTop: new UDim(0, theme.padding.calc(2)),
-			PaddingBottom: new UDim(0, theme.padding.calc(2)),
-			PaddingLeft: new UDim(0, theme.padding.calc(2)),
-			PaddingRight: new UDim(0, theme.padding.calc(2)),
-		} as WriteableStyle<UIPadding>,
-	}),
-);
+		title: {
+			Size: new UDim2(1, 0, 0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+			TextWrapped: true,
+			Font: theme.typography.fontFamilies[heading.family],
+			TextSize: heading.size,
+			LineHeight: heading.leading,
+			TextColor3: theme.palette.text.primary,
+			TextXAlignment: Enum.TextXAlignment.Left,
+			ZIndex: 30002,
+		} as WriteableStyle<TextLabel>,
+	});
+});
 
 export default useDrawerStyles;
