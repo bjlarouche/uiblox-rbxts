@@ -28,7 +28,7 @@ const useBadgeStyles = componentStyles<{ variant?: "standard" | "dot"; color?: B
 			BorderSizePixel: 0,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.caption,
-			TextColor3: color === "error" ? theme.palette.text.inverse : tone.on,
+			TextColor3: tone.on,
 			TextXAlignment: Enum.TextXAlignment.Center,
 			TextYAlignment: Enum.TextYAlignment.Center,
 			ZIndex: 2,
