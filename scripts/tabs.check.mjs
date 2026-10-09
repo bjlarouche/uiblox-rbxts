@@ -26,6 +26,8 @@ if (verticalMark.widthOffset !== 2 || verticalMark.heightScale !== 1 || vertical
 }
 const styles = readFileSync("src/ui/packages/tabs/components/Tabs.styles.ts", "utf8");
 if (styles.includes("padding.calc(4)")) throw new Error("indicator width offset");
+if (!styles.includes("TextTruncate")) throw new Error("tab labels should truncate");
+if (!styles.includes("text.primary")) throw new Error("current tab should use the primary text color");
 
 const { tabsIsVertical } = await import("../src/ui/packages/tabs/components/tabsOrientation.ts");
 if (tabsIsVertical("vertical") !== true || tabsIsVertical() !== false || tabsIsVertical("horizontal") !== false) {

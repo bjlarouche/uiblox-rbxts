@@ -29,7 +29,11 @@ const useBreadcrumbStyles = componentStyles("Breadcrumbs", (theme: Theme) =>
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.body,
 			TextColor3: theme.palette.text.link,
+			TextTruncate: Enum.TextTruncate.AtEnd,
 		} as WriteableStyle<TextButton>,
+		cap: {
+			MaxSize: new Vector2(theme.spacing.calc(20), math.huge),
+		} as WriteableStyle<UISizeConstraint>,
 		current: {
 			TextColor3: theme.palette.text.primary,
 		} as WriteableStyle<TextButton>,

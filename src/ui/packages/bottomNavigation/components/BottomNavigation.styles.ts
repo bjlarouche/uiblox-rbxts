@@ -28,7 +28,7 @@ const useBottomNavigationStyles = componentStyles<{ showLabels?: boolean }>(
 				TextTruncate: Enum.TextTruncate.AtEnd,
 			} as WriteableStyle<TextButton>,
 			selected: {
-				TextColor3: theme.palette.primary.main,
+				TextColor3: theme.palette.text.primary,
 				BackgroundColor3: theme.palette.action.selected,
 				BackgroundTransparency: 0.85,
 			} as WriteableStyle<TextButton>,
@@ -36,8 +36,9 @@ const useBottomNavigationStyles = componentStyles<{ showLabels?: boolean }>(
 				TextTransparency: 0.5,
 			} as WriteableStyle<TextButton>,
 			indicator: {
-				Size: new UDim2(1, 0, 0, 2),
-				Position: new UDim2(0, 0, 0, 0),
+				Size: new UDim2(1, -theme.padding.calc(3), 0, 2),
+				Position: new UDim2(0.5, 0, 0, theme.padding.calc(0.5)),
+				AnchorPoint: new Vector2(0.5, 0),
 				BackgroundColor3: theme.palette.primary.main,
 				BorderSizePixel: 0,
 			} as WriteableStyle<Frame>,
