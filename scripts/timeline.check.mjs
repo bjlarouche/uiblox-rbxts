@@ -19,5 +19,7 @@ const styles = readFileSync("src/ui/packages/timeline/components/Timeline.styles
 const view = readFileSync("src/ui/packages/timeline/components/Timeline.tsx", "utf8");
 if (!styles.includes('componentStyles("Timeline"')) throw new Error("override name");
 if (!view.includes("<SxHost")) throw new Error("sx host");
+if (!styles.includes("TextTruncate") || !styles.includes("PaddingLeft")) throw new Error("rail stays inside the padding");
+if (!view.includes("styles.inset")) throw new Error("timeline inset");
 
 console.log("timeline ok");

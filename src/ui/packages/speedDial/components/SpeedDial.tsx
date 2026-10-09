@@ -71,6 +71,7 @@ function SpeedDial(props: CustomizedProps<Frame, SpeedDialProps>) {
 							<textlabel key="Label" {...styles.actionLabel} Text={name} LayoutOrder={labelFirst ? 1 : 2}>
 								<uipadding {...styles.actionPad} />
 								<uicorner {...styles.actionCorner} />
+								<uisizeconstraint {...styles.actionCap} />
 							</textlabel>
 							{button}
 						</frame>

@@ -20,6 +20,7 @@ function Timeline(props: CustomizedProps<Frame, TimelineProps>) {
 	const count = items.size();
 	return (
 		<SxHost tag="frame" key={id || "Timeline"} hostRef={ref} base={styles.root} className={className} sx={sx}>
+			<uipadding {...styles.inset} />
 			<uilistlayout {...styles.list} />
 			<>
 				{items.map((item, index) => {

@@ -13,4 +13,10 @@ for (const name of ["closed", "open", "disabled", "down"]) {
 	}
 }
 
+const { readFileSync } = await import("node:fs");
+const dial = readFileSync("src/ui/packages/speedDial/components/SpeedDial.tsx", "utf8");
+const dialStyles = readFileSync("src/ui/packages/speedDial/components/SpeedDial.styles.ts", "utf8");
+if (!dial.includes("actionCap") || !dialStyles.includes("TextTruncate")) throw new Error("dial label truncates");
+if (!dialStyles.includes("spacing.calc(16)")) throw new Error("dial label cap");
+
 console.log("speed-dial ok");

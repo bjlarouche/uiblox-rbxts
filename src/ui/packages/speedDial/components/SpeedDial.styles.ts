@@ -52,7 +52,12 @@ const useSpeedDialStyles = componentStyles<{ direction?: SpeedDialDirection; lab
 				Font: theme.typography.fontFamilies.default,
 				TextSize: theme.typography.fontSizes.caption ?? theme.typography.fontSizes.body,
 				TextColor3: theme.palette.text.primary,
+				TextTruncate: Enum.TextTruncate.AtEnd,
+				TextWrapped: false,
 			} as WriteableStyle<TextLabel>,
+			actionCap: {
+				MaxSize: new Vector2(theme.spacing.calc(16), math.huge),
+			} as WriteableStyle<UISizeConstraint>,
 			actionPad: {
 				PaddingLeft: new UDim(0, theme.padding.calc(1)),
 				PaddingRight: new UDim(0, theme.padding.calc(1)),
