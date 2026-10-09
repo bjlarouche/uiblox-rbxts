@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
-import { CustomizedProps, useTheme } from "theme";
+import { controlMetrics, CustomizedProps, useTheme } from "theme";
+import { fieldChrome } from "ui/packages/input/components/fieldChrome";
 import { SxHost } from "ui/packages/host";
 import {
 	dateStamp,
@@ -41,6 +42,9 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 	const anchorStamp = anchor ?? dateStamp(year, month, 1);
 	const week = weekMode ? weekStamps(anchorStamp) : [];
 	const { theme } = useTheme();
+	const chrome = fieldChrome(controlMetrics(theme.density).height, theme.padding.calc(1));
+	const pad = chrome.padX;
+	const row = chrome.height;
 	const lead = weekday(year, month, 1);
 	const count = daysInMonth(year, month);
 	const cells: Array<{ day?: number; stamp?: number; order: number }> = [];
@@ -81,16 +85,16 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 			sx={sx}
 		>
 			<uipadding
-				PaddingTop={new UDim(0, 8)}
-				PaddingBottom={new UDim(0, 8)}
-				PaddingLeft={new UDim(0, 8)}
-				PaddingRight={new UDim(0, 8)}
+				PaddingTop={new UDim(0, pad)}
+				PaddingBottom={new UDim(0, pad)}
+				PaddingLeft={new UDim(0, pad)}
+				PaddingRight={new UDim(0, pad)}
 			/>
-			<uilistlayout FillDirection={Enum.FillDirection.Vertical} Padding={new UDim(0, 8)} SortOrder={Enum.SortOrder.LayoutOrder} />
-			<frame Size={new UDim2(1, 0, 0, 28)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={0}>
+			<uilistlayout FillDirection={Enum.FillDirection.Vertical} Padding={new UDim(0, pad)} SortOrder={Enum.SortOrder.LayoutOrder} />
+			<frame Size={new UDim2(1, -pad * 2, 0, row)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={0}>
 				<textbutton
 					Text={weekMode ? "Earlier" : "Prev"}
-					Size={UDim2.fromOffset(weekMode ? 72 : 56, 28)}
+					Size={UDim2.fromOffset(weekMode ? 72 : 56, row)}
 					BackgroundTransparency={1}
 					BorderSizePixel={0}
 					TextColor3={theme.palette.text.secondary}
@@ -102,9 +106,11 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 					Text={title}
 					AnchorPoint={new Vector2(0.5, 0)}
 					Position={UDim2.fromScale(0.5, 0)}
-					Size={UDim2.fromOffset(weekMode ? 200 : 140, 28)}
+					Size={new UDim2(1, -(weekMode ? 72 : 56) * 2, 1, 0)}
 					BackgroundTransparency={1}
 					BorderSizePixel={0}
+					TextTruncate={Enum.TextTruncate.AtEnd}
+					TextWrapped={false}
 					TextColor3={theme.palette.text.primary}
 					Font={theme.typography.fontFamilies.semibold}
 					TextSize={theme.typography.fontSizes.body}
@@ -113,7 +119,7 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 					Text={weekMode ? "Later" : "Next"}
 					AnchorPoint={new Vector2(1, 0)}
 					Position={UDim2.fromScale(1, 0)}
-					Size={UDim2.fromOffset(weekMode ? 72 : 56, 28)}
+					Size={UDim2.fromOffset(weekMode ? 72 : 56, row)}
 					BackgroundTransparency={1}
 					BorderSizePixel={0}
 					TextColor3={theme.palette.text.secondary}
@@ -124,9 +130,11 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 			</frame>
 			<textlabel
 				Text={value.start === undefined ? "Choose a start and finish" : value.finish === undefined ? formatStamp(value.start) : `${formatStamp(value.start)} – ${formatStamp(value.finish)}`}
-				Size={new UDim2(1, 0, 0, 16)}
+				Size={new UDim2(1, -pad * 2, 0, row)}
 				BackgroundTransparency={1}
 				BorderSizePixel={0}
+				TextTruncate={Enum.TextTruncate.AtEnd}
+				TextWrapped={false}
 				TextXAlignment={Enum.TextXAlignment.Left}
 				TextColor3={theme.palette.text.secondary}
 				Font={theme.typography.fontFamilies.default}
@@ -134,10 +142,10 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 				LayoutOrder={1}
 			/>
 			{weekMode ? (
-				<frame Size={new UDim2(1, 0, 0, 56)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
+				<frame Size={new UDim2(1, -pad * 2, 0, row * 2)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
 					<uilistlayout
 						FillDirection={Enum.FillDirection.Horizontal}
-						Padding={new UDim(0, 4)}
+						Padding={new UDim(0, pad)}
 						SortOrder={Enum.SortOrder.LayoutOrder}
 					/>
 					{week.map((stamp, index) => {
@@ -148,7 +156,7 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 								key={`week-${stamp}`}
 								Text={`${WEEKDAYS[index] ?? ""}\n${stamp % 100}`}
 								LayoutOrder={index}
-								Size={new UDim2(1 / 7, -4, 1, 0)}
+								Size={new UDim2(1 / 7, -pad, 1, 0)}
 								BackgroundColor3={chosen ? theme.palette.primary.main : theme.palette.surface.input}
 								BackgroundTransparency={chosen && !endpoint ? 0.55 : 0}
 								BorderSizePixel={0}
@@ -165,10 +173,10 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 					})}
 				</frame>
 			) : (
-			<frame Size={new UDim2(1, 0, 0, 248)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
+			<frame Size={new UDim2(1, -pad * 2, 0, row * 7 + pad * 6)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
 				<uigridlayout
-					CellSize={UDim2.fromOffset(36, 28)}
-					CellPadding={UDim2.fromOffset(4, 4)}
+					CellSize={UDim2.fromOffset(36, row)}
+					CellPadding={UDim2.fromOffset(pad, pad)}
 					FillDirectionMaxCells={7}
 					SortOrder={Enum.SortOrder.LayoutOrder}
 				/>

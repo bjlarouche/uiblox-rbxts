@@ -15,4 +15,8 @@ if (timeRangeOk({ hour: 10, minute: 0 }, { hour: 9, minute: 30 }) !== false) thr
 if (timeRangeOk({ hour: 9, minute: 0 }, { hour: 9, minute: 0 }) !== false) throw new Error("zero length");
 if (timeRangeOk({ hour: 9, minute: 0 }, { hour: 10, minute: 15 }) !== true) throw new Error("ordered range");
 
+const { readFileSync } = await import("node:fs");
+const field = readFileSync("src/ui/packages/timeField/components/TimeField.tsx", "utf8");
+if (!field.includes("fieldChrome") || field.includes('size="small"')) throw new Error("time field matches the input chrome");
+
 console.log("time field ok");

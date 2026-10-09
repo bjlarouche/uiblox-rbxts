@@ -40,4 +40,8 @@ if (week.length !== 7 || week[0] !== 20261004 || week[6] !== 20261010) throw new
 if (!week.includes(20261006)) throw new Error("week contains the day");
 if (weekStamps(20261004)[0] !== week[0] || weekStamps(20261010)[0] !== week[0]) throw new Error("same week");
 
+const { readFileSync } = await import("node:fs");
+const picker = readFileSync("src/ui/packages/dateRange/components/DateRangePicker.tsx", "utf8");
+if (!picker.includes("fieldChrome") || !picker.includes("TextTruncate")) throw new Error("range field matches the input chrome");
+
 console.log("date range ok");

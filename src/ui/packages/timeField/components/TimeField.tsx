@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
-import { CustomizedProps, useTheme } from "theme";
+import { controlMetrics, CustomizedProps, useTheme } from "theme";
+import { fieldChrome } from "ui/packages/input/components/fieldChrome";
 import { NumberInput } from "ui/packages/numberInput";
 import { SxHost } from "ui/packages/host";
 import { resolveTime, TimeOfDay } from "../timeValue";
@@ -17,6 +18,7 @@ export interface TimeFieldProps {
 function TimeField(props: CustomizedProps<Frame, TimeFieldProps>) {
 	const { value, onChange, step = 1, wrap = true, min, max, disabled, className, sx, id, ref } = props;
 	const { theme } = useTheme();
+	const chrome = fieldChrome(controlMetrics(theme.density).height, theme.padding.calc(1));
 	const commit = (hour: number, minute: number) => {
 		const resolved = resolveTime({ hour, minute }, step, wrap, min, max);
 		if (resolved === undefined) return;
@@ -40,7 +42,7 @@ function TimeField(props: CustomizedProps<Frame, TimeFieldProps>) {
 		>
 			<uilistlayout
 				FillDirection={Enum.FillDirection.Horizontal}
-				Padding={new UDim(0, 4)}
+				Padding={new UDim(0, chrome.padX)}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 				SortOrder={Enum.SortOrder.LayoutOrder}
 			/>
@@ -48,7 +50,6 @@ function TimeField(props: CustomizedProps<Frame, TimeFieldProps>) {
 				value={value.hour}
 				step={1}
 				disabled={disabled}
-				size="small"
 				width={new UDim(0, 56)}
 				sx={{ LayoutOrder: 0 }}
 				onChange={(hour) => commit(hour, value.minute)}
@@ -58,7 +59,9 @@ function TimeField(props: CustomizedProps<Frame, TimeFieldProps>) {
 				LayoutOrder={1}
 				BackgroundTransparency={1}
 				BorderSizePixel={0}
-				Size={UDim2.fromOffset(8, 24)}
+				Size={UDim2.fromOffset(8, chrome.height)}
+				TextTruncate={Enum.TextTruncate.AtEnd}
+				TextWrapped={false}
 				Font={theme.typography.fontFamilies.default}
 				TextSize={theme.typography.fontSizes.body}
 				TextColor3={theme.palette.text.secondary}
@@ -67,7 +70,6 @@ function TimeField(props: CustomizedProps<Frame, TimeFieldProps>) {
 				value={value.minute}
 				step={step}
 				disabled={disabled}
-				size="small"
 				width={new UDim(0, 56)}
 				sx={{ LayoutOrder: 2 }}
 				onChange={(minute) => commit(value.hour, minute)}
