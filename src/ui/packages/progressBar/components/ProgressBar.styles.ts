@@ -26,7 +26,8 @@ const useProgressBarStyles = componentStyles("ProgressBar", (theme: Theme) =>
 			),
 			Position: new UDim2(0.5, 0, 0.5, 0),
 			AnchorPoint: new Vector2(0.5, 0.5),
-			BackgroundTransparency: 1,
+			BackgroundColor3: theme.palette.surface.input,
+			BackgroundTransparency: 0,
 			BorderSizePixel: 0,
 			ClipsDescendants: true,
 			ZIndex: 110001,
@@ -34,7 +35,7 @@ const useProgressBarStyles = componentStyles("ProgressBar", (theme: Theme) =>
 		fill: {
 			Position: new UDim2(0, 0, 0.5, 0),
 			AnchorPoint: new Vector2(0, 0.5),
-			BackgroundColor3: theme.palette.text.primary,
+			BackgroundColor3: theme.palette.primary.main,
 			BorderSizePixel: 0,
 			ZIndex: 110001,
 		} as WriteableStyle<Frame>,

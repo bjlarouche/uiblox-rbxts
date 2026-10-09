@@ -46,7 +46,7 @@ function ProgressBar(props: CustomizedProps<Frame, ProgressBarProps>) {
 						ref={barRef}
 						{...fill}
 						Size={new UDim2(unit, 0, 1, 0)}
-						BackgroundColor3={color ?? theme.palette.text.primary}
+						BackgroundColor3={color ?? theme.palette.primary.main}
 						BackgroundTransparency={disabled ? 0.55 : 0}
 					>
 						<uicorner key="Corner" {...corner} />

@@ -53,8 +53,11 @@ function CircularProgress(props: CustomizedProps<Frame, CircularProgressProps>) 
 			state={{ disabled }}
 		>
 			<uicorner CornerRadius={new UDim(1, 0)} />
-			<uistroke Color={tint} Thickness={thickness} Transparency={disabled ? 0.85 : 0.82} />
-			<uistroke Color={tint} Thickness={thickness} Transparency={disabled ? 0.55 : 0}>
+			<frame key="Track" Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} BorderSizePixel={0}>
+				<uicorner CornerRadius={new UDim(1, 0)} />
+				<uistroke Color={tint} Thickness={thickness} Transparency={disabled ? 0.75 : 0.82} />
+			</frame>
+			<uistroke Color={tint} Thickness={thickness} Transparency={disabled ? 0.4 : 0}>
 				<uigradient ref={gradientRef} Rotation={-90} Transparency={transparency} Color={new ColorSequence(tint)} />
 			</uistroke>
 		</SxHost>

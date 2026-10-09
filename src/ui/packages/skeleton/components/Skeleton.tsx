@@ -51,7 +51,12 @@ function SkeletonBlock(
 			tag="frame"
 			key={id || "Skeleton"}
 			hostRef={ref}
-			base={{ BackgroundTransparency: 1, BorderSizePixel: 0 }}
+			base={{
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				AutomaticSize: Enum.AutomaticSize.None,
+				ClipsDescendants: true,
+			}}
 			className={className}
 			sx={sx}
 			Size={new UDim2(0, side ?? width, 0, side ?? height)}
@@ -109,6 +114,8 @@ function Skeleton(props: CustomizedProps<Frame, SkeletonProps>) {
 			className={className}
 			sx={sx}
 			Size={new UDim2(0, width, 0, blockHeight)}
+			AutomaticSize={Enum.AutomaticSize.None}
+			ClipsDescendants={true}
 			BackgroundTransparency={1}
 			BorderSizePixel={0}
 		>
