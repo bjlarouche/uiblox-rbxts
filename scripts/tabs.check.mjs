@@ -15,6 +15,18 @@ if (tabScroll(200, 10, 40, 100) !== 10) throw new Error("tab before the view");
 if (tabScroll(50, 60, 20, 100) !== 50) throw new Error("tab inside the view");
 if (tabScroll(0, 0, 40, 0) !== 0) throw new Error("empty view");
 
+const { tabIndicatorBox } = await import("../src/ui/packages/tabs/components/tabIndicator.ts");
+const horizontal = tabIndicatorBox(false, 2, 8);
+if (horizontal.widthScale !== 1 || horizontal.widthOffset !== 0 || horizontal.heightOffset !== 2) {
+	throw new Error("horizontal indicator spills");
+}
+const verticalMark = tabIndicatorBox(true, 2, 8);
+if (verticalMark.widthOffset !== 2 || verticalMark.heightScale !== 1 || verticalMark.heightOffset !== -8) {
+	throw new Error("vertical indicator");
+}
+const styles = readFileSync("src/ui/packages/tabs/components/Tabs.styles.ts", "utf8");
+if (styles.includes("padding.calc(4)")) throw new Error("indicator width offset");
+
 const { tabsIsVertical } = await import("../src/ui/packages/tabs/components/tabsOrientation.ts");
 if (tabsIsVertical("vertical") !== true || tabsIsVertical() !== false || tabsIsVertical("horizontal") !== false) {
 	throw new Error("orientation");
