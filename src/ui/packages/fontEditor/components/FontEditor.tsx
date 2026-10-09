@@ -23,7 +23,7 @@ let cachedFamilies: ReturnType<typeof enumFamilies> | undefined;
 function builtInFamilies() {
 	if (cachedFamilies !== undefined) return cachedFamilies;
 	const fonts = new Array<{ Family: string }>();
-	for (const item of Enum.Font.GetEnumItems()) fonts.push(Font.fromEnum(item));
+	for (const item of Enum.Font.GetEnumItems()) if (item !== Enum.Font.Unknown) fonts.push(Font.fromEnum(item));
 	cachedFamilies = enumFamilies(fonts);
 	return cachedFamilies;
 }

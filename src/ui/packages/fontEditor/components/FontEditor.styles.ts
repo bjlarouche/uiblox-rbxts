@@ -15,11 +15,13 @@ const useFontEditorStyles = componentStyles("FontEditor", (theme: Theme) =>
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		row: {
-			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
+			Size: new UDim2(1, 0, 0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		pair: {
-			Size: new UDim2(0.5, -theme.padding.calc(0.5), 0, theme.spacing.calc(2)),
+			Size: new UDim2(0.5, -theme.padding.calc(0.5), 0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		fill: {
