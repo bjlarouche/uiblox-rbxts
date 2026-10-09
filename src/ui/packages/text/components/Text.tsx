@@ -25,8 +25,10 @@ function Text(props: CustomizedProps<TextLabel, TextProps>) {
 				TextXAlignment: Enum.TextXAlignment.Left,
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
-				Font: theme.typography.fontFamilies.default,
-				TextSize: theme.typography.fontSizes.body,
+				Font: theme.typography.fontFamilies[theme.typography.variants.body.family],
+				TextSize: theme.typography.variants.body.size,
+				LineHeight: theme.typography.variants.body.leading,
+				TextYAlignment: Enum.TextYAlignment.Top,
 				TextColor3: theme.palette.text.primary,
 				...className,
 			}}

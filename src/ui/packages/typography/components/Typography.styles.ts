@@ -60,12 +60,13 @@ const useTypographyStyles = componentStyles<TypographyProps>("Typography",
 			defaultStyles.TextColor3 = color && COLOR_TO_PALETTE(color);
 			// eslint-disable-next-line roblox-ts/lua-truthiness
 			defaultStyles.TextWrapped = !noWrap;
+			defaultStyles.TextTruncate = noWrap ? Enum.TextTruncate.AtEnd : Enum.TextTruncate.None;
+			defaultStyles.TextYAlignment = Enum.TextYAlignment.Top;
 			defaultStyles.ClipsDescendants = lineClamp;
 
 			defaultStyles.BackgroundTransparency = 1;
 			defaultStyles.BorderSizePixel = 0;
 			defaultStyles.Size = new UDim2(1, 0, 1, 0);
-			defaultStyles.ZIndex = 10000;
 
 			return defaultStyles;
 		};
@@ -74,6 +75,7 @@ const useTypographyStyles = componentStyles<TypographyProps>("Typography",
 			root: makeRootStyles(),
 			variantToken: {
 				TextSize: spec.size,
+				LineHeight: spec.leading,
 				Font: theme.typography.fontFamilies[resolvedFamily],
 			} as WriteableStyle<TextLabel>,
 		});
