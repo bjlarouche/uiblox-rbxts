@@ -5,7 +5,7 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 	const pad = theme.padding.calc(2);
 	const span = new UDim2(1, -pad * 2, 0, 0);
 	const codeInset = theme.padding.calc(1.5) * 2;
-	const cellMax = theme.spacing.calc(22);
+	const cellWidth = theme.spacing.calc(14);
 	return createStyles({
 		inset: {
 			PaddingTop: new UDim(0, pad),
@@ -124,8 +124,8 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
 		tableCell: {
-			AutomaticSize: Enum.AutomaticSize.XY,
-			Size: UDim2.fromScale(0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			Size: new UDim2(0, cellWidth, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			Font: theme.typography.fontFamilies.default,
@@ -145,10 +145,6 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 			PaddingLeft: new UDim(0, theme.padding.calc(1)),
 			PaddingRight: new UDim(0, theme.padding.calc(1)),
 		} as WriteableStyle<UIPadding>,
-		tableCellCap: {
-			MaxSize: new Vector2(cellMax, math.huge),
-			MinSize: new Vector2(theme.spacing.calc(8), 0),
-		} as WriteableStyle<UISizeConstraint>,
 		listItem: {
 			AutomaticSize: Enum.AutomaticSize.Y,
 			Size: new UDim2(1, 0, 0, 0),

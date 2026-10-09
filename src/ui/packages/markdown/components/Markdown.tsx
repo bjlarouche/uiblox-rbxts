@@ -193,7 +193,12 @@ function renderBlock(
 							{...(rowIndex === 0 ? styles.tableHead : {})}
 							LayoutOrder={rowIndex}
 						>
-							<uilistlayout FillDirection={Enum.FillDirection.Horizontal} SortOrder={Enum.SortOrder.LayoutOrder} />
+							<uistroke {...styles.tableStroke} />
+							<uilistlayout
+								FillDirection={Enum.FillDirection.Horizontal}
+								VerticalAlignment={Enum.VerticalAlignment.Center}
+								SortOrder={Enum.SortOrder.LayoutOrder}
+							/>
 							{row.map((cell, col) => (
 								<textlabel
 									key={`td-${col}`}
@@ -204,8 +209,6 @@ function renderBlock(
 									TextXAlignment={alignOf(block.align[col] ?? "left")}
 								>
 									<uipadding {...styles.tableCellPad} />
-									<uisizeconstraint {...styles.tableCellCap} />
-									<uistroke {...styles.tableStroke} />
 								</textlabel>
 							))}
 						</frame>
