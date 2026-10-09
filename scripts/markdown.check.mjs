@@ -168,4 +168,25 @@ if (markdown.includes("return 28") || !markdown.includes("sizes.h1") || !markdow
 	throw new Error("headings use the theme scale");
 }
 
+const table = parseMarkdown(
+	"| Crew | Role | Watch |\n|:---|:---:|---:|\n| Ada | **Pilot** | 04:00 |\n| Grace \\| Lin | Navigator | late |",
+);
+if (table[0].kind !== "table") throw new Error("table");
+if (table[0].kind === "table") {
+	if (JSON.stringify(table[0].align) !== JSON.stringify(["left", "center", "right"])) throw new Error("table align");
+	if (table[0].header.length !== 3 || table[0].rows.length !== 2) throw new Error("table shape");
+	if (table[0].header[0][0].text !== "Crew") throw new Error("table header");
+	const role = table[0].rows[0][1];
+	if (role[0].kind !== "bold" || role[0].text !== "Pilot") throw new Error("table inline");
+	const escaped = table[0].rows[1][0][0].text;
+	if (escaped !== "Grace | Lin") throw new Error(`escaped pipe ${escaped}`);
+}
+if (kinds("a | b\nnot a delimiter")[0] !== "paragraph") throw new Error("pipe without delimiter stays text");
+if (!markdown.includes("styles.quoteBarPad") || markdown.includes('key="Bar"')) {
+	throw new Error("quote bar is padding, not a scaled frame");
+}
+if (!markdown.includes("scrollingframe") || !markdownStyles.includes("surface.elevated")) {
+	throw new Error("table scrolls and headers sit on elevated");
+}
+
 console.log("markdown ok");

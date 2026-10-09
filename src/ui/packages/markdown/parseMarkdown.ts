@@ -5,12 +5,15 @@ export type MdInline =
 	| { kind: "code"; text: string }
 	| { kind: "link"; text: string; href: string };
 
+export type MdAlign = "left" | "center" | "right";
+
 export type MdBlock =
 	| { kind: "heading"; level: number; inlines: MdInline[] }
 	| { kind: "paragraph"; inlines: MdInline[] }
 	| { kind: "code"; text: string }
 	| { kind: "list"; ordered: boolean; items: MdInline[][] }
 	| { kind: "blockquote"; inlines: MdInline[] }
+	| { kind: "table"; align: MdAlign[]; header: MdInline[][]; rows: MdInline[][][] }
 	| { kind: "hr" };
 
 function trimEnd(value: string): string {
@@ -130,6 +133,81 @@ function isHr(line: string): boolean {
 	return true;
 }
 
+/** Split a pipe row. Leading and trailing pipes are optional. `\|` is a literal pipe. */
+function splitCells(line: string): string[] | undefined {
+	const t = trim(line);
+	if (t.find("|", 1, true)[0] === undefined) return undefined;
+	let body = t;
+	if (body.sub(1, 1) === "|") body = body.sub(2);
+	if (body.size() > 0 && body.sub(body.size(), body.size()) === "|") body = body.sub(1, body.size() - 1);
+	const cells: string[] = [];
+	let buf = "";
+	let i = 1;
+	while (i <= body.size()) {
+		const ch = body.sub(i, i);
+		if (ch === "\\" && i < body.size() && body.sub(i + 1, i + 1) === "|") {
+			buf = `${buf}|`;
+			i += 2;
+			continue;
+		}
+		if (ch === "|") {
+			cells.push(trim(buf));
+			buf = "";
+			i += 1;
+			continue;
+		}
+		buf = `${buf}${ch}`;
+		i += 1;
+	}
+	cells.push(trim(buf));
+	return cells;
+}
+
+function cellAlign(cell: string): MdAlign | undefined {
+	const t = trim(cell);
+	let i = 1;
+	let left = false;
+	let right = false;
+	if (t.sub(1, 1) === ":") {
+		left = true;
+		i = 2;
+	}
+	let dashes = 0;
+	while (i <= t.size() && t.sub(i, i) === "-") {
+		dashes += 1;
+		i += 1;
+	}
+	if (i <= t.size() && t.sub(i, i) === ":") {
+		right = true;
+		i += 1;
+	}
+	if (i <= t.size() || dashes < 3) return undefined;
+	if (left && right) return "center";
+	if (right) return "right";
+	return "left";
+}
+
+function delimiterAlign(cells: string[]): MdAlign[] | undefined {
+	if (cells.size() === 0) return undefined;
+	const align: MdAlign[] = [];
+	for (const cell of cells) {
+		const aligned = cellAlign(cell);
+		if (aligned === undefined) return undefined;
+		align.push(aligned);
+	}
+	return align;
+}
+
+function tableAt(lines: string[], index: number): { align: MdAlign[]; header: string[] } | undefined {
+	if (index + 1 >= lines.size()) return undefined;
+	const header = splitCells(trimEnd(lines[index]));
+	const delim = splitCells(trimEnd(lines[index + 1]));
+	if (header === undefined || delim === undefined) return undefined;
+	const align = delimiterAlign(delim);
+	if (align === undefined || align.size() !== header.size()) return undefined;
+	return { align, header };
+}
+
 function listMarker(line: string): { ordered: boolean; rest: string } | undefined {
 	const t = trim(line);
 	if (t.size() >= 2 && (t.sub(1, 2) === "- " || t.sub(1, 2) === "* ")) {
@@ -198,6 +276,25 @@ export function parseMarkdown(source: string): MdBlock[] {
 			continue;
 		}
 
+		const parsed = tableAt(lines, i);
+		if (parsed !== undefined) {
+			const header = parsed.header.map((cell) => parseInlines(cell));
+			const rows: MdInline[][][] = [];
+			i += 2;
+			while (i < lines.size()) {
+				const cur = trimEnd(lines[i]);
+				if (trim(cur) === "") break;
+				const row = splitCells(cur);
+				if (row === undefined) break;
+				const cells: MdInline[][] = [];
+				for (let col = 0; col < parsed.align.size(); col++) cells.push(parseInlines(row[col] ?? ""));
+				rows.push(cells);
+				i += 1;
+			}
+			blocks.push({ kind: "table", align: parsed.align, header, rows });
+			continue;
+		}
+
 		const marker = listMarker(line);
 		if (marker !== undefined) {
 			const ordered = marker.ordered;
@@ -223,6 +320,7 @@ export function parseMarkdown(source: string): MdBlock[] {
 			if (headingLevel(cur) !== undefined) break;
 			if (cur.sub(1, 1) === ">" && (cur.size() === 1 || cur.sub(2, 2) === " ")) break;
 			if (listMarker(cur) !== undefined) break;
+			if (tableAt(lines, i) !== undefined) break;
 			// two trailing spaces = hard break
 			const prev = para[para.size() - 1];
 			if (prev.size() >= 2 && prev.sub(prev.size() - 1) === "  ") {
