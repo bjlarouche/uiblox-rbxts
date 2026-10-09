@@ -43,7 +43,10 @@ near(offset[1].scale, 1, "leftover flex");
 const spec = resolveColumn({ header: "Role", align: "right", sortable: true, flex: 2 });
 if (spec.align !== "right" || spec.sortable !== true || spec.flex !== 2) throw new Error("spec");
 const plain = resolveColumn("Name");
-if (plain.header !== "Name" || plain.align !== "left" || plain.sortable !== false) throw new Error("string column");
+if (plain.header !== "Name" || plain.align !== "left" || plain.sortable !== false || plain.wrap !== false) {
+	throw new Error("string column");
+}
+if (resolveColumn({ header: "Note", wrap: true }).wrap !== true) throw new Error("wrap column");
 
 if (!isTextCell("Ada") || !isTextCell(undefined) || isTextCell({})) throw new Error("text cell");
 

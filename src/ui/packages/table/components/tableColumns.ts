@@ -7,6 +7,7 @@ export interface TableColumnSpec {
 	flex?: number;
 	align?: TableAlign;
 	sortable?: boolean;
+	wrap?: boolean;
 }
 
 export interface ResolvedColumn {
@@ -15,6 +16,7 @@ export interface ResolvedColumn {
 	flex?: number;
 	align: TableAlign;
 	sortable: boolean;
+	wrap: boolean;
 }
 
 export interface ColumnSize {
@@ -24,7 +26,7 @@ export interface ColumnSize {
 
 export function resolveColumn(column: string | TableColumnSpec): ResolvedColumn {
 	if (typeIs(column, "string")) {
-		return { header: column, align: "left", sortable: false };
+		return { header: column, align: "left", sortable: false, wrap: false };
 	}
 	return {
 		header: column.header,
@@ -32,6 +34,7 @@ export function resolveColumn(column: string | TableColumnSpec): ResolvedColumn 
 		flex: column.flex,
 		align: column.align ?? "left",
 		sortable: column.sortable === true,
+		wrap: column.wrap === true,
 	};
 }
 
