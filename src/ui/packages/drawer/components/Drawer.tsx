@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { UserInputService } from "@rbxts/services";
-import { CustomizedProps, WriteableStyle } from "theme";
+import { CustomizedProps, useTheme, WriteableStyle } from "theme";
 import { SxHost } from "ui/packages/host";
 import { isDismissInput } from "ui/packages/modal/components/dismissInput";
 import { Portal, portalTarget } from "ui/packages/popup";
-import { drawerAnchor, drawerBox, DrawerEdge } from "./drawerPlacement";
+import { drawerFit, DrawerEdge } from "./drawerPlacement";
 import useDrawerStyles from "./Drawer.styles";
 
 export interface DrawerProps {
@@ -13,13 +13,15 @@ export interface DrawerProps {
 	edge?: DrawerEdge;
 	width?: number;
 	height?: number;
+	title?: string;
 	onClose: () => void;
 	children?: React.ReactNode;
 }
 
 function Drawer(props: CustomizedProps<Frame, DrawerProps>) {
-	const { host, open, edge = "left", width, height, onClose, children, className, sx, id, ref } = props;
+	const { host, open, edge = "left", width, height, title, onClose, children, className, sx, id, ref } = props;
 	const styles = useDrawerStyles({ width });
+	const { theme } = useTheme();
 	const close = useRef(onClose);
 	const anchor = useRef<Frame>();
 	const [layer, setLayer] = useState(() => portalTarget(host));
@@ -37,8 +39,9 @@ function Drawer(props: CustomizedProps<Frame, DrawerProps>) {
 		return () => connection.Disconnect();
 	}, [open, layer]);
 
-	const placement = drawerAnchor(edge);
-	const sheet = edge === "bottom" ? drawerBox(edge, height ?? 0) : undefined;
+	const span = edge === "bottom" ? (height ?? theme.spacing.calc(20)) : (width ?? theme.spacing.calc(20));
+	const room = layer !== undefined ? (edge === "bottom" ? layer.AbsoluteSize.Y : layer.AbsoluteSize.X) : 0;
+	const box = drawerFit(edge, span, room);
 	const panelStyle = styles.panel as WriteableStyle<Frame>;
 	return (
 		<>
@@ -64,17 +67,28 @@ function Drawer(props: CustomizedProps<Frame, DrawerProps>) {
 							base={panelStyle}
 							className={className}
 							sx={sx}
-							AnchorPoint={new Vector2(sheet !== undefined ? sheet.anchorX : placement, sheet !== undefined ? sheet.anchorY : 0)}
-							Position={UDim2.fromScale(sheet !== undefined ? sheet.posX : placement, sheet !== undefined ? sheet.posY : 0)}
-							Size={
-								sheet !== undefined
-									? new UDim2(sheet.sizeX, sheet.sizeXO, sheet.sizeY, sheet.sizeYO)
-									: undefined
-							}
+							AnchorPoint={new Vector2(box.anchorX, box.anchorY)}
+							Position={UDim2.fromScale(box.posX, box.posY)}
+							Size={new UDim2(box.sizeX, box.sizeXO, box.sizeY, box.sizeYO)}
 							ZIndex={panelStyle.ZIndex}
 						>
-							<uipadding {...styles.padding} />
-							{children}
+							<frame
+								key="Pad"
+								Size={new UDim2(1, -theme.padding.calc(4), 1, -theme.padding.calc(4))}
+								Position={new UDim2(0, theme.padding.calc(2), 0, theme.padding.calc(2))}
+								BackgroundTransparency={1}
+								BorderSizePixel={0}
+							>
+								<uilistlayout
+									FillDirection={Enum.FillDirection.Vertical}
+									Padding={new UDim(0, theme.padding.calc(1))}
+									SortOrder={Enum.SortOrder.LayoutOrder}
+								/>
+								{title !== undefined && title.size() > 0 && (
+									<textlabel key="Title" {...styles.title} Text={title} />
+								)}
+								{children}
+							</frame>
 						</SxHost>
 					</frame>
 				</Portal>
