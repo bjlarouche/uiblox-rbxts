@@ -30,6 +30,7 @@ function VectorEditor(props: CustomizedProps<Frame, VectorEditorProps>) {
 					<frame {...styles.field}>
 						<NumberInput
 							value={readAxis(value, axis)}
+							places={3}
 							disabled={disabled}
 							width={new UDim(1, 0)}
 							onChange={(amount) => {

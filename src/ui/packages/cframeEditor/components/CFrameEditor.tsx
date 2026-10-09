@@ -54,6 +54,7 @@ function CFrameEditor(props: CustomizedProps<Frame, CFrameEditorProps>) {
 							<frame {...styles.field}>
 								<NumberInput
 									value={amounts[offset + index]}
+									places={3}
 									disabled={disabled}
 									size="small"
 									width={new UDim(1, 0)}
