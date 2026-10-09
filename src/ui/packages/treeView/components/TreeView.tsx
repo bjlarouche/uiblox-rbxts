@@ -21,7 +21,7 @@ export interface TreeViewProps {
 function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps>) {
 	const { tree, icon, filter, selected, className,
 		sx, id, ref } = props;
-	const { root, header, list, row, rowIcon, label } = useTreeViewStyles();
+	const { root, header, list, row, selectedRow, rowIcon, label } = useTreeViewStyles();
 	const { theme } = useTheme();
 	const step = theme.padding.calc(4);
 	const chevronWidth = theme.spacing.calc(1.5);
@@ -102,10 +102,14 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 				: selected !== undefined
 					? selected === entry.path
 					: clickedLeaf === entry.path;
+		const picked =
+			selected !== undefined && selected.size() > 0
+				? entry.path === selected
+				: entry.kind === "leaf" && clickedLeaf === entry.path;
 
 		return (
 			<textbutton
-				{...row}
+				{...cx<TextButton>(row, picked ? selectedRow : undefined)}
 				Event={{
 					MouseButton1Click: () => {
 						if (listRef.current?.suppressClick()) return;
@@ -151,6 +155,7 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 				)}
 				<Typography
 					text={entry.title}
+					noWrap
 					className={
 						cx<TextLabel>(label, {
 							Position: new UDim2(0, labelX, 0.5, 0),
@@ -168,7 +173,9 @@ function TreeView(props: CustomizedProps<DefaultTreeViewComponent, TreeViewProps
 	return (
 		<SxHost tag="frame" key={id || "TreeView"} hostRef={ref} base={root} className={className} sx={sx}>
 			<Typography
-				className={{ Text: tree.title, ...header } as WriteableStyle<TextLabel>}
+				text={tree.title}
+				noWrap
+				className={header}
 				color={"textSecondary"}
 				variant={"body"}
 				family={"bold"}

@@ -35,7 +35,12 @@ const useTreeViewStyles = componentStyles("TreeView", (theme: Theme) => {
 			Size: UDim2.fromScale(1, 1),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
+			AutoButtonColor: false,
 			ZIndex: 5200,
+		} as WriteableStyle<TextButton>,
+		selectedRow: {
+			BackgroundColor3: theme.palette.action.selected,
+			BackgroundTransparency: 0,
 		} as WriteableStyle<TextButton>,
 		rowIcon: {
 			AnchorPoint: new Vector2(0, 0.5),
@@ -48,6 +53,7 @@ const useTreeViewStyles = componentStyles("TreeView", (theme: Theme) => {
 			TextXAlignment: Enum.TextXAlignment.Left,
 			TextYAlignment: Enum.TextYAlignment.Center,
 			TextTruncate: Enum.TextTruncate.AtEnd,
+			TextWrapped: false,
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			ZIndex: 5300,

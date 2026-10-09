@@ -475,6 +475,12 @@ const flat = visibleRows([{ title: "Fixture", leaves: [{ title: "Native" }] }], 
 if (!flat[0].emphasized || flat[1].path !== "Fixture/Native" || flat[1].icon !== undefined) {
 	throw new Error("two-level selection");
 }
+const treeView = readFileSync(join(root, "src/ui/packages/treeView/components/TreeView.tsx"), "utf8");
+const treeStyles = readFileSync(join(root, "src/ui/packages/treeView/components/TreeView.styles.ts"), "utf8");
+if (!treeStyles.includes("palette.action.selected")) throw new Error("tree row uses the selected face");
+if (!treeView.includes("noWrap")) throw new Error("tree label truncates");
+const sidebarStyles = readFileSync(join(root, "src/ui/packages/sidebar/components/Sidebar.styles.ts"), "utf8");
+if (!sidebarStyles.includes("ClipsDescendants: true")) throw new Error("sidebar keeps rows inside");
 const { treeRowLayout } = await import(
 	pathToFileURL(join(root, "src/ui/packages/treeView/components/treeRows.ts")).href
 );
