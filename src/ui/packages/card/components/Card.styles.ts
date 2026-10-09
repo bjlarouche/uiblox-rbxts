@@ -3,6 +3,7 @@ import { cardColumnWidth } from "./cardWidth";
 
 const useCardStyles = componentStyles<{ fullWidth?: boolean }>("Card", (theme: Theme, { fullWidth = false }) => {
 	const width = cardColumnWidth(fullWidth, theme.padding.calc(32));
+	const heading = theme.typography.variants.h6;
 	return createStyles({
 		column: {
 			AutomaticSize: Enum.AutomaticSize.Y,
@@ -22,8 +23,9 @@ const useCardStyles = componentStyles<{ fullWidth?: boolean }>("Card", (theme: T
 			TextWrapped: true,
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.h6,
+			Font: theme.typography.fontFamilies[heading.family],
+			TextSize: heading.size,
+			LineHeight: heading.leading,
 			TextColor3: theme.palette.text.primary,
 			TextXAlignment: Enum.TextXAlignment.Left,
 		} as WriteableStyle<TextLabel>,

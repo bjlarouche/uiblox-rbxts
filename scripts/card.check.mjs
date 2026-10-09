@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -22,6 +23,12 @@ for (const variant of ["flat", "raised", "square"]) {
 	if (!stateMatrix.some((row) => row.component === "Card" && row.variant === variant && row.theme === "Light")) {
 		throw new Error(`Card missing ${variant} light`);
 	}
+}
+
+const cardStyles = readFileSync(join(root, "src/ui/packages/card/components/Card.styles.ts"), "utf8");
+const cardTitle = cardStyles.slice(cardStyles.indexOf("title:"), cardStyles.indexOf("subtitle:"));
+if (!cardStyles.includes("variants.h6") || !cardTitle.includes("heading.family") || !cardTitle.includes("heading.leading") || cardTitle.includes("fontFamilies.default")) {
+	throw new Error("card title face");
 }
 
 console.log("card ok");

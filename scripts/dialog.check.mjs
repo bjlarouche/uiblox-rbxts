@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
 const { dialogWidth, dialogActionWrap, dialogTitleWrap, DIALOG_FILL_MAX } = await import("../src/ui/packages/dialog/components/dialogWidth.ts");
 if (dialogWidth(undefined, 320, 144) !== 144 || dialogWidth(false, 1100, 144) !== 144) throw new Error("fixed dialog");
@@ -14,6 +16,12 @@ for (const name of ["closed", "open"]) {
 	if (!stateMatrix.some((row) => row.component === "Dialog" && row.name.includes(name))) {
 		throw new Error(`Dialog missing ${name}`);
 	}
+}
+
+const dialogStyles = readFileSync(new URL("../src/ui/packages/dialog/components/Dialog.styles.ts", import.meta.url), "utf8");
+const dialogTitle = dialogStyles.slice(dialogStyles.indexOf("title:"), dialogStyles.indexOf("body:"));
+if (!dialogStyles.includes("variants.h6") || !dialogTitle.includes("heading.family") || !dialogTitle.includes("heading.leading") || dialogTitle.includes("fontFamilies.default")) {
+	throw new Error("dialog title face");
 }
 
 console.log("dialog ok");
