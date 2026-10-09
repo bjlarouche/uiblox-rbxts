@@ -39,6 +39,7 @@ const useDividerStyles = componentStyles<DividerProps>("Divider", (theme, props)
 			TextSize: theme.typography.fontSizes.caption,
 			TextColor3: theme.palette.text.secondary,
 			TextTruncate: Enum.TextTruncate.AtEnd,
+			TextWrapped: false,
 			TextXAlignment: Enum.TextXAlignment.Center,
 			ZIndex: 2,
 		} as WriteableStyle<TextLabel>,

@@ -66,6 +66,7 @@ function Divider<T extends DefaultDividerComponent>(props: CustomizedProps<T, Di
 					AutomaticSize={fit > 0 ? Enum.AutomaticSize.None : Enum.AutomaticSize.X}
 				>
 					<uipadding {...captionPad} />
+					{room > 0 ? <uisizeconstraint MaxSize={new Vector2(room, math.huge)} /> : undefined}
 				</textlabel>
 			</SxHost>
 		);
