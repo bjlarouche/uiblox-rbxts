@@ -1,9 +1,12 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { tabIndicatorBox } from "./tabIndicator";
 import { TabsOrientation, tabsIsVertical } from "./tabsOrientation";
 
 const useTabsStyles = componentStyles<{ orientation?: TabsOrientation; centered?: boolean }>("Tabs", (theme: Theme, { orientation, centered }) => {
 	const vertical = tabsIsVertical(orientation);
 	const bar = theme.padding.calc(0.5);
+	const gutter = theme.padding.calc(2);
+	const mark = tabIndicatorBox(vertical, bar, gutter);
 	return createStyles({
 		root: {
 			Size: vertical
@@ -47,21 +50,13 @@ const useTabsStyles = componentStyles<{ orientation?: TabsOrientation; centered?
 			PaddingTop: new UDim(0, vertical ? theme.padding.calc(1) : 0),
 			PaddingBottom: new UDim(0, vertical ? theme.padding.calc(1) : 0),
 		} as WriteableStyle<UIPadding>,
-		indicator: vertical
-			? ({
-					Size: new UDim2(0, bar, 1, -theme.padding.calc(2)),
-					Position: new UDim2(0, 0, 0.5, 0),
-					AnchorPoint: new Vector2(0, 0.5),
-					BackgroundColor3: theme.palette.primary.main,
-					BorderSizePixel: 0,
-				} as WriteableStyle<Frame>)
-			: ({
-					Size: new UDim2(1, theme.padding.calc(4), 0, bar),
-					Position: UDim2.fromScale(0.5, 1),
-					AnchorPoint: new Vector2(0.5, 1),
-					BackgroundColor3: theme.palette.primary.main,
-					BorderSizePixel: 0,
-				} as WriteableStyle<Frame>),
+		indicator: {
+			Size: new UDim2(mark.widthScale, mark.widthOffset, mark.heightScale, mark.heightOffset),
+			Position: vertical ? new UDim2(0, 0, 0.5, 0) : UDim2.fromScale(0.5, 1),
+			AnchorPoint: vertical ? new Vector2(0, 0.5) : new Vector2(0.5, 1),
+			BackgroundColor3: theme.palette.primary.main,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
 	});
 });
 
