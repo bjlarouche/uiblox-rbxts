@@ -1,5 +1,5 @@
 import React from "@rbxts/react";
-import { ControlSize, CustomizedProps } from "theme";
+import { ControlSize, CustomizedProps, useTheme } from "theme";
 import { canActivate } from "ui/packages/button/components/activation";
 import { SxHost } from "ui/packages/host";
 import { buttonGroupEdge } from "./buttonGroupEdge";
@@ -15,11 +15,13 @@ export interface ButtonGroupProps {
 	onItem?: (index: number) => void;
 	disabled?: boolean;
 	size?: ControlSize;
+	selected?: number;
 }
 
 function ButtonGroup(props: CustomizedProps<Frame, ButtonGroupProps>) {
-	const { items, onItem, disabled, size, className, sx, id, ref } = props;
+	const { items, onItem, disabled, size, selected, className, sx, id, ref } = props;
 	const styles = useButtonGroupStyles({ size });
+	const { theme } = useTheme();
 	const count = items.size();
 	const groupOff = disabled === true;
 	return (
@@ -31,6 +33,7 @@ function ButtonGroup(props: CustomizedProps<Frame, ButtonGroupProps>) {
 				{items.map((item, index) => {
 					const off = groupOff || item.disabled === true;
 					const active = canActivate(off);
+					const picked = !off && index === selected;
 					const edge = buttonGroupEdge(index, count);
 					const rule = edge === "start" || edge === "middle";
 					return (
@@ -39,6 +42,9 @@ function ButtonGroup(props: CustomizedProps<Frame, ButtonGroupProps>) {
 								key={`${item.label}-${index}`}
 								{...styles.item}
 								Text={item.label}
+								TextColor3={picked ? theme.palette.primary.on : theme.palette.text.primary}
+								BackgroundColor3={theme.palette.primary.main}
+								BackgroundTransparency={picked ? 0 : 1}
 								TextTransparency={off ? 0.5 : 0}
 								Active={active}
 								Selectable={active}
