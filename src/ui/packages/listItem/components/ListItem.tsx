@@ -29,6 +29,7 @@ function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
 	const face = listItemFill({ disabled, selected, hover: hovering && !disabled, down: down && !disabled });
 	const fill =
 		face === "pressed" ? theme.palette.action.pressed : face === "hover" ? theme.palette.action.hover : theme.palette.action.selected;
+	const pad = theme.padding.calc(dense === true ? 0.5 : 1);
 	const lead = listItemCopyInset(leading !== undefined);
 
 	useEffect(() => {
@@ -38,11 +39,12 @@ function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
 	}, [disabled]);
 	const trail = listItemTrailInset(trailing !== undefined);
 	const rowInset = listItemRowInset(leading !== undefined, trailing !== undefined);
+	const textSize = new UDim2(1, rowInset > 0 ? 0 : -pad * 2, 0, 0);
 	const copy = (
 		<>
-			<textlabel key="Primary" {...styles.primary} Text={text} />
+			<textlabel key="Primary" {...styles.primary} Size={textSize} Text={text} />
 			{secondary !== undefined && secondary.size() > 0 ? (
-				<textlabel key="Secondary" {...styles.secondary} Text={secondary} />
+				<textlabel key="Secondary" {...styles.secondary} Size={textSize} Text={secondary} />
 			) : undefined}
 		</>
 	);
@@ -83,7 +85,7 @@ function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
 			<uipadding {...styles.padding} />
 			<uilistlayout {...styles.list} />
 			{rowInset > 0 ? (
-				<frame key="Body" Size={new UDim2(1, 0, 0, 0)} AutomaticSize={Enum.AutomaticSize.Y} BackgroundTransparency={1} BorderSizePixel={0}>
+				<frame key="Body" Size={new UDim2(1, -pad * 2, 0, 0)} AutomaticSize={Enum.AutomaticSize.Y} BackgroundTransparency={1} BorderSizePixel={0}>
 					<uilistlayout
 						FillDirection={Enum.FillDirection.Horizontal}
 						VerticalAlignment={Enum.VerticalAlignment.Center}
