@@ -11,6 +11,7 @@ const useTableStyles = componentStyles<{ dense?: boolean }>("Table", (theme: The
 			Size: new UDim2(1, 0, 0, 0),
 			BackgroundColor3: theme.palette.surface.paper,
 			BorderSizePixel: 0,
+			ZIndex: 2,
 		} as WriteableStyle<Frame>,
 		list: {
 			FillDirection: Enum.FillDirection.Vertical,
@@ -37,9 +38,15 @@ const useTableStyles = componentStyles<{ dense?: boolean }>("Table", (theme: The
 		header: {
 			AutomaticSize: Enum.AutomaticSize.Y,
 			Size: new UDim2(1, 0, 0, 0),
-			BackgroundColor3: theme.palette.surface.input,
+			BackgroundColor3: theme.palette.surface.elevated,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
+		rowStroke: {
+			Color: theme.palette.divider,
+			Thickness: 1,
+			Transparency: 0,
+			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+		} as WriteableStyle<UIStroke>,
 		cells: {
 			FillDirection: Enum.FillDirection.Horizontal,
 			SortOrder: Enum.SortOrder.LayoutOrder,

@@ -20,6 +20,7 @@ export interface TableColumn {
 	flex?: number;
 	align?: TableAlign;
 	sortable?: boolean;
+	wrap?: boolean;
 }
 
 export type TableCell = string | React.ReactNode;
@@ -56,6 +57,7 @@ function TableRow(props: {
 				MouseLeave: () => setHovering(false),
 			}}
 		>
+			<uistroke {...props.styles.rowStroke} />
 			<uipadding {...props.styles.tail} />
 			<frame key="Band" {...props.styles.band}>
 				<uilistlayout {...props.styles.cells} />
@@ -83,6 +85,7 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 			<uicorner {...styles.corner} />
 			<uilistlayout {...styles.list} />
 			<frame key="Header" {...styles.header} LayoutOrder={0}>
+				<uistroke {...styles.rowStroke} />
 				<uipadding {...styles.tail} />
 				<frame key="Band" {...styles.band}>
 				<uilistlayout {...styles.cells} />
@@ -156,6 +159,8 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 												Text={(value as string | undefined) ?? ""}
 												Size={box}
 												TextXAlignment={textAlign(column.align)}
+												TextWrapped={column.wrap}
+												TextTruncate={column.wrap ? Enum.TextTruncate.None : Enum.TextTruncate.AtEnd}
 												LayoutOrder={colIndex}
 											/>
 										);
