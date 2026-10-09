@@ -18,10 +18,12 @@ function Paper(props: CustomizedProps<Frame, PaperProps>) {
 	return (
 		<SxHost key={id || "Paper"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			{elevation === "raised" && <Shadow />}
-			<uipadding {...styles.padding} />
+			<frame key="Content" {...styles.content}>
+				<uipadding {...styles.padding} />
+				{children}
+			</frame>
 			{square !== true && <uicorner {...styles.corner} />}
 			{elevation === "outlined" && <uistroke {...styles.stroke} />}
-			{children}
 		</SxHost>
 	);
 }

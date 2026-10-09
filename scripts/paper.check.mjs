@@ -18,5 +18,8 @@ const paper = readFileSync(join(root, "src/ui/packages/paper/components/Paper.ts
 if (!paper.includes('elevation === "raised" && <Shadow />')) {
 	throw new Error("Paper raised should mount Shadow");
 }
+if (!paper.includes('key="Content"')) throw new Error("Paper content should hold the padding");
+const paperStyles = readFileSync(join(root, "src/ui/packages/paper/components/Paper.styles.ts"), "utf8");
+if (!paperStyles.includes("theme.spacing.calc(2)")) throw new Error("Paper padding should be the surface inset");
 
 console.log("paper ok");

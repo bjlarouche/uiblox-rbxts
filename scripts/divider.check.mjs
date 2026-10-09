@@ -10,6 +10,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const styles = readFileSync(join(root, "src/ui/packages/divider/components/Divider.styles.ts"), "utf8");
 const caption = styles.match(/caption:\s*\{[\s\S]*?\}\s*as WriteableStyle<TextLabel>/)?.[0] ?? "";
 if (!/TextTruncate:\s*Enum\.TextTruncate\.AtEnd/.test(caption)) throw new Error("caption must truncate");
+if (!/TextWrapped:\s*false/.test(caption)) throw new Error("caption must stay one line");
 if (!/AutomaticSize:\s*Enum\.AutomaticSize\.X/.test(caption)) throw new Error("caption height follows shell");
 if (!/ClipsDescendants:\s*true/.test(styles)) throw new Error("labeled shell must clip");
 
