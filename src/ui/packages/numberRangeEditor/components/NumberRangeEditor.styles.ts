@@ -1,5 +1,5 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
-import { editorPad, editorText } from "ui/packages/editorFace";
+import { editorPad, editorRowHeight, editorText } from "ui/packages/editorFace";
 
 const useNumberRangeEditorStyles = componentStyles("NumberRangeEditor", (theme: Theme) =>
 	createStyles({
@@ -16,7 +16,7 @@ const useNumberRangeEditorStyles = componentStyles("NumberRangeEditor", (theme: 
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		axis: {
-			Size: new UDim2(0.5, 0, 0, theme.spacing.calc(2)),
+			Size: new UDim2(0.5, 0, 0, editorRowHeight(theme)),
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		label: {

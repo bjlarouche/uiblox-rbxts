@@ -1,5 +1,5 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
-import { editorPad, editorText } from "ui/packages/editorFace";
+import { editorPad, editorRowHeight, editorText } from "ui/packages/editorFace";
 
 const useCFrameEditorStyles = componentStyles("CFrameEditor", (theme: Theme) =>
 	createStyles({
@@ -32,7 +32,7 @@ const useCFrameEditorStyles = componentStyles("CFrameEditor", (theme: Theme) =>
 			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		axes: {
-			Size: new UDim2(1, 0, 0, theme.spacing.calc(3)),
+			Size: new UDim2(1, 0, 0, editorRowHeight(theme, "small")),
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		axis: {
