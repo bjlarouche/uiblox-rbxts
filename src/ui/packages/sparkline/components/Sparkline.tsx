@@ -17,9 +17,11 @@ function Sparkline(props: CustomizedProps<Frame, SparklineProps>) {
 	const { values, width = 120, height = 36, color, area, mark, onPick, className, sx, id, ref } = props;
 	const { theme } = useTheme();
 	const host = useRef<Frame>();
-	const segments = sparklineLayout(values, width, height);
-	const bars = area === true ? sparklineArea(values, width, height) : [];
-	const marked = mark !== undefined ? sparklinePoint(values, mark, width, height) : undefined;
+	const inset = 6;
+	const dot = 6;
+	const segments = sparklineLayout(values, width, height, inset);
+	const bars = area === true ? sparklineArea(values, width, height, inset) : [];
+	const marked = mark !== undefined ? sparklinePoint(values, mark, width, height, inset) : undefined;
 	const stroke = color ?? theme.palette.primary.main;
 
 	return (
@@ -49,7 +51,7 @@ function Sparkline(props: CustomizedProps<Frame, SparklineProps>) {
 								) {
 									return;
 								}
-								sparklinePick(input.Position.X - frame.AbsolutePosition.X, values.size(), width, onPick);
+								sparklinePick(input.Position.X - frame.AbsolutePosition.X, values.size(), width, onPick, inset);
 							},
 						}
 			}
@@ -79,7 +81,7 @@ function Sparkline(props: CustomizedProps<Frame, SparklineProps>) {
 					key="Mark"
 					AnchorPoint={new Vector2(0.5, 0.5)}
 					Position={UDim2.fromOffset(marked.x, marked.y)}
-					Size={UDim2.fromOffset(8, 8)}
+					Size={UDim2.fromOffset(dot, dot)}
 					BackgroundColor3={stroke}
 					BorderSizePixel={0}
 					ZIndex={3}

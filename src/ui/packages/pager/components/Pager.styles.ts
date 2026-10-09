@@ -42,7 +42,12 @@ const usePagerStyles = componentStyles("Pager", (theme: Theme) => {
 			TextColor3: theme.palette.text.secondary,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.caption,
+			TextTruncate: Enum.TextTruncate.AtEnd,
+			TextWrapped: false,
 		} as WriteableStyle<TextLabel>,
+		labelCap: {
+			MaxSize: new Vector2(theme.spacing.calc(10), math.huge),
+		} as WriteableStyle<UISizeConstraint>,
 		body: {
 			AutomaticSize: Enum.AutomaticSize.XY,
 			BackgroundTransparency: 1,
