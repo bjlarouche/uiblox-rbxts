@@ -4,6 +4,8 @@ globalThis.math = {
 	max: Math.max,
 };
 
+import { readFileSync } from "node:fs";
+
 const { transportGlyph } = await import("../src/ui/packages/iconButton/components/transportGlyph.ts");
 
 function widest(parts) {
@@ -35,5 +37,28 @@ if (endBar.x + endBar.w !== 16 || endBar.h !== 16) throw new Error("next bar");
 let leading = false;
 for (const part of skip) if (part.x === 0 && part.w < 16) leading = true;
 if (!leading) throw new Error("next mark");
+
+const { iconButtonScale, iconGlyphExtent, iconButtonFace } = await import(
+	"../src/ui/packages/iconButton/components/iconButtonBox.ts"
+);
+if (iconButtonScale("xxs") !== 1 || iconButtonScale("xl") !== 5 || iconButtonScale() !== 2) {
+	throw new Error("button scale");
+}
+const smBox = iconGlyphExtent(8 * iconButtonScale("sm"));
+if (smBox >= 16 || smBox < 4) throw new Error("small glyph");
+if (iconGlyphExtent(8 * iconButtonScale("xl")) <= 16) throw new Error("large glyph stays 16");
+const rest = { disabled: false, loading: false, selected: false, hover: false, down: false };
+if (iconButtonFace({ ...rest, hover: true }) !== "hover") throw new Error("hover face");
+if (iconButtonFace({ ...rest, selected: true, hover: true }) !== "selected") throw new Error("selected face");
+if (iconButtonFace({ ...rest, selected: true, hover: true, down: true }) !== "pressed") throw new Error("press face");
+if (iconButtonFace({ ...rest, disabled: true, hover: true }) !== "clear") throw new Error("disabled face");
+if (iconButtonFace({ ...rest, loading: true, hover: true }) !== "clear") throw new Error("loading face");
+if (iconButtonFace(rest) !== "clear") throw new Error("rest face");
+
+const view = readFileSync(new URL("../src/ui/packages/iconButton/components/IconButton.tsx", import.meta.url), "utf8");
+if (view.includes("fromOffset(16, 16)")) throw new Error("glyph stays 16");
+if (view.includes("hovering || selected || focused")) throw new Error("one wash");
+if (!view.includes("focusRing")) throw new Error("focus ring");
+if (!view.includes("AutoButtonColor={false}")) throw new Error("auto color");
 
 console.log("transport glyph ok");
