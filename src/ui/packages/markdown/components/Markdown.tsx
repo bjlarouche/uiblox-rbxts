@@ -37,12 +37,14 @@ function richLabel(
 	inlines: MdInline[],
 	variant?: FontSizeVariant,
 	order?: number,
+	size?: UDim2,
 ) {
 	const text = inlinesToRichText(inlines);
 	return (
 		<textlabel
 			key={key}
 			{...styles.text}
+			{...(size !== undefined ? { Size: size } : {})}
 			LayoutOrder={order}
 			Text={text}
 			TextSize={textSizeFor(variant)}
@@ -65,13 +67,17 @@ function inlineFlow(
 	variant: FontSizeVariant | undefined,
 	order: number | undefined,
 	onLink?: (payload: MarkdownLinkPayload) => void,
+	flow = styles.flow,
 ) {
-	if (!inlineHasLink(inlines)) return richLabel(key, styles, inlines, variant, order);
+	if (!inlineHasLink(inlines)) {
+		const span = flow !== styles.flow ? (flow as unknown as { Size: UDim2 }).Size : undefined;
+		return richLabel(key, styles, inlines, variant, order, span);
+	}
 	const pieces = inlinePieces(inlines);
 	const textSize = textSizeFor(variant);
 	const font = variant !== undefined && variant !== "body" ? Enum.Font.SourceSansBold : Enum.Font.SourceSans;
 	return (
-		<frame key={key} {...styles.flow} LayoutOrder={order}>
+		<frame key={key} {...flow} LayoutOrder={order}>
 			<uilistlayout {...styles.flowLayout} />
 			{pieces.map((piece, index) => {
 				if (piece.kind === "break") {
@@ -92,6 +98,7 @@ function inlineFlow(
 						<Link
 							key={`ln-${index}`}
 							text={payload.text}
+							color="primary"
 							sx={{ TextSize: textSize, Font: font, LayoutOrder: index }}
 							onActivated={() => onLink?.(payload)}
 						/>
@@ -142,7 +149,14 @@ function renderBlock(
 		);
 	}
 	if (block.kind === "hr") {
-		return <Divider key={`hr-${index}`} orientation={Orientations.Horizontal} padding={0} className={{ LayoutOrder: index }} />;
+		return (
+			<Divider
+				key={`hr-${index}`}
+				orientation={Orientations.Horizontal}
+				padding={0}
+				className={{ LayoutOrder: index, Size: (styles.block as unknown as { Size: UDim2 }).Size }}
+			/>
+		);
 	}
 	if (block.kind === "blockquote") {
 		return (
@@ -150,7 +164,7 @@ function renderBlock(
 				<uicorner CornerRadius={new UDim(0, 4)} />
 				<frame key="Bar" {...styles.quoteBar} />
 				<uipadding {...styles.quotePad} />
-				{inlineFlow("Text", styles, block.inlines, "body", undefined, onLink)}
+				{inlineFlow("Text", styles, block.inlines, "body", undefined, onLink, styles.quoteFlow)}
 			</frame>
 		);
 	}
@@ -184,6 +198,7 @@ function Markdown(props: CustomizedProps<Frame, MarkdownProps>) {
 	const blocks = parseMarkdown(value);
 	return (
 		<SxHost tag="frame" key={id || "Markdown"} hostRef={ref} base={styles.root} className={className} sx={sx}>
+			<uipadding {...styles.inset} />
 			<uilistlayout {...styles.layout} />
 			{blocks.map((block, index) => renderBlock(block, index, styles, onLink))}
 		</SxHost>

@@ -276,7 +276,7 @@ export function inlinesToRichText(inlines: MdInline[]): string {
 		} else if (part.kind === "code") {
 			out = `${out}<font face="RobotoMono">${escapeRich(part.text)}</font>`;
 		} else if (part.kind === "link") {
-			out = `${out}<font color="#4C9AFF"><u>${escapeRich(part.text)}</u></font>`;
+			out = `${out}<u>${escapeRich(part.text)}</u>`;
 		}
 	}
 	return out;
