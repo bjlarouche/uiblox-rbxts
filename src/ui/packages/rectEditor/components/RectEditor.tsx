@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import useRectEditorStyles from "./RectEditor.styles";
@@ -19,6 +20,7 @@ const GROUPS: Array<{ title: string; fields: RectField[] }> = [
 function RectEditor(props: CustomizedProps<Frame, RectEditorProps>) {
 	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = useRectEditorStyles();
+	const hover = useEditorHover(disabled);
 	const amounts: { [key: string]: number } = {
 		MinX: value.Min.X,
 		MinY: value.Min.Y,
@@ -32,7 +34,7 @@ function RectEditor(props: CustomizedProps<Frame, RectEditorProps>) {
 	};
 
 	return (
-		<SxHost tag="frame" key={id || "RectEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
+		<SxHost tag="frame" key={id || "RectEditor"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event}>
 			<uilistlayout {...styles.wrap} />
 			<>
 				{GROUPS.map((group, groupIndex) => (

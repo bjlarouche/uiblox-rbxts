@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import { writeUDim, writeUDim2 } from "ui/packages/vectorEditor/components/vectorValue";
@@ -15,6 +16,7 @@ function UDimEditor(props: CustomizedProps<Frame, UDimEditorProps>) {
 	const { value, onChange, disabled, className,
 		sx, id, ref } = props;
 	const styles = useUDimEditorStyles();
+	const hover = useEditorHover(disabled);
 	const isUDim2 = typeOf(value) === "UDim2";
 
 	const field = (key: string, label: string, amount: number, commit: (value: number) => void, order: number) => (
@@ -28,7 +30,7 @@ function UDimEditor(props: CustomizedProps<Frame, UDimEditorProps>) {
 	);
 
 	return (
-		<SxHost tag="frame" key={id || "UDimEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
+		<SxHost tag="frame" key={id || "UDimEditor"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event}>
 			<uilistlayout {...styles.column} />
 			{isUDim2 ? (
 				<frame key="Axes" Size={new UDim2(1, 0, 0, 0)} AutomaticSize={Enum.AutomaticSize.Y} BackgroundTransparency={1} LayoutOrder={1}>

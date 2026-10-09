@@ -1,4 +1,5 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { editorPad, editorText } from "ui/packages/editorFace";
 
 const useFontEditorStyles = componentStyles("FontEditor", (theme: Theme) =>
 	createStyles({
@@ -10,7 +11,7 @@ const useFontEditorStyles = componentStyles("FontEditor", (theme: Theme) =>
 		} as WriteableStyle<Frame>,
 		column: {
 			FillDirection: Enum.FillDirection.Vertical,
-			Padding: new UDim(0, theme.padding.calc(1)),
+			Padding: new UDim(0, editorPad(theme)),
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		row: {
@@ -30,13 +31,11 @@ const useFontEditorStyles = componentStyles("FontEditor", (theme: Theme) =>
 			BorderSizePixel: 0,
 			Text: "The quick brown fox",
 			TextColor3: theme.palette.text.primary,
-			TextSize: theme.typography.fontSizes.body,
-			TextXAlignment: Enum.TextXAlignment.Left,
-			TextTruncate: Enum.TextTruncate.AtEnd,
+			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		padding: {
-			PaddingLeft: new UDim(0, theme.padding.default),
-			PaddingRight: new UDim(0, theme.padding.default),
+			PaddingLeft: new UDim(0, editorPad(theme)),
+			PaddingRight: new UDim(0, editorPad(theme)),
 		} as WriteableStyle<UIPadding>,
 		corner: {
 			CornerRadius: new UDim(0, theme.shape.borderRadius),

@@ -1,4 +1,5 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { editorPad, editorText } from "ui/packages/editorFace";
 
 const useCFrameEditorStyles = componentStyles("CFrameEditor", (theme: Theme) =>
 	createStyles({
@@ -10,12 +11,12 @@ const useCFrameEditorStyles = componentStyles("CFrameEditor", (theme: Theme) =>
 		} as WriteableStyle<Frame>,
 		wrap: {
 			FillDirection: Enum.FillDirection.Vertical,
-			Padding: new UDim(0, theme.padding.calc(0.5)),
+			Padding: new UDim(0, editorPad(theme)),
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		row: {
 			FillDirection: Enum.FillDirection.Horizontal,
-			Padding: new UDim(0, theme.padding.calc(0.5)),
+			Padding: new UDim(0, editorPad(theme)),
 			VerticalAlignment: Enum.VerticalAlignment.Center,
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
@@ -27,26 +28,22 @@ const useCFrameEditorStyles = componentStyles("CFrameEditor", (theme: Theme) =>
 		groupLabel: {
 			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
 			BackgroundTransparency: 1,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.button,
 			TextColor3: theme.palette.text.secondary,
-			TextXAlignment: Enum.TextXAlignment.Left,
+			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		axes: {
 			Size: new UDim2(1, 0, 0, theme.spacing.calc(3)),
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		axis: {
-			Size: new UDim2(1 / 3, -theme.padding.calc(0.5), 1, 0),
+			Size: new UDim2(1 / 3, -editorPad(theme), 1, 0),
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		label: {
 			Size: new UDim2(0, theme.spacing.calc(2.5), 1, 0),
 			BackgroundTransparency: 1,
-			Font: theme.typography.fontFamilies.semibold,
-			TextSize: theme.typography.fontSizes.button,
 			TextColor3: theme.palette.text.secondary,
-			TextXAlignment: Enum.TextXAlignment.Left,
+			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		labelX: {
 			TextColor3: theme.palette.status.error.main,

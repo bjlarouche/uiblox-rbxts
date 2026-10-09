@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { ColorSequenceEditor, NumberSequenceEditor } from "ui/packages/colorPicker";
 import { NumberInput } from "ui/packages/numberInput";
@@ -19,9 +20,10 @@ export type { GradientValue };
 function GradientEditor(props: CustomizedProps<Frame, GradientEditorProps>) {
 	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = useGradientEditorStyles();
+	const hover = useEditorHover(disabled);
 
 	return (
-		<SxHost tag="frame" key={id || "GradientEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
+		<SxHost tag="frame" key={id || "GradientEditor"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event}>
 			<uilistlayout {...styles.column} />
 			<frame key="Color" {...styles.block} LayoutOrder={1}>
 				<uilistlayout {...styles.column} />

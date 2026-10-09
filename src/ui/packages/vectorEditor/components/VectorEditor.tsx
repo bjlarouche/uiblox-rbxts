@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import useVectorEditorStyles from "./VectorEditor.styles";
@@ -16,11 +17,12 @@ function VectorEditor(props: CustomizedProps<Frame, VectorEditorProps>) {
 	const { value, onChange, disabled, className,
 		sx, id, ref } = props;
 	const styles = useVectorEditorStyles();
+	const hover = useEditorHover(disabled);
 	const isVector3 = typeOf(value) === "Vector3";
 	const axes = props.axes ?? (isVector3 ? (["X", "Y", "Z"] as AxisKey[]) : (["X", "Y"] as AxisKey[]));
 
 	return (
-		<SxHost tag="frame" key={id || "VectorEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
+		<SxHost tag="frame" key={id || "VectorEditor"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event}>
 			<uilistlayout {...styles.row} />
 			<>
 			{axes.map((axis, index) => (

@@ -1,7 +1,8 @@
 import { controlMetrics, createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { editorPad, editorText } from "ui/packages/editorFace";
 
 const useRectEditorStyles = componentStyles("RectEditor", (theme: Theme) => {
-	const gap = theme.padding.calc(1);
+	const gap = editorPad(theme);
 	return createStyles({
 		root: {
 			Size: new UDim2(1, 0, 0, 0),
@@ -11,7 +12,7 @@ const useRectEditorStyles = componentStyles("RectEditor", (theme: Theme) => {
 		} as WriteableStyle<Frame>,
 		wrap: {
 			FillDirection: Enum.FillDirection.Vertical,
-			Padding: new UDim(0, theme.padding.calc(0.5)),
+			Padding: new UDim(0, gap),
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		group: {
@@ -23,10 +24,8 @@ const useRectEditorStyles = componentStyles("RectEditor", (theme: Theme) => {
 			Size: new UDim2(1, 0, 0, 0),
 			AutomaticSize: Enum.AutomaticSize.Y,
 			BackgroundTransparency: 1,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.caption,
 			TextColor3: theme.palette.text.secondary,
-			TextXAlignment: Enum.TextXAlignment.Left,
+			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		pair: {
 			FillDirection: Enum.FillDirection.Horizontal,
@@ -40,18 +39,15 @@ const useRectEditorStyles = componentStyles("RectEditor", (theme: Theme) => {
 		} as WriteableStyle<Frame>,
 		stack: {
 			FillDirection: Enum.FillDirection.Vertical,
-			Padding: new UDim(0, theme.padding.calc(0.5)),
+			Padding: new UDim(0, gap),
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		label: {
 			Size: new UDim2(1, 0, 0, 0),
 			AutomaticSize: Enum.AutomaticSize.Y,
 			BackgroundTransparency: 1,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.caption,
 			TextColor3: theme.palette.text.secondary,
-			TextXAlignment: Enum.TextXAlignment.Left,
-			TextTruncate: Enum.TextTruncate.AtEnd,
+			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		field: {
 			Size: new UDim2(1, 0, 0, controlMetrics(theme.density).height),

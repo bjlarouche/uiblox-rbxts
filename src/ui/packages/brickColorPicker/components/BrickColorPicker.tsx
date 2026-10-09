@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "@rbxts/react";
 import { cx, CustomizedProps, useTheme } from "theme";
+import { useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Input } from "ui/packages/input";
@@ -21,11 +22,13 @@ const ROW = 28;
 function BrickColorPicker(props: CustomizedProps<Frame, BrickColorPickerProps>) {
 	const { value, onChange, disabled, placeholder = "BrickColor", className, sx, id, ref } = props;
 	const styles = useBrickColorPickerStyles();
+	const hover = useEditorHover(disabled);
 	const { theme } = useTheme();
 	const active = canActivate(disabled);
 	const [anchor, setAnchor] = useState<TextButton>();
 	const [open, setOpen] = useState(false);
 	const [query, setQuery] = useState("");
+	const [over, setOver] = useState("");
 	const catalog = useMemo(() => brickColorCatalog(), []);
 	const filtered =
 		query.size() === 0
@@ -40,11 +43,12 @@ function BrickColorPicker(props: CustomizedProps<Frame, BrickColorPickerProps>) 
 	};
 
 	return (
-		<SxHost tag="frame" key={id || "BrickColorPicker"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
+		<SxHost tag="frame" key={id || "BrickColorPicker"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event}>
 			<textbutton
 				key="Trigger"
 				ref={setAnchor}
 				{...styles.trigger}
+				{...(hover.active ? hover.face : {})}
 				Active={active}
 				Selectable={active}
 				Event={{
@@ -97,10 +101,12 @@ function BrickColorPicker(props: CustomizedProps<Frame, BrickColorPickerProps>) 
 									const picked = color.Number === value.Number;
 									return (
 										<textbutton
-											{...cx<TextButton>(styles.option, picked && styles.selected)}
+											{...cx<TextButton>(styles.option, over === color.Name && styles.highlighted, picked && styles.selected)}
 											Active={true}
 											Selectable={true}
 											Event={{
+												MouseEnter: () => setOver(color.Name),
+												MouseLeave: () => setOver(""),
 												Activated: () => {
 													onChange(color);
 													close();
