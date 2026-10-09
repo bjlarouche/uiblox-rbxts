@@ -574,6 +574,8 @@ const offBottom = popupPlacement(40, 480, 80, 24, 0, 0, 400, 300, 36, 80);
 if (!offBottom.above || offBottom.y !== 400 || offBottom.height !== 36) throw new Error("popup stays inside the bottom edge");
 const offTop = popupPlacement(40, -20, 80, 30, 0, 0, 400, 300, 36, 80);
 if (offTop.above || offTop.y !== 10 || offTop.height !== 36) throw new Error("popup stays inside the top edge");
+const unsized = popupPlacement(40, 360, 80, 24, 0, 0, 400);
+if (!unsized.above || unsized.y !== 360) throw new Error("unsized popup flips when the bottom is tighter");
 const tipStyles = readFileSync(join(root, "src/ui/packages/tooltip/components/Tooltip.styles.ts"), "utf8");
 const menuStyles = readFileSync(join(root, "src/ui/packages/menu/components/Menu.styles.ts"), "utf8");
 const popStyles = readFileSync(join(root, "src/ui/packages/popover/components/Popover.styles.ts"), "utf8");
