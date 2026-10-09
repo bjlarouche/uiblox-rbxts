@@ -29,4 +29,13 @@ if (buttonStyles.includes('size = "small"')) {
 	throw new Error("Button must follow theme.density when size is unset");
 }
 
+const { controlMetrics } = await import("../src/theme/interfaces/density/controlMetrics.ts");
+if (controlMetrics(undefined, "small").height !== 22 || controlMetrics("compact").height !== 22) throw new Error("small step");
+if (controlMetrics(undefined, "medium").height !== 24) throw new Error("medium step");
+if (controlMetrics(undefined, "large").height !== 36) throw new Error("large step");
+if (controlMetrics(undefined, "small").font !== 13 || controlMetrics(undefined, "large").font !== 16) throw new Error("step font");
+const numberInput = readFileSync(join(root, "src/ui/packages/numberInput/components/NumberInput.tsx"), "utf8");
+if (numberInput.includes("fromOffset(28, 28)")) throw new Error("stepper stays 28");
+if (!numberInput.includes("metrics.height") || !numberInput.includes("metrics.font")) throw new Error("stepper scale");
+
 console.log("density ok");
