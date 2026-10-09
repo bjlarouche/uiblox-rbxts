@@ -28,6 +28,7 @@ const useSidebarStyles = componentStyles<SidebarProps>("Sidebar", (theme: Theme,
 			AnchorPoint: new Vector2(0.5, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
+			ClipsDescendants: true,
 			ZIndex: 5100,
 		} as WriteableStyle<Frame>,
 	});
