@@ -37,7 +37,9 @@ function Breadcrumbs(props: CustomizedProps<Frame, BreadcrumbsProps>) {
 								Text="…"
 								LayoutOrder={order * 2 + 1}
 								Event={{ Activated: () => setOpened(true) }}
-							/>
+							>
+								<uisizeconstraint {...styles.cap} />
+							</textbutton>
 						) : (
 							<textbutton
 								{...cx<TextButton>(styles.item, current && styles.current)}
@@ -46,7 +48,9 @@ function Breadcrumbs(props: CustomizedProps<Frame, BreadcrumbsProps>) {
 								Active={!current && item?.onActivated !== undefined}
 								Selectable={!current && item?.onActivated !== undefined}
 								Event={{ Activated: () => item?.onActivated?.() }}
-							/>
+							>
+								<uisizeconstraint {...styles.cap} />
+							</textbutton>
 						)}
 					</React.Fragment>
 				);

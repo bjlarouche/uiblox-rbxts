@@ -3,6 +3,12 @@ Array.prototype.size = function size() {
 	return this.length;
 };
 
+import { readFileSync } from "node:fs";
+
+const crumbs = readFileSync("src/ui/packages/breadcrumbs/components/Breadcrumbs.styles.ts", "utf8");
+if (!crumbs.includes("text.primary")) throw new Error("current crumb should use the primary text color");
+if (!crumbs.includes("TextTruncate")) throw new Error("crumb labels should truncate");
+
 const { breadcrumbCurrent, breadcrumbHasGap, breadcrumbVisible } = await import(
 	"../src/ui/packages/breadcrumbs/components/breadcrumbItems.ts"
 );

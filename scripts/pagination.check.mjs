@@ -4,6 +4,12 @@ Array.prototype.size = function size() {
 };
 Array.prototype.join = Array.prototype.join;
 
+import { readFileSync } from "node:fs";
+
+const pages = readFileSync("src/ui/packages/pagination/components/Pagination.styles.ts", "utf8");
+if (!pages.includes("TextTruncate")) throw new Error("page labels should truncate");
+if (!pages.includes("text.primary")) throw new Error("current page should use the primary text color");
+
 const { pageRange } = await import("../src/ui/packages/pagination/components/pageRange.ts");
 if (pageRange(3).join(",") !== "1,2,3" || pageRange(-1).size() !== 0) throw new Error("range");
 const collapsed = pageRange(20, 10, 1, 1);

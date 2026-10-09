@@ -32,10 +32,13 @@ const usePaginationStyles = componentStyles<{ size?: ControlSize; variant?: Pagi
 			Font: theme.typography.fontFamilies.default,
 			TextSize: text,
 			TextColor3: theme.palette.text.primary,
+			TextTruncate: Enum.TextTruncate.AtEnd,
+			TextXAlignment: Enum.TextXAlignment.Center,
 		} as WriteableStyle<TextButton>,
 		selected: {
 			BackgroundColor3: theme.palette.action.selected,
 			BackgroundTransparency: 0,
+			TextColor3: theme.palette.text.primary,
 		} as WriteableStyle<TextButton>,
 		stroke: {
 			Color: theme.palette.border,

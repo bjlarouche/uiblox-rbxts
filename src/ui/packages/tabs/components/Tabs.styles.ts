@@ -37,7 +37,11 @@ const useTabsStyles = componentStyles<{ orientation?: TabsOrientation; centered?
 			Font: theme.typography.fontFamilies.default,
 			TextSize: theme.typography.fontSizes.body,
 			TextXAlignment: vertical ? Enum.TextXAlignment.Left : Enum.TextXAlignment.Center,
+			TextTruncate: Enum.TextTruncate.AtEnd,
 		} as WriteableStyle<TextButton>,
+		cap: {
+			MaxSize: new Vector2(vertical ? math.huge : theme.spacing.calc(16), math.huge),
+		} as WriteableStyle<UISizeConstraint>,
 		selected: {
 			TextColor3: theme.palette.text.primary,
 		} as WriteableStyle<TextButton>,

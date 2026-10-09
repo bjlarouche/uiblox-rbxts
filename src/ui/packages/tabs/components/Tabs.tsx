@@ -99,6 +99,7 @@ function Tabs<T>(props: CustomizedProps<ScrollingFrame, TabsProps<T>>) {
 						Event={{ Activated: () => choose(index), InputBegan: onKey }}
 					>
 						<uipadding {...styles.padding} />
+						<uisizeconstraint {...styles.cap} />
 						{selected && <frame key="Indicator" {...styles.indicator} />}
 					</textbutton>
 				);
