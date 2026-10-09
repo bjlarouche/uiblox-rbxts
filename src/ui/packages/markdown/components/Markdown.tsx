@@ -5,7 +5,7 @@ import { SxHost } from "ui/packages/host";
 import { Link } from "ui/packages/link";
 import { Orientations } from "ui/enums";
 import { FontSizeOptions, FontSizeVariant } from "theme/interfaces/typography";
-import { inlinePieces, inlinesToRichText, markdownLinkPayload, MarkdownLinkPayload, MdBlock, MdInline, parseMarkdown } from "../parseMarkdown";
+import { inlinePieces, inlinesToRichText, markdownLinkPayload, MarkdownLinkPayload, MdAlign, MdBlock, MdInline, parseMarkdown } from "../parseMarkdown";
 import useMarkdownStyles from "./Markdown.styles";
 
 export interface MarkdownProps {
@@ -166,10 +166,52 @@ function renderBlock(
 		return (
 			<frame key={`q-${index}`} {...styles.quote} LayoutOrder={index}>
 				<uicorner CornerRadius={new UDim(0, 4)} />
-				<frame key="Bar" {...styles.quoteBar} />
-				<uipadding {...styles.quotePad} />
-				{inlineFlow("Text", styles, block.inlines, "body", undefined, onLink, sizes, styles.quoteFlow)}
+				<uipadding {...styles.quoteBarPad} />
+				<frame key="Face" {...styles.quoteFace}>
+					<uicorner CornerRadius={new UDim(0, 3)} />
+					<uipadding {...styles.quotePad} />
+					{inlineFlow("Text", styles, block.inlines, "body", undefined, onLink, sizes, styles.quoteFlow)}
+				</frame>
 			</frame>
+		);
+	}
+	if (block.kind === "table") {
+		const alignOf = (align: MdAlign) => {
+			if (align === "center") return Enum.TextXAlignment.Center;
+			if (align === "right") return Enum.TextXAlignment.Right;
+			return Enum.TextXAlignment.Left;
+		};
+		const lines = [block.header, ...block.rows];
+		return (
+			<scrollingframe key={`t-${index}`} {...styles.tableScroll} LayoutOrder={index}>
+				<frame key="Grid" {...styles.tableGrid}>
+					<uilistlayout FillDirection={Enum.FillDirection.Vertical} SortOrder={Enum.SortOrder.LayoutOrder} />
+					{lines.map((row, rowIndex) => (
+						<frame
+							key={`tr-${rowIndex}`}
+							{...styles.tableRow}
+							{...(rowIndex === 0 ? styles.tableHead : {})}
+							LayoutOrder={rowIndex}
+						>
+							<uilistlayout FillDirection={Enum.FillDirection.Horizontal} SortOrder={Enum.SortOrder.LayoutOrder} />
+							{row.map((cell, col) => (
+								<textlabel
+									key={`td-${col}`}
+									{...styles.tableCell}
+									{...(rowIndex === 0 ? styles.tableHeadText : {})}
+									LayoutOrder={col}
+									Text={inlinesToRichText(cell)}
+									TextXAlignment={alignOf(block.align[col] ?? "left")}
+								>
+									<uipadding {...styles.tableCellPad} />
+									<uisizeconstraint {...styles.tableCellCap} />
+									<uistroke {...styles.tableStroke} />
+								</textlabel>
+							))}
+						</frame>
+					))}
+				</frame>
+			</scrollingframe>
 		);
 	}
 	if (block.kind === "list") {
