@@ -1,3 +1,10 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+const stepper = readFileSync(join(process.cwd(), "src/ui/packages/stepper/components/Stepper.styles.ts"), "utf8");
+if (!stepper.includes("variants.h6")) throw new Error("step labels should use the heading face");
+if (!stepper.includes("TextWrapped: true")) throw new Error("step labels should wrap");
+
 const { stepPress, stepState } = await import("../src/ui/packages/stepper/components/stepState.ts");
 if (stepPress(0, 2) !== 0 || stepPress(2, 2) !== 2) throw new Error("reached step");
 if (stepPress(3, 2) !== undefined || stepPress(-1, 2) !== undefined) throw new Error("later step");

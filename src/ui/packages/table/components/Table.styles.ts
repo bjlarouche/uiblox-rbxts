@@ -3,6 +3,7 @@ import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 const useTableStyles = componentStyles<{ dense?: boolean }>("Table", (theme: Theme, { dense }) => {
 	const padY = theme.padding.calc(dense === true ? 0.5 : 1);
 	const padX = theme.padding.calc(dense === true ? 1 : 1.5);
+	const heading = theme.typography.variants.h6;
 	const textSize = dense === true ? theme.typography.fontSizes.caption : theme.typography.fontSizes.body;
 	return createStyles({
 		root: {
@@ -29,6 +30,10 @@ const useTableStyles = componentStyles<{ dense?: boolean }>("Table", (theme: The
 			BackgroundColor3: theme.palette.action.selected,
 			BackgroundTransparency: 0,
 		} as WriteableStyle<TextButton>,
+		hover: {
+			BackgroundColor3: theme.palette.action.hover,
+			BackgroundTransparency: 0,
+		} as WriteableStyle<TextButton>,
 		header: {
 			AutomaticSize: Enum.AutomaticSize.Y,
 			Size: new UDim2(1, 0, 0, 0),
@@ -50,14 +55,20 @@ const useTableStyles = componentStyles<{ dense?: boolean }>("Table", (theme: The
 			TextTruncate: Enum.TextTruncate.AtEnd,
 		} as WriteableStyle<TextLabel>,
 		headerCell: {
-			Font: theme.typography.fontFamilies.semibold,
+			Font: theme.typography.fontFamilies[heading.family],
+			TextSize: heading.size,
+			LineHeight: heading.leading,
 			TextColor3: theme.palette.text.secondary,
 		} as WriteableStyle<TextLabel>,
-		padding: {
-			PaddingTop: new UDim(0, padY),
+		band: {
+			Position: new UDim2(0, padX, 0, padY),
+			Size: new UDim2(1, -(padX * 2), 0, 0),
+			AutomaticSize: Enum.AutomaticSize.Y,
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+		} as WriteableStyle<Frame>,
+		tail: {
 			PaddingBottom: new UDim(0, padY),
-			PaddingLeft: new UDim(0, padX),
-			PaddingRight: new UDim(0, padX),
 		} as WriteableStyle<UIPadding>,
 		corner: {
 			CornerRadius: new UDim(0, theme.shape.borderRadius),

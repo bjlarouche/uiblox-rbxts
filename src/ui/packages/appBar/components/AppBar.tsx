@@ -20,9 +20,14 @@ function AppBar(props: CustomizedProps<Frame, AppBarProps>) {
 	const line = appBarSubtitle(subtitle);
 	const titleLabel =
 		line === undefined ? (
-			title !== "" && <textlabel key="Title" {...styles.title} Text={title} />
+			title !== "" && (
+				<textlabel key="Title" {...styles.title} Text={title}>
+					{hasActions && <uiflexitem key="Flex" FlexMode={Enum.UIFlexMode.Fill} />}
+				</textlabel>
+			)
 		) : (
 			<frame key="Titles" {...styles.titles}>
+				{hasActions && <uiflexitem key="Flex" FlexMode={Enum.UIFlexMode.Fill} />}
 				<uilistlayout
 					FillDirection={Enum.FillDirection.Vertical}
 					VerticalAlignment={Enum.VerticalAlignment.Center}
@@ -34,8 +39,10 @@ function AppBar(props: CustomizedProps<Frame, AppBarProps>) {
 					<textlabel
 						key="Title"
 						{...styles.title}
-						Size={new UDim2(0, 0, 0, 0)}
-						AutomaticSize={Enum.AutomaticSize.XY}
+						Size={new UDim2(1, 0, 0, 0)}
+						AutomaticSize={Enum.AutomaticSize.Y}
+						TextWrapped={true}
+						TextTruncate={Enum.TextTruncate.None}
 						Text={title}
 						LayoutOrder={1}
 					/>
@@ -45,20 +52,21 @@ function AppBar(props: CustomizedProps<Frame, AppBarProps>) {
 		);
 	return (
 		<SxHost tag="frame" key={id || "AppBar"} hostRef={ref} base={styles.root} className={className} sx={sx}>
-			<uipadding {...styles.padding} />
 			{elevation === "raised" && <Shadow />}
-			{hasActions ? (
-				<frame key="Row" Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} BorderSizePixel={0}>
-					<uilistlayout {...styles.row} />
-					{titleLabel}
-					<frame key="Actions" {...styles.actions}>
-						<uilistlayout {...styles.actionsLayout} />
-						{children}
+			<frame key="Inset" {...styles.inset}>
+				{hasActions ? (
+					<frame key="Row" Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} BorderSizePixel={0}>
+						<uilistlayout {...styles.row} />
+						{titleLabel}
+						<frame key="Actions" {...styles.actions}>
+							<uilistlayout {...styles.actionsLayout} />
+							{children}
+						</frame>
 					</frame>
-				</frame>
-			) : (
-				titleLabel
-			)}
+				) : (
+					titleLabel
+				)}
+			</frame>
 		</SxHost>
 	);
 }

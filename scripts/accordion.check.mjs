@@ -1,3 +1,13 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+const accordion = readFileSync(join(process.cwd(), "src/ui/packages/accordion/components/Accordion.styles.ts"), "utf8");
+const accordionView = readFileSync(join(process.cwd(), "src/ui/packages/accordion/components/Accordion.tsx"), "utf8");
+if (!accordion.includes("variants.h6")) throw new Error("accordion title should use the heading face");
+if (!accordion.includes("TextWrapped: true")) throw new Error("accordion title should wrap");
+if (!accordion.includes("action.hover")) throw new Error("accordion header should hover");
+if (!accordionView.includes("styles.band")) throw new Error("accordion body should sit inside the pad");
+
 const { accordionNote } = await import("../src/ui/packages/accordion/components/accordionNote.ts");
 if (accordionNote() !== undefined || accordionNote("") !== undefined) throw new Error("empty note");
 if (accordionNote("two sacks") !== "two sacks") throw new Error("note");
