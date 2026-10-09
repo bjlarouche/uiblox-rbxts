@@ -18,5 +18,6 @@ if (timeRangeOk({ hour: 9, minute: 0 }, { hour: 10, minute: 15 }) !== true) thro
 const { readFileSync } = await import("node:fs");
 const field = readFileSync("src/ui/packages/timeField/components/TimeField.tsx", "utf8");
 if (!field.includes("fieldChrome") || field.includes('size="small"')) throw new Error("time field matches the input chrome");
+if (field.includes("new UDim(0, 56)") || !field.includes("spacing.calc(12)")) throw new Error("time field uses the input width");
 
 console.log("time field ok");
