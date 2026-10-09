@@ -11,7 +11,7 @@ const useTooltipStyles = componentStyles("Tooltip", (theme: Theme) =>
 		label: {
 			AutomaticSize: Enum.AutomaticSize.XY,
 			Size: UDim2.fromScale(0, 0),
-			BackgroundColor3: theme.palette.surface.overlay,
+			BackgroundColor3: theme.palette.surface.elevated,
 			BorderSizePixel: 0,
 			TextColor3: theme.palette.text.primary,
 			Font: theme.typography.fontFamilies.default,
@@ -34,7 +34,7 @@ const useTooltipStyles = componentStyles("Tooltip", (theme: Theme) =>
 		} as WriteableStyle<UIStroke>,
 		shell: {
 			Size: UDim2.fromScale(1, 1),
-			BackgroundColor3: theme.palette.surface.overlay,
+			BackgroundColor3: theme.palette.surface.elevated,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		stack: {

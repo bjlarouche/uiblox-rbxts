@@ -21,8 +21,10 @@ export function popupPlacement(
 ): PopupPlace {
 	const localX = anchorX - layerX;
 	const localY = anchorY - layerY;
-	const spaceAbove = math.max(0, localY);
-	const spaceBelow = math.max(0, layerH - (localY + anchorH));
+	const top = math.clamp(localY, 0, layerH);
+	const bottom = math.clamp(localY + anchorH, 0, layerH);
+	const spaceAbove = top;
+	const spaceBelow = math.max(0, layerH - bottom);
 	const above = contentH > spaceBelow && spaceAbove > spaceBelow;
 	const maxHeight = above ? spaceAbove : spaceBelow;
 	let width = contentW > 0 ? contentW : anchorW;
@@ -33,7 +35,7 @@ export function popupPlacement(
 	const height = contentH > 0 ? math.min(contentH, maxHeight) : 0;
 	return {
 		x,
-		y: above ? localY : localY + anchorH,
+		y: above ? top : bottom,
 		width,
 		height,
 		maxHeight,

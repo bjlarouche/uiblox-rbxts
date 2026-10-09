@@ -561,6 +561,17 @@ const tip = popupPlacement(100, 360, 40, 20, 0, 0, 400, 300, 48, 180);
 if (!tip.above || tip.width !== 180 || tip.height !== 48 || tip.y !== 360) throw new Error("tip flips and uses its own size");
 const tipClamp = popupPlacement(20, 10, 40, 20, 0, 0, 400, 100, 30, 180);
 if (tipClamp.width !== 100 || tipClamp.x !== 0 || tipClamp.above) throw new Error("tip width clamps to the layer");
+const offBottom = popupPlacement(40, 480, 80, 24, 0, 0, 400, 300, 36, 80);
+if (!offBottom.above || offBottom.y !== 400 || offBottom.height !== 36) throw new Error("popup stays inside the bottom edge");
+const offTop = popupPlacement(40, -20, 80, 30, 0, 0, 400, 300, 36, 80);
+if (offTop.above || offTop.y !== 10 || offTop.height !== 36) throw new Error("popup stays inside the top edge");
+const tipStyles = readFileSync(join(root, "src/ui/packages/tooltip/components/Tooltip.styles.ts"), "utf8");
+const menuStyles = readFileSync(join(root, "src/ui/packages/menu/components/Menu.styles.ts"), "utf8");
+const popStyles = readFileSync(join(root, "src/ui/packages/popover/components/Popover.styles.ts"), "utf8");
+if (tipStyles.includes("surface.overlay") || !tipStyles.includes("surface.elevated") || !tipStyles.includes("text.primary")) {
+	throw new Error("tip text on the surface");
+}
+if (!menuStyles.includes("surface.elevated") || !popStyles.includes("surface.elevated")) throw new Error("floating surface");
 
 const { portalTarget } = await import(pathToFileURL(join(root, "src/ui/packages/popup/components/portalTarget.ts")).href);
 const layerHost = {
