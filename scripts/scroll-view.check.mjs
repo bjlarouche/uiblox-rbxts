@@ -5,6 +5,8 @@ if (!src.includes('tag="scrollingframe"')) throw new Error("scroll view host");
 if (!src.includes("AutomaticCanvasSize: Enum.AutomaticSize.Y")) throw new Error("scroll view canvas");
 if (!src.includes("ScrollingDirection: Enum.ScrollingDirection.Y")) throw new Error("scroll view direction");
 if (!src.includes("BackgroundTransparency: 1")) throw new Error("scroll view chrome");
+if (!src.includes("1, -(left + right)")) throw new Error("scroll view padding shrinks width");
+if (!src.includes("withoutPad")) throw new Error("scroll view padding stays off the frame");
 
 const barrel = readFileSync("src/ui/packages/scroll/index.ts", "utf8");
 if (!barrel.includes("ScrollView")) throw new Error("scroll view export");
