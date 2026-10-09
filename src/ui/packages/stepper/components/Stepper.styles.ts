@@ -2,11 +2,12 @@ import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
 const useStepperStyles = componentStyles<{ orientation?: "horizontal" | "vertical" }>(
 	"Stepper",
-	(theme: Theme, { orientation = "horizontal" }) =>
-		createStyles({
+	(theme: Theme, { orientation = "horizontal" }) => {
+		const heading = theme.typography.variants.h6;
+		return createStyles({
 			root: {
-				AutomaticSize: Enum.AutomaticSize.XY,
-				Size: UDim2.fromScale(0, 0),
+				AutomaticSize: orientation === "vertical" ? Enum.AutomaticSize.Y : Enum.AutomaticSize.XY,
+				Size: orientation === "vertical" ? new UDim2(1, 0, 0, 0) : UDim2.fromScale(0, 0),
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 			} as WriteableStyle<Frame>,
@@ -17,18 +18,21 @@ const useStepperStyles = componentStyles<{ orientation?: "horizontal" | "vertica
 				SortOrder: Enum.SortOrder.LayoutOrder,
 			} as WriteableStyle<UIListLayout>,
 			step: {
-				AutomaticSize: Enum.AutomaticSize.XY,
-				Size: UDim2.fromScale(0, 0),
+				AutomaticSize: orientation === "vertical" ? Enum.AutomaticSize.Y : Enum.AutomaticSize.XY,
+				Size: orientation === "vertical" ? new UDim2(1, 0, 0, 0) : UDim2.fromScale(0, 0),
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
-				Font: theme.typography.fontFamilies.default,
-				TextSize: theme.typography.fontSizes.body,
+				Font: theme.typography.fontFamilies[heading.family],
+				TextSize: heading.size,
+				LineHeight: heading.leading,
+				TextWrapped: true,
 				TextColor3: theme.palette.text.secondary,
 			} as WriteableStyle<TextLabel>,
 			active: { TextColor3: theme.palette.primary.main } as WriteableStyle<TextLabel>,
 			complete: { TextColor3: theme.palette.text.primary } as WriteableStyle<TextLabel>,
 			error: { TextColor3: theme.palette.status.error.main } as WriteableStyle<TextLabel>,
-		}),
+		});
+	},
 );
 
 export default useStepperStyles;

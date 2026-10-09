@@ -1,4 +1,4 @@
-import React from "@rbxts/react";
+import React, { useState } from "@rbxts/react";
 import { cx, CustomizedProps, WriteableStyle } from "theme";
 import { SxHost } from "ui/packages/host";
 import { rowSelected } from "./rowSelected";
@@ -35,6 +35,36 @@ export interface TableProps {
 	onRowActivated?: (index: number) => void;
 }
 
+function TableRow(props: {
+	rowIndex: number;
+	place: number;
+	selected: boolean;
+	styles: ReturnType<typeof useTableStyles>;
+	onActivated: () => void;
+	children: React.ReactNode;
+}) {
+	const [hovering, setHovering] = useState(false);
+	const face = props.selected ? props.styles.selected : hovering ? props.styles.hover : undefined;
+	return (
+		<textbutton
+			key={`r-${props.rowIndex}`}
+			{...cx<TextButton>(props.styles.row, face)}
+			LayoutOrder={props.place + 1}
+			Event={{
+				Activated: props.onActivated,
+				MouseEnter: () => setHovering(true),
+				MouseLeave: () => setHovering(false),
+			}}
+		>
+			<uipadding {...props.styles.tail} />
+			<frame key="Band" {...props.styles.band}>
+				<uilistlayout {...props.styles.cells} />
+				{props.children}
+			</frame>
+		</textbutton>
+	);
+}
+
 function textAlign(align: TableAlign) {
 	if (align === "center") return Enum.TextXAlignment.Center;
 	if (align === "right") return Enum.TextXAlignment.Right;
@@ -53,7 +83,8 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 			<uicorner {...styles.corner} />
 			<uilistlayout {...styles.list} />
 			<frame key="Header" {...styles.header} LayoutOrder={0}>
-				<uipadding {...styles.padding} />
+				<uipadding {...styles.tail} />
+				<frame key="Band" {...styles.band}>
 				<uilistlayout {...styles.cells} />
 				<>
 					{resolved.map((column, index) => {
@@ -98,21 +129,20 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 						);
 					})}
 				</>
+				</frame>
 			</frame>
 			<>
 				{order.map((rowIndex, place) => {
 					const cells = rows[rowIndex];
 					return (
-						<textbutton
+						<TableRow
 							key={`r-${rowIndex}`}
-							{...cx<TextButton>(styles.row, rowSelected(rowIndex, selected) && styles.selected)}
-							LayoutOrder={place + 1}
-							Event={{
-								Activated: () => onRowActivated?.(rowIndex),
-							}}
+							rowIndex={rowIndex}
+							place={place}
+							selected={rowSelected(rowIndex, selected)}
+							styles={styles}
+							onActivated={() => onRowActivated?.(rowIndex)}
 						>
-							<uipadding {...styles.padding} />
-							<uilistlayout {...styles.cells} />
 							<>
 								{resolved.map((column, colIndex) => {
 									const size = sizes[colIndex];
@@ -144,7 +174,7 @@ function Table(props: CustomizedProps<Frame, TableProps>) {
 									);
 								})}
 							</>
-						</textbutton>
+						</TableRow>
 					);
 				})}
 			</>
