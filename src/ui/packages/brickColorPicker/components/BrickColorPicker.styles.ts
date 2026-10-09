@@ -1,4 +1,5 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { editorPad, editorText } from "ui/packages/editorFace";
 
 const useBrickColorPickerStyles = componentStyles("BrickColorPicker", (theme: Theme) =>
 	createStyles({
@@ -9,7 +10,7 @@ const useBrickColorPickerStyles = componentStyles("BrickColorPicker", (theme: Th
 		} as WriteableStyle<Frame>,
 		row: {
 			FillDirection: Enum.FillDirection.Horizontal,
-			Padding: new UDim(0, theme.padding.calc(1)),
+			Padding: new UDim(0, editorPad(theme)),
 			VerticalAlignment: Enum.VerticalAlignment.Center,
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
@@ -28,11 +29,8 @@ const useBrickColorPickerStyles = componentStyles("BrickColorPicker", (theme: Th
 			Size: new UDim2(1, -theme.spacing.calc(2.5), 1, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.body,
 			TextColor3: theme.palette.text.primary,
-			TextXAlignment: Enum.TextXAlignment.Left,
-			TextTruncate: Enum.TextTruncate.AtEnd,
+			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		menu: {
 			Size: UDim2.fromScale(1, 1),
@@ -47,7 +45,7 @@ const useBrickColorPickerStyles = componentStyles("BrickColorPicker", (theme: Th
 			Size: UDim2.fromScale(1, 1),
 			BackgroundColor3: theme.palette.surface.elevated,
 			BorderSizePixel: 0,
-			ScrollBarThickness: theme.padding.default,
+			ScrollBarThickness: editorPad(theme),
 			ScrollBarImageColor3: theme.palette.text.secondary,
 			ScrollingDirection: Enum.ScrollingDirection.Y,
 		} as WriteableStyle<ScrollingFrame>,
@@ -70,15 +68,12 @@ const useBrickColorPickerStyles = componentStyles("BrickColorPicker", (theme: Th
 			Size: new UDim2(1, -theme.spacing.calc(2.5), 1, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.body,
 			TextColor3: theme.palette.text.primary,
-			TextXAlignment: Enum.TextXAlignment.Left,
-			TextTruncate: Enum.TextTruncate.AtEnd,
+			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		padding: {
-			PaddingLeft: new UDim(0, theme.padding.calc(1)),
-			PaddingRight: new UDim(0, theme.padding.calc(1)),
+			PaddingLeft: new UDim(0, editorPad(theme)),
+			PaddingRight: new UDim(0, editorPad(theme)),
 		} as WriteableStyle<UIPadding>,
 		corner: {
 			CornerRadius: new UDim(0, theme.shape.borderRadius),

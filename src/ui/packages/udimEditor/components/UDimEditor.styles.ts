@@ -1,4 +1,5 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { editorPad, editorText } from "ui/packages/editorFace";
 
 const useUDimEditorStyles = componentStyles("UDimEditor", (theme: Theme) =>
 	createStyles({
@@ -10,12 +11,12 @@ const useUDimEditorStyles = componentStyles("UDimEditor", (theme: Theme) =>
 		} as WriteableStyle<Frame>,
 		column: {
 			FillDirection: Enum.FillDirection.Vertical,
-			Padding: new UDim(0, theme.padding.calc(1)),
+			Padding: new UDim(0, editorPad(theme)),
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		row: {
 			FillDirection: Enum.FillDirection.Horizontal,
-			Padding: new UDim(0, theme.padding.calc(1)),
+			Padding: new UDim(0, editorPad(theme)),
 			VerticalAlignment: Enum.VerticalAlignment.Center,
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
@@ -24,16 +25,14 @@ const useUDimEditorStyles = componentStyles("UDimEditor", (theme: Theme) =>
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		field: {
-			Size: new UDim2(0.5, -theme.padding.calc(1), 0, theme.spacing.calc(2)),
+			Size: new UDim2(0.5, -editorPad(theme), 0, theme.spacing.calc(2)),
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		label: {
 			Size: new UDim2(0, theme.spacing.calc(2), 1, 0),
 			BackgroundTransparency: 1,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.caption,
 			TextColor3: theme.palette.text.secondary,
-			TextXAlignment: Enum.TextXAlignment.Left,
+			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		input: {
 			Size: new UDim2(1, -theme.spacing.calc(2), 1, 0),

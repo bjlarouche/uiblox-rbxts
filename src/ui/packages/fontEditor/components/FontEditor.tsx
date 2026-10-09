@@ -1,5 +1,6 @@
 import React, { useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { canActivate } from "ui/packages/button/components/activation";
 import { Input } from "ui/packages/input";
@@ -31,6 +32,7 @@ function FontEditor(props: CustomizedProps<Frame, FontEditorProps>) {
 	const { value, onChange, disabled, className,
 		sx, id, ref } = props;
 	const styles = useFontEditorStyles();
+	const hover = useEditorHover(disabled);
 	const active = canActivate(disabled);
 	const families = builtInFamilies();
 	if (families.find((item) => item.family === value.Family) === undefined) {
@@ -41,7 +43,7 @@ function FontEditor(props: CustomizedProps<Frame, FontEditorProps>) {
 	const stylesList = enumOptions(Enum.FontStyle.GetEnumItems());
 
 	return (
-		<SxHost tag="frame" key={id || "FontEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
+		<SxHost tag="frame" key={id || "FontEditor"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event}>
 			<uilistlayout {...styles.column} />
 			<frame key="Family" {...styles.row} LayoutOrder={1}>
 				<Select

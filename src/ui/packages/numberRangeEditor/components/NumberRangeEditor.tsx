@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import useNumberRangeEditorStyles from "./NumberRangeEditor.styles";
@@ -14,6 +15,7 @@ export interface NumberRangeEditorProps {
 function NumberRangeEditor(props: CustomizedProps<Frame, NumberRangeEditorProps>) {
 	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = useNumberRangeEditorStyles();
+	const hover = useEditorHover(disabled);
 
 	const commit = (field: "Min" | "Max", amount: number) => {
 		const parts = writeNumberRange(value.Min, value.Max, field, amount);
@@ -21,7 +23,7 @@ function NumberRangeEditor(props: CustomizedProps<Frame, NumberRangeEditorProps>
 	};
 
 	return (
-		<SxHost tag="frame" key={id || "NumberRangeEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
+		<SxHost tag="frame" key={id || "NumberRangeEditor"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event}>
 			<uilistlayout {...styles.row} />
 			<frame key="Min" {...styles.axis} LayoutOrder={1}>
 				<uilistlayout {...styles.row} />

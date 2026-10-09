@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { canActivate } from "ui/packages/button/components/activation";
 import ColorPicker from "./ColorPicker";
@@ -24,6 +25,7 @@ export interface ColorSequenceEditorProps {
 function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorProps>) {
 	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = useColorPickerStyles();
+	const hover = useEditorHover(disabled);
 	const active = canActivate(disabled);
 	const stops = readColorStops(value);
 	const [selected, setSelected] = useState(0);
@@ -40,7 +42,7 @@ function ColorSequenceEditor(props: CustomizedProps<Frame, ColorSequenceEditorPr
 	};
 
 	return (
-		<SxHost tag="frame" key={id || "ColorSequenceEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }} Selectable={false}>
+		<SxHost tag="frame" key={id || "ColorSequenceEditor"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event} Selectable={false}>
 			<uilistlayout {...styles.column} />
 			<frame
 				key="Bar"

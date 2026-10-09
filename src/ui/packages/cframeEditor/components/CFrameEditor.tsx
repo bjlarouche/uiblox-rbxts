@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { cx, CustomizedProps } from "theme";
+import { useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import useCFrameEditorStyles from "./CFrameEditor.styles";
@@ -17,6 +18,7 @@ const ORIENTATION: CFrameField[] = ["RX", "RY", "RZ"];
 function CFrameEditor(props: CustomizedProps<Frame, CFrameEditorProps>) {
 	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = useCFrameEditorStyles();
+	const hover = useEditorHover(disabled);
 	const [rx, ry, rz] = value.ToEulerAnglesXYZ();
 	const degrees = [math.deg(rx), math.deg(ry), math.deg(rz)];
 	const amounts = [value.X, value.Y, value.Z, degrees[0], degrees[1], degrees[2]];
@@ -69,7 +71,7 @@ function CFrameEditor(props: CustomizedProps<Frame, CFrameEditorProps>) {
 	);
 
 	return (
-		<SxHost tag="frame" key={id || "CFrameEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
+		<SxHost tag="frame" key={id || "CFrameEditor"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event}>
 			<uilistlayout {...styles.wrap} />
 			{group("Position", POSITION, 1, 0)}
 			{group("Rotation (degrees)", ORIENTATION, 2, 3)}

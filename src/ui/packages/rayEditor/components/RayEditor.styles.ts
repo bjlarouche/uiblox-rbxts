@@ -1,4 +1,5 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { editorPad, editorText } from "ui/packages/editorFace";
 
 const useRayEditorStyles = componentStyles("RayEditor", (theme: Theme) =>
 	createStyles({
@@ -10,7 +11,7 @@ const useRayEditorStyles = componentStyles("RayEditor", (theme: Theme) =>
 		} as WriteableStyle<Frame>,
 		column: {
 			FillDirection: Enum.FillDirection.Vertical,
-			Padding: new UDim(0, theme.padding.calc(1)),
+			Padding: new UDim(0, editorPad(theme)),
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		row: {
@@ -21,10 +22,8 @@ const useRayEditorStyles = componentStyles("RayEditor", (theme: Theme) =>
 		label: {
 			Size: new UDim2(1, 0, 0, theme.spacing.calc(1.5)),
 			BackgroundTransparency: 1,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.caption,
 			TextColor3: theme.palette.text.secondary,
-			TextXAlignment: Enum.TextXAlignment.Left,
+			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 	}),
 );

@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
+import { useEditorHover } from "ui/packages/editorFace";
 import { SxHost } from "ui/packages/host";
 import { NumberInput } from "ui/packages/numberInput";
 import usePhysicalPropertiesEditorStyles from "./PhysicalPropertiesEditor.styles";
@@ -14,6 +15,7 @@ export interface PhysicalPropertiesEditorProps {
 function PhysicalPropertiesEditor(props: CustomizedProps<Frame, PhysicalPropertiesEditorProps>) {
 	const { value, onChange, disabled, className, sx, id, ref } = props;
 	const styles = usePhysicalPropertiesEditorStyles();
+	const hover = useEditorHover(disabled);
 	const amounts: { [key: string]: number } = {
 		Density: value.Density,
 		Friction: value.Friction,
@@ -36,7 +38,7 @@ function PhysicalPropertiesEditor(props: CustomizedProps<Frame, PhysicalProperti
 	};
 
 	return (
-		<SxHost tag="frame" key={id || "PhysicalPropertiesEditor"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
+		<SxHost tag="frame" key={id || "PhysicalPropertiesEditor"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event}>
 			<uilistlayout {...styles.wrap} />
 			<>
 				{physicalRows().map((row, rowIndex) => (

@@ -1,4 +1,5 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
+import { editorPad, editorText } from "ui/packages/editorFace";
 
 const useColorPickerStyles = componentStyles("ColorPicker", (theme: Theme) =>
 	createStyles({
@@ -12,7 +13,7 @@ const useColorPickerStyles = componentStyles("ColorPicker", (theme: Theme) =>
 		} as WriteableStyle<Frame>,
 		column: {
 			FillDirection: Enum.FillDirection.Vertical,
-			Padding: new UDim(0, theme.padding.calc(0.75)),
+			Padding: new UDim(0, editorPad(theme)),
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		row: {
@@ -22,7 +23,7 @@ const useColorPickerStyles = componentStyles("ColorPicker", (theme: Theme) =>
 		} as WriteableStyle<Frame>,
 		rowLayout: {
 			FillDirection: Enum.FillDirection.Horizontal,
-			Padding: new UDim(0, theme.padding.calc(0.5)),
+			Padding: new UDim(0, editorPad(theme)),
 			VerticalAlignment: Enum.VerticalAlignment.Center,
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
@@ -83,16 +84,14 @@ const useColorPickerStyles = componentStyles("ColorPicker", (theme: Theme) =>
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		channel: {
-			Size: new UDim2(1 / 3, -theme.padding.calc(0.5), 0, theme.spacing.calc(3)),
+			Size: new UDim2(1 / 3, -editorPad(theme), 0, theme.spacing.calc(3)),
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 		label: {
 			Size: new UDim2(0, theme.spacing.calc(1.5), 1, 0),
 			BackgroundTransparency: 1,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.button,
 			TextColor3: theme.palette.text.secondary,
-			TextXAlignment: Enum.TextXAlignment.Left,
+			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		channelField: {
 			Size: new UDim2(1, -theme.spacing.calc(1.5), 1, 0),
@@ -119,10 +118,10 @@ const useColorPickerStyles = componentStyles("ColorPicker", (theme: Theme) =>
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
 		shellPad: {
-			PaddingTop: new UDim(0, theme.padding.calc(1)),
-			PaddingBottom: new UDim(0, theme.padding.calc(1)),
-			PaddingLeft: new UDim(0, theme.padding.calc(1)),
-			PaddingRight: new UDim(0, theme.padding.calc(1)),
+			PaddingTop: new UDim(0, editorPad(theme)),
+			PaddingBottom: new UDim(0, editorPad(theme)),
+			PaddingLeft: new UDim(0, editorPad(theme)),
+			PaddingRight: new UDim(0, editorPad(theme)),
 		} as WriteableStyle<UIPadding>,
 		shellStroke: {
 			Color: theme.palette.divider,
@@ -139,14 +138,11 @@ const useColorPickerStyles = componentStyles("ColorPicker", (theme: Theme) =>
 			Text: "",
 		} as WriteableStyle<TextButton>,
 		link: {
-			Size: new UDim2(0, 0, 0, theme.spacing.calc(2)),
-			AutomaticSize: Enum.AutomaticSize.X,
+			Size: new UDim2(1, 0, 0, theme.spacing.calc(2)),
 			BackgroundTransparency: 1,
 			AutoButtonColor: false,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.button,
 			TextColor3: theme.palette.text.secondary,
-			TextXAlignment: Enum.TextXAlignment.Left,
+			...editorText(theme),
 		} as WriteableStyle<TextButton>,
 	}),
 );
