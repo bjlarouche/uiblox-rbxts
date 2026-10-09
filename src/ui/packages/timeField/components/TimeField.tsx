@@ -50,7 +50,7 @@ function TimeField(props: CustomizedProps<Frame, TimeFieldProps>) {
 				value={value.hour}
 				step={1}
 				disabled={disabled}
-				width={new UDim(0, 56)}
+				width={new UDim(0, theme.spacing.calc(12))}
 				sx={{ LayoutOrder: 0 }}
 				onChange={(hour) => commit(hour, value.minute)}
 			/>
@@ -70,7 +70,7 @@ function TimeField(props: CustomizedProps<Frame, TimeFieldProps>) {
 				value={value.minute}
 				step={step}
 				disabled={disabled}
-				width={new UDim(0, 56)}
+				width={new UDim(0, theme.spacing.calc(12))}
 				sx={{ LayoutOrder: 2 }}
 				onChange={(minute) => commit(value.hour, minute)}
 			/>
