@@ -1,7 +1,8 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 
-const useDialogStyles = componentStyles("Dialog", (theme: Theme) =>
-	createStyles({
+const useDialogStyles = componentStyles("Dialog", (theme: Theme) => {
+	const heading = theme.typography.variants.h6;
+	return createStyles({
 		column: {
 			AutomaticSize: Enum.AutomaticSize.Y,
 			Size: UDim2.fromOffset(theme.padding.calc(36), 0),
@@ -19,8 +20,9 @@ const useDialogStyles = componentStyles("Dialog", (theme: Theme) =>
 			Size: new UDim2(1, 0, 0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
-			Font: theme.typography.fontFamilies.default,
-			TextSize: theme.typography.fontSizes.h6,
+			Font: theme.typography.fontFamilies[heading.family],
+			TextSize: heading.size,
+			LineHeight: heading.leading,
 			TextColor3: theme.palette.text.primary,
 			TextXAlignment: Enum.TextXAlignment.Left,
 			TextWrapped: true,
@@ -46,7 +48,7 @@ const useDialogStyles = componentStyles("Dialog", (theme: Theme) =>
 			SortOrder: Enum.SortOrder.LayoutOrder,
 			Wraps: true,
 		} as WriteableStyle<UIListLayout>,
-	}),
-);
+	});
+});
 
 export default useDialogStyles;
