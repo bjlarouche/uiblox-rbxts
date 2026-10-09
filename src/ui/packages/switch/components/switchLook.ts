@@ -8,7 +8,7 @@ export function switchPointer(hovering: boolean, pressed: boolean, focused: bool
 }
 
 export function switchTrackTransparency(on: boolean, disabled: boolean, pointer: SwitchPointer) {
-	if (disabled) return on ? 0.55 : 0.65;
+	if (disabled) return 0.5;
 	if (!on) {
 		if (pointer === "press") return 0.15;
 		if (pointer === "hover" || pointer === "focus") return 0.25;
@@ -20,14 +20,12 @@ export function switchTrackTransparency(on: boolean, disabled: boolean, pointer:
 }
 
 export function switchThumbTransparency(disabled: boolean) {
-	return disabled ? 0.35 : 0;
+	return disabled ? 0.5 : 0;
 }
 
 export function switchStrokeTransparency(disabled: boolean, pointer: SwitchPointer) {
-	if (disabled) return 1;
-	if (pointer === "focus" || pointer === "press") return 0;
-	if (pointer === "hover") return 0.35;
-	return 1;
+	if (disabled || pointer !== "focus") return 1;
+	return 0;
 }
 
 export function switchThumbPlacement(on: boolean, inset: number) {
