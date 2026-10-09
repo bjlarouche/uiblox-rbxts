@@ -1,3 +1,13 @@
+import { readFileSync } from "node:fs";
+
+const tabs = readFileSync("src/ui/packages/tabs/components/Tabs.tsx", "utf8");
+if (tabs.includes("task.defer(")) throw new Error("tabs scroll uses defer");
+if (tabs.includes("WaitForChild")) throw new Error("tabs waits in render");
+const effect = tabs.slice(tabs.indexOf("useEffect"), tabs.indexOf("const onKey"));
+const deps = effect.match(/\},\s*\[([^\]]*)\]/);
+if (!deps) throw new Error("tabs effect deps");
+if (/\boptions\b(?!\.size)/.test(deps[1])) throw new Error("tabs scroll effect depends on options");
+
 const { tabScroll } = await import("../src/ui/packages/tabs/components/tabScroll.ts");
 if (tabScroll(0, 0, 40, 100) !== 0) throw new Error("visible tab");
 if (tabScroll(0, 200, 40, 100) !== 140) throw new Error("tab past the view");
