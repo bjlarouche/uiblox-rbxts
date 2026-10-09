@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "@rbxts/react";
 import { useReducedMotion } from "hooks";
-import { controlMetrics, CustomizedProps, useTheme, WriteableStyle } from "theme";
+import { controlMetrics, CustomizedProps, Theme, useTheme } from "theme";
 import { Icons } from "ui/enums";
 import { SxHost } from "ui/packages/host";
 import { CircularProgress } from "ui/packages/circularProgress";
@@ -8,6 +8,7 @@ import { LoadingStroke } from "ui/packages/loadingStroke";
 import { ButtonSize, ButtonColor, ButtonVariant } from "../types";
 import { canActivate } from "./activation";
 import { buttonFace, buttonIcon, LoadingPosition, spinnerPixels, spinnerPlace } from "./buttonLook";
+import { ButtonPaint, buttonPaint } from "./buttonPaint";
 import useButtonStyles from "./Button.styles";
 
 export type DefaultButtonComponent = TextButton;
@@ -72,26 +73,28 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 	const grow = glyph !== undefined && props.fullWidth !== true;
 	const reducedMotion = useReducedMotion(reducedProp);
 	const [hovering, setHovering] = useState(false);
+	const [down, setDown] = useState(false);
 	const [focused, setFocused] = useState(false);
 	const active = canActivate(disabled, loading);
-	const pressed = disabled || (!hoveringDisabled && active && (hovering || focused));
 	const face = buttonFace(text, loading, loadingLabel);
 	const place = spinnerPlace(loadingPosition);
 	const busy = loading || animating;
 	const branded = (props.color ?? "primary") === "primary";
-	const spinnerColor =
-		variant === "contained"
-			? branded
-				? theme.palette.primary.on
-				: theme.palette.text.inverse
-			: branded
-				? theme.palette.primary.main
-				: theme.palette.text.primary;
+	const paint = buttonPaint({
+		variant,
+		branded,
+		disabled,
+		hover: hovering && !hoveringDisabled && active,
+		down: down && active,
+	});
+	const colors = buttonColors(theme, paint);
+	const labelTransparency = face.hideText ? 1 : paint.labelTransparency;
 
 	useEffect(() => {
 		if (active) return;
 		setHovering(false);
 		setFocused(false);
+		setDown(false);
 	}, [active]);
 
 	return (
@@ -99,24 +102,24 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 			tag="textbutton"
 			key={id || "Button"}
 			hostRef={ref}
-			base={{ ...root, ...font }}
+			base={{
+				...root,
+				...font,
+				BackgroundColor3: colors.fill,
+				BackgroundTransparency: paint.fillTransparency,
+				TextColor3: colors.label,
+				TextTransparency: labelTransparency,
+			}}
 			className={className}
 			sx={sx}
-			state={{ disabled, loading, hover: hovering, pressed, focused }}
+			state={{ disabled, loading, hover: hovering && !hoveringDisabled, pressed: down, focused }}
 			Active={active}
-			AutoButtonColor={active}
+			AutoButtonColor={false}
 			Selectable={active}
 			Text={glyph !== undefined ? "" : face.text}
-			{...(glyph !== undefined ? {} : face.hideText ? { TextTransparency: 1 } : {})}
 			{...(grow
 				? { AutomaticSize: Enum.AutomaticSize.X, Size: new UDim2(0, 0, 0, metrics.buttonHeight) }
 				: {})}
-			BackgroundTransparency={
-				pressed
-					? 0.75
-					: (className as WriteableStyle<DefaultButtonComponent>)?.BackgroundTransparency ??
-					  (variant === "outlined" || variant === "text" ? 1 : 0)
-			}
 			Event={{
 				MouseEnter: () => {
 					if (!active) return;
@@ -125,6 +128,7 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 				},
 				MouseLeave: () => {
 					setHovering(false);
+					setDown(false);
 					if (mouseLeave) mouseLeave();
 				},
 				SelectionGained: () => {
@@ -135,9 +139,12 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 					if (active && onLeftClick) onLeftClick();
 				},
 				MouseButton1Down: () => {
-					if (active && onLeftDown) onLeftDown();
+					if (!active) return;
+					setDown(true);
+					if (onLeftDown) onLeftDown();
 				},
 				MouseButton1Up: () => {
+					setDown(false);
 					if (active && onLeftUp) onLeftUp();
 				},
 				MouseButton2Click: () => {
@@ -153,13 +160,13 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 		>
 			{!busy && focused && <uistroke {...focus} />}
 			{!busy && !focused && variant === "outlined" && <uistroke {...stroke} />}
-			{busy && <LoadingStroke animating={busy && !reducedMotion} color={spinnerColor} />}
+			{busy && <LoadingStroke animating={busy && !reducedMotion} color={colors.label} />}
 			{rounded && <uicorner {...corner} />}
 			{loading && (
 				<CircularProgress
 					size={spinnerPixels(props.size)}
 					thickness={2}
-					color={spinnerColor}
+					color={colors.label}
 					reducedMotion={reducedMotion}
 					className={{
 						AnchorPoint: new Vector2(place.anchorX, 0.5),
@@ -188,7 +195,8 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 						BorderSizePixel={0}
 						ScaleType={Enum.ScaleType.Fit}
 						Image={glyph}
-						ImageColor3={spinnerColor}
+						ImageColor3={colors.label}
+						ImageTransparency={labelTransparency}
 						Size={UDim2.fromOffset(metrics.icon, metrics.icon)}
 					/>
 					<textlabel
@@ -200,7 +208,8 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 						Size={UDim2.fromScale(0, 0)}
 						Font={theme.typography.fontFamilies.default}
 						TextSize={metrics.font}
-						TextColor3={spinnerColor}
+						TextColor3={colors.label}
+						TextTransparency={labelTransparency}
 						Text={face.text}
 					/>
 				</>
@@ -208,6 +217,27 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 			{children}
 		</SxHost>
 	);
+}
+
+function buttonColors(theme: Theme, paint: ButtonPaint) {
+	const brand = theme.palette.primary;
+	const fills: Record<ButtonPaint["fill"], Color3> = {
+		primary: brand.main,
+		primaryHover: brand.hover,
+		primaryPressed: brand.pressed,
+		ink: theme.palette.text.primary,
+		actionHover: theme.palette.action.hover,
+		actionPressed: theme.palette.action.pressed,
+		none: theme.palette.surface.paper,
+	};
+	const labels: Record<ButtonPaint["label"], Color3> = {
+		onPrimary: brand.on,
+		inverse: theme.palette.text.inverse,
+		primary: brand.main,
+		ink: theme.palette.text.primary,
+		disabled: theme.palette.text.disabled,
+	};
+	return { fill: fills[paint.fill], label: labels[paint.label] };
 }
 
 export default Button;
