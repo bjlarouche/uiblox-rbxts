@@ -28,14 +28,16 @@ if (!stateMatrix.some((row) => row.component === "ListItem" && row.variant === "
 	throw new Error("ListItem missing divider");
 }
 
-const { listItemLabelLayout, listItemCopyInset, listItemTrailInset, listItemRowInset, listItemFill } = await import(
+const { listItemLabelLayout, listItemSecondaryLayout, listItemCopyInset, listItemTrailInset, listItemRowInset, listItemFill } = await import(
 	pathToFileURL(join(root, "src/ui/packages/listItem/components/listItemLayout.ts")).href,
 );
 const wrapped = listItemLabelLayout(true);
-if (wrapped.widthScale !== 1 || wrapped.wrapped !== true) throw new Error("wrap fills the row");
+if (wrapped.widthScale !== 1 || wrapped.wrapped !== true || wrapped.truncate !== false) throw new Error("wrap fills the row");
 const plain = listItemLabelLayout();
-if (plain.widthScale !== 0 || plain.wrapped !== false) throw new Error("plain stays one line");
-if (listItemLabelLayout(false).wrapped !== false) throw new Error("wrap false");
+if (plain.widthScale !== 1 || plain.wrapped !== false || plain.truncate !== true) throw new Error("plain stays one line");
+if (listItemLabelLayout(false).wrapped !== false || listItemLabelLayout(false).truncate !== true) throw new Error("wrap false");
+const secondary = listItemSecondaryLayout();
+if (secondary.widthScale !== 1 || secondary.wrapped !== true || secondary.truncate !== false) throw new Error("secondary wraps");
 if (listItemCopyInset(true) !== 40) throw new Error("leading inset");
 if (listItemCopyInset() !== 0 || listItemCopyInset(false) !== 0) throw new Error("no leading inset");
 if (listItemTrailInset() !== 0 || listItemTrailInset(false) !== 0 || listItemTrailInset(true) !== 48) throw new Error("trail inset");

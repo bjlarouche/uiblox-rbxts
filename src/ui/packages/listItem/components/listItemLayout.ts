@@ -11,12 +11,18 @@ export function listItemFill(input: { disabled: boolean; selected: boolean; hove
 export interface ListItemLabelLayout {
 	widthScale: number;
 	wrapped: boolean;
+	truncate: boolean;
 }
 
-/** Wrapped rows fill the list. Shrink-wrapped rows stay one line for menus. */
+/** Primary fills the row. It stays one line unless wrap is set. */
 export function listItemLabelLayout(wrap?: boolean): ListItemLabelLayout {
-	if (wrap === true) return { widthScale: 1, wrapped: true };
-	return { widthScale: 0, wrapped: false };
+	if (wrap === true) return { widthScale: 1, wrapped: true, truncate: false };
+	return { widthScale: 1, wrapped: false, truncate: true };
+}
+
+/** Secondary wraps inside the same row. */
+export function listItemSecondaryLayout(): ListItemLabelLayout {
+	return { widthScale: 1, wrapped: true, truncate: false };
 }
 
 /** Pixels the title column yields when a leading avatar or icon is present. */

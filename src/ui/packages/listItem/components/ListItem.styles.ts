@@ -1,6 +1,6 @@
 import { createStyles, componentStyles, Theme, WriteableStyle } from "theme";
 import { listItemInk, ListItemTone } from "./listItemInk";
-import { listItemLabelLayout } from "./listItemLayout";
+import { listItemLabelLayout, listItemSecondaryLayout, ListItemLabelLayout } from "./listItemLayout";
 
 const useListItemStyles = componentStyles<{
 	selected?: boolean;
@@ -10,7 +10,8 @@ const useListItemStyles = componentStyles<{
 	tone?: ListItemTone;
 }>("ListItem", (theme: Theme, { selected = false, disabled = false, dense = false, wrap = false, tone }) => {
 		const pad = theme.padding.calc(dense === true ? 0.5 : 1);
-		const label = listItemLabelLayout(wrap);
+		const primaryLayout = listItemLabelLayout(wrap);
+		const secondaryLayout = listItemSecondaryLayout();
 		const ink = listItemInk(tone, disabled);
 		const primaryColor =
 			ink === "error"
@@ -18,11 +19,12 @@ const useListItemStyles = componentStyles<{
 				: ink === "disabled"
 					? theme.palette.text.disabled
 					: theme.palette.text.primary;
-		const textBox = {
-			AutomaticSize: label.wrapped ? Enum.AutomaticSize.Y : Enum.AutomaticSize.XY,
+		const textBox = (label: ListItemLabelLayout) => ({
+			AutomaticSize: Enum.AutomaticSize.Y,
 			Size: new UDim2(label.widthScale, 0, 0, 0),
 			TextWrapped: label.wrapped,
-		};
+			TextTruncate: label.truncate ? Enum.TextTruncate.AtEnd : Enum.TextTruncate.None,
+		});
 		return createStyles({
 			root: {
 				Size: new UDim2(1, 0, 0, 0),
@@ -47,7 +49,7 @@ const useListItemStyles = componentStyles<{
 			} as WriteableStyle<UIListLayout>,
 			primary: {
 				LayoutOrder: 1,
-				...textBox,
+				...textBox(primaryLayout),
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
@@ -57,7 +59,7 @@ const useListItemStyles = componentStyles<{
 			} as WriteableStyle<TextLabel>,
 			secondary: {
 				LayoutOrder: 2,
-				...textBox,
+				...textBox(secondaryLayout),
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
