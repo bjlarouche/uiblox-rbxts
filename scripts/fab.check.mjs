@@ -37,6 +37,11 @@ if (!shadowSource.includes('key="Blob"') || !shadowSource.includes("AbsoluteSize
 if (!shadowSource.includes("<scrollingframe") || !shadowSource.includes("ClipsDescendants={false}")) {
 	throw new Error("shadow blob sits outside autosize");
 }
+const shadowAt = shadowSource.indexOf("shadow.Parent = wrap");
+const faceAt = shadowSource.indexOf("face.Parent = wrap");
+if (!shadowSource.includes('Name = "ShadowWrap"') || shadowAt < 0 || faceAt < shadowAt) {
+	throw new Error("shadow behind surface");
+}
 
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
 for (const name of ["default", "extended", "extended-narrow", "small", "medium", "large", "disabled", "loading", "accent"]) {
