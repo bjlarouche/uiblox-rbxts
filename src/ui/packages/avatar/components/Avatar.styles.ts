@@ -13,17 +13,24 @@ const useAvatarStyles = componentStyles<{ size?: number; variant?: AvatarVariant
 				ClipsDescendants: true,
 			} as WriteableStyle<Frame>,
 			image: {
+				AnchorPoint: new Vector2(0.5, 0.5),
+				Position: UDim2.fromScale(0.5, 0.5),
 				Size: UDim2.fromScale(1, 1),
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
+				ScaleType: Enum.ScaleType.Crop,
 			} as WriteableStyle<ImageLabel>,
 			text: {
+				AnchorPoint: new Vector2(0.5, 0.5),
+				Position: UDim2.fromScale(0.5, 0.5),
 				Size: UDim2.fromScale(1, 1),
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
 				TextSize: math.max(12, size * 0.4),
 				TextColor3: theme.palette.primary.on,
+				TextXAlignment: Enum.TextXAlignment.Center,
+				TextYAlignment: Enum.TextYAlignment.Center,
 			} as WriteableStyle<TextLabel>,
 			corner: {
 				CornerRadius:
