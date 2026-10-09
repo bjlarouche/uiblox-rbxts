@@ -50,6 +50,7 @@ const useChipStyles = componentStyles<{
 			TextColor3: ink,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: metrics.font,
+			TextWrapped: true,
 		} as WriteableStyle<TextButton>,
 		padding: {
 			PaddingTop: new UDim(0, theme.padding.calc(padY)),
@@ -76,6 +77,7 @@ const useChipStyles = componentStyles<{
 			Size: UDim2.fromScale(0, 0),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
+			TextWrapped: true,
 			TextColor3: ink,
 			Font: theme.typography.fontFamilies.default,
 			TextSize: metrics.font,
