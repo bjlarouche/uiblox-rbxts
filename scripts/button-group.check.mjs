@@ -13,5 +13,7 @@ const styles = readFileSync("src/ui/packages/buttonGroup/components/ButtonGroup.
 const view = readFileSync("src/ui/packages/buttonGroup/components/ButtonGroup.tsx", "utf8");
 if (!styles.includes('"ButtonGroup"')) throw new Error("override name");
 if (!view.includes("<SxHost")) throw new Error("sx host");
+if (!view.includes("!off && index === selected")) throw new Error("selected index");
+if (!view.includes("palette.primary.main") || !view.includes("palette.primary.on")) throw new Error("selected face");
 
 console.log("button group ok");
