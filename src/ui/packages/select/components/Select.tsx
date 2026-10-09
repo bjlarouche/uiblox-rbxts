@@ -19,6 +19,7 @@ import { groupRows, rowForOption } from "./selectGroups";
 import { shouldHandleSelectKey } from "./selectKey";
 import { includesChoice, selectionLabel } from "./selectMulti";
 import { typeaheadChoice } from "./selectTypeahead";
+import { fieldChrome } from "../../input/components/fieldChrome";
 import { selectWidth } from "./selectWidth";
 import { stepChoice } from "./stepChoice";
 
@@ -37,13 +38,15 @@ export interface SelectProps<T> {
 	empty?: React.Element;
 	reducedMotion?: boolean;
 	size?: ControlSize;
+	hasError?: boolean;
+	helperText?: string;
 }
 
 function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
-	const { value, values, options, onChange, disabled, loading = false, placeholder = "", searchable, defaultOpen, defaultQuery, emptyText, empty, reducedMotion: reducedProp, size, className,
+	const { value, values, options, onChange, disabled, loading = false, placeholder = "", searchable, defaultOpen, defaultQuery, emptyText, empty, reducedMotion: reducedProp, size, hasError = false, helperText, className,
 		sx, id, ref } = props;
 	const reducedMotion = useReducedMotion(reducedProp);
-	const styles = useSelectStyles({ size });
+	const styles = useSelectStyles({ size, hasError, helperText });
 	const { theme } = useTheme();
 	const metrics = controlMetrics(theme.density, size);
 	const row = metrics.height;
@@ -80,7 +83,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 		const bounds = TextService.GetTextSize(shown, textSize, font, new Vector2(10000, 100));
 		if (bounds.X > widest) widest = bounds.X;
 	}
-	const pad = theme.padding.calc(1.5) * 2;
+	const pad = fieldChrome(metrics.height, theme.padding.calc(1)).padX * 2;
 	const floor = anchor !== undefined ? anchor.AbsoluteSize.X : 0;
 	const popupWidth = rows.size() === 0 ? 0 : selectWidth(widest, pad, floor);
 	const emptyHint =
@@ -189,6 +192,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 				{...cx<TextButton>(
 					styles.trigger,
 					current === undefined && styles.placeholder,
+					hasError && styles.errorText,
 					!active && { TextTransparency: 0.5 },
 				)}
 				Text={values !== undefined ? selectionLabel(options, values, placeholder) : (current?.label ?? placeholder)}
@@ -207,11 +211,16 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 				<uipadding
 					{...cx<UIPadding>(
 						styles.padding,
-						loading && { PaddingRight: new UDim(0, theme.padding.calc(1.5) + spinnerPixels(size) + theme.padding.calc(1)) },
+						loading && { PaddingRight: new UDim(0, theme.padding.calc(1) + spinnerPixels(size) + theme.padding.calc(1)) },
 					)}
 				/>
 				<uicorner {...styles.corner} />
-				<uistroke {...cx<UIStroke>(styles.stroke, focused && styles.focusStroke)} />
+				<uistroke
+					{...cx<UIStroke>(
+						styles.stroke,
+						focused && (hasError ? { ...styles.focusStroke, Color: theme.palette.status.error.main } : styles.focusStroke),
+					)}
+				/>
 				{loading && (
 					<CircularProgress
 						size={spinnerPixels(size)}
@@ -225,6 +234,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 					/>
 				)}
 			</textbutton>
+			{helperText !== undefined && <textlabel key="Helper" {...styles.helper} Text={helperText} />}
 			{shown && (
 				<Popup anchor={anchor} preferredHeight={menuHeight} preferredWidth={popupWidth} onDismiss={close} onInput={(input) => onKey(input, true)}>
 					<frame key="Menu" {...styles.menu}>

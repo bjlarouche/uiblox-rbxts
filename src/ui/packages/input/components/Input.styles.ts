@@ -1,5 +1,6 @@
 import { controlMetrics, createStyles, componentStyles, focusRing, WriteableStyle } from "theme";
 import { InputProps } from "./Input";
+import { fieldChrome } from "./fieldChrome";
 import { inputInsets } from "./inputInsets";
 import { multilineHeight } from "./multilineHeight";
 
@@ -26,15 +27,16 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean; content
 		},
 	) => {
 		const metrics = controlMetrics(theme.density, size);
+		const chrome = fieldChrome(metrics.height, theme.padding.calc(1));
 		const hasStart = startAdornment !== undefined;
 		const hasEnd = endAdornment !== undefined || loading;
 		const icon = metrics.icon;
-		const gap = theme.padding.calc(1);
+		const gap = chrome.padX;
 		const insets = inputInsets(hasStart, hasEnd, icon, gap);
-		const verticalPad = theme.padding.calc(1);
+		const verticalPad = chrome.padX;
 		const fieldHeight = multiline
 			? multilineHeight(contentHeight, metrics.font, minRows, maxRows, verticalPad)
-			: metrics.height + (variant === "standard" ? 0 : verticalPad);
+			: chrome.height;
 		const accent = color === "primary" ? theme.palette.primary.main : theme.palette.text.primary;
 
 		const makeRootStyles = () => {
