@@ -1,6 +1,7 @@
 import React from "@rbxts/react";
-import { componentStyles, Theme, createStyles, WriteableStyle, CustomizedProps } from "theme";
+import { componentStyles, Theme, createStyles, WriteableStyle, CustomizedProps, resolveSx, SxInput, useTheme } from "theme";
 import { SxHost } from "ui/packages/host";
+import { automaticAxes, Pad, padActive, styleAutomaticSize, withoutPad } from "./Pad";
 import { GridCorner, gridCornerKey, gridMaxCells } from "./gridProps";
 
 export interface GridProps {
@@ -73,6 +74,7 @@ function Grid(props: CustomizedProps<Frame, GridProps>) {
 		ref,
 	} = props;
 
+	const { theme } = useTheme();
 	const { baseGrid, baseLayout } = useGridStyles({
 		cellPadding,
 		cellSize,
@@ -87,10 +89,30 @@ function Grid(props: CustomizedProps<Frame, GridProps>) {
 		verticalAlignment,
 	});
 
-	return (
-		<SxHost key={id || "Grid"} hostRef={ref} base={baseGrid} className={className} sx={sx}>
+	const pad = resolveSx(theme, sx as SxInput | undefined).padding;
+	const left = pad?.PaddingLeft.Offset ?? 0;
+	const right = pad?.PaddingRight.Offset ?? 0;
+	const top = pad?.PaddingTop.Offset ?? 0;
+	const bottom = pad?.PaddingBottom.Offset ?? 0;
+	const inset = padActive(left, right, top, bottom);
+	const auto = automaticAxes(
+		(sx as { AutomaticSize?: Enum.AutomaticSize } | undefined)?.AutomaticSize ?? styleAutomaticSize(baseGrid),
+	);
+	const body = (
+		<>
 			<uigridlayout key="GridLayout" {...baseLayout} />
 			{children}
+		</>
+	);
+	return (
+		<SxHost key={id || "Grid"} hostRef={ref} base={baseGrid} className={className} sx={inset ? withoutPad(sx) : sx}>
+			{inset ? (
+				<Pad left={left} right={right} top={top} bottom={bottom} autoX={auto.x} autoY={auto.y}>
+					{body}
+				</Pad>
+			) : (
+				body
+			)}
 		</SxHost>
 	);
 }
