@@ -56,6 +56,7 @@ function ButtonGroup(props: CustomizedProps<Frame, ButtonGroupProps>) {
 								}}
 							>
 								<uipadding {...styles.pad} />
+								{picked && edge !== "middle" && <uicorner {...styles.corner} />}
 							</textbutton>
 							{rule ? <frame key={`Rule-${index}`} {...styles.rule} LayoutOrder={index * 2 + 1} /> : undefined}
 						</>
