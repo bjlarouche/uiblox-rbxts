@@ -46,4 +46,11 @@ export default interface Palette {
 	};
 	backdrop: Color3;
 	shadow: Color3;
+	code: {
+		keyword: Color3;
+		string: Color3;
+		number: Color3;
+		comment: Color3;
+		func: Color3;
+	};
 }

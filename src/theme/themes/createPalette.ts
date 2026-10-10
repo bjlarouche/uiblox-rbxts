@@ -1,4 +1,4 @@
-import { Blue, Common, Gray, Green, Purple, Red, Yellow } from "../interfaces/palette/colors";
+import { Blue, Common, Gray, Green, Orange, Purple, Red, Yellow } from "../interfaces/palette/colors";
 import { Palette } from "../interfaces/palette";
 import { lighten, mix } from "../utilites/colorMath";
 
@@ -54,6 +54,13 @@ export const createLightPalette = (): Palette => {
 		},
 		backdrop: Common.Black,
 		shadow: Common.Black,
+		code: {
+			keyword: Purple[80],
+			string: Green[90],
+			number: Orange[80],
+			comment: Gray[70],
+			func: Blue[90],
+		},
 	};
 };
 
@@ -95,5 +102,12 @@ export const createDarkPalette = (): Palette => {
 		},
 		backdrop: Common.Black,
 		shadow: Common.Black,
+		code: {
+			keyword: Purple[30],
+			string: Green[50],
+			number: Orange[40],
+			comment: Gray[50],
+			func: Blue[40],
+		},
 	};
 };

@@ -1,11 +1,21 @@
-import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
+import { componentStyles, controlMetrics, createStyles, Theme, WriteableStyle } from "theme";
 import { focusRing } from "theme/styles/utilities/focusRing";
 
-const useCodeEditorStyles = componentStyles<{ focused?: boolean; fieldHeight: number }>(
+const useCodeEditorStyles = componentStyles<{ focused?: boolean; fieldHeight: number; triggerWidth: number }>(
 	"CodeEditor",
-	(theme: Theme, { focused = false, fieldHeight }) => {
+	(theme: Theme, { focused = false, fieldHeight, triggerWidth }) => {
 		const pad = theme.padding.calc(2);
 		const textSize = theme.typography.fontSizes.caption ?? theme.typography.fontSizes.body;
+		const metrics = controlMetrics(theme.density, "small");
+		const ink = {
+			Font: Enum.Font.RobotoMono,
+			TextSize: textSize,
+			TextColor3: theme.palette.text.primary,
+			TextXAlignment: Enum.TextXAlignment.Left,
+			TextYAlignment: Enum.TextYAlignment.Top,
+			TextWrapped: true,
+			LineHeight: 1,
+		};
 		return createStyles({
 			root: {
 				AutomaticSize: Enum.AutomaticSize.Y,
@@ -48,19 +58,44 @@ const useCodeEditorStyles = componentStyles<{ focused?: boolean; fieldHeight: nu
 				VerticalAlignment: Enum.VerticalAlignment.Center,
 				SortOrder: Enum.SortOrder.LayoutOrder,
 			} as WriteableStyle<UIListLayout>,
-			field: {
+			trigger: {
+				Size: UDim2.fromOffset(triggerWidth, metrics.height),
+				BackgroundColor3: theme.palette.surface.input,
+				BorderSizePixel: 0,
+				AutoButtonColor: false,
+				Font: theme.typography.fontFamilies.default,
+				TextSize: metrics.font,
+				TextColor3: theme.palette.text.primary,
+				TextXAlignment: Enum.TextXAlignment.Left,
+			} as WriteableStyle<TextButton>,
+			triggerStroke: {
+				Color: theme.palette.border,
+				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+				Thickness: 1,
+				Transparency: 0,
+			} as WriteableStyle<UIStroke>,
+			fieldHost: {
 				Size: new UDim2(1, 0, 0, fieldHeight),
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
-				Font: Enum.Font.RobotoMono,
-				TextSize: textSize,
-				TextColor3: theme.palette.text.primary,
-				PlaceholderColor3: theme.palette.text.secondary,
-				TextXAlignment: Enum.TextXAlignment.Left,
-				TextYAlignment: Enum.TextYAlignment.Top,
-				TextWrapped: true,
-				ClearTextOnFocus: false,
 				LayoutOrder: 1,
+			} as WriteableStyle<Frame>,
+			highlight: {
+				...ink,
+				Size: UDim2.fromScale(1, 1),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				RichText: true,
+				ZIndex: 1,
+			} as WriteableStyle<TextLabel>,
+			field: {
+				...ink,
+				Size: UDim2.fromScale(1, 1),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				PlaceholderColor3: theme.palette.text.secondary,
+				ClearTextOnFocus: false,
+				ZIndex: 2,
 			} as WriteableStyle<TextBox>,
 		});
 	},
