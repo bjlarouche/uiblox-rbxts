@@ -7,10 +7,12 @@ export type MdInline =
 
 export type MdAlign = "left" | "center" | "right";
 
+export type CodeLanguage = "luau" | "ts" | "json" | "text";
+
 export type MdBlock =
 	| { kind: "heading"; level: number; inlines: MdInline[] }
 	| { kind: "paragraph"; inlines: MdInline[] }
-	| { kind: "code"; text: string }
+	| { kind: "code"; text: string; language: CodeLanguage }
 	| { kind: "list"; ordered: boolean; items: MdInline[][] }
 	| { kind: "blockquote"; paragraphs: MdInline[][] }
 	| { kind: "table"; align: MdAlign[]; header: MdInline[][]; rows: MdInline[][][] }
@@ -265,6 +267,15 @@ function listMarker(line: string): { ordered: boolean; rest: string } | undefine
 	return undefined;
 }
 
+function codeLanguage(info: string): CodeLanguage {
+	const token = trim(info).split(" ")[0] ?? "";
+	const name = token.lower();
+	if (name === "luau") return "luau";
+	if (name === "ts") return "ts";
+	if (name === "json") return "json";
+	return "text";
+}
+
 /** Small markdown subset → blocks. Unsupported syntax stays plain text. */
 export function parseMarkdown(source: string): MdBlock[] {
 	const lines = source.split("\n");
@@ -280,6 +291,7 @@ export function parseMarkdown(source: string): MdBlock[] {
 		}
 
 		if (line.size() >= 3 && line.sub(1, 3) === "```") {
+			const language = codeLanguage(line.sub(4));
 			const body: string[] = [];
 			i += 1;
 			while (i < lines.size() && !(lines[i].size() >= 3 && trim(lines[i]).sub(1, 3) === "```")) {
@@ -287,7 +299,7 @@ export function parseMarkdown(source: string): MdBlock[] {
 				i += 1;
 			}
 			if (i < lines.size()) i += 1;
-			blocks.push({ kind: "code", text: body.join("\n") });
+			blocks.push({ kind: "code", text: body.join("\n"), language });
 			continue;
 		}
 
