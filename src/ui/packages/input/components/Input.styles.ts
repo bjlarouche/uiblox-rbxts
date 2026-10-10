@@ -8,7 +8,6 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean; content
 	(
 		theme,
 		{
-			color = "primary",
 			margin = "none",
 			variant = "standard",
 			width = new UDim(0, theme.spacing.calc(12)),
@@ -37,8 +36,6 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean; content
 		const fieldHeight = multiline
 			? multilineHeight(contentHeight, metrics.font, minRows, maxRows, verticalPad)
 			: chrome.height;
-		const accent = color === "primary" ? theme.palette.primary.main : theme.palette.text.primary;
-
 		const makeRootStyles = () => {
 			const defaultStyles: WriteableStyle<Frame> = {};
 			defaultStyles.BackgroundTransparency = 1;
@@ -176,15 +173,15 @@ const useInputStyles = componentStyles<InputProps & { focused?: boolean; content
 			} as WriteableStyle<TextLabel>,
 			divider: {
 				Position: new UDim2(0, 0, 0, fieldHeight),
-				BackgroundColor3: focused ? theme.palette.focus : accent,
+				BackgroundColor3: focused ? theme.palette.focus : theme.palette.border,
 				ZIndex: 11000,
 			} as WriteableStyle<Frame>,
 			corner: {
 				CornerRadius: new UDim(0, theme.shape.borderRadius),
 			} as WriteableStyle<UICorner>,
 			stroke: {
-				Color: hasError ? theme.palette.status.error.main : accent,
-				Transparency: focused || hasError ? 0 : 0.45,
+				Color: hasError ? theme.palette.status.error.main : focused ? theme.palette.focus : theme.palette.border,
+				Transparency: 0,
 				Thickness: 1,
 				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 				...(focused ? focusRing(hasError ? theme.palette.status.error.main : theme.palette.focus) : {}),
