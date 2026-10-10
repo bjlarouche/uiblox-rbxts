@@ -95,7 +95,7 @@ function NumberSequenceEditor(props: CustomizedProps<Frame, NumberSequenceEditor
 							Position={UDim2.fromScale(stop.t, 0.5)}
 							ZIndex={stopIndex === index ? 2 : 1}
 						>
-							<uicorner CornerRadius={new UDim(0, 2)} />
+							<uicorner {...styles.corner} />
 							<uistroke Thickness={stopIndex === index ? 2 : 1} Color={new Color3(1, 1, 1)} />
 						</frame>
 					))}

@@ -168,10 +168,10 @@ function renderBlock(
 	if (block.kind === "blockquote") {
 		return (
 			<frame key={`q-${index}`} {...styles.quote} LayoutOrder={index}>
-				<uicorner CornerRadius={new UDim(0, 4)} />
+				<uicorner {...styles.quoteCorner} />
 				<uipadding {...styles.quoteBarPad} />
 				<frame key="Face" {...styles.quoteFace}>
-					<uicorner CornerRadius={new UDim(0, 3)} />
+					<uicorner {...styles.quoteFaceCorner} />
 					<uipadding {...styles.quotePad} />
 					<uilistlayout {...styles.quoteStack} />
 					{block.paragraphs.map((inlines, para) =>
