@@ -36,6 +36,7 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 	return (
 		<SxHost tag="frame" key={id || "Accordion"} hostRef={ref} base={styles.root} className={className} sx={sx} state={{ disabled }}>
 			{square !== true && <uicorner {...styles.corner} />}
+			<uistroke {...styles.stroke} />
 			<uilistlayout {...styles.list} />
 			<textbutton
 				key="Header"
