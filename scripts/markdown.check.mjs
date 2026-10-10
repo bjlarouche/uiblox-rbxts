@@ -154,6 +154,11 @@ const editorBlock = editorStyles.match(/editor:\s*\{[\s\S]*?\}\s*as WriteableSty
 if (editorBlock === undefined || !editorBlock.includes("fontSizes.body") || editorBlock.includes("fontSizes.caption")) {
 	throw new Error("editor text matches the body size");
 }
+const editorSource = (await import("node:fs")).readFileSync("src/ui/packages/markdown/components/MarkdownEditor.tsx", "utf8");
+if (!editorSource.includes("Paste HTML to convert to markdown")) throw new Error("paste panel title");
+if (!editorSource.includes("Couldn't convert that HTML")) throw new Error("paste panel error");
+if (!editorSource.includes("disabled={isBlank(htmlDraft)}")) throw new Error("convert stays disabled while empty");
+if (editorSource.includes("onEnterPressed")) throw new Error("paste field does not add an enter shortcut");
 
 const { readFileSync } = await import("node:fs");
 const markdown = readFileSync("src/ui/packages/markdown/components/Markdown.tsx", "utf8");

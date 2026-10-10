@@ -6,6 +6,7 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 	"MarkdownEditor",
 	(theme: Theme, { fullscreen, compact }) => {
 		const pad = compact === true || theme.density === "compact" ? theme.padding.calc(1) : theme.padding.calc(1.5);
+		const glyph = theme.typography.fontSizes.body ?? theme.typography.variants.body.size;
 		return createStyles({
 			root: {
 				Size: fullscreen === true ? UDim2.fromScale(1, 1) : new UDim2(1, 0, 1, 0),
@@ -49,7 +50,89 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 				HorizontalAlignment: Enum.HorizontalAlignment.Left,
 				VerticalAlignment: Enum.VerticalAlignment.Center,
 				SortOrder: Enum.SortOrder.LayoutOrder,
-				Padding: new UDim(0, theme.padding.calc(1)),
+				Padding: new UDim(0, theme.spacing.calc(1)),
+			} as WriteableStyle<UIListLayout>,
+			toolbarIcon: {
+				Size: UDim2.fromOffset(glyph + theme.padding.calc(2), glyph + theme.padding.calc(2)),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				AutoButtonColor: false,
+				ImageTransparency: 1,
+				LayoutOrder: 3,
+			} as WriteableStyle<ImageButton>,
+			toolbarGlyph: {
+				Size: UDim2.fromOffset(glyph, glyph),
+				Position: UDim2.fromScale(0.5, 0.5),
+				AnchorPoint: new Vector2(0.5, 0.5),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				ImageColor3: theme.palette.text.secondary,
+				ScaleType: Enum.ScaleType.Fit,
+			} as WriteableStyle<ImageLabel>,
+			htmlWrap: {
+				AutomaticSize: Enum.AutomaticSize.Y,
+				Size: new UDim2(1, 0, 0, 0),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				LayoutOrder: 2,
+			} as WriteableStyle<Frame>,
+			htmlGap: {
+				PaddingTop: new UDim(0, theme.spacing.calc(1)),
+				PaddingLeft: new UDim(0, theme.spacing.calc(1)),
+				PaddingRight: new UDim(0, theme.spacing.calc(1)),
+			} as WriteableStyle<UIPadding>,
+			htmlSurface: {
+				AutomaticSize: Enum.AutomaticSize.Y,
+				Size: new UDim2(1, 0, 0, 0),
+				BackgroundColor3: theme.palette.surface.elevated,
+				BorderSizePixel: 0,
+			} as WriteableStyle<Frame>,
+			htmlStroke: {
+				Color: theme.palette.divider,
+				Thickness: 1,
+				Transparency: 0,
+				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+			} as WriteableStyle<UIStroke>,
+			htmlCorner: {
+				CornerRadius: new UDim(0, theme.shape.borderRadius),
+			} as WriteableStyle<UICorner>,
+			htmlPad: {
+				PaddingTop: new UDim(0, theme.padding.calc(2)),
+				PaddingBottom: new UDim(0, theme.padding.calc(2)),
+				PaddingLeft: new UDim(0, theme.padding.calc(2)),
+				PaddingRight: new UDim(0, theme.padding.calc(2)),
+			} as WriteableStyle<UIPadding>,
+			htmlStack: {
+				FillDirection: Enum.FillDirection.Vertical,
+				HorizontalAlignment: Enum.HorizontalAlignment.Left,
+				SortOrder: Enum.SortOrder.LayoutOrder,
+				Padding: new UDim(0, theme.spacing.calc(1)),
+			} as WriteableStyle<UIListLayout>,
+			htmlHint: {
+				AutomaticSize: Enum.AutomaticSize.Y,
+				Size: new UDim2(1, 0, 0, 0),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				Font: theme.typography.fontFamilies.default,
+				TextSize: glyph,
+				TextColor3: theme.palette.text.primary,
+				TextXAlignment: Enum.TextXAlignment.Left,
+				TextWrapped: true,
+				LayoutOrder: 1,
+			} as WriteableStyle<TextLabel>,
+			htmlActions: {
+				AutomaticSize: Enum.AutomaticSize.Y,
+				Size: new UDim2(1, 0, 0, 0),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+				LayoutOrder: 3,
+			} as WriteableStyle<Frame>,
+			htmlActionsRow: {
+				FillDirection: Enum.FillDirection.Horizontal,
+				HorizontalAlignment: Enum.HorizontalAlignment.Right,
+				VerticalAlignment: Enum.VerticalAlignment.Center,
+				SortOrder: Enum.SortOrder.LayoutOrder,
+				Padding: new UDim(0, theme.spacing.calc(1)),
 			} as WriteableStyle<UIListLayout>,
 			spacer: {
 				Size: new UDim2(1, 0, 1, 0),

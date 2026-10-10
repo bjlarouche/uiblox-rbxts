@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { CustomizedProps, useTheme } from "theme";
 import { Button } from "ui/packages/button";
 import { SxHost } from "ui/packages/host";
-import { IconButton } from "ui/packages/iconButton";
 import { Icons } from "ui/enums";
+import { Input } from "ui/packages/input";
 import { ToggleButtonGroup } from "ui/packages/toggleButton";
 import { htmlToMarkdown } from "../htmlToMarkdown";
 import Markdown from "./Markdown";
@@ -32,6 +32,14 @@ const MODE_OPTIONS = [
 	{ label: "Edit", value: "edit" as const },
 	{ label: "Preview", value: "preview" as const },
 ];
+
+function isBlank(value: string): boolean {
+	for (let i = 1; i <= value.size(); i++) {
+		const ch = value.sub(i, i);
+		if (ch !== " " && ch !== "\t" && ch !== "\n" && ch !== "\r") return false;
+	}
+	return true;
+}
 
 function looksLikeHtml(text: string): boolean {
 	const lower = text.lower();
@@ -74,6 +82,8 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 	const [fullscreenState, setFullscreenState] = useState(false);
 	const [draft, setDraft] = useState(value);
 	const [htmlDraft, setHtmlDraft] = useState<string | undefined>(undefined);
+	const [htmlError, setHtmlError] = useState<string | undefined>(undefined);
+	const [panelHeight, setPanelHeight] = useState(0);
 	const [heightState, setHeightState] = useState(defaultHeight);
 	const [dragging, setDragging] = useState(false);
 	const focused = useRef(false);
@@ -83,11 +93,15 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 	const fullscreen = fullscreenProp ?? fullscreenState;
 	const height = clampEditorHeight(heightProp ?? heightState, minHeight, maxHeight);
 	const compact = theme.density === "compact";
+	const toolbarHeight = compact ? 32 : 36;
 	const styles = useMarkdownEditorStyles({ fullscreen, compact });
 
 	useEffect(() => {
 		if (!focused.current) setDraft(value);
 	}, [value]);
+	useEffect(() => {
+		if (htmlDraft === undefined) setPanelHeight(0);
+	}, [htmlDraft]);
 
 	const setMode = (modeNext: MarkdownEditorMode) => {
 		if (modeProp === undefined) setModeState(modeNext);
@@ -137,81 +151,79 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 					className={{ LayoutOrder: 2, AutomaticSize: Enum.AutomaticSize.XY, Size: UDim2.fromScale(0, 0) }}
 					onLeftClick={() => {
 						if (looksLikeHtml(value)) onChange(htmlToMarkdown(value));
-						else setHtmlDraft("");
+						else {
+							setHtmlError(undefined);
+							setHtmlDraft("");
+						}
 					}}
 				/>
-				<IconButton
-					icon={Icons.Expanded}
-					size="sm"
-					tint={theme.palette.text.secondary}
-					selected={fullscreen}
-					onClick={() => setFullscreen(!fullscreen)}
-					className={{ LayoutOrder: 99 }}
-				/>
+				<imagebutton key="Fullscreen" {...styles.toolbarIcon} Event={{ Activated: () => setFullscreen(!fullscreen) }}>
+					<imagelabel key="Glyph" {...styles.toolbarGlyph} Image={tostring(Icons.Expanded)} />
+				</imagebutton>
 				</frame>
 				{htmlDraft !== undefined && (
 				<frame
 					key="HtmlPaste"
-					Size={new UDim2(1, 0, 0, 96)}
-					BackgroundColor3={theme.palette.surface.elevated}
-					BorderSizePixel={0}
-					LayoutOrder={1}
+					{...styles.htmlWrap}
+					Change={{ AbsoluteSize: (rbx) => setPanelHeight(rbx.AbsoluteSize.Y) }}
 				>
-					<uipadding
-						PaddingTop={new UDim(0, theme.padding.calc(1))}
-						PaddingBottom={new UDim(0, theme.padding.calc(1))}
-						PaddingLeft={new UDim(0, theme.padding.calc(1))}
-						PaddingRight={new UDim(0, theme.padding.calc(1))}
-					/>
-					<uilistlayout
-						FillDirection={Enum.FillDirection.Vertical}
-						SortOrder={Enum.SortOrder.LayoutOrder}
-						Padding={new UDim(0, theme.padding.calc(1))}
-					/>
-					<textbox
-						key="HtmlField"
-						Size={new UDim2(1, 0, 0, 48)}
-						BackgroundColor3={theme.palette.surface.input}
-						BorderSizePixel={0}
-						ClearTextOnFocus={false}
-						MultiLine={true}
-						Text={htmlDraft}
-						PlaceholderText="Paste HTML here"
-						TextXAlignment={Enum.TextXAlignment.Left}
-						TextYAlignment={Enum.TextYAlignment.Top}
-						TextSize={theme.typography.fontSizes.caption}
-						TextColor3={theme.palette.text.primary}
-						Font={Enum.Font.RobotoMono}
-						Change={{ Text: (rbx) => setHtmlDraft(rbx.Text) }}
-						LayoutOrder={1}
-					/>
-					<frame key="HtmlActions" Size={new UDim2(1, 0, 0, 28)} BackgroundTransparency={1} LayoutOrder={2}>
-						<uilistlayout
-							FillDirection={Enum.FillDirection.Horizontal}
-							Padding={new UDim(0, theme.padding.calc(1))}
-							SortOrder={Enum.SortOrder.LayoutOrder}
-						/>
-						<Button
-							text="Convert"
-							size="small"
-							className={{ LayoutOrder: 1, AutomaticSize: Enum.AutomaticSize.XY, Size: UDim2.fromScale(0, 0) }}
-							onLeftClick={() => {
-								onChange(htmlToMarkdown(htmlDraft));
-								setHtmlDraft(undefined);
-								setMode("preview");
+					<uipadding {...styles.htmlGap} />
+					<frame key="Surface" {...styles.htmlSurface}>
+						<uistroke {...styles.htmlStroke} />
+						<uicorner {...styles.htmlCorner} />
+						<uipadding {...styles.htmlPad} />
+						<uilistlayout {...styles.htmlStack} />
+						<textlabel key="Hint" {...styles.htmlHint} Text="Paste HTML to convert to markdown" />
+						<Input
+							text={htmlDraft}
+							placeholder="Paste HTML here"
+							multiline
+							minRows={4}
+							variant="outlined"
+							width={new UDim(1, 0)}
+							hasError={htmlError !== undefined}
+							helperText={htmlError}
+							className={{ LayoutOrder: 2 }}
+							onInput={(text) => {
+								setHtmlDraft(text);
+								setHtmlError(undefined);
 							}}
+							onTextChanged={(text) => setHtmlDraft(text)}
 						/>
-						<Button
-							text="Cancel"
-							variant="text"
-							size="small"
-							className={{ LayoutOrder: 2, AutomaticSize: Enum.AutomaticSize.XY, Size: UDim2.fromScale(0, 0) }}
-							onLeftClick={() => setHtmlDraft(undefined)}
-						/>
+						<frame key="HtmlActions" {...styles.htmlActions}>
+							<uilistlayout {...styles.htmlActionsRow} />
+							<Button
+								text="Convert"
+								size={compact ? "small" : "medium"}
+								disabled={isBlank(htmlDraft)}
+								className={{ LayoutOrder: 1, AutomaticSize: Enum.AutomaticSize.XY, Size: UDim2.fromScale(0, 0) }}
+								onLeftClick={() => {
+									const converted = htmlToMarkdown(htmlDraft);
+									if (isBlank(converted)) {
+										setHtmlError("Couldn't convert that HTML");
+										return;
+									}
+									onChange(converted);
+									setHtmlError(undefined);
+									setHtmlDraft(undefined);
+									setMode("preview");
+								}}
+							/>
+							<Button
+								text="Cancel"
+								variant="text"
+								size={compact ? "small" : "medium"}
+								className={{ LayoutOrder: 2, AutomaticSize: Enum.AutomaticSize.XY, Size: UDim2.fromScale(0, 0) }}
+								onLeftClick={() => {
+									setHtmlError(undefined);
+									setHtmlDraft(undefined);
+								}}
+							/>
+						</frame>
 					</frame>
 				</frame>
 				)}
-				<frame key="Body" {...styles.body} LayoutOrder={3}>
+				<frame key="Body" {...styles.body} Size={new UDim2(1, 0, 1, -(toolbarHeight + panelHeight))} LayoutOrder={3}>
 				{mode === "split" && <uilistlayout {...styles.split} />}
 				{showEdit && (
 					<frame key="EditPane" {...(mode === "split" ? styles.pane : styles.paneFull)} LayoutOrder={1}>
