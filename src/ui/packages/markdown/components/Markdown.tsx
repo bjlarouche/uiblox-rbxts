@@ -1,5 +1,6 @@
 import React from "@rbxts/react";
 import { CustomizedProps, useTheme } from "theme";
+import { CodeEditor } from "ui/packages/codeEditor";
 import { Divider } from "ui/packages/divider";
 import { SxHost } from "ui/packages/host";
 import { Link } from "ui/packages/link";
@@ -145,11 +146,13 @@ function renderBlock(
 	}
 	if (block.kind === "code") {
 		return (
-			<frame key={`c-${index}`} {...styles.code} LayoutOrder={index}>
-				<uicorner CornerRadius={new UDim(0, 4)} />
-				<uipadding {...styles.codePad} />
-				<textlabel key="Code" {...styles.codeText} Text={block.text} />
-			</frame>
+			<CodeEditor
+				key={`c-${index}`}
+				value={block.text}
+				language={block.language}
+				readOnly
+				className={{ LayoutOrder: index, Size: (styles.block as unknown as { Size: UDim2 }).Size }}
+			/>
 		);
 	}
 	if (block.kind === "hr") {

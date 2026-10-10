@@ -4,7 +4,6 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 	const gap = theme.density === "compact" ? theme.padding.calc(1) : theme.spacing.calc(1);
 	const pad = theme.padding.calc(2);
 	const span = new UDim2(1, -pad * 2, 0, 0);
-	const codeInset = theme.padding.calc(1.5) * 2;
 	const cellWidth = theme.spacing.calc(14);
 	return createStyles({
 		inset: {
@@ -44,30 +43,6 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 			TextYAlignment: Enum.TextYAlignment.Top,
 			TextWrapped: true,
 			RichText: true,
-		} as WriteableStyle<TextLabel>,
-		code: {
-			AutomaticSize: Enum.AutomaticSize.Y,
-			Size: span,
-			BackgroundColor3: theme.palette.surface.paper,
-			BorderSizePixel: 0,
-		} as WriteableStyle<Frame>,
-		codePad: {
-			PaddingTop: new UDim(0, theme.padding.calc(1)),
-			PaddingBottom: new UDim(0, theme.padding.calc(1)),
-			PaddingLeft: new UDim(0, theme.padding.calc(1.5)),
-			PaddingRight: new UDim(0, theme.padding.calc(1.5)),
-		} as WriteableStyle<UIPadding>,
-		codeText: {
-			AutomaticSize: Enum.AutomaticSize.Y,
-			Size: new UDim2(1, -codeInset, 0, 0),
-			BackgroundTransparency: 1,
-			BorderSizePixel: 0,
-			Font: Enum.Font.RobotoMono,
-			TextSize: theme.typography.fontSizes.caption ?? theme.typography.fontSizes.body,
-			TextColor3: theme.palette.text.primary,
-			TextXAlignment: Enum.TextXAlignment.Left,
-			TextYAlignment: Enum.TextYAlignment.Top,
-			TextWrapped: true,
 		} as WriteableStyle<TextLabel>,
 		quote: {
 			AutomaticSize: Enum.AutomaticSize.Y,

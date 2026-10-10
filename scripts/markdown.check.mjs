@@ -52,6 +52,16 @@ if (JSON.stringify(kinds("# Title\n\nPara")) !== JSON.stringify(["heading", "par
 if (kinds("## Sub")[0] !== "heading") throw new Error("h2");
 if (kinds("---")[0] !== "hr") throw new Error("hr");
 if (kinds("```\ncode\n```")[0] !== "code") throw new Error("fence");
+const bareFence = parseMarkdown("```\ncode\n```")[0];
+if (bareFence.kind !== "code" || bareFence.language !== "text" || bareFence.text !== "code") throw new Error("fence without a language");
+const luauFence = parseMarkdown("```luau\nlocal x = 1\n```")[0];
+if (luauFence.kind !== "code" || luauFence.language !== "luau" || luauFence.text !== "local x = 1") throw new Error("luau fence");
+const tsFence = parseMarkdown("```ts extra\nconst x = 1\n```")[0];
+if (tsFence.kind !== "code" || tsFence.language !== "ts") throw new Error("ts fence");
+const jsonFence = parseMarkdown("```json\n{}\n```")[0];
+if (jsonFence.kind !== "code" || jsonFence.language !== "json" || jsonFence.text !== "{}") throw new Error("json fence");
+const otherFence = parseMarkdown("```javascript\nconst x = 1\n```")[0];
+if (otherFence.kind !== "code" || otherFence.language !== "text") throw new Error("unknown fence stays text");
 if (kinds("- a\n- b")[0] !== "list") throw new Error("ul");
 if (kinds("1. a\n2. b")[0] !== "list") throw new Error("ol");
 if (kinds("> quote")[0] !== "blockquote") throw new Error("quote");
@@ -186,6 +196,7 @@ if (kinds("a | b\nnot a delimiter")[0] !== "paragraph") throw new Error("pipe wi
 if (!markdown.includes("styles.quoteBarPad") || markdown.includes('key="Bar"')) {
 	throw new Error("quote bar is padding, not a scaled frame");
 }
+if (!markdown.includes("<CodeEditor")) throw new Error("fences use the code editor");
 if (!markdown.includes("quoteStack") || !markdownStyles.includes("surface.elevated")) {
 	throw new Error("quote stacks paragraphs and table headers sit on elevated");
 }

@@ -26,6 +26,7 @@ export * from "./copyButton";
 export * from "./checkbox";
 export * from "./colorPicker";
 export * from "./fontEditor";
+export * from "./codeEditor";
 export * from "./loadingStroke";
 export * from "./numberInput";
 export * from "./numberRangeEditor";
