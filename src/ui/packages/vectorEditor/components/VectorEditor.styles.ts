@@ -15,6 +15,13 @@ const useVectorEditorStyles = componentStyles("VectorEditor", (theme: Theme) =>
 			VerticalAlignment: Enum.VerticalAlignment.Center,
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
+		axes: {
+			FillDirection: Enum.FillDirection.Horizontal,
+			HorizontalFlex: Enum.UIFlexAlignment.Fill,
+			Padding: new UDim(0, editorPad(theme)),
+			VerticalAlignment: Enum.VerticalAlignment.Center,
+			SortOrder: Enum.SortOrder.LayoutOrder,
+		} as WriteableStyle<UIListLayout>,
 		axis: {
 			Size: new UDim2(1, 0, 0, editorRowHeight(theme)),
 			BackgroundTransparency: 1,
@@ -26,7 +33,7 @@ const useVectorEditorStyles = componentStyles("VectorEditor", (theme: Theme) =>
 			...editorText(theme),
 		} as WriteableStyle<TextLabel>,
 		field: {
-			Size: new UDim2(1, -theme.spacing.calc(1.5), 1, 0),
+			Size: new UDim2(1, -theme.spacing.calc(1.5) - editorPad(theme), 1, 0),
 			BackgroundTransparency: 1,
 		} as WriteableStyle<Frame>,
 	}),

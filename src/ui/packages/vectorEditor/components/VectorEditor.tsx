@@ -25,7 +25,7 @@ function VectorEditor(props: CustomizedProps<Frame, VectorEditorProps>) {
 
 	return (
 		<SxHost tag="frame" key={id || "VectorEditor"} hostRef={ref} base={{ ...styles.root, ...hover.face }} className={className} sx={sx} state={{ disabled }} Event={hover.event}>
-			<uilistlayout {...styles.row} />
+			<uilistlayout {...styles.axes} />
 			<>
 			{axes.map((axis, index) => (
 				<frame key={axis} {...styles.axis} Size={new UDim2(1 / axes.size(), 0, 0, row)} LayoutOrder={index + 1}>
