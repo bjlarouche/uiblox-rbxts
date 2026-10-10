@@ -91,7 +91,7 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 				PaddingRight={new UDim(0, pad)}
 			/>
 			<uilistlayout FillDirection={Enum.FillDirection.Vertical} Padding={new UDim(0, pad)} SortOrder={Enum.SortOrder.LayoutOrder} />
-			<frame Size={new UDim2(1, -pad * 2, 0, row)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={0}>
+			<frame Size={new UDim2(1, 0, 0, row)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={0}>
 				<textbutton
 					Text={weekMode ? "Earlier" : "Prev"}
 					Size={UDim2.fromOffset(weekMode ? 72 : 56, row)}
@@ -130,7 +130,7 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 			</frame>
 			<textlabel
 				Text={value.start === undefined ? "Choose a start and finish" : value.finish === undefined ? formatStamp(value.start) : `${formatStamp(value.start)} – ${formatStamp(value.finish)}`}
-				Size={new UDim2(1, -pad * 2, 0, row)}
+				Size={new UDim2(1, 0, 0, row)}
 				BackgroundTransparency={1}
 				BorderSizePixel={0}
 				TextTruncate={Enum.TextTruncate.AtEnd}
@@ -142,9 +142,10 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 				LayoutOrder={1}
 			/>
 			{weekMode ? (
-				<frame Size={new UDim2(1, -pad * 2, 0, row * 2)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
+				<frame Size={new UDim2(1, 0, 0, row * 2)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
 					<uilistlayout
 						FillDirection={Enum.FillDirection.Horizontal}
+						HorizontalAlignment={Enum.HorizontalAlignment.Center}
 						Padding={new UDim(0, pad)}
 						SortOrder={Enum.SortOrder.LayoutOrder}
 					/>
@@ -156,7 +157,7 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 								key={`week-${stamp}`}
 								Text={`${WEEKDAYS[index] ?? ""}\n${stamp % 100}`}
 								LayoutOrder={index}
-								Size={new UDim2(1 / 7, -pad, 1, 0)}
+								Size={new UDim2(1 / 7, -math.ceil((pad * 6) / 7), 1, 0)}
 								BackgroundColor3={chosen ? theme.palette.primary.main : theme.palette.surface.input}
 								BackgroundTransparency={chosen && !endpoint ? 0.55 : 0}
 								BorderSizePixel={0}
@@ -173,11 +174,12 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 					})}
 				</frame>
 			) : (
-			<frame Size={new UDim2(1, -pad * 2, 0, row * 7 + pad * 6)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
+			<frame Size={new UDim2(1, 0, 0, row * 7 + pad * 6)} BackgroundTransparency={1} BorderSizePixel={0} LayoutOrder={2}>
 				<uigridlayout
-					CellSize={new UDim2(1 / 7, -pad, 0, row)}
+					CellSize={new UDim2(1 / 7, -math.ceil((pad * 6) / 7), 0, row)}
 					CellPadding={UDim2.fromOffset(pad, pad)}
 					FillDirectionMaxCells={7}
+					HorizontalAlignment={Enum.HorizontalAlignment.Center}
 					SortOrder={Enum.SortOrder.LayoutOrder}
 				/>
 				{WEEKDAYS.map((label, index) => (

@@ -43,8 +43,9 @@ if (weekStamps(20261004)[0] !== week[0] || weekStamps(20261010)[0] !== week[0]) 
 const { readFileSync } = await import("node:fs");
 const picker = readFileSync("src/ui/packages/dateRange/components/DateRangePicker.tsx", "utf8");
 if (!picker.includes("fieldChrome") || !picker.includes("TextTruncate")) throw new Error("range field matches the input chrome");
-if (picker.includes("fromOffset(36") || !picker.includes("new UDim2(1 / 7, -pad, 0, row)")) {
+if (picker.includes("fromOffset(36") || !picker.includes("new UDim2(1 / 7, -math.ceil((pad * 6) / 7), 0, row)")) {
 	throw new Error("seven columns fit the grid");
 }
+if (picker.includes("-pad * 2")) throw new Error("rows sit inside the padding once");
 
 console.log("date range ok");
