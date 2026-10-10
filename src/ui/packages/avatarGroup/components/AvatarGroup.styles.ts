@@ -4,7 +4,7 @@ import { AvatarVariant } from "ui/packages/avatar/components/Avatar.styles";
 const useAvatarGroupStyles = componentStyles<{ size?: number; variant?: AvatarVariant }>(
 	"AvatarGroup",
 	(theme: Theme, { size = 40, variant = "circular" }) => {
-		const overlap = math.max(theme.padding.calc(1), math.floor(size / 4));
+		const overlap = math.max(theme.padding.calc(1), math.floor(size / 5));
 		return createStyles({
 			root: {
 				AutomaticSize: Enum.AutomaticSize.XY,
@@ -31,6 +31,11 @@ const useAvatarGroupStyles = componentStyles<{ size?: number; variant?: AvatarVa
 				TextSize: math.max(12, size * 0.35),
 				TextColor3: theme.palette.text.primary,
 			} as WriteableStyle<TextLabel>,
+			ring: {
+				Color: theme.palette.surface.canvas,
+				Thickness: 2,
+				ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+			} as WriteableStyle<UIStroke>,
 			corner: {
 				CornerRadius: variant === "rounded" ? new UDim(0, theme.shape.borderRadius) : new UDim(1, 0),
 			} as WriteableStyle<UICorner>,

@@ -38,12 +38,15 @@ function AvatarGroup(props: CustomizedProps<Frame, AvatarGroupProps>) {
 							size={size}
 							variant={variant}
 							className={{ LayoutOrder: index, ZIndex: index + 1 }}
-						/>
+						>
+							<uistroke {...styles.ring} />
+						</Avatar>
 					);
 				})}
 				{extra > 0 ? (
 					<frame key="Extra" {...styles.surplus} LayoutOrder={shown} ZIndex={shown + 1}>
 						{variant !== "square" ? <uicorner {...styles.corner} /> : undefined}
+						<uistroke {...styles.ring} />
 						<textlabel {...styles.surplusText} Text={`+${extra}`} />
 					</frame>
 				) : undefined}
