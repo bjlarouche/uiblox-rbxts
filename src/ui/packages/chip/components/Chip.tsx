@@ -1,5 +1,5 @@
 import React from "@rbxts/react";
-import { ControlSize, CustomizedProps } from "theme";
+import { ControlSize, CustomizedProps, WriteableStyle } from "theme";
 import { SxHost } from "ui/packages/host";
 import { IconButton } from "ui/packages/iconButton";
 import useChipStyles, { ChipColor } from "./Chip.styles";
@@ -45,8 +45,8 @@ function Chip(props: CustomizedProps<TextButton, ChipProps>) {
 					<IconButton
 						id="Delete"
 						glyph="close"
-						iconSize={styles.glyph.Size.X.Offset}
-						tint={styles.glyph.ImageColor3}
+						iconSize={(styles.glyph as WriteableStyle<ImageLabel>).Size?.X.Offset ?? 16}
+						tint={(styles.glyph as WriteableStyle<ImageLabel>).ImageColor3 as Color3}
 						disabled={disabled}
 						className={styles.delete}
 						onClick={onDelete}

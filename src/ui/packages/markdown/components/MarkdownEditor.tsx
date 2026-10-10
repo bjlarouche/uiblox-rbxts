@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { CustomizedProps, useTheme } from "theme";
+import { CustomizedProps, useTheme, WriteableStyle } from "theme";
 import { Button } from "ui/packages/button";
 import { SxHost } from "ui/packages/host";
 import { IconButton } from "ui/packages/iconButton";
@@ -161,8 +161,8 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 				<IconButton
 					id="Fullscreen"
 					glyph="expand"
-					iconSize={styles.toolbarGlyph.Size.X.Offset}
-					tint={styles.toolbarGlyph.ImageColor3}
+					iconSize={(styles.toolbarGlyph as WriteableStyle<ImageLabel>).Size?.X.Offset ?? 16}
+					tint={(styles.toolbarGlyph as WriteableStyle<ImageLabel>).ImageColor3 as Color3}
 					className={styles.toolbarIcon}
 					onClick={() => setFullscreen(!fullscreen)}
 				/>

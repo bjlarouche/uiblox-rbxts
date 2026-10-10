@@ -1,5 +1,5 @@
 import React from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { CustomizedProps, WriteableStyle } from "theme";
 import { SxHost } from "ui/packages/host";
 import { IconButton } from "ui/packages/iconButton";
 import { alertAction } from "./alertAction";
@@ -31,8 +31,8 @@ function Alert(props: CustomizedProps<Frame, AlertProps>) {
 				<IconButton
 					id="Close"
 					glyph="close"
-					iconSize={styles.closeGlyph.Size.X.Offset}
-					tint={styles.closeGlyph.ImageColor3}
+					iconSize={(styles.closeGlyph as WriteableStyle<ImageLabel>).Size?.X.Offset ?? 16}
+					tint={(styles.closeGlyph as WriteableStyle<ImageLabel>).ImageColor3 as Color3}
 					className={styles.close}
 					onClick={onClose}
 				/>

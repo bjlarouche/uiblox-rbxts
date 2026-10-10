@@ -134,8 +134,8 @@ function Toast(props: CustomizedProps<Frame, ToastProps>) {
 			<IconButton
 				id="Close"
 				glyph="close"
-				iconSize={closeGlyph.Size.X.Offset}
-				tint={closeGlyph.ImageColor3}
+				iconSize={(closeGlyph as WriteableStyle<ImageLabel>).Size?.X.Offset ?? 16}
+				tint={(closeGlyph as WriteableStyle<ImageLabel>).ImageColor3 as Color3}
 				className={close}
 				onClick={() => {
 					tween(Directions.Out);
