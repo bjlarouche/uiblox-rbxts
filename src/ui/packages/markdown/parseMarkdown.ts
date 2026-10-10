@@ -12,7 +12,7 @@ export type MdBlock =
 	| { kind: "paragraph"; inlines: MdInline[] }
 	| { kind: "code"; text: string }
 	| { kind: "list"; ordered: boolean; items: MdInline[][] }
-	| { kind: "blockquote"; inlines: MdInline[] }
+	| { kind: "blockquote"; paragraphs: MdInline[][] }
 	| { kind: "table"; align: MdAlign[]; header: MdInline[][]; rows: MdInline[][][] }
 	| { kind: "hr" };
 
@@ -41,6 +41,46 @@ function trim(value: string): string {
 	}
 	if (start > stop) return "";
 	return value.sub(start, stop);
+}
+
+function stripCr(raw: string): string {
+	if (raw.size() > 0 && raw.sub(raw.size(), raw.size()) === "\r") return raw.sub(1, raw.size() - 1);
+	return raw;
+}
+
+/** Two trailing spaces, same rule for paragraphs and quotes. A trailing backslash is not a break. */
+function endsWithHardBreak(raw: string): boolean {
+	const line = stripCr(raw);
+	return line.size() >= 2 && line.sub(line.size() - 1, line.size()) === "  ";
+}
+
+function withoutHardBreak(raw: string): string {
+	const line = stripCr(raw);
+	if (!endsWithHardBreak(line)) return trimEnd(line);
+	return trimEnd(line.sub(1, line.size() - 2));
+}
+
+/** Adjacent lines join with a space. A hard break on the previous line inserts a newline. */
+function foldLines(rawLines: string[]): string {
+	let acc = "";
+	let breakNext = false;
+	for (let index = 0; index < rawLines.size(); index++) {
+		const text = withoutHardBreak(rawLines[index]);
+		if (index === 0) acc = text;
+		else if (breakNext) acc = `${acc}\n${text}`;
+		else acc = acc.size() === 0 ? text : `${acc} ${text}`;
+		breakNext = endsWithHardBreak(rawLines[index]);
+	}
+	return acc;
+}
+
+/** `>` or `> ` starts a quote line. `>>` does not, so it stays ordinary text. */
+function quoteBody(raw: string): string | undefined {
+	const line = stripCr(raw);
+	if (line.size() === 0 || line.sub(1, 1) !== ">") return undefined;
+	if (line.size() === 1) return "";
+	if (line.sub(2, 2) !== " ") return undefined;
+	return line.sub(3);
 }
 
 function headingLevel(line: string): number | undefined {
@@ -264,15 +304,24 @@ export function parseMarkdown(source: string): MdBlock[] {
 			continue;
 		}
 
-		if (line.sub(1, 1) === ">" && (line.size() === 1 || line.sub(2, 2) === " ")) {
-			const parts: string[] = [];
+		if (quoteBody(lines[i]) !== undefined) {
+			const groups: string[][] = [];
+			let current: string[] = [];
 			while (i < lines.size()) {
-				const cur = trimEnd(lines[i]);
-				if (!(cur.sub(1, 1) === ">" && (cur.size() === 1 || cur.sub(2, 2) === " "))) break;
-				parts.push(cur.size() >= 2 ? cur.sub(3) : "");
+				const body = quoteBody(lines[i]);
+				if (body === undefined) break;
+				if (trim(body) === "") {
+					if (current.size() > 0) groups.push(current);
+					current = [];
+				} else current.push(body);
 				i += 1;
 			}
-			blocks.push({ kind: "blockquote", inlines: parseInlines(parts.join(" ")) });
+			if (current.size() > 0) groups.push(current);
+			if (groups.size() === 0) groups.push([]);
+			blocks.push({
+				kind: "blockquote",
+				paragraphs: groups.map((group) => parseInlines(foldLines(group))),
+			});
 			continue;
 		}
 
@@ -310,7 +359,7 @@ export function parseMarkdown(source: string): MdBlock[] {
 			continue;
 		}
 
-		const para: string[] = [line];
+		const rawPara: string[] = [lines[i]];
 		i += 1;
 		while (i < lines.size()) {
 			const cur = trimEnd(lines[i]);
@@ -318,20 +367,13 @@ export function parseMarkdown(source: string): MdBlock[] {
 			if (cur.size() >= 3 && cur.sub(1, 3) === "```") break;
 			if (isHr(cur)) break;
 			if (headingLevel(cur) !== undefined) break;
-			if (cur.sub(1, 1) === ">" && (cur.size() === 1 || cur.sub(2, 2) === " ")) break;
+			if (quoteBody(lines[i]) !== undefined) break;
 			if (listMarker(cur) !== undefined) break;
 			if (tableAt(lines, i) !== undefined) break;
-			// two trailing spaces = hard break
-			const prev = para[para.size() - 1];
-			if (prev.size() >= 2 && prev.sub(prev.size() - 1) === "  ") {
-				para[para.size() - 1] = trimEnd(prev.sub(1, prev.size() - 2));
-				para.push(cur);
-			} else {
-				para[para.size() - 1] = `${prev} ${cur}`;
-			}
+			rawPara.push(lines[i]);
 			i += 1;
 		}
-		blocks.push({ kind: "paragraph", inlines: parseInlines(para.join("\n")) });
+		blocks.push({ kind: "paragraph", inlines: parseInlines(foldLines(rawPara)) });
 	}
 
 	return blocks;

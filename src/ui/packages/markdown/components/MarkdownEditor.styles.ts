@@ -98,8 +98,9 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				ScrollBarThickness: 4,
+				ScrollingDirection: Enum.ScrollingDirection.XY,
 				CanvasSize: new UDim2(0, 0, 0, 0),
-				AutomaticCanvasSize: Enum.AutomaticSize.Y,
+				AutomaticCanvasSize: Enum.AutomaticSize.XY,
 			} as WriteableStyle<ScrollingFrame>,
 			previewPad: {
 				PaddingTop: new UDim(0, pad),
