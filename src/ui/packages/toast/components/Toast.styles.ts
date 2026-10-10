@@ -33,7 +33,7 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 	const toastColors = getToastColors();
 	const hasAction = action !== undefined && action.size() > 0;
 	const glyph = theme.typography.fontSizes.caption ?? 12;
-	const actionSlot = hasAction ? theme.spacing.calc(8) : 0;
+	const actionSlot = (hasAction ? theme.spacing.calc(8) : 0) + glyph + theme.padding.calc(1);
 	const place = toastPlace(edge, DEFAULT_THEME.padding.calc(2), DEFAULT_THEME.spacing.calc(20) + DEFAULT_THEME.padding.calc(2));
 	const ACTIVE_POSITION = new UDim2(0.5, 0, place.activeY, place.activeOffset);
 	const INACTIVE_POSITION = new UDim2(0.5, 0, place.idleY, place.idleOffset);
