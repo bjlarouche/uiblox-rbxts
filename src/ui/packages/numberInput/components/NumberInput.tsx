@@ -77,7 +77,7 @@ function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
 	if (stepper !== true) return field;
 	const metrics = controlMetrics(theme.density, size);
 	const extent = metrics.height;
-	const stepFont = metrics.font;
+	const stepFont = math.floor(metrics.font * 1.5);
 	const down = stepNumber(value, -1, min, max, step);
 	const up = stepNumber(value, 1, min, max, step);
 	return (
@@ -88,7 +88,7 @@ function NumberInput(props: CustomizedProps<Frame, NumberInputProps>) {
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 				SortOrder={Enum.SortOrder.LayoutOrder}
 			/>
-			<StepButton text="-" order={0} extent={extent} font={stepFont} enabled={!locked && down !== undefined} onClick={() => down !== undefined && onChange(down)} />
+			<StepButton text="−" order={0} extent={extent} font={stepFont} enabled={!locked && down !== undefined} onClick={() => down !== undefined && onChange(down)} />
 			<frame LayoutOrder={1} Size={UDim2.fromScale(0, 0)} AutomaticSize={Enum.AutomaticSize.XY} BackgroundTransparency={1} BorderSizePixel={0}>
 				{field}
 			</frame>
