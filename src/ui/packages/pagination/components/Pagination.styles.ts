@@ -20,7 +20,7 @@ const usePaginationStyles = componentStyles<{ size?: ControlSize; variant?: Pagi
 		} as WriteableStyle<Frame>,
 		list: {
 			FillDirection: Enum.FillDirection.Horizontal,
-			Padding: new UDim(0, theme.padding.calc(size === "small" ? 0.25 : 0.5)),
+			Padding: new UDim(0, theme.padding.calc(size === "small" ? 0.5 : 1)),
 			SortOrder: Enum.SortOrder.LayoutOrder,
 		} as WriteableStyle<UIListLayout>,
 		page: {
