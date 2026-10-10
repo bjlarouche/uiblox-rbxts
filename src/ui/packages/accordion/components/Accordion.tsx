@@ -29,7 +29,8 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 	const styles = useAccordionStyles({ open, disabled });
 	const { theme } = useTheme();
 	const reduced = useReducedMotion();
-	const iconRef = useRef<ImageLabel>();
+	const iconRef = useRef<Frame>();
+	const icon = controlMetrics(theme.density).icon;
 
 	useEffect(() => {
 		const icon = iconRef.current;
@@ -68,14 +69,19 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 						<textlabel key="Note" {...styles.note} Text={summary} LayoutOrder={2} />
 					</frame>
 				)}
-				<Icon
-					id="Icon"
-					glyph="chevronRight"
-					size={controlMetrics(theme.density).icon}
-					tint={disabled === true ? theme.palette.text.disabled : theme.palette.text.primary}
-					ref={iconRef}
+				<SxHost
+					tag="frame"
+					key="Icon"
+					hostRef={iconRef}
+					base={{ BackgroundTransparency: 1, BorderSizePixel: 0, Size: new UDim2(0, icon, 0, icon) }}
 					className={styles.icon}
-				/>
+				>
+					<Icon
+						glyph="chevronRight"
+						size={icon}
+						tint={disabled === true ? theme.palette.text.disabled : theme.palette.text.primary}
+					/>
+				</SxHost>
 			</textbutton>
 			<Collapse key="Body" open={open} className={styles.body}>
 				<frame key="Inset" {...styles.band}>
