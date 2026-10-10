@@ -22,7 +22,7 @@ export interface ListItemProps {
 function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
 	const { text, secondary, selected = false, disabled = false, dense = false, divider = false, wrap = false, tone, leading, trailing, onActivated, className, sx, id, ref } =
 		props;
-	const styles = useListItemStyles({ selected, disabled, dense, wrap, tone });
+	const styles = useListItemStyles({ selected, disabled, dense, wrap, tone, divider });
 	const { theme } = useTheme();
 	const [hovering, setHovering] = useState(false);
 	const [down, setDown] = useState(false);
@@ -124,7 +124,11 @@ function ListItem(props: CustomizedProps<TextButton, ListItemProps>) {
 			) : (
 				copy
 			)}
-			{divider === true ? <frame key="Divider" {...styles.divider} /> : undefined}
+			{divider === true ? (
+				<frame key="Divider" {...styles.divider}>
+					<frame key="Line" {...styles.line} />
+				</frame>
+			) : undefined}
 		</SxHost>
 	);
 }
