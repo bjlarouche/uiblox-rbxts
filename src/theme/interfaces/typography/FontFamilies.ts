@@ -6,4 +6,5 @@ export const allFontFamilies: FontFamilyOptions = {
 	semibold: Enum.Font.SourceSansSemibold,
 	light: Enum.Font.SourceSansLight,
 	italics: Enum.Font.SourceSansItalic,
+	mono: Enum.Font.RobotoMono,
 };

@@ -8,6 +8,8 @@ interface Theme {
 	type: string;
 	density: ThemeDensity;
 	reducedMotion?: boolean;
+	/** Tween seconds: focus and hover, menus and disclosure, sheets and snackbars. */
+	motion: { fast: number; default: number; slow: number };
 	options: ThemeOptions;
 	palette: Palette;
 	padding: Padding;
