@@ -33,6 +33,10 @@ const useBadgeStyles = componentStyles<{ variant?: "standard" | "dot"; color?: B
 			TextYAlignment: Enum.TextYAlignment.Center,
 			ZIndex: 2,
 		} as WriteableStyle<TextLabel>,
+		inset: {
+			PaddingTop: new UDim(0, diameter / 2),
+			PaddingRight: new UDim(0, diameter / 2),
+		} as WriteableStyle<UIPadding>,
 		padding: {
 			PaddingLeft: new UDim(0, variant === "dot" ? 0 : theme.padding.calc(0.5)),
 			PaddingRight: new UDim(0, variant === "dot" ? 0 : theme.padding.calc(0.5)),
