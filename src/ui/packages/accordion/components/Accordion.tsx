@@ -1,10 +1,12 @@
-import React, { useState } from "@rbxts/react";
+import React, { useEffect, useRef, useState } from "@rbxts/react";
+import { useReducedMotion } from "hooks";
 import { controlMetrics, cx, CustomizedProps, useTheme } from "theme";
+import { playProperty } from "ui/packages/motion/play";
 import { SxHost } from "ui/packages/host";
 import { Collapse } from "ui/packages/collapse";
 import { Icon } from "ui/packages/icon";
 import { accordionNote } from "./accordionNote";
-import { accordionGlyph, accordionOpen } from "./accordionOpen";
+import { accordionOpen } from "./accordionOpen";
 import useAccordionStyles from "./Accordion.styles";
 
 export interface AccordionProps {
@@ -26,6 +28,14 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 	const summary = accordionNote(note);
 	const styles = useAccordionStyles({ open, disabled });
 	const { theme } = useTheme();
+	const reduced = useReducedMotion();
+	const iconRef = useRef<ImageLabel>();
+
+	useEffect(() => {
+		const icon = iconRef.current;
+		if (!icon) return;
+		return playProperty(icon, { Rotation: open ? 90 : 0 }, theme.motion.default, reduced);
+	}, [open, reduced, theme]);
 
 	const toggle = () => {
 		if (disabled === true) return;
@@ -63,7 +73,8 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 					glyph="chevronRight"
 					size={controlMetrics(theme.density).icon}
 					tint={disabled === true ? theme.palette.text.disabled : theme.palette.text.primary}
-					className={{ ...styles.icon, Rotation: accordionGlyph(open) === "expanded" ? 90 : 0 }}
+					ref={iconRef}
+					className={styles.icon}
 				/>
 			</textbutton>
 			<Collapse key="Body" open={open} className={styles.body}>

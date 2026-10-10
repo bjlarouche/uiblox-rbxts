@@ -16,9 +16,9 @@ export interface PopoverProps {
 function Popover(props: CustomizedProps<Frame, PopoverProps>) {
 	const { anchor, open, preferredHeight, preferredWidth, onDismiss, children, className, sx, id, ref } = props;
 	const styles = usePopoverStyles();
-	if (open !== true) return undefined;
+	const closed = open !== true;
 	return (
-		<Popup anchor={anchor} preferredHeight={preferredHeight} preferredWidth={preferredWidth} onDismiss={onDismiss}>
+		<Popup open={!closed} anchor={anchor} preferredHeight={preferredHeight} preferredWidth={preferredWidth} onDismiss={onDismiss}>
 			<SxHost tag="frame" key={id || "Popover"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 				<uicorner {...styles.corner} />
 				<uistroke {...styles.stroke} />
