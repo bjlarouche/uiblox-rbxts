@@ -26,6 +26,19 @@ if (snackbarActionLabel(undefined) !== undefined) throw new Error("missing actio
 if (snackbarActionLabel("") !== undefined) throw new Error("empty action");
 if (snackbarActionLabel("Undo") !== "Undo") throw new Error("action");
 
+const { toastGlyph, toastHold } = await import("../src/ui/packages/toast/components/toastPlace.ts");
+if (toastGlyph("success") !== "success" || toastGlyph("info") !== "info") throw new Error("toast glyph");
+if (toastGlyph(undefined) !== undefined || toastGlyph("default") !== undefined) throw new Error("plain toast");
+if (toastHold(1, 2, false) !== 3) throw new Error("toast hold");
+if (toastHold(1, 2, true) !== 2) throw new Error("toast hold reduced");
+
+const toastView = readFileSync(join(root, "src/ui/packages/toast/components/Toast.tsx"), "utf8");
+if (toastView.includes("wait(")) throw new Error("toast wait");
+if (!toastView.includes("task.delay") || !toastView.includes("task.cancel") || !toastView.includes("playProperty")) {
+	throw new Error("toast timing");
+}
+if (!toastView.includes("motion.slow") || !toastView.includes("motion.default")) throw new Error("toast motion");
+
 const { stateMatrix } = await import("../src/ui/packages/stateMatrix.ts");
 for (const name of ["open", "closed", "action"]) {
 	if (stateMatrix.filter((row) => row.component === "Snackbar" && row.name.includes(name)).length !== 2) {

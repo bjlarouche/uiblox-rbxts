@@ -21,3 +21,16 @@ export function toastWrap(textWidth: number, box: number) {
 	if (box <= 0) return false;
 	return textWidth > box;
 }
+
+export type ToastGlyph = "success" | "error" | "warning" | "info";
+
+export function toastGlyph(variant?: string): ToastGlyph | undefined {
+	if (variant === "success" || variant === "error" || variant === "warning" || variant === "info") return variant;
+	return undefined;
+}
+
+/** Enter slide, then the visible duration. Reduced motion skips the slide. */
+export function toastHold(enter: number, visible: number, reduced?: boolean) {
+	const slide = reduced === true ? 0 : enter;
+	return slide + visible;
+}
