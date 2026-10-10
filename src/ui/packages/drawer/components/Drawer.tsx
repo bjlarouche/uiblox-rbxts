@@ -84,9 +84,9 @@ function Drawer(props: CustomizedProps<Frame, DrawerProps>) {
 									Padding={new UDim(0, theme.padding.calc(1))}
 									SortOrder={Enum.SortOrder.LayoutOrder}
 								/>
-								{title !== undefined && title.size() > 0 && (
+								{title !== undefined && title.size() > 0 ? (
 									<textlabel key="Title" {...styles.title} Text={title} />
-								)}
+								) : undefined}
 								{children}
 							</frame>
 						</SxHost>

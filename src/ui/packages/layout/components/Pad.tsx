@@ -73,12 +73,12 @@ export function Pad(props: {
 			BackgroundTransparency={1}
 			BorderSizePixel={0}
 		>
-			{(autoX || autoY) && (
+			{autoX || autoY ? (
 				<uipadding
 					PaddingRight={new UDim(0, autoX ? right : 0)}
 					PaddingBottom={new UDim(0, autoY ? bottom : 0)}
 				/>
-			)}
+			) : undefined}
 			{children}
 		</frame>
 	);
