@@ -35,7 +35,6 @@ function Menu(props: CustomizedProps<Frame, MenuProps>) {
 	const { anchor, open, items, onSelect, onClose, emptyText, empty, dense, selected, className, sx, id, ref } = props;
 	const { theme } = useTheme();
 	const styles = useMenuStyles();
-	if (!open) return undefined;
 	const vacant = items.size() === 0;
 	const icons = items.some((item) => menuIcon(item.icon) !== undefined);
 	const row = menuRow(dense, icons);
@@ -51,7 +50,7 @@ function Menu(props: CustomizedProps<Frame, MenuProps>) {
 	const floor = anchor !== undefined ? anchor.AbsoluteSize.X : 0;
 	const width = vacant ? 0 : menuWidth(widest, icons, pad, floor);
 	return (
-		<Popup anchor={anchor} preferredHeight={height} preferredWidth={width} onDismiss={onClose}>
+		<Popup open={open} anchor={anchor} preferredHeight={height} preferredWidth={width} onDismiss={onClose}>
 			<SxHost tag="frame" key={id || "Surface"} hostRef={ref} base={styles.surface} className={className} sx={sx}>
 				<uicorner {...styles.corner} />
 				<uistroke {...styles.stroke} />

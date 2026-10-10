@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
+import { useReducedMotion } from "hooks";
 import { ControlSize, cx, CustomizedProps, useTheme } from "theme";
+import { playProperty } from "ui/packages/motion/play";
 import { canActivate } from "ui/packages/button/components/activation";
 import { spinnerPixels } from "ui/packages/button/components/buttonLook";
 import { CircularProgress } from "ui/packages/circularProgress";
@@ -82,6 +84,8 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	} = props;
 
 	const focusedRef = useRef(false);
+	const strokeRef = useRef<UIStroke>();
+	const motion = useReducedMotion(reducedMotion);
 	const entered = useRef(false);
 	const [draft, setDraft] = useState(text ?? "");
 	const [focused, setFocused] = useState(false);
@@ -91,7 +95,7 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 	const editable = active && readOnly !== true;
 	const endSlotContent = loading ? undefined : endAdornment;
 
-	const { root, font, margin, shell, box, startSlot, endSlot, helper, errorColorFrame, errorColorText, divider, corner, stroke } =
+	const { root, font, margin, shell, box, startSlot, endSlot, helper, errorColorFrame, errorColorText, divider, corner } =
 		useInputStyles({ ...props, focused, contentHeight });
 
 	useEffect(() => {
@@ -100,12 +104,21 @@ function Input(props: CustomizedProps<DefaultInputComponent, InputProps>) {
 
 	const showStroke = variant === "outlined" || variant === "filled";
 	const showCorner = rounded;
+	const ink = hasError ? theme.palette.status.error.main : focused ? theme.palette.focus : theme.palette.border;
+	const weight = focused ? 2 : 1;
+
+	useEffect(() => {
+		if (!showStroke) return;
+		const line = strokeRef.current;
+		if (!line) return;
+		return playProperty(line, { Color: ink, Thickness: weight }, theme.motion.fast, motion);
+	}, [showStroke, ink, weight, motion, theme]);
 
 	return (
 		<SxHost tag="frame" key={id || "Input"} hostRef={ref} base={root} className={className} sx={sx} state={{ disabled, loading, focused }}>
 			<frame key="Margin" {...margin}>
 				<frame key="Shell" {...shell}>
-					{showStroke && <uistroke {...stroke} />}
+					{showStroke && <uistroke ref={strokeRef} ApplyStrokeMode={Enum.ApplyStrokeMode.Border} Transparency={0} />}
 					{showCorner && <uicorner {...corner} />}
 					{startAdornment !== undefined && (
 						<frame key="Start" {...startSlot}>

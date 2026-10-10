@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { CustomizedProps } from "theme";
+import { useReducedMotion } from "hooks";
+import { CustomizedProps, useTheme } from "theme";
 import { SxHost } from "ui/packages/host";
+import { motionDuration } from "ui/packages/motion/duration";
+import { playProperty } from "ui/packages/motion/play";
 import { popupPlacement } from "./placement";
 import Portal from "./Portal";
 import { portalTarget } from "./portalTarget";
@@ -11,13 +14,58 @@ export interface PopupProps {
 	preferredHeight?: number;
 	/** Content width. Falls back to the anchor width. Clamped to the layer. */
 	preferredWidth?: number;
+	/** Stays mounted through the close tween. Omit to show while the parent renders it. */
+	open?: boolean;
 	onDismiss?: () => void;
 	onInput?: (input: InputObject) => void;
 	children?: React.ReactNode;
 }
 
+function MotionScale(props: { open: boolean }) {
+	const ref = useRef<UIScale>();
+	const reduced = useReducedMotion();
+	const { theme } = useTheme();
+	const open = props.open;
+
+	useEffect(() => {
+		const scale = ref.current;
+		if (!scale) return;
+		if (open && !reduced) scale.Scale = 0.96;
+		const seconds = open ? theme.motion.default : theme.motion.fast;
+		const stop = playProperty(scale, { Scale: open ? 1 : 0.96 }, seconds, reduced);
+		return stop;
+	}, [open, reduced, theme]);
+
+	return <uiscale key="Motion" ref={ref} />;
+}
+
 function Popup(props: CustomizedProps<Frame, PopupProps>) {
-	const { anchor, preferredHeight, preferredWidth, onDismiss, onInput, children, className, sx, id, ref } = props;
+	const { anchor, preferredHeight, preferredWidth, open, onDismiss, onInput, children, className, sx, id, ref } = props;
+	const visible = open !== false;
+	const [held, setHeld] = useState(visible);
+	const reduced = useReducedMotion();
+	const { theme } = useTheme();
+
+	useEffect(() => {
+		if (visible) setHeld(true);
+	}, [visible]);
+
+	useEffect(() => {
+		if (!held || visible) return;
+		const delay = motionDuration(theme.motion.fast, reduced);
+		if (delay === 0) {
+			setHeld(false);
+			return;
+		}
+		let alive = true;
+		const thread = task.delay(delay, () => {
+			if (alive) setHeld(false);
+		});
+		return () => {
+			alive = false;
+			task.cancel(thread);
+		};
+	}, [visible, held, reduced, theme]);
 	const dismiss = useRef(onDismiss);
 	dismiss.current = onDismiss;
 	const [, bump] = useState(0);
@@ -50,7 +98,7 @@ function Popup(props: CustomizedProps<Frame, PopupProps>) {
 		return () => connections.forEach((connection) => connection.Disconnect());
 	}, [anchor, layer]);
 
-	if (!anchor || !layer) return undefined;
+	if (!held || !anchor || !layer) return undefined;
 	const place = popupPlacement(
 		anchor.AbsolutePosition.X,
 		anchor.AbsolutePosition.Y,
@@ -98,6 +146,7 @@ function Popup(props: CustomizedProps<Frame, PopupProps>) {
 					Active={false}
 					ZIndex={20001}
 				>
+					<MotionScale open={visible} />
 					{children}
 				</SxHost>
 			</frame>

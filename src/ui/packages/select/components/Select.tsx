@@ -256,8 +256,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 				)}
 			</textbutton>
 			{helperText !== undefined && <textlabel key="Helper" {...styles.helper} Text={helperText} />}
-			{shown && (
-				<Popup anchor={anchor} preferredHeight={menuHeight} preferredWidth={popupWidth} onDismiss={close} onInput={(input) => onKey(input, true)}>
+			<Popup open={shown} anchor={anchor} preferredHeight={menuHeight} preferredWidth={popupWidth} onDismiss={close} onInput={(input) => onKey(input, true)}>
 					<frame key="Menu" {...styles.menu}>
 						<Shadow />
 						<uicorner {...styles.corner} />
@@ -333,8 +332,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 							/>
 						</frame>
 					</frame>
-				</Popup>
-			)}
+			</Popup>
 		</SxHost>
 	);
 }
