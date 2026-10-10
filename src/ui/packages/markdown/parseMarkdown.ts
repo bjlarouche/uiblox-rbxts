@@ -50,7 +50,7 @@ function stripCr(raw: string): string {
 	return raw;
 }
 
-/** Two trailing spaces, same rule for paragraphs and quotes. A trailing backslash is not a break. */
+/** Two trailing spaces end a paragraph line. A trailing backslash is not a break. */
 function endsWithHardBreak(raw: string): boolean {
 	const line = stripCr(raw);
 	return line.size() >= 2 && line.sub(line.size() - 1, line.size()) === "  ";
@@ -320,19 +320,25 @@ export function parseMarkdown(source: string): MdBlock[] {
 			const groups: string[][] = [];
 			let current: string[] = [];
 			while (i < lines.size()) {
-				const body = quoteBody(lines[i]);
-				if (body === undefined) break;
+				let body = quoteBody(lines[i]);
+				if (body === undefined) {
+					if (trim(lines[i]) !== "") break;
+					let ahead = i + 1;
+					while (ahead < lines.size() && trim(lines[ahead]) === "") ahead += 1;
+					if (ahead >= lines.size() || quoteBody(lines[ahead]) === undefined) break;
+					body = "";
+					i = ahead;
+				} else i += 1;
 				if (trim(body) === "") {
 					if (current.size() > 0) groups.push(current);
 					current = [];
 				} else current.push(body);
-				i += 1;
 			}
 			if (current.size() > 0) groups.push(current);
 			if (groups.size() === 0) groups.push([]);
 			blocks.push({
 				kind: "blockquote",
-				paragraphs: groups.map((group) => parseInlines(foldLines(group))),
+				paragraphs: groups.map((group) => parseInlines(group.map((line) => withoutHardBreak(line)).join("\n"))),
 			});
 			continue;
 		}

@@ -219,12 +219,37 @@ if (quote[0].kind !== "blockquote") throw new Error("multi quote");
 if (quote[0].kind === "blockquote") {
 	if (quote[0].paragraphs.length !== 2) throw new Error(`quote paragraphs ${quote[0].paragraphs.length}`);
 	const first = inlinesToPlain(quote[0].paragraphs[0]);
-	if (first !== "A short quote an") throw new Error(`soft wrap ${first}`);
+	if (first !== "A short quote\nan") throw new Error(`quote lines ${first}`);
 	const second = quote[0].paragraphs[1];
 	if (second[0].kind !== "bold" || second[0].text !== "bold") throw new Error("quote bold");
+	if (!second.some((part) => part.kind === "italic" && part.text === "lean")) throw new Error("quote italic");
 	const linked = parseMarkdown("> see [docs](https://example.com)");
 	if (linked[0].kind !== "blockquote" || linked[0].paragraphs[0][1].kind !== "link") throw new Error("quote link");
-	if (!inlinesToPlain(second).includes("hard\nbreak")) throw new Error(`hard break ${inlinesToPlain(second)}`);
+	const coded = parseMarkdown("> use `npm`");
+	if (coded[0].kind !== "blockquote" || coded[0].paragraphs[0][1].kind !== "code") throw new Error("quote code");
+	if (inlinesToPlain(second) !== "bold and lean\nhard\nbreak") throw new Error(`quote lines ${inlinesToPlain(second)}`);
+}
+const four = parseMarkdown(
+	"> This package is a work in progress.\n> this is second line\n> this is a third line\n> this is a fourth line",
+);
+if (four.length !== 1 || four[0].kind !== "blockquote" || four[0].paragraphs.length !== 1) throw new Error("four line quote");
+if (
+	four[0].kind === "blockquote" &&
+	inlinesToPlain(four[0].paragraphs[0]) !==
+		"This package is a work in progress.\nthis is second line\nthis is a third line\nthis is a fourth line"
+) {
+	throw new Error(`four lines ${inlinesToPlain(four[0].paragraphs[0])}`);
+}
+const gapped = parseMarkdown("> one\n> two\n\n> three");
+if (gapped.length !== 1 || gapped[0].kind !== "blockquote" || gapped[0].paragraphs.length !== 2) {
+	throw new Error("blank line stays one quote");
+}
+if (gapped[0].kind === "blockquote") {
+	if (inlinesToPlain(gapped[0].paragraphs[0]) !== "one\ntwo") throw new Error("blank first paragraph");
+	if (inlinesToPlain(gapped[0].paragraphs[1]) !== "three") throw new Error("blank second paragraph");
+}
+if (JSON.stringify(kinds("> one\n\npara")) !== JSON.stringify(["blockquote", "paragraph"])) {
+	throw new Error("blank then paragraph");
 }
 if (kinds(">> nested")[0] !== "paragraph") throw new Error("nested marker stays text");
 const soft = parseMarkdown("alpha\nbeta");
