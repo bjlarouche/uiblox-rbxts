@@ -20,6 +20,7 @@ function Badge(props: CustomizedProps<Frame, BadgeProps>) {
 	const shown = !invisible && (isDot || count > 0);
 	return (
 		<SxHost tag="frame" key={id || "Badge"} hostRef={ref} base={styles.root} className={className} sx={sx}>
+			<uipadding {...styles.inset} />
 			{children}
 			{shown && (
 				<textlabel key="Count" {...styles.badge} Text={isDot ? "" : badgeText(count, max)}>
