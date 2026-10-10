@@ -4,6 +4,6 @@ const styles = readFileSync("src/ui/packages/select/components/Select.styles.ts"
 const view = readFileSync("src/ui/packages/select/components/Select.tsx", "utf8");
 if (!styles.includes("focusRing(")) throw new Error("select style");
 if (!view.includes("styles.focusStroke")) throw new Error("select stroke");
-if (!view.includes("Icons.Expanded")) throw new Error("select chevron");
+if (!view.includes("Icons.Collapsed") || !view.includes("Icons.Expanded")) throw new Error("select chevron");
 
 console.log("select focus ok");

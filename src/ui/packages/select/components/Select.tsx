@@ -249,7 +249,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 						AnchorPoint={new Vector2(1, 0.5)}
 						Position={new UDim2(1, -theme.padding.calc(1), 0.5, 0)}
 						Size={UDim2.fromOffset(mark, mark)}
-						Image={Icons.Expanded}
+						Image={shown ? Icons.Expanded : Icons.Collapsed}
 						ImageColor3={theme.palette.text.secondary}
 						ScaleType={Enum.ScaleType.Fit}
 					/>
