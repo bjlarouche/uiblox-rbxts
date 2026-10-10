@@ -30,7 +30,10 @@ function Toast(props: CustomizedProps<Frame, ToastProps>) {
 	const frameRef = useRef<Frame>();
 	const font = theme.typography.fontFamilies.default ?? Enum.Font.SourceSans;
 	const textSize = theme.typography.fontSizes.body ?? 14;
-	const actionSlot = action !== undefined && action.size() > 0 ? theme.spacing.calc(8) : 0;
+	const actionSlot =
+		(action !== undefined && action.size() > 0 ? theme.spacing.calc(8) : 0) +
+		(theme.typography.fontSizes.caption ?? 12) +
+		theme.padding.calc(1);
 	const box = theme.spacing.calc(20) - theme.padding.calc(4) - actionSlot;
 	const bounds = TextService.GetTextSize(text, textSize, font, new Vector2(10000, 100));
 	const wrap = toastWrap(bounds.X, box);
