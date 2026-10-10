@@ -65,7 +65,7 @@ const useListItemStyles = componentStyles<{
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
 				TextSize: theme.typography.fontSizes.caption,
-				TextColor3: theme.palette.text.secondary,
+				TextColor3: disabled ? theme.palette.text.disabled : theme.palette.text.secondary,
 				TextXAlignment: Enum.TextXAlignment.Left,
 			} as WriteableStyle<TextLabel>,
 			divider: {
