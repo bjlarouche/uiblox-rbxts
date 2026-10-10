@@ -1,7 +1,7 @@
-import { createStyles, Theme, componentStyles, controlMetrics, DEFAULT_THEME, WriteableStyle } from "theme";
+import { createStyles, Theme, componentStyles, controlMetrics, WriteableStyle } from "theme";
 import ToastVariants from "../enums/ToastVariants";
 import { ToastProps } from "./Toast";
-import { toastPlace } from "./toastPlace";
+import { toastGlyph, toastPlace } from "./toastPlace";
 
 const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { variant = ToastVariants.default, action, edge }) => {
 	const getToastColors = (): { background: Color3; content: Color3 } => {
@@ -21,6 +21,11 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 					background: theme.palette.status.warning.main,
 					content: theme.palette.status.warning.on,
 				};
+			case ToastVariants.info:
+				return {
+					background: theme.palette.status.info.main,
+					content: theme.palette.status.info.on,
+				};
 			default:
 				return {
 					background: theme.palette.surface.overlay,
@@ -33,8 +38,11 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 	const hasAction = action !== undefined && action.size() > 0;
 	const glyph = controlMetrics(theme.density).icon;
 	const hit = glyph + theme.padding.calc(2);
+	const marked = toastGlyph(variant) !== undefined;
+	const lead = marked ? glyph + theme.padding.calc(1) : 0;
+	const pinLeft = hasAction || marked;
 	const actionSlot = (hasAction ? theme.spacing.calc(8) : 0) + hit;
-	const place = toastPlace(edge, DEFAULT_THEME.padding.calc(2), DEFAULT_THEME.spacing.calc(20) + DEFAULT_THEME.padding.calc(2));
+	const place = toastPlace(edge, theme.padding.calc(2), theme.spacing.calc(20) + theme.padding.calc(2));
 	const ACTIVE_POSITION = new UDim2(0.5, 0, place.activeY, place.activeOffset);
 	const INACTIVE_POSITION = new UDim2(0.5, 0, place.idleY, place.idleOffset);
 
@@ -48,15 +56,15 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 			ZIndex: 50000,
 		} as WriteableStyle<Frame>,
 		label: {
-			Size: new UDim2(1, -(theme.padding.calc(4) + actionSlot), 1, -theme.padding.calc(4)),
-			Position: hasAction ? new UDim2(0, theme.padding.calc(2), 0.5, 0) : new UDim2(0.5, 0, 0.5, 0),
-			AnchorPoint: hasAction ? new Vector2(0, 0.5) : new Vector2(0.5, 0.5),
+			Size: new UDim2(1, -(theme.padding.calc(4) + actionSlot + lead), 1, -theme.padding.calc(4)),
+			Position: pinLeft ? new UDim2(0, theme.padding.calc(2) + lead, 0.5, 0) : new UDim2(0.5, 0, 0.5, 0),
+			AnchorPoint: pinLeft ? new Vector2(0, 0.5) : new Vector2(0.5, 0.5),
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			TextSize: theme.typography.fontSizes.body,
 			TextColor3: toastColors.content,
 			Font: theme.typography.fontFamilies.default,
-			TextXAlignment: hasAction ? Enum.TextXAlignment.Left : Enum.TextXAlignment.Center,
+			TextXAlignment: pinLeft ? Enum.TextXAlignment.Left : Enum.TextXAlignment.Center,
 			TextWrapped: true,
 			TextTruncate: Enum.TextTruncate.None,
 			TextScaled: false,
@@ -86,6 +94,12 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 			AnchorPoint: new Vector2(1, 0.5),
 			ZIndex: 50001,
 		} as WriteableStyle<ImageButton>,
+		mark: {
+			Position: new UDim2(0, theme.padding.calc(2), 0.5, 0),
+			AnchorPoint: new Vector2(0, 0.5),
+			BackgroundTransparency: 1,
+			ZIndex: 50001,
+		} as WriteableStyle<ImageLabel>,
 		closeGlyph: {
 			Size: UDim2.fromOffset(glyph, glyph),
 			ImageColor3: toastColors.content,
