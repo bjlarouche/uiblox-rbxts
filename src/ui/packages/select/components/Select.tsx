@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { GuiService, TextService, UserInputService } from "@rbxts/services";
 import { useReducedMotion } from "hooks";
 import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
+import { Icons } from "ui/enums";
 import { canActivate } from "ui/packages/button/components/activation";
 import { spinnerPixels } from "ui/packages/button/components/buttonLook";
 import { CircularProgress } from "ui/packages/circularProgress";
@@ -49,6 +50,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const styles = useSelectStyles({ size, hasError, helperText });
 	const { theme } = useTheme();
 	const metrics = controlMetrics(theme.density, size);
+	const mark = theme.typography.fontSizes.caption ?? metrics.font;
 	const row = metrics.height;
 	const active = canActivate(disabled, loading);
 	const [anchor, setAnchor] = useState<TextButton>();
@@ -211,7 +213,14 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 				<uipadding
 					{...cx<UIPadding>(
 						styles.padding,
-						loading && { PaddingRight: new UDim(0, theme.padding.calc(1) + spinnerPixels(size) + theme.padding.calc(1)) },
+						{
+							PaddingRight: new UDim(
+								0,
+								theme.padding.calc(1) +
+									(loading ? spinnerPixels(size) : mark) +
+									theme.padding.calc(1),
+							),
+						},
 					)}
 				/>
 				<uicorner {...styles.corner} />
@@ -221,7 +230,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 						focused && (hasError ? { ...styles.focusStroke, Color: theme.palette.status.error.main } : styles.focusStroke),
 					)}
 				/>
-				{loading && (
+				{loading ? (
 					<CircularProgress
 						size={spinnerPixels(size)}
 						thickness={2}
@@ -231,6 +240,18 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 							AnchorPoint: new Vector2(1, 0.5),
 							Position: new UDim2(1, -theme.padding.calc(1), 0.5, 0),
 						}}
+					/>
+				) : (
+					<imagelabel
+						key="Chevron"
+						BackgroundTransparency={1}
+						BorderSizePixel={0}
+						AnchorPoint={new Vector2(1, 0.5)}
+						Position={new UDim2(1, -theme.padding.calc(1), 0.5, 0)}
+						Size={UDim2.fromOffset(mark, mark)}
+						Image={Icons.Expanded}
+						ImageColor3={theme.palette.text.secondary}
+						ScaleType={Enum.ScaleType.Fit}
 					/>
 				)}
 			</textbutton>
