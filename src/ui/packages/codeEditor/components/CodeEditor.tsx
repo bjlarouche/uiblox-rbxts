@@ -31,7 +31,7 @@ function CodeEditor(props: CustomizedProps<Frame, CodeEditorProps>) {
 	const [contentHeight, setContentHeight] = useState(0);
 	const shown = language ?? picked;
 	const editable = readOnly !== true;
-	const minHeight = theme.spacing.calc(8);
+	const minHeight = editable ? theme.spacing.calc(8) : 0;
 	const fieldHeight = math.max(minHeight, contentHeight);
 	const styles = useCodeEditorStyles({ focused: focused && editable, fieldHeight });
 
@@ -43,19 +43,20 @@ function CodeEditor(props: CustomizedProps<Frame, CodeEditorProps>) {
 			<uicorner {...styles.corner} />
 			<uipadding {...styles.padding} />
 			<uilistlayout {...styles.stack} />
-			<frame key="Bar" {...styles.bar}>
-				<uilistlayout {...styles.barRow} />
-				<Select
-					value={shown}
-					options={LANGUAGES}
-					size="small"
-					disabled={!editable}
-					onChange={(choice) => {
-						if (language === undefined) setPicked(choice);
-						if (onLanguageChange) onLanguageChange(choice);
-					}}
-				/>
-			</frame>
+			{editable && (
+				<frame key="Bar" {...styles.bar}>
+					<uilistlayout {...styles.barRow} />
+					<Select
+						value={shown}
+						options={LANGUAGES}
+						size="small"
+						onChange={(choice) => {
+							if (language === undefined) setPicked(choice);
+							if (onLanguageChange) onLanguageChange(choice);
+						}}
+					/>
+				</frame>
+			)}
 			<textbox
 				key="Field"
 				{...styles.field}
