@@ -45,14 +45,15 @@ function Chip(props: CustomizedProps<TextButton, ChipProps>) {
 					<imagebutton
 						key="Delete"
 						{...styles.delete}
-						Image={tostring(Icons.Close)}
 						Active={disabled !== true}
 						Event={{
 							Activated: () => {
 								if (disabled !== true) onDelete();
 							},
 						}}
-					/>
+					>
+						<imagelabel key="Glyph" {...styles.glyph} Image={tostring(Icons.Close)} />
+					</imagebutton>
 				</>
 			)}
 		</SxHost>

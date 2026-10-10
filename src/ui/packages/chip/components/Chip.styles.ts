@@ -15,6 +15,7 @@ const useChipStyles = componentStyles<{
 	const padY = size === "small" ? 0.25 : size === "large" ? 0.75 : 0.5;
 	const padX = size === "small" ? 1 : size === "large" ? 2 : 1.5;
 	const deletePx = metrics.icon;
+	const glyphPx = math.round(metrics.font * 0.7);
 	const tone = chipTone(color);
 	const status =
 		tone === "success"
@@ -88,13 +89,21 @@ const useChipStyles = componentStyles<{
 			BackgroundTransparency: 1,
 			BorderSizePixel: 0,
 			AutoButtonColor: false,
+			LayoutOrder: 2,
+		} as WriteableStyle<ImageButton>,
+		glyph: {
+			Size: UDim2.fromOffset(glyphPx, glyphPx),
+			Position: UDim2.fromScale(0.5, 0.5),
+			AnchorPoint: new Vector2(0.5, 0.5),
+			BackgroundTransparency: 1,
+			BorderSizePixel: 0,
+			ScaleType: Enum.ScaleType.Fit,
 			ImageColor3: disabled
 				? theme.palette.text.disabled
 				: filledTone && status !== undefined
 					? status.on
 					: theme.palette.text.secondary,
-			LayoutOrder: 2,
-		} as WriteableStyle<ImageButton>,
+		} as WriteableStyle<ImageLabel>,
 	});
 });
 
