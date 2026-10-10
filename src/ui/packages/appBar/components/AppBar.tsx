@@ -53,6 +53,7 @@ function AppBar(props: CustomizedProps<Frame, AppBarProps>) {
 	return (
 		<SxHost tag="frame" key={id || "AppBar"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			{elevation === "raised" && <Shadow />}
+			{elevation === "flat" && color === "default" && <frame key="Divider" {...styles.divider} />}
 			<frame key="Inset" {...styles.inset}>
 				{hasActions ? (
 					<frame key="Row" Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} BorderSizePixel={0}>

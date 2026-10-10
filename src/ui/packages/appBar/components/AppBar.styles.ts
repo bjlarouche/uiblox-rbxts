@@ -20,6 +20,13 @@ const useAppBarStyles = componentStyles<{ elevation?: AppBarElevation; color?: A
 				BorderSizePixel: 0,
 				ZIndex: 11000,
 			} as WriteableStyle<Frame>,
+			divider: {
+				AnchorPoint: new Vector2(0, 1),
+				Position: UDim2.fromScale(0, 1),
+				Size: new UDim2(1, 0, 0, 1),
+				BackgroundColor3: theme.palette.border,
+				BorderSizePixel: 0,
+			} as WriteableStyle<Frame>,
 			inset: {
 				Position: new UDim2(0, pad, 0, 0),
 				Size: new UDim2(1, -(pad * 2), 1, 0),
