@@ -94,6 +94,11 @@ const useAccordionStyles = componentStyles<{ open?: boolean; disabled?: boolean 
 		corner: {
 			CornerRadius: new UDim(0, theme.shape.borderRadius),
 		} as WriteableStyle<UICorner>,
+		stroke: {
+			Color: theme.palette.border,
+			Thickness: 1,
+			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+		} as WriteableStyle<UIStroke>,
 	});
 });
 
