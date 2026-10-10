@@ -32,6 +32,7 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 
 	const toastColors = getToastColors();
 	const hasAction = action !== undefined && action.size() > 0;
+	const glyph = theme.typography.fontSizes.caption ?? 12;
 	const actionSlot = hasAction ? theme.spacing.calc(8) : 0;
 	const place = toastPlace(edge, DEFAULT_THEME.padding.calc(2), DEFAULT_THEME.spacing.calc(20) + DEFAULT_THEME.padding.calc(2));
 	const ACTIVE_POSITION = new UDim2(0.5, 0, place.activeY, place.activeOffset);
@@ -66,7 +67,7 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 			Size: new UDim2(0, 0, 0, theme.spacing.calc(3)),
 			Position: new UDim2(
 				1,
-				-(theme.padding.calc(2) + theme.options.constants.iconSizes.small + theme.padding.calc(1)),
+				-(theme.padding.calc(2) + glyph + theme.padding.calc(1)),
 				0.5,
 				0,
 			),
@@ -80,11 +81,12 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 			ZIndex: 50001,
 		} as WriteableStyle<TextButton>,
 		close: {
-			Size: new UDim2(0, theme.options.constants.iconSizes.small, 0, theme.options.constants.iconSizes.small),
-			Position: new UDim2(1, -theme.padding.calc(2), 0, theme.padding.calc(2)),
-			AnchorPoint: new Vector2(1, 0),
+			Size: UDim2.fromOffset(glyph, glyph),
+			Position: new UDim2(1, -theme.padding.calc(2), 0.5, 0),
+			AnchorPoint: new Vector2(1, 0.5),
 			ImageColor3: toastColors.content,
 			Image: Icons.Close,
+			ScaleType: Enum.ScaleType.Fit,
 			BackgroundTransparency: 1,
 			AutoButtonColor: false,
 			BorderSizePixel: 0,
