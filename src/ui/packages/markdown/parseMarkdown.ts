@@ -447,6 +447,17 @@ export function markdownLinkPayload(inline: MdInline): MarkdownLinkPayload | und
 
 export type MdPiece = { kind: "word"; text: string } | { kind: "link"; text: string; href: string } | { kind: "break" };
 
+function isPunctuation(word: string): boolean {
+	if (word.size() === 0) return false;
+	for (let i = 1; i <= word.size(); i++) {
+		const ch = word.sub(i, i);
+		if (ch !== "," && ch !== "." && ch !== ";" && ch !== ":" && ch !== "!" && ch !== "?" && ch !== ")" && ch !== "]") {
+			return false;
+		}
+	}
+	return true;
+}
+
 function richWord(kind: MdInline["kind"], word: string): string {
 	const safe = escapeRich(word);
 	if (kind === "bold") return `<b>${safe}</b>`;
@@ -468,7 +479,12 @@ export function inlinePieces(inlines: MdInline[]): MdPiece[] {
 		let word = "";
 		const flush = () => {
 			if (word.size() === 0) return;
-			out.push({ kind: "word", text: richWord(part.kind, word) });
+			const prev = out[out.size() - 1];
+			if (prev !== undefined && prev.kind !== "break" && isPunctuation(word)) {
+				prev.text = `${prev.text}${word}`;
+			} else {
+				out.push({ kind: "word", text: richWord(part.kind, word) });
+			}
 			word = "";
 		};
 		const source = part.text;

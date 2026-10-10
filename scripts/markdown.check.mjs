@@ -92,6 +92,14 @@ if (pieces.some((piece) => piece.kind !== "link" && piece.text !== undefined && 
 	throw new Error("address leaked into text");
 }
 
+const marked = inlinePieces(parseMarkdown("**Bold**, *italic*, and [links](https://example.com).")[0].inlines);
+for (const piece of marked) {
+	if (piece.kind === "word" && /^[,.;:!?)\]]/.test(piece.text)) throw new Error("punctuation split off a mark");
+}
+const markedLink = marked.find((piece) => piece.kind === "link");
+if (markedLink === undefined || !markedLink.text.endsWith(".")) throw new Error("period left the link");
+if (marked.some((piece) => piece.kind === "word" && piece.text.startsWith(","))) throw new Error("space before comma");
+
 const sentence = inlinePieces(parseMarkdown("Meet me by the [north gate](gate) before dusk.")[0].inlines);
 let linkAt = -1;
 for (let i = 0; i < sentence.length; i++) if (sentence[i].kind === "link") linkAt = i;
