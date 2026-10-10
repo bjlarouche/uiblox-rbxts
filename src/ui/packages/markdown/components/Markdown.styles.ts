@@ -50,6 +50,12 @@ const useMarkdownStyles = componentStyles("Markdown", (theme: Theme) => {
 			BackgroundColor3: theme.palette.primary.main,
 			BorderSizePixel: 0,
 		} as WriteableStyle<Frame>,
+		quoteCorner: {
+			CornerRadius: new UDim(0, theme.shape.borderRadius),
+		} as WriteableStyle<UICorner>,
+		quoteFaceCorner: {
+			CornerRadius: new UDim(0, theme.shape.radius.small),
+		} as WriteableStyle<UICorner>,
 		quoteBarPad: {
 			PaddingLeft: new UDim(0, 3),
 		} as WriteableStyle<UIPadding>,

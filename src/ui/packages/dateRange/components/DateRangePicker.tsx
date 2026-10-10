@@ -168,7 +168,7 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 								AutoButtonColor={false}
 								Event={{ Activated: () => pick(stamp) }}
 							>
-								<uicorner CornerRadius={new UDim(0, 4)} />
+								<uicorner CornerRadius={new UDim(0, theme.shape.borderRadius)} />
 							</textbutton>
 						);
 					})}
@@ -222,7 +222,7 @@ function DateRangePicker(props: CustomizedProps<Frame, DateRangePickerProps>) {
 							AutoButtonColor={false}
 							Event={{ Activated: () => pick(stamp) }}
 						>
-							<uicorner CornerRadius={new UDim(0, 4)} />
+							<uicorner CornerRadius={new UDim(0, theme.shape.borderRadius)} />
 						</textbutton>
 					);
 				})}
