@@ -48,6 +48,7 @@ const RULES = [
 	{ id: "cursor-agent", re: new RegExp(["cur", "sor", "agent"].join("") + "|co-authored-by:\\s*" + ["cur", "sor"].join(""), "i") },
 	{ id: "ai-audit", re: new RegExp("\\bai\\s*audits?\\b|\\bai\\s*reviews?\\b|\\bviewport\\s*audit\\b|\\bself-review\\b", "i") },
 	{ id: "mcp-tooling", re: new RegExp("\\b" + ["M", "C", "P"].join("") + "\\b") },
+	{ id: "other-products", re: new RegExp(["story", "book"].join("") + "|hoarcekat|kampfkarren", "i") },
 ];
 
 /** path -> allowed rule ids (documented false positives) */

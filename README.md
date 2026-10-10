@@ -6,25 +6,9 @@
 
 UI library and theming for roblox-ts projects.
 
-## Background
-
-Roblox has their own internal design system, coined "uiblox-web", that it uses for its new
-web-facing products. This system offers reusable components, implemented in
-React Typescript, that are derived from material UI (MUI). As well, it offers a
-common theme/pallete for consistent UI/UX.
-
-Anyone is able to view their design system as
-[UIBlox-Web](https://uiblox.roblox.com). You can see that they leverage
-[Storybook](https://storybook.js.org), a UI component explorer for frontend
-developers, to render component previews.
-
-Design systems all help engineers cut down on implementation time and ensure
-consitent UX across products.
-
 ## Overview
 
-So what is uiblox-rbxts? Simply put, its my stab at a design system that mimics
-uiblox-web for games written using roblox-ts.
+uiblox-rbxts is a design system for games written using roblox-ts.
 
 UIBlox-rbxts aims to provide extensible components that can be reusable by
 anyone who installs this npm package. It also offers a theme and styling system
@@ -254,4 +238,3 @@ new AppLoader().Mount();
 -   [Storyblox](https://github.com/bjlarouche/storyblox) a UI component explorer for roblox-ts developers
     -   <img src=docs/storyblox-preview.png width=40%>
     -   Test it out here [Storyblox Pre-Release Experience](https://www.roblox.com/games/9159382473)
-    -   Similar to [hoarcekat](https://github.com/Kampfkarren/hoarcekat) by Kampfkarren
