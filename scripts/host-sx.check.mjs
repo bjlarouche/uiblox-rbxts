@@ -207,4 +207,32 @@ for (const file of walkTsx("src/ui/packages")) {
 	if (guiTag.test(text)) throw new Error(`${file} gui root missing SxHost`);
 }
 
+// ReactLua rekeys a false slot ahead of a children array into text on update. Use `? … : undefined` under raw host tags.
+function falseSlotBeforeChildren(lines) {
+	const indentOf = (line) => line.match(/^\s*/)[0].length;
+	for (let i = 0; i < lines.length; i++) {
+		if (!/^\s*\{[^{}]*&&\s*(\(|<)/.test(lines[i])) continue;
+		const depth = indentOf(lines[i]);
+		let children = false;
+		for (let j = i + 1; j < lines.length; j++) {
+			if (lines[j].trim() === "") continue;
+			if (indentOf(lines[j]) < depth) break;
+			if (indentOf(lines[j]) === depth && /^\s*\{(props\.)?children\}\s*$/.test(lines[j])) children = true;
+		}
+		if (!children) continue;
+		for (let j = i - 1; j >= 0; j--) {
+			const trimmed = lines[j].trim();
+			if (indentOf(lines[j]) >= depth || !trimmed.startsWith("<") || trimmed.startsWith("</")) continue;
+			if (/^<[a-z]/.test(trimmed)) return i + 1;
+			break;
+		}
+	}
+	return undefined;
+}
+
+for (const file of walkTsx("src/ui/packages")) {
+	const line = falseSlotBeforeChildren(readFileSync(file, "utf8").split("\n"));
+	if (line !== undefined) throw new Error(`${file}:${line} false slot before {children} under a host tag`);
+}
+
 console.log("host sx ok");
