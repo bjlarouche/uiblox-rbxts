@@ -22,6 +22,7 @@ function Popover(props: CustomizedProps<Frame, PopoverProps>) {
 			<SxHost tag="frame" key={id || "Popover"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 				<uicorner {...styles.corner} />
 				<uistroke {...styles.stroke} />
+				<uipadding {...styles.padding} />
 				{children}
 			</SxHost>
 		</Popup>

@@ -15,6 +15,12 @@ const usePopoverStyles = componentStyles("Popover", (theme: Theme) =>
 			Color: theme.palette.border,
 			ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
 		} as WriteableStyle<UIStroke>,
+		padding: {
+			PaddingTop: new UDim(0, theme.spacing.calc(2)),
+			PaddingBottom: new UDim(0, theme.spacing.calc(2)),
+			PaddingLeft: new UDim(0, theme.spacing.calc(2)),
+			PaddingRight: new UDim(0, theme.spacing.calc(2)),
+		} as WriteableStyle<UIPadding>,
 	}),
 );
 
