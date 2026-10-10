@@ -18,7 +18,9 @@ function Avatar(props: CustomizedProps<Frame, AvatarProps>) {
 		<SxHost tag="frame" key={id || "Avatar"} hostRef={ref} base={styles.root} className={className} sx={sx}>
 			{variant !== "square" && <uicorner {...styles.corner} />}
 			{image !== undefined ? (
-				<imagelabel key="Image" {...styles.image} Image={image} />
+				<imagelabel key="Image" {...styles.image} Image={image}>
+					{variant !== "square" && <uicorner {...styles.corner} />}
+				</imagelabel>
 			) : (
 				<textlabel key="Initials" {...styles.text} Text={avatarInitials(name)} />
 			)}
