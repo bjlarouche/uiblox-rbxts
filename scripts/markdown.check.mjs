@@ -111,8 +111,9 @@ if (!md.includes("[Docs](https://x.test)")) throw new Error("html link");
 const round = parseMarkdown(md);
 if (round.size() < 5) throw new Error("round-trip blocks");
 for (const block of round) {
-	if (block.kind === "paragraph" || block.kind === "heading" || block.kind === "blockquote") {
-		inlinesToRichText(block.inlines);
+	if (block.kind === "paragraph" || block.kind === "heading") inlinesToRichText(block.inlines);
+	if (block.kind === "blockquote") {
+		for (const para of block.paragraphs) inlinesToRichText(para);
 	}
 }
 
@@ -185,8 +186,26 @@ if (kinds("a | b\nnot a delimiter")[0] !== "paragraph") throw new Error("pipe wi
 if (!markdown.includes("styles.quoteBarPad") || markdown.includes('key="Bar"')) {
 	throw new Error("quote bar is padding, not a scaled frame");
 }
-if (!markdown.includes("scrollingframe") || !markdownStyles.includes("surface.elevated")) {
-	throw new Error("table scrolls and headers sit on elevated");
+if (!markdown.includes("quoteStack") || !markdownStyles.includes("surface.elevated")) {
+	throw new Error("quote stacks paragraphs and table headers sit on elevated");
 }
+
+const quote = parseMarkdown("> A short quote\n> an\n>\n> **bold** and *lean*\n> hard  \n> break");
+if (quote[0].kind !== "blockquote") throw new Error("multi quote");
+if (quote[0].kind === "blockquote") {
+	if (quote[0].paragraphs.length !== 2) throw new Error(`quote paragraphs ${quote[0].paragraphs.length}`);
+	const first = inlinesToPlain(quote[0].paragraphs[0]);
+	if (first !== "A short quote an") throw new Error(`soft wrap ${first}`);
+	const second = quote[0].paragraphs[1];
+	if (second[0].kind !== "bold" || second[0].text !== "bold") throw new Error("quote bold");
+	const linked = parseMarkdown("> see [docs](https://example.com)");
+	if (linked[0].kind !== "blockquote" || linked[0].paragraphs[0][1].kind !== "link") throw new Error("quote link");
+	if (!inlinesToPlain(second).includes("hard\nbreak")) throw new Error(`hard break ${inlinesToPlain(second)}`);
+}
+if (kinds(">> nested")[0] !== "paragraph") throw new Error("nested marker stays text");
+const soft = parseMarkdown("alpha\nbeta");
+if (inlinesToPlain(soft[0].inlines) !== "alpha beta") throw new Error("paragraph soft wrap");
+const hard = parseMarkdown("alpha  \nbeta");
+if (inlinesToPlain(hard[0].inlines) !== "alpha\nbeta") throw new Error("paragraph hard break");
 
 console.log("markdown ok");

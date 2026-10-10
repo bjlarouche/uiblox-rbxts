@@ -170,7 +170,10 @@ function renderBlock(
 				<frame key="Face" {...styles.quoteFace}>
 					<uicorner CornerRadius={new UDim(0, 3)} />
 					<uipadding {...styles.quotePad} />
-					{inlineFlow("Text", styles, block.inlines, "body", undefined, onLink, sizes, styles.quoteFlow)}
+					<uilistlayout {...styles.quoteStack} />
+					{block.paragraphs.map((inlines, para) =>
+						inlineFlow(`p-${para}`, styles, inlines, "body", para, onLink, sizes, styles.quoteFlow),
+					)}
 				</frame>
 			</frame>
 		);
@@ -183,7 +186,7 @@ function renderBlock(
 		};
 		const lines = [block.header, ...block.rows];
 		return (
-			<scrollingframe key={`t-${index}`} {...styles.tableScroll} LayoutOrder={index}>
+			<frame key={`t-${index}`} {...styles.tableScroll} LayoutOrder={index}>
 				<frame key="Grid" {...styles.tableGrid}>
 					<uilistlayout FillDirection={Enum.FillDirection.Vertical} SortOrder={Enum.SortOrder.LayoutOrder} />
 					{lines.map((row, rowIndex) => (
@@ -214,7 +217,7 @@ function renderBlock(
 						</frame>
 					))}
 				</frame>
-			</scrollingframe>
+			</frame>
 		);
 	}
 	if (block.kind === "list") {
