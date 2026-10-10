@@ -11,7 +11,6 @@ const useTableStyles = componentStyles<{ dense?: boolean }>("Table", (theme: The
 			Size: new UDim2(1, 0, 0, 0),
 			BackgroundColor3: theme.palette.surface.paper,
 			BorderSizePixel: 0,
-			ZIndex: 2,
 		} as WriteableStyle<Frame>,
 		list: {
 			FillDirection: Enum.FillDirection.Vertical,
