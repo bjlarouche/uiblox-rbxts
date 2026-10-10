@@ -82,13 +82,16 @@ function Toast(props: CustomizedProps<Frame, ToastProps>) {
 	};
 
 	useEffect(() => {
-		tween(Directions.In);
-		wait(duration);
-		tween(Directions.Out);
+		const thread = task.spawn(() => {
+			tween(Directions.In);
+			wait(duration);
+			tween(Directions.Out);
 
-		if (onDismiss) {
-			onDismiss();
-		}
+			if (onDismiss) {
+				onDismiss();
+			}
+		});
+		return () => task.cancel(thread);
 	}, []);
 
 	return (
