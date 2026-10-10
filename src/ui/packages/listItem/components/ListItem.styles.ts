@@ -8,7 +8,8 @@ const useListItemStyles = componentStyles<{
 	dense?: boolean;
 	wrap?: boolean;
 	tone?: ListItemTone;
-}>("ListItem", (theme: Theme, { selected = false, disabled = false, dense = false, wrap = false, tone }) => {
+	divider?: boolean;
+}>("ListItem", (theme: Theme, { selected = false, disabled = false, dense = false, wrap = false, tone, divider = false }) => {
 		const pad = theme.padding.calc(dense === true ? 0.5 : 1);
 		const primaryLayout = listItemLabelLayout(wrap);
 		const secondaryLayout = listItemSecondaryLayout();
@@ -39,7 +40,7 @@ const useListItemStyles = componentStyles<{
 			} as WriteableStyle<TextButton>,
 			padding: {
 				PaddingTop: new UDim(0, pad),
-				PaddingBottom: new UDim(0, pad),
+				PaddingBottom: new UDim(0, divider ? 0 : pad),
 				PaddingLeft: new UDim(0, pad),
 				PaddingRight: new UDim(0, pad),
 			} as WriteableStyle<UIPadding>,
@@ -69,6 +70,13 @@ const useListItemStyles = componentStyles<{
 			} as WriteableStyle<TextLabel>,
 			divider: {
 				LayoutOrder: 3,
+				Size: new UDim2(1, 0, 0, pad),
+				BackgroundTransparency: 1,
+				BorderSizePixel: 0,
+			} as WriteableStyle<Frame>,
+			line: {
+				AnchorPoint: new Vector2(0, 1),
+				Position: UDim2.fromScale(0, 1),
 				Size: new UDim2(1, 0, 0, 1),
 				BackgroundColor3: theme.palette.divider,
 				BorderSizePixel: 0,
