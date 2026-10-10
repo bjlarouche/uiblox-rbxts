@@ -2,9 +2,11 @@ import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
 
 export type MarkdownEditorMode = "split" | "edit" | "preview";
 
-const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?: boolean }>(
+const grip = 22;
+
+const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?: boolean; gripped?: boolean }>(
 	"MarkdownEditor",
-	(theme: Theme, { fullscreen, compact }) => {
+	(theme: Theme, { fullscreen, compact, gripped }) => {
 		const pad = compact === true || theme.density === "compact" ? theme.padding.calc(1) : theme.padding.calc(1.5);
 		const glyph = theme.typography.fontSizes.body ?? theme.typography.variants.body.size;
 		return createStyles({
@@ -14,7 +16,7 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 				BorderSizePixel: 0,
 			} as WriteableStyle<Frame>,
 			content: {
-				Size: UDim2.fromScale(1, 1),
+				Size: new UDim2(1, 0, 1, gripped === true ? -grip : 0),
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 			} as WriteableStyle<Frame>,
@@ -207,7 +209,7 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 			resizeGrip: {
 				AnchorPoint: new Vector2(1, 1),
 				Position: UDim2.fromScale(1, 1),
-				Size: UDim2.fromOffset(22, 22),
+				Size: UDim2.fromOffset(grip, grip),
 				BackgroundColor3: theme.palette.surface.elevated,
 				BackgroundTransparency: 0.15,
 				BorderSizePixel: 0,

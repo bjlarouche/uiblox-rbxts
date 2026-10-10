@@ -94,7 +94,8 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 	const height = clampEditorHeight(heightProp ?? heightState, minHeight, maxHeight);
 	const compact = theme.density === "compact";
 	const toolbarHeight = compact ? 32 : 36;
-	const styles = useMarkdownEditorStyles({ fullscreen, compact });
+	const gripped = resizable === true && fullscreen !== true;
+	const styles = useMarkdownEditorStyles({ fullscreen, compact, gripped });
 
 	useEffect(() => {
 		if (!focused.current) setDraft(value);
