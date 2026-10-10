@@ -79,6 +79,7 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 	const face = buttonFace(text, loading, loadingLabel);
 	const place = spinnerPlace(loadingPosition);
 	const busy = loading || animating;
+	const sweep = animating && !loading;
 	const branded = (props.color ?? "primary") === "primary";
 	const paint = buttonPaint({
 		variant,
@@ -158,9 +159,9 @@ function Button(props: CustomizedProps<DefaultButtonComponent, ButtonProps>) {
 				},
 			}}
 		>
-			{!busy && focused && <uistroke {...focus} />}
-			{!busy && !focused && variant === "outlined" && <uistroke {...stroke} />}
-			{busy && <LoadingStroke animating={busy && !reducedMotion} color={colors.label} />}
+			{!sweep && focused && <uistroke {...focus} />}
+			{!sweep && !focused && variant === "outlined" && <uistroke {...stroke} />}
+			{sweep && <LoadingStroke animating={!reducedMotion} color={colors.label} />}
 			{rounded && <uicorner {...corner} />}
 			{loading && (
 				<CircularProgress

@@ -34,5 +34,6 @@ const view = readFileSync("src/ui/packages/button/components/Button.tsx", "utf8"
 if (view.includes("0.75")) throw new Error("button still washes the face");
 if (!view.includes("buttonPaint")) throw new Error("button paint");
 if (view.includes("hovering || focused")) throw new Error("focus still paints as hover");
+if (!view.includes("const sweep = animating && !loading")) throw new Error("loading keeps its stroke");
 
 console.log("button paint ok");
