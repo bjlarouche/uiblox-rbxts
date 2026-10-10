@@ -9,10 +9,11 @@ export interface AvatarProps {
 	image?: string;
 	size?: number;
 	variant?: AvatarVariant;
+	children?: React.ReactNode;
 }
 
 function Avatar(props: CustomizedProps<Frame, AvatarProps>) {
-	const { name = "", image, size, variant = "circular", className, sx, id, ref } = props;
+	const { name = "", image, size, variant = "circular", children, className, sx, id, ref } = props;
 	const styles = useAvatarStyles({ size, variant });
 	return (
 		<SxHost tag="frame" key={id || "Avatar"} hostRef={ref} base={styles.root} className={className} sx={sx}>
@@ -24,6 +25,7 @@ function Avatar(props: CustomizedProps<Frame, AvatarProps>) {
 			) : (
 				<textlabel key="Initials" {...styles.text} Text={avatarInitials(name)} />
 			)}
+			{children}
 		</SxHost>
 	);
 }
