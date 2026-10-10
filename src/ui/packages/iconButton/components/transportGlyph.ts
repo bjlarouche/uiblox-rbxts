@@ -1,5 +1,9 @@
 export type TransportGlyph = "play" | "pause" | "previous" | "next";
 
+export function isTransportGlyph(name: string): name is TransportGlyph {
+	return name === "play" || name === "pause" || name === "previous" || name === "next";
+}
+
 export interface GlyphRect {
 	x: number;
 	y: number;

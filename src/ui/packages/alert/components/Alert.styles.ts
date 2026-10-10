@@ -1,4 +1,4 @@
-import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
+import { componentStyles, controlMetrics, createStyles, Theme, WriteableStyle } from "theme";
 import { AlertSeverity, alertSeverity } from "./alertTone";
 
 const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?: boolean; filled?: boolean }>(
@@ -8,7 +8,8 @@ const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?:
 	const padX = theme.padding.calc(2);
 	const padY = theme.padding.calc(1.5);
 	const glyph = theme.typography.fontSizes.body ?? theme.typography.variants.body.size;
-	const hit = math.max(theme.spacing.calc(3), glyph + theme.padding.calc(2));
+	const icon = controlMetrics(theme.density).icon;
+	const hit = math.max(theme.spacing.calc(3), icon + theme.padding.calc(2));
 	const closeGap = dismissible === true ? hit + theme.padding.calc(1) : 0;
 	const ink = filled === true ? tone.on : theme.palette.text.primary;
 	return createStyles({
@@ -84,20 +85,11 @@ const useAlertStyles = componentStyles<{ severity?: AlertSeverity; dismissible?:
 			Size: UDim2.fromOffset(hit, hit),
 			Position: new UDim2(1, -padX, 0, padY + glyph / 2),
 			AnchorPoint: new Vector2(1, 0.5),
-			BackgroundTransparency: 1,
-			BorderSizePixel: 0,
-			AutoButtonColor: false,
-			ImageTransparency: 1,
 			ZIndex: 2,
 		} as WriteableStyle<ImageButton>,
 		closeGlyph: {
-			Size: UDim2.fromOffset(glyph, glyph),
-			Position: UDim2.fromScale(0.5, 0.5),
-			AnchorPoint: new Vector2(0.5, 0.5),
-			BackgroundTransparency: 1,
-			BorderSizePixel: 0,
+			Size: UDim2.fromOffset(icon, icon),
 			ImageColor3: ink,
-			ScaleType: Enum.ScaleType.Fit,
 		} as WriteableStyle<ImageLabel>,
 	});
 });

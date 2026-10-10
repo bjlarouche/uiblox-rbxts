@@ -1,8 +1,8 @@
 import React, { useState } from "@rbxts/react";
-import { cx, CustomizedProps } from "theme";
-import { Icons } from "ui/enums";
+import { controlMetrics, cx, CustomizedProps, useTheme } from "theme";
 import { SxHost } from "ui/packages/host";
 import { Collapse } from "ui/packages/collapse";
+import { Icon } from "ui/packages/icon";
 import { accordionNote } from "./accordionNote";
 import { accordionGlyph, accordionOpen } from "./accordionOpen";
 import useAccordionStyles from "./Accordion.styles";
@@ -25,6 +25,7 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 	const open = accordionOpen(localOpen, controlled);
 	const summary = accordionNote(note);
 	const styles = useAccordionStyles({ open, disabled });
+	const { theme } = useTheme();
 
 	const toggle = () => {
 		if (disabled === true) return;
@@ -57,10 +58,12 @@ function Accordion(props: CustomizedProps<Frame, AccordionProps>) {
 						<textlabel key="Note" {...styles.note} Text={summary} LayoutOrder={2} />
 					</frame>
 				)}
-				<imagelabel
-					key="Icon"
-					{...styles.icon}
-					Image={accordionGlyph(open) === "expanded" ? Icons.Expanded : Icons.Collapsed}
+				<Icon
+					id="Icon"
+					glyph="chevronRight"
+					size={controlMetrics(theme.density).icon}
+					tint={disabled === true ? theme.palette.text.disabled : theme.palette.text.primary}
+					className={{ ...styles.icon, Rotation: accordionGlyph(open) === "expanded" ? 90 : 0 }}
 				/>
 			</textbutton>
 			<Collapse key="Body" open={open} className={styles.body}>

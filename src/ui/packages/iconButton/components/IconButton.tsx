@@ -6,13 +6,17 @@ import { SxHost } from "ui/packages/host";
 import { canActivate } from "ui/packages/button/components/activation";
 import { iconSpinnerPixels } from "ui/packages/button/components/buttonLook";
 import { CircularProgress } from "ui/packages/circularProgress";
+import { DrawnGlyph } from "ui/packages/icon/components/DrawnGlyph";
+import { Glyph } from "ui/packages/icon/components/glyphs";
 import { iconButtonFace, iconButtonScale, iconGlyphExtent } from "./iconButtonBox";
 import useIconButtonStyles from "./IconButton.styles";
-import { transportGlyph, TransportGlyph } from "./transportGlyph";
+import { isTransportGlyph, transportGlyph, TransportGlyph } from "./transportGlyph";
 
 export interface IconButtonProps {
-	icon: Icons;
-	glyph?: TransportGlyph;
+	icon?: Icons;
+	glyph?: TransportGlyph | Glyph;
+	/** Glyph pixels, usually `controlMetrics().icon`. `size` stays the hit target. */
+	iconSize?: number;
 	size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
 	tint: Color3;
 	selected?: boolean;
@@ -28,6 +32,7 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 	const {
 		icon,
 		glyph,
+		iconSize,
 		selected,
 		tint,
 		disabled,
@@ -44,8 +49,9 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 	const reducedMotion = useReducedMotion(reducedProp);
 	const active = canActivate(disabled, loading);
 	const extent = theme.spacing.calc(iconButtonScale(props.size));
-	const glyphBox = iconGlyphExtent(extent);
-	const drawn = glyph !== undefined && !loading ? transportGlyph(glyph, glyphBox) : undefined;
+	const glyphBox = iconSize ?? iconGlyphExtent(extent);
+	const drawn = glyph !== undefined && isTransportGlyph(glyph) && !loading ? transportGlyph(glyph, glyphBox) : undefined;
+	const sketched = glyph !== undefined && !isTransportGlyph(glyph) && !loading ? glyph : undefined;
 	const [hovering, setHovering] = useState(false);
 	const [down, setDown] = useState(false);
 	const [focused, setFocused] = useState(false);
@@ -87,8 +93,8 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 			Active={active}
 			AutoButtonColor={false}
 			Selectable={active}
-			Image={drawn !== undefined ? "" : tostring(icon)}
-			ImageTransparency={drawn !== undefined || loading ? 1 : mark}
+			Image={drawn !== undefined || sketched !== undefined || icon === undefined ? "" : tostring(icon)}
+			ImageTransparency={drawn !== undefined || sketched !== undefined || loading ? 1 : mark}
 			ImageColor3={tint ?? (container as WriteableStyle<ImageLabel>).ImageColor3}
 			Event={{
 				MouseButton1Click: () => {
@@ -136,6 +142,19 @@ function IconButton(props: CustomizedProps<DefaultIconButtonComponent, IconButto
 					))}
 				</frame>
 			) : undefined}
+			{sketched !== undefined && (
+				<frame
+					key="Glyph"
+					AnchorPoint={new Vector2(0.5, 0.5)}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromOffset(glyphBox, glyphBox)}
+					BackgroundTransparency={1}
+					BorderSizePixel={0}
+					ZIndex={12001}
+				>
+					<DrawnGlyph name={sketched} size={glyphBox} color={tint} transparency={mark} zIndex={12001} />
+				</frame>
+			)}
 			{loading && (
 				<CircularProgress
 					size={iconSpinnerPixels(props.size)}

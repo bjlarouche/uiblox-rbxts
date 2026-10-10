@@ -1,4 +1,4 @@
-import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
+import { componentStyles, controlMetrics, createStyles, Theme, WriteableStyle } from "theme";
 
 export type MarkdownEditorMode = "split" | "edit" | "preview";
 
@@ -8,7 +8,7 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 	"MarkdownEditor",
 	(theme: Theme, { fullscreen, compact, gripped }) => {
 		const pad = compact === true || theme.density === "compact" ? theme.padding.calc(1) : theme.padding.calc(1.5);
-		const glyph = theme.typography.fontSizes.body ?? theme.typography.variants.body.size;
+		const glyph = controlMetrics(theme.density, compact === true ? "small" : undefined).icon;
 		return createStyles({
 			root: {
 				Size: fullscreen === true ? UDim2.fromScale(1, 1) : new UDim2(1, 0, 1, 0),
@@ -56,20 +56,11 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 			} as WriteableStyle<UIListLayout>,
 			toolbarIcon: {
 				Size: UDim2.fromOffset(glyph + theme.padding.calc(2), glyph + theme.padding.calc(2)),
-				BackgroundTransparency: 1,
-				BorderSizePixel: 0,
-				AutoButtonColor: false,
-				ImageTransparency: 1,
 				LayoutOrder: 3,
 			} as WriteableStyle<ImageButton>,
 			toolbarGlyph: {
 				Size: UDim2.fromOffset(glyph, glyph),
-				Position: UDim2.fromScale(0.5, 0.5),
-				AnchorPoint: new Vector2(0.5, 0.5),
-				BackgroundTransparency: 1,
-				BorderSizePixel: 0,
 				ImageColor3: theme.palette.text.secondary,
-				ScaleType: Enum.ScaleType.Fit,
 			} as WriteableStyle<ImageLabel>,
 			htmlWrap: {
 				AutomaticSize: Enum.AutomaticSize.Y,
@@ -116,7 +107,7 @@ const useMarkdownEditorStyles = componentStyles<{ fullscreen?: boolean; compact?
 				BackgroundTransparency: 1,
 				BorderSizePixel: 0,
 				Font: theme.typography.fontFamilies.default,
-				TextSize: glyph,
+				TextSize: theme.typography.fontSizes.body,
 				TextColor3: theme.palette.text.primary,
 				TextXAlignment: Enum.TextXAlignment.Left,
 				TextWrapped: true,

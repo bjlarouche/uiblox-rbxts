@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "@rbxts/react";
-import { CustomizedProps, useTheme } from "theme";
+import { CustomizedProps, useTheme, WriteableStyle } from "theme";
 import { Button } from "ui/packages/button";
 import { SxHost } from "ui/packages/host";
-import { Icons } from "ui/enums";
+import { IconButton } from "ui/packages/iconButton";
 import { Input } from "ui/packages/input";
 import { ToggleButtonGroup } from "ui/packages/toggleButton";
 import { htmlToMarkdown } from "../htmlToMarkdown";
@@ -158,9 +158,14 @@ function MarkdownEditor(props: CustomizedProps<Frame, MarkdownEditorProps>) {
 						}
 					}}
 				/>
-				<imagebutton key="Fullscreen" {...styles.toolbarIcon} Event={{ Activated: () => setFullscreen(!fullscreen) }}>
-					<imagelabel key="Glyph" {...styles.toolbarGlyph} Image={tostring(Icons.Expanded)} />
-				</imagebutton>
+				<IconButton
+					id="Fullscreen"
+					glyph="expand"
+					iconSize={(styles.toolbarGlyph as WriteableStyle<ImageLabel>).Size?.X.Offset ?? 16}
+					tint={(styles.toolbarGlyph as WriteableStyle<ImageLabel>).ImageColor3 as Color3}
+					className={styles.toolbarIcon}
+					onClick={() => setFullscreen(!fullscreen)}
+				/>
 				</frame>
 				{htmlDraft !== undefined && (
 				<frame

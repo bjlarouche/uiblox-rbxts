@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "@rbxts/react";
 import { GuiService, TextService, UserInputService } from "@rbxts/services";
 import { useReducedMotion } from "hooks";
 import { controlMetrics, ControlSize, cx, CustomizedProps, useTheme } from "theme";
-import { Icons } from "ui/enums";
 import { canActivate } from "ui/packages/button/components/activation";
 import { spinnerPixels } from "ui/packages/button/components/buttonLook";
 import { CircularProgress } from "ui/packages/circularProgress";
+import { Icon } from "ui/packages/icon";
 import { Input } from "ui/packages/input";
 import { SxHost } from "ui/packages/host";
 import { Popup } from "ui/packages/popup";
@@ -50,7 +50,7 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 	const styles = useSelectStyles({ size, hasError, helperText });
 	const { theme } = useTheme();
 	const metrics = controlMetrics(theme.density, size);
-	const mark = theme.typography.fontSizes.caption ?? metrics.font;
+	const mark = metrics.icon;
 	const row = metrics.height;
 	const active = canActivate(disabled, loading);
 	const [anchor, setAnchor] = useState<TextButton>();
@@ -242,16 +242,16 @@ function Select<T>(props: CustomizedProps<Frame, SelectProps<T>>) {
 						}}
 					/>
 				) : (
-					<imagelabel
-						key="Chevron"
-						BackgroundTransparency={1}
-						BorderSizePixel={0}
-						AnchorPoint={new Vector2(1, 0.5)}
-						Position={new UDim2(1, mark + theme.padding.calc(1), 0.5, 0)}
-						Size={UDim2.fromOffset(mark, mark)}
-						Image={shown ? Icons.Expanded : Icons.Collapsed}
-						ImageColor3={theme.palette.text.secondary}
-						ScaleType={Enum.ScaleType.Fit}
+					<Icon
+						id="Chevron"
+						glyph="chevronDown"
+						size={mark}
+						tint={theme.palette.text.secondary}
+						className={{
+							AnchorPoint: new Vector2(1, 0.5),
+							Position: new UDim2(1, mark + theme.padding.calc(1), 0.5, 0),
+							Rotation: shown ? 180 : 0,
+						}}
 					/>
 				)}
 			</textbutton>

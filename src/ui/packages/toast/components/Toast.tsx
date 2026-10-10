@@ -4,6 +4,7 @@ import { TextService } from "@rbxts/services";
 import { CustomizedProps, DEFAULT_THEME, useTheme, WriteableStyle } from "theme";
 import { Directions } from "ui/enums";
 import { SxHost } from "ui/packages/host";
+import { IconButton } from "ui/packages/iconButton";
 import { Shadow } from "ui/packages/shadow";
 import ToastVariants from "../enums/ToastVariants";
 import useToastStyles from "./Toast.styles";
@@ -25,7 +26,7 @@ const TWEEN_DURATION = 0.5;
 function Toast(props: CustomizedProps<Frame, ToastProps>) {
 	const { text, onDismiss, duration = 4, action, onAction, className,
 		sx, id, ref } = props;
-	const { container, label, close, action: actionStyle, activePosition, inActivePosition } = useToastStyles(props);
+	const { container, label, close, closeGlyph, action: actionStyle, activePosition, inActivePosition } = useToastStyles(props);
 	const { theme } = useTheme();
 	const frameRef = useRef<Frame>();
 	const font = theme.typography.fontFamilies.default ?? Enum.Font.SourceSans;
@@ -130,16 +131,17 @@ function Toast(props: CustomizedProps<Frame, ToastProps>) {
 					}}
 				/>
 			)}
-			<imagebutton
-				key="Close"
-				{...close}
-				Event={{
-					MouseButton1Click: () => {
-						tween(Directions.Out);
-						if (onDismiss) {
-							onDismiss();
-						}
-					},
+			<IconButton
+				id="Close"
+				glyph="close"
+				iconSize={(closeGlyph as WriteableStyle<ImageLabel>).Size?.X.Offset ?? 16}
+				tint={(closeGlyph as WriteableStyle<ImageLabel>).ImageColor3 as Color3}
+				className={close}
+				onClick={() => {
+					tween(Directions.Out);
+					if (onDismiss) {
+						onDismiss();
+					}
 				}}
 			/>
 		</SxHost>

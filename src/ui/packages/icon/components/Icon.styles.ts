@@ -4,6 +4,7 @@ import { IconProps } from "./Icon";
 const useIconStyles = componentStyles<IconProps>("Icon", (theme, props) => {
 	const getIconSize = (props: IconProps) => {
 		const { size } = props;
+		if (typeIs(size, "number")) return UDim2.fromOffset(size, size);
 
 		switch (size) {
 			case "xxs":
