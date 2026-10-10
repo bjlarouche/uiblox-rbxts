@@ -6,6 +6,10 @@ export const PADDING_BASE = 4;
 
 export const BORDER_RADIUS = 4;
 
+export const RADIUS = { small: 2, default: BORDER_RADIUS, large: 8 };
+
+export const MOTION = { fast: 0.1, default: 0.14, slow: 0.24 };
+
 /** UICorner scale for pill/capsule controls (1 = fully round). */
 export const PILL_SCALE = 1;
 

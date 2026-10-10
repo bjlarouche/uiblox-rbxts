@@ -1,4 +1,5 @@
 export type FontSizeVariant =
+	| "display"
 	| "h1"
 	| "h2"
 	| "h3"
@@ -8,6 +9,7 @@ export type FontSizeVariant =
 	| "subtitle1"
 	| "subtitle2"
 	| "body"
+	| "bodySmall"
 	| "caption"
 	| "button"
 	| "overline";
