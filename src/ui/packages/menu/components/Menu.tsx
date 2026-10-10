@@ -39,7 +39,7 @@ function Menu(props: CustomizedProps<Frame, MenuProps>) {
 	const vacant = items.size() === 0;
 	const icons = items.some((item) => menuIcon(item.icon) !== undefined);
 	const row = menuRow(dense, icons);
-	const height = vacant ? menuRow(dense) : items.size() * row;
+	const height = (vacant ? menuRow(dense) : items.size() * row) + theme.shape.borderRadius * 2 + 2;
 	const font = theme.typography.fontFamilies.default ?? Enum.Font.SourceSans;
 	const textSize = (dense === true ? theme.typography.fontSizes.caption : theme.typography.fontSizes.body) ?? 14;
 	let widest = 0;
@@ -55,6 +55,7 @@ function Menu(props: CustomizedProps<Frame, MenuProps>) {
 			<SxHost tag="frame" key={id || "Surface"} hostRef={ref} base={styles.surface} className={className} sx={sx}>
 				<uicorner {...styles.corner} />
 				<uistroke {...styles.stroke} />
+				<uipadding {...styles.inset} />
 				<uilistlayout {...styles.list} />
 				{vacant
 					? (empty ?? <EmptyListHint text={emptyText ?? "No options"} height={row} />)
