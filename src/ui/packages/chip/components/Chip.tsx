@@ -1,7 +1,7 @@
 import React from "@rbxts/react";
 import { ControlSize, CustomizedProps } from "theme";
-import { Icons } from "ui/enums";
 import { SxHost } from "ui/packages/host";
+import { IconButton } from "ui/packages/iconButton";
 import useChipStyles, { ChipColor } from "./Chip.styles";
 
 export interface ChipProps {
@@ -42,18 +42,15 @@ function Chip(props: CustomizedProps<TextButton, ChipProps>) {
 				<>
 					<uilistlayout {...styles.row} />
 					<textlabel key="Label" {...styles.label} Text={label} />
-					<imagebutton
-						key="Delete"
-						{...styles.delete}
-						Active={disabled !== true}
-						Event={{
-							Activated: () => {
-								if (disabled !== true) onDelete();
-							},
-						}}
-					>
-						<imagelabel key="Glyph" {...styles.glyph} Image={tostring(Icons.Close)} />
-					</imagebutton>
+					<IconButton
+						id="Delete"
+						glyph="close"
+						iconSize={styles.glyph.Size.X.Offset}
+						tint={styles.glyph.ImageColor3}
+						disabled={disabled}
+						className={styles.delete}
+						onClick={onDelete}
+					/>
 				</>
 			)}
 		</SxHost>

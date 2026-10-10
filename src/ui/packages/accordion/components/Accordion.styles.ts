@@ -1,10 +1,11 @@
-import { componentStyles, createStyles, Theme, WriteableStyle } from "theme";
+import { componentStyles, controlMetrics, createStyles, Theme, WriteableStyle } from "theme";
 
 const useAccordionStyles = componentStyles<{ open?: boolean; disabled?: boolean }>("Accordion", (theme: Theme, { disabled }) => {
 	const heading = theme.typography.variants.h6;
 	const padX = theme.padding.calc(1.5);
 	const padY = theme.padding.calc(1);
-	const icon = theme.options.constants.iconSizes.small;
+	const icon = controlMetrics(theme.density).icon;
+	const firstLine = padY + math.floor((heading.size * heading.leading) / 2);
 	return createStyles({
 		root: {
 			AutomaticSize: Enum.AutomaticSize.Y,
@@ -75,14 +76,8 @@ const useAccordionStyles = componentStyles<{ open?: boolean; disabled?: boolean 
 			TextXAlignment: Enum.TextXAlignment.Left,
 		} as WriteableStyle<TextLabel>,
 		icon: {
-			Size: UDim2.fromOffset(icon, icon),
-			Position: new UDim2(1, -padX, 0.5, 0),
+			Position: new UDim2(1, -padX, 0, firstLine),
 			AnchorPoint: new Vector2(1, 0.5),
-			BackgroundTransparency: 1,
-			BorderSizePixel: 0,
-			ScaleType: Enum.ScaleType.Fit,
-			ImageColor3: theme.palette.text.primary,
-			ImageTransparency: disabled === true ? 0.5 : 0,
 		} as WriteableStyle<ImageLabel>,
 		body: {
 			LayoutOrder: 2,

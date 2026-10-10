@@ -1,5 +1,4 @@
-import { createStyles, Theme, componentStyles, DEFAULT_THEME, WriteableStyle } from "theme";
-import { Icons } from "ui/enums";
+import { createStyles, Theme, componentStyles, controlMetrics, DEFAULT_THEME, WriteableStyle } from "theme";
 import ToastVariants from "../enums/ToastVariants";
 import { ToastProps } from "./Toast";
 import { toastPlace } from "./toastPlace";
@@ -32,8 +31,9 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 
 	const toastColors = getToastColors();
 	const hasAction = action !== undefined && action.size() > 0;
-	const glyph = theme.typography.fontSizes.caption ?? 12;
-	const actionSlot = (hasAction ? theme.spacing.calc(8) : 0) + glyph + theme.padding.calc(1);
+	const glyph = controlMetrics(theme.density).icon;
+	const hit = glyph + theme.padding.calc(2);
+	const actionSlot = (hasAction ? theme.spacing.calc(8) : 0) + hit;
 	const place = toastPlace(edge, DEFAULT_THEME.padding.calc(2), DEFAULT_THEME.spacing.calc(20) + DEFAULT_THEME.padding.calc(2));
 	const ACTIVE_POSITION = new UDim2(0.5, 0, place.activeY, place.activeOffset);
 	const INACTIVE_POSITION = new UDim2(0.5, 0, place.idleY, place.idleOffset);
@@ -67,7 +67,7 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 			Size: new UDim2(0, 0, 0, theme.spacing.calc(3)),
 			Position: new UDim2(
 				1,
-				-(theme.padding.calc(2) + glyph + theme.padding.calc(1)),
+				-(theme.padding.calc(1) + hit),
 				0.5,
 				0,
 			),
@@ -81,18 +81,15 @@ const useToastStyles = componentStyles<ToastProps>("Toast", (theme: Theme, { var
 			ZIndex: 50001,
 		} as WriteableStyle<TextButton>,
 		close: {
-			Size: UDim2.fromOffset(glyph, glyph),
-			Position: new UDim2(1, -theme.padding.calc(2), 0.5, 0),
+			Size: UDim2.fromOffset(hit, hit),
+			Position: new UDim2(1, -theme.padding.calc(1), 0.5, 0),
 			AnchorPoint: new Vector2(1, 0.5),
-			ImageColor3: toastColors.content,
-			Image: Icons.Close,
-			ScaleType: Enum.ScaleType.Fit,
-			BackgroundTransparency: 1,
-			AutoButtonColor: false,
-			BorderSizePixel: 0,
-			Active: true,
 			ZIndex: 50001,
 		} as WriteableStyle<ImageButton>,
+		closeGlyph: {
+			Size: UDim2.fromOffset(glyph, glyph),
+			ImageColor3: toastColors.content,
+		} as WriteableStyle<ImageLabel>,
 		activePosition: {
 			Position: ACTIVE_POSITION,
 		} as WriteableStyle<Frame>,

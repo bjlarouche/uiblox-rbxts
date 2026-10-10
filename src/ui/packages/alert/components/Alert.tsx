@@ -1,7 +1,7 @@
 import React from "@rbxts/react";
 import { CustomizedProps } from "theme";
-import { Icons } from "ui/enums";
 import { SxHost } from "ui/packages/host";
+import { IconButton } from "ui/packages/iconButton";
 import { alertAction } from "./alertAction";
 import { AlertSeverity } from "./alertTone";
 import useAlertStyles from "./Alert.styles";
@@ -28,9 +28,14 @@ function Alert(props: CustomizedProps<Frame, AlertProps>) {
 			{square !== true && <uicorner {...styles.corner} />}
 			<uistroke {...styles.stroke} />
 			{dismissible && (
-				<imagebutton key="Close" {...styles.close} Event={{ Activated: () => onClose() }}>
-					<imagelabel key="Glyph" {...styles.closeGlyph} Image={tostring(Icons.Close)} />
-				</imagebutton>
+				<IconButton
+					id="Close"
+					glyph="close"
+					iconSize={styles.closeGlyph.Size.X.Offset}
+					tint={styles.closeGlyph.ImageColor3}
+					className={styles.close}
+					onClick={onClose}
+				/>
 			)}
 			<frame key="Body" {...styles.body}>
 				<uilistlayout {...styles.layout} />
